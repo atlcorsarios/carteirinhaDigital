@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteirinha de Associado Digital - Corsários</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .card, .card-login {
+            width: 600px;
+            min-height: 340px;
+            background-color: #1a1a1a;
+            background-image: url('corsarios_associados_card_background.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+        }
+        .card:hover {
+            transform: scale(1.05) rotateZ(1deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.7s ease-in-out;
+        }
+        .card:hover::before {
+            left: 150%;
+        }
+        .card-header {
+            text-align: right;
+            font-size: 14px;
+            font-weight: 500;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        .card-body {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            object-fit: cover;
+        }
+        .member-info {
+            flex-grow: 1;
+        }
+        .member-info .name {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        .member-info p {
+            margin: 2px 0;
+            font-size: 14px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* --- AJUSTES NOS INPUTS DO LOGIN --- */
+        .login-form input {
+            background-color: rgba(0, 0, 0, 0.4); /* Fundo mais escuro e opaco */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil */
+            color: white;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6); /* Sombra interna para profundidade */
+        }
+        .login-form input::placeholder {
+            color: rgba(255, 255, 255, 0.5); /* Placeholder mais visível */
+        }
+        .login-form input:focus {
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo um pouco mais escuro ao focar */
+            border-color: rgba(255, 255, 255, 0.4); /* Borda mais destacada ao focar */
+            outline: none;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(255, 255, 255, 0.2); /* Adiciona um "glow" sutil */
+        }
+    </style>
+</head>
+<body>
+    <div id="login-card" class="card-login">
+        <header class="card-header"><span>LOGIN</span></header>
+        <main class="py-2 flex justify-center">
+            <form id="login-form" class="login-form w-80 text-sm">
+                <div class="mb-1">
+                    <label for="email" class="font-semibold mb-1 block">E-mail:</label>
+                    <input type="email" id="email" name="email" class="w-80 p-2 rounded transition-colors" placeholder="seu@email.com" required>
+                </div>
+                <div class="mb-1">
+                    <label for="password" class="font-semibold mb-1 block">Senha:</label>
+                    <input type="password" id="password" name="password" class="w-80 p-2 rounded transition-colors" placeholder="******" required>
+                </div>
+                <p id="error-message" class="text-red-400 text-center text-xs h-4"></p>
+                <button type="submit" class="w-80 p-2 font-bold bg-blue-600 hover:bg-blue-700 rounded transition-colors">Entrar</button>
+            </form>
+        </main>
+        <footer class="card-footer"></footer>
+    </div>
+    <div id="member-card" class="card hidden">
+        <header class="card-header"><span>ASSOCIADO CORSÁRIOS</span></header>
+        <main class="card-body flex justify-center p-10 pe-5">
+            <img id="perfil-associado" alt="Foto do Associado" class="profile-picture">
+            <div class="member-info">
+                <h1 id="nome-associado" class="name"></h1>
+                <p><strong>Registro:</strong> <span id="registro-unico-associado"></span></p>
+                <p><strong>Plano:</strong> <span id="plano-associado"></span></p>
+                <p><strong>Cargo:</strong> <span id="cargo-associado"></span></p>
+            </div>
+        </main>
+        <footer class="card-footer">
+            <p class="m-0 text-xs text-right"><strong>Válido até:</strong> <span id="validade-associado"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        const loginCard = document.getElementById("login-card");
+        const memberCard = document.getElementById("member-card");
+        const loginForm = document.getElementById("login-form");
+        const errorMessage = document.getElementById("error-message");
+        
+        async function main() {
+            try {
+                const response = await fetch('dataAssociados.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const associados = await response.json();
+
+                loginForm.addEventListener('submit', (event) => {
+                    handleLogin(event, associados); 
+                });
+
+            } catch (error) {
+                console.error("Não foi possível carregar os dados dos associados:", error);
+                errorMessage.textContent = "Erro ao carregar dados. Tente mais tarde.";
+                loginForm.querySelector('button').disabled = true;
+            }
+        }
+
+        function handleLogin(event, associados) {
+            event.preventDefault();
+            errorMessage.textContent = "";
+
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
+
+            const foundUser = associados.find(user => user.email === email && user.senha === password);
+
+            if (!foundUser) {
+                errorMessage.textContent = "Email ou senha inválidos.";
+                return;
+            }
+
+            if (!isMembershipValid(foundUser.validade)) {
+                errorMessage.textContent = "Sua assinatura expirou.";
+                return;
+            }
+
+            loadMemberData(foundUser);
+            loginCard.classList.add('hidden');
+            memberCard.classList.remove('hidden');
+        }
+
+        function isMembershipValid(validityString) {
+            if (validityString.toLowerCase() === 'vitalício') return true;
+            
+            const [month, year] = validityString.split('/').map(Number);
+            const expiryDate = new Date(year, month, 0);
+            const today = new Date();
+
+            return expiryDate >= today;
+        }
+
+        function loadMemberData(associado) {
+            document.getElementById("perfil-associado").src = associado.perfil;
+            document.getElementById("nome-associado").textContent = associado.nome;
+            document.getElementById("registro-unico-associado").textContent = associado.registroUnico;
+            document.getElementById("plano-associado").textContent = associado.plano;
+            document.getElementById("cargo-associado").textContent = associado.cargo;
+            document.getElementById("validade-associado").textContent = associado.validade;
+        }
+
+        main();
+    </script>
+</body>
+</html>
