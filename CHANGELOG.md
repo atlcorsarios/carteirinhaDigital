@@ -2,14 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [2.1.0](https://github.com/gersonfribeiro/Boilerplate-vue/compare/v2.0.0...v2.1.0) (2026-01-09)
+## [2.1.0](https://github.com/gersonfribeiro/Avelito-frontend/compare/v2.0.0...v2.1.0) (2026-01-16)
 
 
 ### Features
 
-* filtros de busca por recursos e persistência de preferências ([51f9c0d](https://github.com/gersonfribeiro/Boilerplate-vue/commit/51f9c0d767b6fcb9c261574c46d35bfa8b896b81))
+* filtros de busca por recursos e persistência de preferências ([51f9c0d](https://github.com/gersonfribeiro/Avelito-frontend/commit/51f9c0d767b6fcb9c261574c46d35bfa8b896b81))
+* pagina de login ajustada, pagina de recuperar senha, btn fab e página de informações gerais ([580e62b](https://github.com/gersonfribeiro/Avelito-frontend/commit/580e62b9ad8490c7ce7ef60429a7cc914258710c))
 
-### 0.0.3 (2025-12-31)
+
+### Bug Fixes
+
+* i18n foi ajustado corretamente para inicialização com valor default ([e0e27ec](https://github.com/gersonfribeiro/Avelito-frontend/commit/e0e27ece767add81a35a533cb7bdda3537e84192))
 
 ## [2.0.0](https://github.com/gersonfribeiro/Boilerplate-vue/compare/v1.0.0...v2.0.0) (2026-01-02)
 
