@@ -6,7 +6,7 @@ export class ClassLogin {
   private login: ILogin
 
   constructor(data?: Partial<ILogin>) {
-    this.login = this.getDefault(data);
+    this.login = reactive(this.getDefault(data));
   }
 
   get model() {
@@ -16,10 +16,10 @@ export class ClassLogin {
   private getDefault(data?: Partial<ILogin>): ILogin {
     const emailDefault = StorageUtils.get<string>('access_email', '@gmail.com', 'local');
 
-    return reactive({
+    return {
       email: emailDefault! || data?.email || '',
       password: data?.password || ''
-    })
+    } as ILogin;
   }
 
   reset() {

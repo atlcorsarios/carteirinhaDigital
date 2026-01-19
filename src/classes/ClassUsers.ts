@@ -7,7 +7,7 @@ export class ClassUsers {
   private user: IUser
 
   constructor(data?: Partial<IUser>) {
-    this.user = this.getDefault(data);
+    this.user = reactive(this.getDefault(data));
   }
 
   get model(): IUser {
@@ -15,7 +15,7 @@ export class ClassUsers {
   }
 
   private getDefault(data?: Partial<IUser>): IUser {
-    return reactive({
+    const defaults = {
       idUser: data?.idUser,
       username: data?.username || '',
       email: data?.email || '',
@@ -23,7 +23,9 @@ export class ClassUsers {
       phoneNumber: data?.phoneNumber || '',
       receiveNotifications: data?.receiveNotifications || false,
       active: data?.active || true
-    }) as IUser;
+    } as IUser;
+
+    return { ...defaults, ...data };
   }
 
   updateModel(data: IUser) {

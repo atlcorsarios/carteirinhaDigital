@@ -17,7 +17,7 @@ export class ClassQueryFilter {
     const routeName = (route.name as string) || 'default';
     this.storageKey = `filter_context_${routeName}`;
 
-    this.query = this.getDefault(data);
+    this.query = reactive(this.getDefault(data));
     this.staging = reactive(this.createItem());
 
     watch(
@@ -64,7 +64,6 @@ export class ClassQueryFilter {
   private createItem(data: Partial<IQueryFilter> = {}): IQueryFilter {
     const today = new Date();
     const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE;
-
     const defaults: IQueryFilter = {
       field: '',
       condition: '',
@@ -72,25 +71,24 @@ export class ClassQueryFilter {
       startDate: formattedDate(today, locale),
       endDate: formattedDate(today, locale),
       selectValues: []
-    };
+    } as IQueryFilter;
 
     return { ...defaults, ...data };
   }
 
   private getDefault(data?: Partial<IQueryFilter>[]): IQueryFilter[] {
     if (data && data.length > 0) {
-      return reactive(data.map(item => this.createItem(item)));
+      return data.map(item => this.createItem(item));
     }
-
 
     const emptyItem = this.createItem();
     const dataStorage = StorageUtils.get<IQueryFilter[]>(this.storageKey, [emptyItem], 'session');
 
     if (dataStorage && Array.isArray(dataStorage) && dataStorage.length > 0) {
-      return reactive(dataStorage.map(item => this.createItem(item)));
+      return dataStorage.map(item => this.createItem(item));
     }
 
-    return reactive([]);
+    return [];
   }
 
   addFilter(): boolean {
