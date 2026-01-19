@@ -58,7 +58,8 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/NotificationsView.vue'),
     meta: {
       title: 'routes.notifications.title',
-      hidden: true,
+      icon: 'mdi-bell',
+      hotkey: 'cmd+n+t',
       requiresAuth: true
     },
   },
