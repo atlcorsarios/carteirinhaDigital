@@ -1,10 +1,10 @@
 <template>
-  <v-badge location="bottom left" color="warning" dot class="ms-2">
-    <v-btn
+  <v-badge location="top right" color="warning" dot>
+    <v-icon
       icon="mdi-bell"
       v-tooltip="t('tooltips.appBar.notifications')"
       variant="text"
-      :to="{ name: 'Notifications' }"
+      @click="redirectNotifications"
     />
   </v-badge>
 
@@ -69,6 +69,7 @@ import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue';
 import { availableLocales } from '@/locales/AvailableLocales';
 import { StorageUtils } from '@/utils/StorageUtils';
 import { useThemeSwitch } from '@/composables/useThemeSwitch';
+import router from '@/router';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 
@@ -85,5 +86,9 @@ const emits = defineEmits(['open-dialog-licence']);
 
 function toggleDialogLicence() {
   emits('open-dialog-licence');
+}
+
+function redirectNotifications() {
+  return router.push({ name: 'Notifications' })
 }
 </script>
