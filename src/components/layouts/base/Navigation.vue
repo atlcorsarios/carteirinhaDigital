@@ -1,12 +1,39 @@
 <template>
-  <v-navigation-drawer app v-model="drawer" :expand-on-hover="mdAndUp" :rail="mdAndUp" class="main-drawer">
-    <v-list nav>
-      <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-        :title="authStore.user?.username"
-        :subtitle="authStore.user?.email"
-      />
-    </v-list>
+  <v-navigation-drawer
+    app
+    v-model="drawer"
+    :expand-on-hover="mdAndUp"
+    :rail="mdAndUp"
+    class="main-drawer"
+  >
+    <template v-slot:prepend>
+      <v-toolbar
+        flat
+        dense
+        class="main-drawer__toolbar"
+        image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+      >
+        <template v-slot:image>
+          <v-img gradient="to top right, rgba(0,0,0,.7), rgba(0,0,0,.3)" />
+        </template>
+
+        <v-btn
+          icon="mdi-menu"
+          @click="drawer = false"
+          v-if="!mdAndUp"
+        />
+      </v-toolbar>
+
+      <v-divider />
+
+      <v-list nav>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+          :title="authStore.user?.username"
+          :subtitle="authStore.user?.email"
+        />
+      </v-list>
+    </template>
 
     <v-divider />
 

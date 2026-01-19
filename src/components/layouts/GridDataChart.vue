@@ -1,5 +1,5 @@
 <template>
-  <v-row dense class="prevent-jump-desktop">
+  <v-row dense class="prevent-jump-desktop w-100 ma-0">
     <v-col
       cols="12"
       :md="hiddenChart ? 12 : 6"
@@ -76,36 +76,36 @@ watch(() => props.hiddenChart, (isHidden) => {
     max-width 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.expand-charts-enter-active,
-.expand-charts-leave-active {
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
+@media (min-width: 960px) {
+  .prevent-jump-desktop {
+    flex-wrap: nowrap !important;
+  }
 
-.expand-charts-leave-from {
-  opacity: 1;
-  max-width: 50%;
-  flex: 0 0 50%;
-}
+  .expand-charts-enter-active,
+  .expand-charts-leave-active {
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
 
-.expand-charts-enter-from,
-.expand-charts-leave-to {
-  opacity: 0;
-  max-width: 0 !important;
-  flex: 0 0 0 !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  .expand-charts-leave-from {
+    opacity: 1;
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+
+  .expand-charts-enter-from,
+  .expand-charts-leave-to {
+    opacity: 0;
+    max-width: 0 !important;
+    flex: 0 0 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
 
 .scroll-offset {
   scroll-margin-top: 90px;
   outline: none;
-}
-
-@media (min-width: 960px) {
-  .prevent-jump-desktop {
-    flex-wrap: nowrap !important;
-  }
 }
 </style>

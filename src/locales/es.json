@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Boilerplate",
+    "title": "Avelito",
     "version": "Versión",
     "cardInfoLicence": "License information",
     "updateDate": "Actualizado el",
@@ -24,6 +24,9 @@
     },
     "dashboard": {
       "title": "Panel"
+    },
+    "notifications": {
+      "title": "Notificaciones"
     },
     "products": {
       "title": "Productos",

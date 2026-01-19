@@ -31,7 +31,7 @@
           inner-cut="70"
           item-key="key"
           rounded="2"
-          size="300"
+          :size="mdAndUp ? 300 : '100%'"
           tooltip
           animation
           hide-slice

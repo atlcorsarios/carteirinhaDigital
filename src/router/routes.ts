@@ -53,6 +53,16 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('@/views/NotificationsView.vue'),
+    meta: {
+      title: 'routes.notifications.title',
+      hidden: true,
+      requiresAuth: true
+    },
+  },
+  {
     path: '/products',
     name: 'Products',
     component: () => import('@/views/Products/ProductsView.vue'),
