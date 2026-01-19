@@ -1,10 +1,10 @@
 <template>
-  <v-navigation-drawer app v-model="drawer" :expand-on-hover="mdAndUp" :rail="mdAndUp">
-    <v-list>
+  <v-navigation-drawer app v-model="drawer" :expand-on-hover="mdAndUp" :rail="mdAndUp" class="main-drawer">
+    <v-list nav>
       <v-list-item
         prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-        :subtitle="authStore.user?.email"
         :title="authStore.user?.username"
+        :subtitle="authStore.user?.email"
       />
     </v-list>
 
@@ -17,13 +17,23 @@
           :value="item.name"
         >
           <template v-slot:activator="{ props }">
-            <v-list-item v-bind="props" :prepend-icon="item.icon" :title="t(item.title || '')" />
+            <v-list-item
+              v-bind="props"
+              :prepend-icon="item.icon"
+              :title="t(item.title || '')"
+              v-tooltip="t(item.title || '')"
+            />
           </template>
 
-          <v-list-item v-for="child in item.children" :key="child.path"
+          <v-list-item
+            v-for="child in item.children"
+            :key="child.path"
             :prepend-icon="child.icon"
             :title="t(child.title || '')"
-            :to="{ name: child.name }" exact
+            :to="{ name: child.name }"
+            exact
+            v-tooltip="t(child.title || '')"
+            class="child-item"
           >
             <template v-slot:append v-if="item.hotkey && mdAndUp">
               <v-hotkey
@@ -31,6 +41,7 @@
                 display-mode="icon"
                 variant="contained"
                 platform="auto"
+                style="transform: scale(0.75)"
               />
             </template>
           </v-list-item>
@@ -39,7 +50,9 @@
         <v-list-item v-else
           :prepend-icon="item.icon"
           :title="t(item.title || '')"
-          :to="{ name: item.name }" exact
+          :to="{ name: item.name }"
+          exact
+          v-tooltip="t(item.title || '')"
         >
           <template v-slot:append v-if="item.hotkey && mdAndUp">
             <v-hotkey
@@ -47,6 +60,7 @@
               display-mode="icon"
               variant="contained"
               platform="auto"
+              style="transform: scale(0.75)"
             />
           </template>
         </v-list-item>
@@ -117,3 +131,28 @@ function handleLogout() {
   router.push({ name: 'Login' });
 }
 </script>
+
+<style scoped lang="scss">
+:deep(.v-navigation-drawer--rail) {
+
+  .v-list-group {
+    --v-list-group-items-indent: 0px;
+  }
+
+  .hotkey-wrapper {
+    display: none !important;
+  }
+
+  .v-list-item__prepend {
+    display: block;
+  }
+}
+
+.child-item {
+  padding-inline-start: 8px !important;
+}
+
+:deep(.v-navigation-drawer--rail) .child-item {
+  padding-inline-start: 0px !important;
+}
+</style>

@@ -10,6 +10,9 @@
     "home": {
       "title": "Inicio"
     },
+    "about": {
+      "title": "Información del sistema"
+    },
     "login": {
       "title": "Acceder"
     },
@@ -22,8 +25,25 @@
     "dashboard": {
       "title": "Panel"
     },
-    "users": {
-      "title": "Usuarios"
+    "products": {
+      "title": "Productos",
+      "children": {
+        "list": {
+          "title": "Lista de productos"
+        },
+        "categories": {
+          "title": "Categorías"
+        },
+        "revenues": {
+          "title": "Ingresos"
+        },
+        "ingredients": {
+          "title": "Ingredientes"
+        },
+        "stock": {
+          "title": "Inventario"
+        }
+      }
     },
     "adm": {
       "title": "Administrador",
@@ -133,7 +153,9 @@
     "until": "Hasta",
     "welcome": "Bien-vindo(a)",
     "errors": {
-      "reqGenerics": "¡Se produjo un error en la solicitud!"
+      "reqGenerics": "¡Se produjo un error en la solicitud!",
+      "accessDenied": "No tienes permiso para acceder a esta página",
+      "requiredAuth": "¡Necesitas estar autenticado para acceder. Por favor, inicia sesión!"
     },
     "forms": {
       "formUsers": {

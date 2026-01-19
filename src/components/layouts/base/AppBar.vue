@@ -1,5 +1,6 @@
 <template>
-  <v-app-bar app flat border="b">
+  <v-app-bar app flat border="b"
+  >
     <v-app-bar-nav-icon v-tooltip="t('tooltips.appBar.menu')" @click="emits('toggle-drawer')" />
     <v-app-bar-title class="font-weight-bold">{{ t('app.title') }}</v-app-bar-title>
 
@@ -11,7 +12,7 @@
       <v-spacer />
     </template>
 
-    <template v-slot:extension v-if="smAndDown">
+    <template v-slot:extension v-if="mdAndDown">
       <div class="px-4 pb-2 w-100">
         <AppBarSearchForm :loading="loading" @search="handleSearch" />
       </div>
@@ -123,7 +124,7 @@ import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
 import { ref, computed } from 'vue'
 
-const { smAndDown, mdAndUp } = useDisplay()
+const { mdAndDown, mdAndUp } = useDisplay()
 const { theme, toggleTheme } = useThemeSwitch()
 const isDark = computed(() => theme.global.current.value.dark)
 const { t, locale } = useI18n()

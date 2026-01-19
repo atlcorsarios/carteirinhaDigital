@@ -24,7 +24,7 @@
         <v-pie
           :key="filtroSelecionado"
           :items="chartData"
-          :legend="{ position: $vuetify.display.mdAndUp ? 'right' : 'bottom' }"
+          :legend="{ position: mdAndUp ? 'right' : 'bottom' }"
           class="pa-3 mt-3 justify-center"
           gap="2"
           hover-scale=".1"
@@ -87,7 +87,10 @@
 <script setup lang="ts">
 import type { ValueDataChart } from '@/classes/models/modelComponents/ModelGridDataChart'
 import type { IHeadersDataTable } from '@/classes/models/modelComponents/ModelHeaderTable'
-import { computed } from 'vue'
+import { useDisplay } from 'vuetify';
+import { computed } from 'vue';
+
+const { mdAndUp } = useDisplay();
 
 const props = defineProps<{
   chartData: ValueDataChart[]

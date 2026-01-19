@@ -10,6 +10,9 @@
     "home": {
       "title": "Home"
     },
+    "about": {
+      "title": "System informations"
+    },
     "login": {
       "title": "Login"
     },
@@ -22,8 +25,25 @@
     "dashboard": {
       "title": "Dashboard"
     },
-    "users": {
-      "title": "Users"
+    "products": {
+      "title": "Products",
+      "children": {
+        "list": {
+          "title": "Product List"
+        },
+        "categories": {
+          "title": "Categories"
+        },
+        "revenues": {
+          "title": "Revenues"
+        },
+        "ingredients": {
+          "title": "Ingredients"
+        },
+        "stock": {
+          "title": "Stock"
+        }
+      }
     },
     "adm": {
       "title": "Administrator",
@@ -133,7 +153,9 @@
     "until": "Until",
     "welcome": "Welcome",
     "errors": {
-      "reqGenerics": "An error occurred in the request!"
+      "reqGenerics": "An error occurred in the request!",
+      "accessDenied": "You do not have permission to access this page.",
+      "requiredAuth": "You need to be authenticated to access it. Log in!"
     },
     "forms": {
       "formUsers": {

@@ -29,7 +29,7 @@ export const rbacGuard = async (
   if (authorizedRoles.includes(userRole)) {
     next();
   } else {
-    notify('Você não tem permissão para acessar esta página.', 'error');
-    next({ name: 'AcessoNegado' });
+    notify('messages.errors.accessDenied', 'error');
+    next({ name: 'Forbidden' });
   }
 };

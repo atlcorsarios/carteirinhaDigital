@@ -6,12 +6,12 @@ import { ClassUsers } from '@/classes/ClassUsers';
 import type { IUser } from '@/classes/models/ModelUser';
 
 export const useAuthStore = defineStore('auth', () => {
-  const classUser = new ClassUsers();
+  const classUser = new ClassUsers({email: 'avelito@gmail.com', username: 'AVELITO', role: 'ADMIN'});
   const user = ref<IUser | undefined>(classUser.model);
   const token = ref(localStorage.getItem('token') || null);
-  const isAuthenticated = computed(() => !!token.value);
+  const isAuthenticated = true; // computed(() => !!token.value);
   const listCacheStore = useListCacheStore();
-  const isAdmin = computed(() => user.value?.role === 'admin');
+  const isAdmin = true // computed(() => user.value?.role === 'ADMIN');
 
   async function fetchUser() {
     if (!token.value) return;

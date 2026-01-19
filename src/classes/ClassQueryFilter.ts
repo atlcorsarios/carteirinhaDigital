@@ -17,6 +17,9 @@ export class ClassQueryFilter {
     const routeName = (route.name as string) || 'default';
     this.storageKey = `filter_context_${routeName}`;
 
+    this.query = this.getDefault(data);
+    this.staging = reactive(this.createItem());
+
     watch(
       () => route.name,
       (newName) => {
@@ -40,9 +43,6 @@ export class ClassQueryFilter {
         this.availableColumns.value = (newConfig as FilterColumn[]) || [];
       }, { immediate: true }
     );
-
-    this.query = this.getDefault(data);
-    this.staging = reactive(this.createItem());
 
     watch(() => this.query, (newVal) => {
       StorageUtils.set(this.storageKey, newVal, 'session');

@@ -15,7 +15,7 @@ export const authGuard = async (
   }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    notify('Você precisa estar autenticado para acessar. Faça login!', 'error');
+    notify('messages.errors.requiredAuth', 'error');
     next({ name: 'Login', query: { redirect: to.fullPath } });
   } else {
     next();

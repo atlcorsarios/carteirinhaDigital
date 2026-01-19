@@ -9,7 +9,7 @@ const props = defineProps<{
 const router = useRouter();
 const route = useRoute();
 
-const errorType = computed(() => props.type || (route.name === 'AcessoNegado' ? '403' : '404'));
+const errorType = computed(() => props.type || (route.name === 'Forbidden' ? '403' : '404'));
 
 const errorContent = computed(() => {
   switch (errorType.value) {

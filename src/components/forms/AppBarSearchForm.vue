@@ -3,7 +3,7 @@
     <v-text-field
       ref="inputRef"
       v-model="classFormQuery.stagingModel.value"
-      class="rounded-search"
+      class="rounded-search w-100"
       hide-details
       single-line
       clearable
@@ -15,7 +15,7 @@
       :placeholder="t('forms.formSearch.inputSearch.placeholder')"
       :rules="[rules.required()]"
     >
-      <template #prepend-inner v-if="$vuetify.display.mdAndUp">
+      <template #prepend-inner v-if="mdAndUp">
         <div class="d-flex flex-row" v-if="hasFilters">
           <BtnOpenDialog
             icon="mdi-filter-cog"
@@ -165,12 +165,13 @@ import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFi
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
 import { useSnackbarStore } from '@/stores/SnackbarStore'
-import { useHotkey } from 'vuetify'
+import { useDisplay, useHotkey } from 'vuetify'
 import { useRules } from 'vuetify/labs/rules'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { computed, nextTick, ref } from 'vue'
 
+const { mdAndUp } = useDisplay();
 const route = useRoute();
 const rules = useRules();
 const { t } = useI18n();
@@ -266,9 +267,6 @@ function onSubmit() {
 </script>
 
 <style scoped>
-.search-form {
-  max-width: 480px;
-}
 .rounded-search :deep(.v-field) {
   overflow: hidden;
 }
