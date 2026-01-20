@@ -1,45 +1,63 @@
-import { reactive } from "vue";
-import type { IModelValueGridDataChart } from "./models/modelComponents/ModelGridDataChart";
+import type { IModelValueDataChart, IModelValueGridDataChart, IPropsDataTable } from './models/modelComponents/ModelGridDataChart'
+import { BaseClass } from './subscriptions/BaseClass'
 
-export class ClassGridDataChart<T> {
-  private modelGridDataChart: IModelValueGridDataChart<T>;
+type GridPartialConstructor<T> = {
+  modelTable?: {
+    model?: Partial<IPropsDataTable<T>>
+  }
+  modelChart?: Partial<IModelValueDataChart>
+}
 
-  constructor(data?: IModelValueGridDataChart<T>) {
-    this.modelGridDataChart = this.getDefault(data);
+export class ClassGridDataChart<T> extends BaseClass<IModelValueGridDataChart<T>> {
+  constructor(data?: GridPartialConstructor<T>) {
+    super(data as any)
   }
 
-  get model() {
-    return this.modelGridDataChart;
+  get grid() {
+    return this.model
   }
 
-  private getDefault(data?: Partial<IModelValueGridDataChart<T>>) {
-    const dataMTable = data?.modelTable?.model
-    const dataMChart = data?.modelChart?.model
-    return reactive({
-      modelTable: data?.modelTable || {
+  private get defaultGrid(): IModelValueGridDataChart<T> {
+    return {
+      modelTable: {
         model: {
-          hiddenChart: dataMTable?.hiddenChart || true,
-          titleTable: dataMTable?.titleTable || '',
-          heightTable: dataMTable?.heightTable || 'auto',
-          maxHeightTable: dataMTable?.maxHeightTable || 400,
-          densityTable: dataMTable?.densityTable || 'compact',
-          headersTable: dataMTable?.headersTable || [],
-          itemsTable: dataMTable?.itemsTable || Array <T>,
-          loadingDataTable: dataMTable?.loadingDataTable || true,
-        }
+          hiddenChart: true,
+          titleTable: '',
+          heightTable: 'auto',
+          maxHeightTable: 400,
+          densityTable: 'compact',
+          bgColorTable: '',
+          headersTable: [],
+          itemsTable: [],
+          loadingDataTable: true,
+        },
       },
       modelChart: {
-        optionsFilterSelectData: data?.modelChart?.optionsFilterSelectData || [],
-        model: dataMChart || [
+        optionsFilterSelectData: [],
+        model: [
           {
             id: 1,
             color: 'rgba(var(--v-theme-on-surface), .2)',
             title: 'Start Data Table',
-            value: 0
-          }
-        ]
-      }
-    }) as IModelValueGridDataChart<T>;
+            value: 0,
+          },
+        ],
+      },
+    } as IModelValueGridDataChart<T>
   }
 
+  protected getDefault(data?: unknown): IModelValueGridDataChart<T> {
+    const defaults = this.defaultGrid
+    const input = (data as GridPartialConstructor<T>) || {}
+    return {
+      modelTable: {
+        model: this.createWithDefaults(input.modelTable?.model || {}, defaults.modelTable.model),
+      },
+      modelChart: {
+        optionsFilterSelectData:
+          input.modelChart?.optionsFilterSelectData || defaults.modelChart.optionsFilterSelectData,
+        model: input.modelChart?.model || defaults.modelChart.model,
+      },
+    }
+  }
 }

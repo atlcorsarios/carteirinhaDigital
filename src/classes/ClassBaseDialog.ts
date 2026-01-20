@@ -1,41 +1,43 @@
-import { reactive } from "vue";
-import type { IModelBaseDialog } from "./models/modelComponents/ModelBaseDialog"
+import type { IModelBaseDialog } from './models/modelComponents/ModelBaseDialog'
+import { BaseClass } from './subscriptions/BaseClass'
 
-export class ClassBaseDialog<T = any> {
-  private modelBaseDialog: IModelBaseDialog<T>
-
+export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
   constructor(data?: Partial<IModelBaseDialog<T>>) {
-    this.modelBaseDialog = this.getDefault(data)
+    super(data)
   }
 
-  get model() {
-    return this.modelBaseDialog;
+  get dialog() {
+    return this.model
   }
 
-  private getDefault(data?: Partial<IModelBaseDialog<T>>) {
-    return reactive({
-      view: data?.view ?? false,
-      persistente: data?.persistent ?? false,
-      maxWidth: data?.maxWidth || 400,
-      maxHeight: data?.maxHeight || 400,
-      formModoEdicao: data?.formEditingMode ?? false,
-      itemEdicao: null
-    }) as IModelBaseDialog<T>;
+  private get defaultDailog(): IModelBaseDialog<T> {
+    return {
+      view: false,
+      persistent: false,
+      maxWidth: 400,
+      maxHeight: 400,
+      formEditingMode: false,
+      itemEdition: null,
+    } as IModelBaseDialog<T>
   }
 
-  abrirNovo() {
-    this.modelBaseDialog.formEditingMode = false;
-    this.modelBaseDialog.itemEdition = null;
-    this.modelBaseDialog.view = true;
+  protected getDefault(data?: Partial<IModelBaseDialog<T>>): IModelBaseDialog<T> {
+    return this.createWithDefaults(data || {}, this.defaultDailog)
   }
 
-  abrirEdicao(item: T) {
-    this.modelBaseDialog.formEditingMode = true;
-    this.modelBaseDialog.itemEdition = { ...item };
-    this.modelBaseDialog.view = true;
+  openNew() {
+    this.dialog.formEditingMode = false
+    this.dialog.itemEdition = null
+    this.dialog.view = true
+  }
+
+  openEditingMode(item: T) {
+    this.dialog.formEditingMode = true
+    this.dialog.itemEdition = { ...item }
+    this.dialog.view = true
   }
 
   toggleDialog() {
-    this.modelBaseDialog.view = !this.modelBaseDialog.view
+    this.dialog.view = !this.dialog.view
   }
 }

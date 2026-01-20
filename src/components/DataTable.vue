@@ -47,7 +47,7 @@
             icon="mdi-plus-circle"
             v-tooltip="t('tooltips.forms.create')"
             :rotate="true"
-            @click="novoRegistro"
+            @click="newRegistration"
           />
 
           <v-divider
@@ -71,7 +71,7 @@
 
     <v-card-text class="pa-0">
       <v-data-table-virtual
-        v-if="dataTable.model.itemsTable && dataTable.model.itemsTable.length > 0"
+        :id="id"
         :headers="filteredHeaders"
         :items="dataTable.model.itemsTable"
         :height="dataTable.model.heightTable || 'auto'"
@@ -80,23 +80,49 @@
         fixed-header
         density="compact"
         hover
-        :row-props="propsDaLinha"
-        @click:row="aoClicarNaLinha"
+        :row-props="rowProps"
+        @click:row="clickOnTheLine"
         :mobile-breakpoint="0"
       >
         <template v-slot:loading>
-          <v-skeleton-loader type="table-row@6"></v-skeleton-loader>
+          <v-skeleton-loader type="table-row@5" />
+        </template>
+
+        <template v-slot:no-data>
+          <div v-if="!dataTable.model.loadingDataTable" class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis">
+            <v-icon icon="mdi-database-off" size="48" class="mb-2" />
+            <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
+          </div>
+        </template>
+
+        <template v-slot:bottom>
+          <v-divider />
+          <div class="d-flex align-center justify-space-between pa-2 text-caption">
+            <div class="d-flex align-center" style="width: 150px">
+              <v-select
+                v-model="pagination.limit"
+                @update:model-value="updateLimit"
+                :items="[10, 20, 50, 100]"
+                variant="outlined"
+                density="compact"
+                hide-details
+                class="text-caption"
+              />
+            </div>
+            <div class="text-no-wrap ml-4">
+              {{ dataTable.model.itemsTable.length }} / {{ pagination.total }}
+            </div>
+          </div>
         </template>
 
         <template #item.actions="{ item }">
           <div class="d-flex justify-center gap-2">
-
             <v-icon-btn
               icon="mdi-pencil"
               v-tooltip="t('tooltips.forms.edit')"
               variant="plain"
               color="primary"
-              @click="editarRegistro(item)"
+              @click="editRegistration(item)"
             />
 
             <v-icon-btn
@@ -108,28 +134,32 @@
           </div>
         </template>
       </v-data-table-virtual>
-
-      <div v-else class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis">
-        <v-icon icon="mdi-database-off" size="48" class="mb-2"></v-icon>
-        <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
-      </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import type { IModelValueDataTable } from "@/classes/models/modelComponents/ModelGridDataChart";
 import BtnOpenDialog from "./dialog/BtnOpenDialog.vue";
-import { ref, computed, watchEffect } from "vue";
+import type { IModelValueDataTable } from "@/classes/models/modelComponents/ModelGridDataChart";
+import type { TPagination } from "@/classes/models/ModelHeaderPaginator";
+import { StorageUtils } from "@/utils/StorageUtils";
 import { useI18n } from "vue-i18n";
+import { ref, computed, watchEffect, watch } from "vue";
 
 const { t } = useI18n()
+
 const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true });
+const pagination = defineModel<TPagination>('pagination', { required: true });
+
+defineProps<{
+  id?: string
+}>();
 
 const emits = defineEmits<{
-  (e: 'item-selecionado', item: any[]): void;
+  (e: 'selected-item', item: any[]): void;
   (e: 'toggle-chart'): void;
-  (e: 'gerenciar-registro', payload: { modoEdicao: boolean, item?: any }): void;
+  (e: 'manage-record', payload: { editingMode: boolean, item?: any }): void;
+  (e: 'load-more'): void;
 }>();
 
 const allHeaders = computed(() => {
@@ -154,18 +184,16 @@ const filteredHeaders = computed(() => {
   return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
 });
 
-const itemSelecionadoId = ref<any>(null);
-
-const aoClicarNaLinha = (_event: Event, { item }: any) => {
+const idSelectedItem = ref<any>(null);
+const clickOnTheLine = (_event: Event, { item }: any) => {
   const id = item.id || item;
-
-  itemSelecionadoId.value = id;
-  emits('item-selecionado', item);
+  idSelectedItem.value = id;
+  emits('selected-item', item);
 }
 
-const propsDaLinha = ({ item }: any) => {
+const rowProps = ({ item }: any) => {
   const id = item.id || item;
-  if (id && id === itemSelecionadoId.value) {
+  if (id && id === idSelectedItem.value) {
     return { class: 'bg-primary-lighten-4 cursor-pointer font-weight-medium' };
   }
   return { class: 'cursor-pointer' };
@@ -175,11 +203,39 @@ function toggleChart() {
   emits('toggle-chart');
 }
 
-function novoRegistro() {
-  emits('gerenciar-registro', { modoEdicao: false });
+function newRegistration() {
+  emits('manage-record', { editingMode: false });
 }
 
-function editarRegistro(item: any) {
-  emits('gerenciar-registro', { modoEdicao: true, item: item });
+function editRegistration(item: any) {
+  emits('manage-record', { editingMode: true, item: item });
 }
+
+function onIntersect(isIntersecting: boolean) {
+  if (isIntersecting && !pagination.value.isFinished) {
+    emits('load-more');
+  }
+}
+
+function updateLimit(newLimit: number) {
+  pagination.value = {
+    ...pagination.value,
+    limit: newLimit
+  };
+}
+
+watch(() => pagination.value.limit, (newLimit) => {
+  if (newLimit) {
+    StorageUtils.set('limit_preference', pagination.value.limit, 'local')
+  }
+})
 </script>
+
+<style scoped>
+:deep(.v-field__input) {
+  font-size: 0.875rem;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: 32px;
+}
+</style>

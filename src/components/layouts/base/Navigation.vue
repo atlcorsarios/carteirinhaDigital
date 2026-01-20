@@ -11,8 +11,8 @@
         flat
         dense
         class="main-drawer__toolbar"
-        image="/ToolbarAvelito.jpg"
-      >
+        >
+        <!-- image="/ToolbarAvelito.jpg" -->
         <template v-slot:image>
           <v-img gradient="to top right, rgba(0,0,0,.3), rgba(0,0,0,.1)" />
         </template>

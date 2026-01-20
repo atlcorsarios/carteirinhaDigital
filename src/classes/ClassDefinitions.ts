@@ -76,8 +76,8 @@ export class ClassDefinitions {
         label: 'forms.formUser.inputRole.label',
         type: 'select',
         options: [
-            { title: 'Admin', value: 'ADMIN' },
-            { title: 'User', value: 'USER' }
+          { title: 'Admin', value: 'ADMIN' },
+          { title: 'User', value: 'USER' }
         ]
       },
       {

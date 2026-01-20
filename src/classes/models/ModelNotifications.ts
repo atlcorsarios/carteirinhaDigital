@@ -1,9 +1,9 @@
-export interface INotifications {
+export interface INotification {
   id: string | number
   title: string
   description: string
   message: string
-  date: Date
+  date: Date | string
   seen: boolean
   sender: string
   recipients: string[]

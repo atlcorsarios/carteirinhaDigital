@@ -11,7 +11,7 @@ export class StorageUtils {
     }
   }
 
-  static get<T>(key: string, defaultValue: T | null = null, type: StorageType = 'local'): T | null {
+  static get<T>(key: string, defaultValue: T, type: StorageType = 'local'): T {
     try {
       const storage = type === 'session' ? sessionStorage : localStorage;
       const item = storage.getItem(key);

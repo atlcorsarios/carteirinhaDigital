@@ -1,43 +1,56 @@
-import type { INotifications } from './models/ModelNotifications'
-import { FALLBACK_LOCALE } from "@/plugins/i18n";
-import { formattedDate } from '@/utils/formattedDate';
-import { reactive } from 'vue'
+import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
+import type { INotification } from './models/ModelNotifications'
+import { formattedDate } from '@/utils/formattedDate'
+import { BaseClass } from './subscriptions/BaseClass'
+import { FALLBACK_LOCALE, i18n } from '@/plugins/i18n'
 
-export class ClassNotifications {
-  private notifications: INotifications[];
-
-  constructor(data?: Partial<INotifications>[]) {
-    this.notifications = reactive(this.getDefault(data));
+export class ClassNotifications extends BaseClass<INotification[]> {
+  constructor(data?: Partial<INotification>[]) {
+    super(data as any)
   }
 
-  get model() {
-    return this.notifications;
+  get notifications() {
+    return this.model
   }
 
-  private createNotification(data: Partial<INotifications> = {}): INotifications {
-    const today = new Date();
-    const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE;
-    const defaults = {
-      id: data?.id || 0,
-      title: data?.title || '',
-      description: data?.description || '',
-      message: data?.message || '',
-      date: data?.date || formattedDate(today, locale),
-      seen: data?.seen || false,
-      sender: data?.sender || '',
-      recipients: data?.recipients || [],
-      origin: data?.origin || ''
-    } as INotifications;
-
-    return { ...defaults, ...data };
+  private get defaultItem(): INotification {
+    const today = new Date()
+    const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE
+    const dateStr = formattedDate(today, locale);
+    return {
+      id: 0,
+      title: '',
+      description: '',
+      message: '',
+      date: dateStr,
+      seen: false,
+      sender: '',
+      recipients: [],
+      origin: '',
+    } as INotification
   }
 
-  private getDefault(data?: Partial<INotifications>[]): INotifications[] {
-    if (data && data.length > 0) {
-      return data.map(item => this.createNotification(item));
-    }
-
-    return [];
+  protected getDefault(data?: unknown): INotification[] {
+    const items = (data as Partial<INotification>[]) || []
+    if (items.length === 0) return []
+    return items.map((item) => this.createWithDefaults(item, this.defaultItem))
   }
 
+  static getHeaders(): IHeadersDataTable[] {
+    const t = (key: string) => i18n.global.t(key)
+    return [
+      {
+        title: t('dataTable.notifications.headers.id'),
+        align: 'start',
+        key: 'idNotification',
+        width: 50,
+      },
+      {
+        title: t('dataTable.notifications.headers.title'),
+        align: 'start',
+        key: 'title',
+        width: 200,
+      },
+    ]
+  }
 }

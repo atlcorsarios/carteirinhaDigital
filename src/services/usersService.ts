@@ -1,14 +1,36 @@
 // Models
 import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginator'
 import type { IUser } from '@/classes/models/ModelUser'
+
 // Services
 import http from './axios'
 
 export const usersServices = {
-  async getAllUsers(): Promise<IHeaderPaginatorModel<IUser>> {
+  async getAllUsers(offset: number, limit: number): Promise<IHeaderPaginatorModel<IUser>> {
     try {
-      const { data } = await http.get('/usuarios/consulta')
-      return data
+      // const { data } = await http.get('/usuarios/consulta', { params: { offset, limit } })
+      // return data
+
+      const mockData: IHeaderPaginatorModel<IUser> = {
+        limit: limit,
+        offset: offset,
+        total: 100,
+        items: [
+          {
+            idUser: 1,
+            username: 'AVELITO',
+            email: 'avelito@gmail.com',
+            role: 'ADMIN',
+            phoneNumber: '(32) 99999-9999',
+            receiveNotifications: true,
+            active: true,
+          },
+        ]
+      };
+
+      await new Promise(resolve => setTimeout(resolve, 2500));
+
+      return mockData;
     } catch (error) {
       throw error
     }

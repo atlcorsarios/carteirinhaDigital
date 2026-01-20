@@ -6,10 +6,13 @@
     >
       <template #dataTable>
         <DataTable
+          :id="tableId"
           v-model:dataTable="gridConfig.modelTable"
+          v-model:pagination="paginationModel"
           @item-selecionado="handleSelection"
           @toggle-chart="toggleChartState"
           @gerenciar-registro="handleGerenciarRegistro"
+          @load-more="loadMore"
         />
       </template>
 
@@ -25,14 +28,17 @@
     </grid-data-chart>
   </v-container>
 
-  <BaseDialog v-model:attributes="classDialogUser.model">
+  <BaseDialog v-model:attributes="classDialogUser.dialog">
     <template v-slot:title>
       <v-icon
         size="small"
-        :icon="classDialogUser.model.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
+        class="mr-2"
+        :icon="classDialogUser.dialog.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
       />
-      {{ classDialogUser.model.formEditingMode
-          ? t('messages.forms.formUsers.editingUser') + ` ${classDialogUser.model.itemEdition?.idUser || ''}`
+      {{
+        classDialogUser.dialog.formEditingMode
+          ? t('messages.forms.formUsers.editingUser') +
+            ` ${classDialogUser.dialog.itemEdition?.idUser || ''}`
           : t('messages.forms.formUsers.createUser')
       }}
     </template>
@@ -40,7 +46,7 @@
     <template v-slot:default>
       <UserForm
         ref="refFormUser"
-        v-model:user="modelFormUser.model"
+        v-model:user="modelFormUser.user"
         v-model:valid="isFormValid"
       />
     </template>
@@ -62,99 +68,94 @@
         variant="text"
         color="success"
         :disabled="!isFormValid"
+        @click="submit"
       />
     </template>
   </BaseDialog>
 </template>
 
 <script setup lang="ts">
-import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
-import type { IUser } from '@/classes/models/ModelUser'
-import { ClassUsers } from '@/classes/ClassUsers'
-import { usersServices } from '@/services/usersService'
-import { useInfiniteList } from '@/composables/useInfiniteList'
-import { useChartHelpers } from '@/composables/useChartHelpers'
+// Componentes
 import GridDataChart from '@/components/layouts/GridDataChart.vue'
 import DataTable from '@/components/DataTable.vue'
 import ChartPie from '@/components/ChartPie.vue'
 import BaseDialog from '@/components/dialog/BaseDialog.vue'
 import UserForm from '@/components/forms/UserForm.vue'
-import { reactive, ref, onMounted, watchEffect, computed } from 'vue'
-import { useRoute } from 'vue-router'
+
+// Classes
+import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
+import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import { ClassUsers } from '@/classes/ClassUsers'
+
+// Types
+import type { IUser } from '@/classes/models/ModelUser'
+import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
+
+// Composables
+import { useInfiniteList } from '@/composables/useInfiniteList'
+import { useChartHelpers } from '@/composables/useChartHelpers'
+
+// Services
+import { usersServices } from '@/services/usersService'
+
+// Vue
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { ref, watchEffect, computed } from 'vue'
 
 const route = useRoute()
 const { t } = useI18n()
 
-const headers = computed(() => ClassUsers.getHeaders());
-
-const data = ref<IUser[]>([
-  {
-    idUser: 1,
-    username: 'AVELITO',
-    email: 'avelito@gmail.com',
-    role: 'ADMIN' as const,
-    phoneNumber: '(32) 99999-9999',
-    receiveNotifications: true,
-    active: true
-  }
-])
-
-const optionsChartFilter = computed(() =>
-  headers.value.map((h) => h.title).slice(0, -1)
-)
+const headers = computed(() => ClassUsers.getHeaders())
+const optionsChartFilter = computed(() => headers.value.map((h) => h.title).slice(0, -1))
 
 const gridManager = new ClassGridDataChart<IUser>({
   modelTable: {
     model: {
-      hiddenChart: true,
       titleTable: t('dataTable.users.title'),
-      headersTable: headers.value,
-      itemsTable: [],
-    },
-  },
-  modelChart: {
-    optionsFilterSelectData: optionsChartFilter.value,
-    model: [],
-  },
+    }
+  }
 })
 
-const gridConfig = reactive(gridManager.model)
+const gridConfig = gridManager.grid
 
-const { loading } = useInfiniteList(route.fullPath, usersServices.getAllUsers, 20)
+const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<IUser>(
+  route.fullPath,
+  usersServices.getAllUsers
+);
 
-onMounted(() => {
-  setTimeout(() => {
-    loading.value = false
-  }, 2000)
-})
+const paginationModel = computed({
+  get: () => ({
+    limit: limit.value,
+    offset: offset.value,
+    total: total.value,
+    isFinished: isFinished.value
+  } as TPagination),
+  set: (val: TPagination) => {
+    limit.value = val.limit;
+  }
+});
 
 watchEffect(() => {
-  gridConfig.modelTable.model.itemsTable = data.value
+  gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.loadingDataTable = loading.value
   gridConfig.modelTable.model.headersTable = headers.value
-  gridConfig.modelChart.optionsFilterSelectData = optionsChartFilter.value
   gridConfig.modelTable.model.titleTable = t('dataTable.users.title')
+
+  gridConfig.modelChart.optionsFilterSelectData = optionsChartFilter.value
 })
-
-const itemSelecionado = ref()
-
-function handleSelection(item: any[]) {
-  itemSelecionado.value = item
-}
 
 function toggleChartState() {
   gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
 }
 
 const headersParaGrafico = computed(() => {
-  return headers.value.filter((h) => h.key !== 'actions').map((h) => ({ title: h.title, value: h.key }))
+  return headers.value
+    .filter((h) => h.key !== 'actions')
+    .map((h) => ({ title: h.title, value: h.key }))
 })
 
-const selectedChartFilter = ref(
-  headersParaGrafico.value[0]?.value,
-)
+const selectedChartFilter = ref(headersParaGrafico.value[0]?.value)
 
 const activeHeaderConfig = computed(() => {
   return headers.value.find((h) => h.key === selectedChartFilter.value)
@@ -167,29 +168,38 @@ const chartDataComputed = computed(() => {
   return useChartHelpers(items, key, strategy)
 })
 
-const modelFormUser = new ClassUsers();
-const refFormUser = ref<InstanceType<typeof UserForm> | null>(null);
-const isFormValid = ref(false);
+const modelFormUser = new ClassUsers()
+const refFormUser = ref<InstanceType<typeof UserForm> | null>(null)
+const isFormValid = ref(false)
 
 const classDialogUser = new ClassBaseDialog<IUser>({
-  view: false,
   persistent: true,
-  maxHeight: 400,
   maxWidth: 800,
 })
 
-function handleGerenciarRegistro(payload: { modoEdicao: boolean, item?: any }) {
-  if (payload.modoEdicao && payload.item) {
-    modelFormUser.updateModel({ ...payload.item });
-    classDialogUser.abrirEdicao(payload.item);
+const itemSelecionado = ref()
+function handleSelection(item: any[]) {
+  itemSelecionado.value = item
+}
+
+function handleGerenciarRegistro(payload: { editingMode: boolean; item?: IUser }) {
+  if (payload.editingMode && payload.item) {
+    modelFormUser.updateModel({ ...payload.item })
+    classDialogUser.openEditingMode(payload.item)
   } else {
-    modelFormUser.reset();
-    classDialogUser.abrirNovo();
+    modelFormUser.reset()
+    classDialogUser.openNew()
   }
   resetFormUser()
 }
 
 function resetFormUser() {
   refFormUser.value?.reset()
+  modelFormUser.reset()
+}
+
+function submit() {
+  // Lógica de submit...
+  classDialogUser.toggleDialog()
 }
 </script>

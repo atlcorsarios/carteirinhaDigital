@@ -5,20 +5,18 @@ import { StorageUtils } from "@/utils/StorageUtils";
 import { FALLBACK_LOCALE } from "@/plugins/i18n";
 import { useRoute } from "vue-router";
 import { reactive, ref, watch } from "vue";
+import { BaseClass } from "./subscriptions/BaseClass";
 
-export class ClassQueryFilter {
-  private query: IQueryFilter[]
+export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
   private staging: IQueryFilter;
   private availableColumns = ref<FilterColumn[]>([]);
-  private storageKey: string;
+  private storageKey: string = '';
 
   constructor(data?: Partial<IQueryFilter>[]) {
-    const route = useRoute();
-    const routeName = (route.name as string) || 'default';
-    this.storageKey = `filter_context_${routeName}`;
+    super(data as any)
+    this.staging = reactive(this.createWithDefaults({}, this.defaultItem));
 
-    this.query = reactive(this.getDefault(data));
-    this.staging = reactive(this.createItem());
+    const route = useRoute();
 
     watch(
       () => route.name,
@@ -28,13 +26,16 @@ export class ClassQueryFilter {
         this.storageKey = `filter_context_${String(newName)}`;
         const savedData = StorageUtils.get<IQueryFilter[]>(this.storageKey, [], 'session');
 
-        this.query.splice(0, this.query.length);
+        this.model.length = 0;
         if (savedData && savedData.length > 0) {
-          savedData.forEach(item => this.query.push(this.createItem(item)));
+          const cleanData = savedData.map(item =>
+            this.createWithDefaults(item, this.defaultItem)
+          );
+          this.model.push(...cleanData);
         }
 
         this.resetStaging();
-      }, { immediate: true }
+      },{ immediate: true }
     );
 
     watch(
@@ -44,13 +45,15 @@ export class ClassQueryFilter {
       }, { immediate: true }
     );
 
-    watch(() => this.query, (newVal) => {
-      StorageUtils.set(this.storageKey, newVal, 'session');
+    watch(() => this.model, (newVal) => {
+      if (this.storageKey) {
+        StorageUtils.set(this.storageKey, newVal, 'session');
+      }
     }, { deep: true });
   }
 
-  get model(): IQueryFilter[] {
-    return this.query;
+  get query(): IQueryFilter[] {
+    return this.model;
   }
 
   get stagingModel(): IQueryFilter {
@@ -61,31 +64,26 @@ export class ClassQueryFilter {
     return this.availableColumns.value;
   }
 
-  private createItem(data: Partial<IQueryFilter> = {}): IQueryFilter {
+  private get defaultItem(): IQueryFilter {
     const today = new Date();
     const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE;
-    const defaults: IQueryFilter = {
+    const dateStr = formattedDate(today, locale);
+
+    return {
       field: '',
       condition: '',
       value: '',
-      startDate: formattedDate(today, locale),
-      endDate: formattedDate(today, locale),
+      startDate: dateStr,
+      endDate: dateStr,
       selectValues: []
     } as IQueryFilter;
-
-    return { ...defaults, ...data };
   }
 
-  private getDefault(data?: Partial<IQueryFilter>[]): IQueryFilter[] {
-    if (data && data.length > 0) {
-      return data.map(item => this.createItem(item));
-    }
+  protected getDefault(data?: unknown): IQueryFilter[] {
+    const items = (data as Partial<IQueryFilter>[]) || []
 
-    const emptyItem = this.createItem();
-    const dataStorage = StorageUtils.get<IQueryFilter[]>(this.storageKey, [emptyItem], 'session');
-
-    if (dataStorage && Array.isArray(dataStorage) && dataStorage.length > 0) {
-      return dataStorage.map(item => this.createItem(item));
+    if (items.length > 0) {
+      return items.map(item => this.createWithDefaults(item, this.defaultItem));
     }
 
     return [];
@@ -96,13 +94,35 @@ export class ClassQueryFilter {
       return false;
     }
 
-    this.query.push({ ...this.staging });
+    this.model.push(this.createWithDefaults(this.staging, this.defaultItem));
     this.resetStaging();
     return true;
   }
 
+  removeFilter(index: number) {
+    if (this.model.length === 1) {
+      this.reset();
+    } else {
+      this.model.splice(index, 1);
+    }
+  }
+
+  reset() {
+    this.model.length = 0;
+  }
+
+  resetStaging() {
+    const freshItem = this.createWithDefaults({}, this.defaultItem);
+    Object.keys(this.staging).forEach(key => {
+      // @ts-ignore
+      delete this.staging[key];
+    });
+
+    Object.assign(this.staging, freshItem);
+  }
+
   private isDuplicate(newItem: IQueryFilter): boolean {
-    return this.query.some(existing =>
+    return this.model.some(existing =>
       existing.field === newItem.field &&
       existing.condition === newItem.condition &&
       existing.value === newItem.value &&
@@ -111,34 +131,18 @@ export class ClassQueryFilter {
     );
   }
 
-  removeFilter(index: number) {
-    if (this.query.length === 1) {
-      this.reset();
-      return;
-    }
-    this.query.splice(index, 1);
-  }
-
-  reset() {
-    this.query.splice(0, this.query.length);
-    StorageUtils.set(this.storageKey, this.query, 'session');
-  }
-
-  resetStaging() {
-    const freshItem = this.createItem();
-    Object.assign(this.staging, freshItem);
-  }
-
   getColumnType(key: string): FilterColumn | undefined {
     return this.availableColumns.value.find(col => col.key === key);
   }
 
   fieldChanged(newField: string) {
-    this.staging.field = newField;
-    this.staging.condition = '';
-    this.staging.value = '';
-    this.staging.startDate = '';
-    this.staging.endDate = '';
+    const newItem = this.createWithDefaults({ field: newField }, this.defaultItem);
+
+    Object.keys(this.staging).forEach(key => {
+      // @ts-ignore
+      delete this.staging[key];
+    });
+    Object.assign(this.staging, newItem);
   }
 
   updateStaging(data: Partial<IQueryFilter>) {
