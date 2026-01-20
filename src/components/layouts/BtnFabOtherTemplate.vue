@@ -1,11 +1,10 @@
 <template>
   <v-fab
-    key="absolute"
-    absolute
     app
+    absolute
+    key="absolute"
     :color="open ? '' : 'primary'"
     location="top left"
-    size="large"
     icon
   >
     <v-icon>{{ open ? 'mdi-close' : 'mdi-cog' }}</v-icon>
@@ -52,11 +51,20 @@
 
       <div key="3">
         <BtnOpenDialog
-          color="primary"
+          color="warning"
           icon="mdi-information"
           v-tooltip="t('tooltips.appBar.info')"
           :rotate="true"
           @click="redirectToInfoSystem"
+        />
+      </div>
+
+      <div key="4">
+        <v-icon-btn
+          color="success"
+          icon="mdi-arrow-left-bottom"
+          v-tooltip="t('tooltips.appBar.back')"
+          @click="goBack"
         />
       </div>
     </v-speed-dial>
@@ -87,5 +95,9 @@ function redirectToInfoSystem() {
   router.push({
     name: 'SystemInfo'
   });
+}
+
+function goBack() {
+  router.go(-1);
 }
 </script>
