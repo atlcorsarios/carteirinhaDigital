@@ -92,8 +92,8 @@ const headers = computed(() => ClassUsers.getHeaders());
 const data = ref<IUser[]>([
   {
     idUser: 1,
-    username: 'BOILERPLATE',
-    email: 'boilerplate@gmail.com',
+    username: 'AVELITO',
+    email: 'avelito@gmail.com',
     role: 'ADMIN' as const,
     phoneNumber: '(32) 99999-9999',
     receiveNotifications: true,

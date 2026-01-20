@@ -122,7 +122,8 @@
       "licence": "Licencia",
       "language": "Idioma",
       "theme": "Cambiar tema",
-      "info": "Información del sistema"
+      "info": "Información del sistema",
+      "back": "Para volver"
     },
     "forms": {
       "close": "Cerrar",

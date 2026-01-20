@@ -122,7 +122,8 @@
       "licence": "License",
       "language": "Language",
       "theme": "Change theme",
-      "info": "System information"
+      "info": "System information",
+      "back": "To go back"
     },
     "forms": {
       "close": "Close",
