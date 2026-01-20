@@ -1,5 +1,10 @@
 <template>
-  <v-badge location="top right" color="warning" dot>
+  <v-badge
+    v-if="hasNotifications"
+    location="top right"
+    color="warning"
+    dot
+  >
     <v-icon
       icon="mdi-bell"
       v-tooltip="t('tooltips.appBar.notifications')"
@@ -7,6 +12,14 @@
       @click="redirectNotifications"
     />
   </v-badge>
+
+  <v-icon
+    v-else
+    icon="mdi-bell"
+    v-tooltip="t('tooltips.appBar.notifications')"
+    variant="text"
+    @click="redirectNotifications"
+  />
 
   <v-divider
     vertical
@@ -31,7 +44,11 @@
 
   <v-menu>
     <template v-slot:activator="{ props }">
-      <v-icon-btn icon="mdi-translate" v-bind="props" v-tooltip="t('tooltips.appBar.language')" />
+      <v-icon-btn
+        icon="mdi-translate"
+        v-bind="props"
+        v-tooltip="t('tooltips.appBar.language')"
+      />
     </template>
     <v-list>
       <v-list-item
@@ -82,6 +99,9 @@ function changeLocale(lang: string) {
   StorageUtils.set('user_locale', lang, 'local');
 }
 
+const props = defineProps<{
+  hasNotifications: boolean
+}>();
 const emits = defineEmits(['open-dialog-licence']);
 
 function toggleDialogLicence() {
@@ -91,4 +111,5 @@ function toggleDialogLicence() {
 function redirectNotifications() {
   return router.push({ name: 'Notifications' })
 }
+
 </script>

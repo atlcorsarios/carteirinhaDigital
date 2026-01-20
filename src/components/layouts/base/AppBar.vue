@@ -19,10 +19,16 @@
 
     <template v-slot:append>
       <div v-if="mdAndUp" class="d-flex flex-row align-center">
-        <OptionsAppBar @open-dialog-licence="toggleDialogLicence" />
+        <OptionsAppBar
+          :has-notifications="hasUnreadNotifications"
+          @open-dialog-licence="toggleDialogLicence"
+        />
       </div>
       <div v-else>
-        <MobileOptionsAppBar @open-dialog-licence="toggleDialogLicence" />
+        <MobileOptionsAppBar
+          :has-notifications="hasUnreadNotifications"
+          @open-dialog-licence="toggleDialogLicence"
+        />
       </div>
     </template>
   </v-app-bar>
@@ -65,17 +71,25 @@ import AppBarSearchForm from '@/components/forms/AppBarSearchForm.vue'
 import BaseDialog from '@/components/dialog/BaseDialog.vue'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { formattedDate } from '@/utils/formattedDate'
+import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { t, locale } = useI18n()
+const notificationsStore = useNotificationsStore()
+const hasUnreadNotifications = ref(false)
 const loading = ref(false)
 const systemVersion = pkg.version
 const formattedVersionDate = computed(() => {
   return formattedDate(new Date(__APP_BUILD_DATE__), locale.value);
 })
+
+onMounted(async () => {
+  notificationsStore.fetchNotifications();
+  hasUnreadNotifications.value = await notificationsStore.hasUnread();
+});
 
 const emits = defineEmits(['toggle-drawer'])
 

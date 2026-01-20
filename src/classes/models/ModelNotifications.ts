@@ -5,7 +5,7 @@ export interface INotifications {
   message: string
   date: Date
   seen: boolean
-  sender?: string | number
-  recipients?: string[] | number[]
-  origin?: string | number
+  sender: string
+  recipients: string[]
+  origin?: string
 }

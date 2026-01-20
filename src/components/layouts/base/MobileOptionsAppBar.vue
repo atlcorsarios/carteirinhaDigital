@@ -16,13 +16,17 @@
 
     <v-list density="comfortable" min-width="200" elevation="10" rounded="lg" nav>
       <v-list-item
-        prepend-icon="mdi-bell-outline"
+        :prepend-icon="hasNotifications ? 'mdi-bell-badge' : 'mdi-bell'"
         :title="t('tooltips.appBar.notifications')"
         :to="{ name: 'Notifications' }"
         link
       >
-        <template v-slot:append>
-          <v-badge dot color="warning" inline></v-badge>
+        <template v-slot:append v-if="hasNotifications">
+          <v-badge
+            color="warning"
+            dot
+            inline
+          />
         </template>
       </v-list-item>
 
@@ -97,6 +101,9 @@ import { useI18n } from 'vue-i18n';
 import { computed, ref } from 'vue';
 
 const open = ref(false);
+const props = defineProps<{
+  hasNotifications: boolean
+}>();
 const emits = defineEmits(['open-dialog-licence']);
 
 const { theme, toggleTheme } = useThemeSwitch();

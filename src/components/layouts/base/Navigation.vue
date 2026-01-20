@@ -11,16 +11,16 @@
         flat
         dense
         class="main-drawer__toolbar"
-        image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+        image="/ToolbarAvelito.jpg"
       >
         <template v-slot:image>
-          <v-img gradient="to top right, rgba(0,0,0,.7), rgba(0,0,0,.3)" />
+          <v-img gradient="to top right, rgba(0,0,0,.3), rgba(0,0,0,.1)" />
         </template>
 
         <v-btn
+          v-if="!mdAndUp"
           icon="mdi-menu"
           @click="drawer = false"
-          v-if="!mdAndUp"
         />
       </v-toolbar>
 
@@ -39,10 +39,7 @@
 
     <v-list density="compact" nav>
       <template v-for="item in menuItems" :key="item.path">
-        <v-list-group
-          v-if="item.children && item.children.length > 0"
-          :value="item.name"
-        >
+        <v-list-group v-if="item.children && item.children.length > 0" :value="item.name">
           <template v-slot:activator="{ props }">
             <v-list-item
               v-bind="props"
@@ -74,8 +71,9 @@
           </v-list-item>
         </v-list-group>
 
-        <v-list-item v-else
-          :prepend-icon="item.icon"
+        <v-list-item
+          v-else
+          :prepend-icon="getDynamicIcon(item)"
           :title="t(item.title || '')"
           :to="{ name: item.name }"
           exact
@@ -109,18 +107,26 @@
 </template>
 
 <script setup lang="ts">
-import { useNavigation } from '@/composables/useNavigation';
-import { useAuthStore } from '@/stores/auth';
-import { computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useHotkey, useDisplay } from 'vuetify';
-import { useI18n } from 'vue-i18n';
+import { useNavigation } from '@/composables/useNavigation'
+import { useAuthStore } from '@/stores/authStore'
+import { useNotificationsStore } from '@/stores/notificationsStore'
+import { useHotkey, useDisplay } from 'vuetify'
+import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { computed, onMounted, ref } from 'vue'
 
-const { mdAndUp } = useDisplay();
-const { menuItems } = useNavigation();
-const authStore = useAuthStore();
-const router = useRouter();
-const { t } = useI18n();
+const { mdAndUp } = useDisplay()
+const { menuItems } = useNavigation()
+const authStore = useAuthStore()
+const router = useRouter()
+const { t } = useI18n()
+const notificationsStore = useNotificationsStore()
+const hasUnreadNotifications = ref(false);
+
+onMounted(async () => {
+  notificationsStore.fetchNotifications();
+  hasUnreadNotifications.value = await notificationsStore.hasUnread();
+});
 
 const props = defineProps<{
   modelValue: boolean | null
@@ -130,38 +136,45 @@ const emits = defineEmits(['update:modelValue'])
 
 const drawer = computed({
   get: () => props.modelValue,
-  set: (val) => emits('update:modelValue', val)
+  set: (val) => emits('update:modelValue', val),
 })
 
 const flattenMenuItems = (items: typeof menuItems.value): any[] => {
   return items.reduce((acc: any[], item) => {
-    acc.push(item);
+    acc.push(item)
     if (item.children && item.children.length > 0) {
-      acc.push(...flattenMenuItems(item.children));
+      acc.push(...flattenMenuItems(item.children))
     }
-    return acc;
-  }, []);
-};
+    return acc
+  }, [])
+}
 
-const allItems = flattenMenuItems(menuItems.value);
+const allItems = flattenMenuItems(menuItems.value)
 
 allItems.forEach((item) => {
   if (item.hotkey && item.name) {
     useHotkey(item.hotkey, () => {
-      router.push({ name: item.name });
-    });
+      router.push({ name: item.name })
+    })
   }
-});
+})
+
+function getDynamicIcon(item: any): string {
+  if (item.name === 'Notifications' && hasUnreadNotifications.value) {
+    return 'mdi-bell-badge';
+  }
+
+  return item.icon;
+}
 
 function handleLogout() {
-  authStore.logout();
-  router.push({ name: 'Login' });
+  authStore.logout()
+  router.push({ name: 'Login' })
 }
 </script>
 
 <style scoped lang="scss">
 :deep(.v-navigation-drawer--rail) {
-
   .v-list-group {
     --v-list-group-items-indent: 0px;
   }
