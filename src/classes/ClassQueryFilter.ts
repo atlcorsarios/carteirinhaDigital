@@ -34,16 +34,14 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
         }
 
         this.resetStaging()
-      },
-      { immediate: true },
+      }, { immediate: true },
     )
 
     watch(
       () => route.meta?.filterConfig,
       (newConfig) => {
         this.availableColumns.value = (newConfig as FilterColumn[]) || []
-      },
-      { immediate: true },
+      }, { immediate: true },
     )
 
     watch(
@@ -52,8 +50,7 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
         if (this.storageKey) {
           StorageUtils.set(this.storageKey, newVal, 'session')
         }
-      },
-      { deep: true },
+      }, { deep: true },
     )
   }
 
@@ -117,8 +114,8 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
     this.model.length = 0
   }
 
-  resetStaging() {
-    const freshItem = this.createWithDefaults({}, ClassQueryFilter.defaultQuery())
+  resetStaging(data: Partial<IQueryFilter> = {}) {
+    const freshItem = this.createWithDefaults(data, ClassQueryFilter.defaultQuery())
     Object.keys(this.staging).forEach((key) => {
       // @ts-ignore
       delete this.staging[key]
@@ -142,8 +139,8 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
     return this.availableColumns.value.find((col) => col.key === key)
   }
 
-  fieldChanged(newField: string) {
-    const newItem = this.createWithDefaults({ field: newField }, ClassQueryFilter.defaultQuery())
+  fieldChanged(data: Partial<IQueryFilter> = {}) {
+    const newItem = this.createWithDefaults(data, ClassQueryFilter.defaultQuery())
 
     Object.keys(this.staging).forEach((key) => {
       // @ts-ignore

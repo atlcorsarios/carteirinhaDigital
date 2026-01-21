@@ -150,6 +150,7 @@ const props = defineProps<{
 
 const rules = useRules();
 const { t } = useI18n();
+
 const formRef = ref<any>(null);
 const filter = defineModel<IQueryFilter>('filter', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
@@ -168,7 +169,8 @@ const getOperators = (fieldKey: string) => {
 };
 
 const handleFieldChange = (newField: string) => {
-  props.filterManager.fieldChanged(newField);
+  const conditionDefault = getOperators(newField)
+  props.filterManager.fieldChanged({ field: newField, condition: conditionDefault[0].value });
 };
 
 defineExpose({

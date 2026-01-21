@@ -180,7 +180,10 @@ async function handleAddFilter() {
 
 async function handleReset() {
   if (activeTab.value === 'form') {
-    classFormQuery.resetStaging();
+    classFormQuery.resetStaging({
+      field: classFormQuery.filters[1]?.key,
+      condition: 'contains'
+    });
     await nextTick();
     refSearchForm.value?.resetForm();
   } else {

@@ -170,12 +170,10 @@ import QueryFilterForm from './QueryFilterForm.vue'
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
 import { useDisplay } from 'vuetify'
-import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
 const { mdAndDown } = useDisplay();
-const rules = useRules();
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -227,7 +225,6 @@ const dynamicSearchRules = computed(() => {
     (value: any) => {
       const hasText = value && value.toString().trim().length > 0;
       const hasFilters = queryManager.value.model.length > 0;
-
       return (hasText || hasFilters) || t('forms.formSearch.validation.required');
     }
   ];
