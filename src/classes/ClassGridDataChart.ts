@@ -13,10 +13,6 @@ export class ClassGridDataChart<T> extends BaseClass<IModelValueGridDataChart<T>
     super(data as any)
   }
 
-  get grid() {
-    return this.model
-  }
-
   private get defaultGrid(): IModelValueGridDataChart<T> {
     return {
       modelTable: {

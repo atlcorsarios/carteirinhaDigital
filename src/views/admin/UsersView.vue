@@ -9,9 +9,9 @@
           :id="tableId"
           v-model:dataTable="gridConfig.modelTable"
           v-model:pagination="paginationModel"
-          @item-selecionado="handleSelection"
+          @selected-item="handleSelection"
           @toggle-chart="toggleChartState"
-          @gerenciar-registro="handleGerenciarRegistro"
+          @manage-record="handleManageRecord"
           @load-more="loadMore"
         />
       </template>
@@ -20,7 +20,7 @@
         <ChartPie
           v-model:selectedFilter="selectedChartFilter"
           :chart-data="chartDataComputed"
-          :filter-options="headersParaGrafico"
+          :filter-options="headersToGraph"
           :active-config="activeHeaderConfig"
           :key="String(gridConfig.modelTable.model.hiddenChart)"
         />
@@ -28,17 +28,17 @@
     </grid-data-chart>
   </v-container>
 
-  <BaseDialog v-model:attributes="classDialogUser.dialog">
+  <BaseDialog v-model:attributes="classDialogUser.model">
     <template v-slot:title>
       <v-icon
         size="small"
         class="mr-2"
-        :icon="classDialogUser.dialog.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
+        :icon="classDialogUser.model.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
       />
       {{
-        classDialogUser.dialog.formEditingMode
+        classDialogUser.model.formEditingMode
           ? t('messages.forms.formUsers.editingUser') +
-            ` ${classDialogUser.dialog.itemEdition?.idUser || ''}`
+            ` ${classDialogUser.model.itemEdition?.idUser || ''}`
           : t('messages.forms.formUsers.createUser')
       }}
     </template>
@@ -46,7 +46,7 @@
     <template v-slot:default>
       <UserForm
         ref="refFormUser"
-        v-model:user="modelFormUser.user"
+        v-model:user="classUser.model"
         v-model:valid="isFormValid"
       />
     </template>
@@ -101,7 +101,7 @@ import { usersServices } from '@/services/usersService'
 // Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watchEffect, computed, reactive } from 'vue'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -117,7 +117,7 @@ const gridManager = new ClassGridDataChart<IUser>({
   }
 })
 
-const gridConfig = gridManager.grid
+const gridConfig = gridManager.model
 
 const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<IUser>(
   route.fullPath,
@@ -149,13 +149,13 @@ function toggleChartState() {
   gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
 }
 
-const headersParaGrafico = computed(() => {
+const headersToGraph = computed(() => {
   return headers.value
     .filter((h) => h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
 })
 
-const selectedChartFilter = ref(headersParaGrafico.value[0]?.value)
+const selectedChartFilter = ref(headersToGraph.value[0]?.value)
 
 const activeHeaderConfig = computed(() => {
   return headers.value.find((h) => h.key === selectedChartFilter.value)
@@ -168,7 +168,7 @@ const chartDataComputed = computed(() => {
   return useChartHelpers(items, key, strategy)
 })
 
-const modelFormUser = new ClassUsers()
+const classUser = new ClassUsers()
 const refFormUser = ref<InstanceType<typeof UserForm> | null>(null)
 const isFormValid = ref(false)
 
@@ -177,25 +177,25 @@ const classDialogUser = new ClassBaseDialog<IUser>({
   maxWidth: 800,
 })
 
-const itemSelecionado = ref()
+const selectedItem = ref()
 function handleSelection(item: any[]) {
-  itemSelecionado.value = item
+  selectedItem.value = item
 }
 
-function handleGerenciarRegistro(payload: { editingMode: boolean; item?: IUser }) {
+function handleManageRecord(payload: { editingMode: boolean; item?: IUser }) {
   if (payload.editingMode && payload.item) {
-    modelFormUser.updateModel({ ...payload.item })
+    classUser.updateModel(payload.item)
     classDialogUser.openEditingMode(payload.item)
   } else {
-    modelFormUser.reset()
+    classUser.reset()
     classDialogUser.openNew()
   }
-  resetFormUser()
+  refFormUser.value?.reset()
 }
 
 function resetFormUser() {
   refFormUser.value?.reset()
-  modelFormUser.reset()
+  classUser.reset()
 }
 
 function submit() {

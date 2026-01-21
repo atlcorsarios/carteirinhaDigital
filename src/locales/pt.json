@@ -195,6 +195,14 @@
       "actions": "Ações"
     }
   },
+  "chartPie": {
+    "title": "Distribuição por",
+    "noData": "Sem dados para exibir",
+    "chartAggregator": {
+      "sum": "Total Acumulado",
+      "count": "Total de Registros"
+    }
+  },
   "filterColumn": {
     "operators": {
       "startsIn": "Inicia em",

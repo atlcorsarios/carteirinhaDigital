@@ -139,7 +139,7 @@
 <script setup lang="ts">
 import type { ClassQueryFilter } from '@/classes/ClassQueryFilter';
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter';
-import { OPERATORS, type FilterType } from '@/classes/ClassDefinitions';
+import { OPERATORS, type FilterType } from '@/classes/models/ModelFilterColumns'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';

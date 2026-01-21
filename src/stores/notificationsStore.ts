@@ -39,7 +39,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
   ])
 
   const classNotifications = new ClassNotifications(defaultNotificationsTest.value)
-  const notifications = ref<INotification[]>(classNotifications.notifications)
+  const notifications = ref<INotification[]>(classNotifications.model)
 
   async function fetchNotifications(): Promise<INotification[]> {
     return notifications.value

@@ -1,15 +1,12 @@
 import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
 import type { IUser } from '@/classes/models/ModelUser'
+import type { FilterColumn } from './models/ModelFilterColumns'
 import { BaseClass } from './subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
 
 export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
     super(data as any)
-  }
-
-  get user(): IUser {
-    return this.model
   }
 
   private get defaultUser(): IUser {
@@ -91,5 +88,39 @@ export class ClassUsers extends BaseClass<IUser> {
         align: 'center',
       },
     ]
+  }
+
+  static getFilterColumns(): FilterColumn[] {
+    return [
+      {
+        key: 'id',
+        label: 'forms.formUser.id',
+        type: 'number'
+      },
+      {
+        key: 'username',
+        label: 'forms.formUser.inputUsername.label',
+        type: 'text'
+      },
+      {
+        key: 'email',
+        label: 'forms.formUser.inputEmail.label',
+        type: 'text'
+      },
+      {
+        key: 'role',
+        label: 'forms.formUser.inputRole.label',
+        type: 'select',
+        options: [
+          { title: 'Admin', value: 'ADMIN' },
+          { title: 'User', value: 'USER' }
+        ]
+      },
+      {
+        key: 'active',
+        label: 'forms.formUser.inputUserActive.label',
+        type: 'boolean'
+      },
+    ];
   }
 }

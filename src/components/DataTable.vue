@@ -15,10 +15,19 @@
 
           <v-card min-width="250" max-height="400" class="overflow-y-auto">
             <v-list density="compact" select-strategy="classic" v-model:selected="selectedHeadersKeys">
-              <v-list-item v-for="header in allHeaders" :key="header.key" :value="header.key">
+              <v-list-item
+                v-for="header in allHeaders"
+                :key="header.key"
+                :value="header.key"
+              >
                 <template v-slot:prepend="{ isActive }">
                   <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" density="compact" hide-details />
+                    <v-checkbox-btn
+                      :model-value="isActive"
+                      density="compact"
+                      hide-details
+                      @click.stop="toggleHeader(header.key)"
+                    />
                   </v-list-item-action>
                 </template>
                 <v-list-item-title class="text-caption">
@@ -40,7 +49,7 @@
           {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
         </div>
 
-        <slot name="toolbar-actions">
+        <slot name="actions">
           <v-spacer />
 
           <BtnOpenDialog
@@ -96,7 +105,7 @@
         </template>
 
         <template v-slot:bottom>
-          <v-divider />
+          <v-divider v-intersect="onIntersect" />
           <div class="d-flex align-center justify-space-between pa-2 text-caption">
             <div class="d-flex align-center" style="width: 150px">
               <v-select
@@ -183,6 +192,16 @@ watchEffect(() => {
 const filteredHeaders = computed(() => {
   return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
 });
+
+function toggleHeader(key: string) {
+  const index = selectedHeadersKeys.value.indexOf(key)
+
+  if (index === -1) {
+    selectedHeadersKeys.value.push(key)
+  } else {
+    selectedHeadersKeys.value.splice(index, 1)
+  }
+}
 
 const idSelectedItem = ref<any>(null);
 const clickOnTheLine = (_event: Event, { item }: any) => {

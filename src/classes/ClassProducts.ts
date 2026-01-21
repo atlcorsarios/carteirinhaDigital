@@ -1,4 +1,5 @@
 import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
+import type { FilterColumn } from './models/ModelFilterColumns'
 import type { IProduct } from './models/ModelIProduct'
 import { BaseClass } from './subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
@@ -6,10 +7,6 @@ import { i18n } from '@/plugins/i18n'
 export class ClassProducts extends BaseClass<IProduct[]> {
   constructor(data?: Partial<IProduct>[]) {
     super(data as any)
-  }
-
-  get products(): IProduct[] {
-    return this.model
   }
 
   private get defaultItem(): IProduct {
@@ -26,6 +23,7 @@ export class ClassProducts extends BaseClass<IProduct[]> {
   }
 
   static getHeaders(): IHeadersDataTable[] {
+    // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
       {
@@ -40,6 +38,16 @@ export class ClassProducts extends BaseClass<IProduct[]> {
         key: 'productName',
         width: 200,
       },
+    ]
+  }
+
+  static getFilterColumn(): FilterColumn[] {
+    return [
+      {
+        key: 'id',
+        label: 'forms.formProduct.id',
+        type: 'number'
+      }
     ]
   }
 }

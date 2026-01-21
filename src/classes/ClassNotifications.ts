@@ -3,20 +3,18 @@ import type { INotification } from './models/ModelNotifications'
 import { formattedDate } from '@/utils/formattedDate'
 import { BaseClass } from './subscriptions/BaseClass'
 import { FALLBACK_LOCALE, i18n } from '@/plugins/i18n'
+import type { FilterColumn } from './models/ModelFilterColumns'
 
 export class ClassNotifications extends BaseClass<INotification[]> {
   constructor(data?: Partial<INotification>[]) {
     super(data as any)
   }
 
-  get notifications() {
-    return this.model
-  }
-
   private get defaultItem(): INotification {
     const today = new Date()
     const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE
     const dateStr = formattedDate(today, locale);
+
     return {
       id: 0,
       title: '',
@@ -37,6 +35,7 @@ export class ClassNotifications extends BaseClass<INotification[]> {
   }
 
   static getHeaders(): IHeadersDataTable[] {
+    // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
       {
@@ -51,6 +50,16 @@ export class ClassNotifications extends BaseClass<INotification[]> {
         key: 'title',
         width: 200,
       },
+    ]
+  }
+
+  static getFilterColumn(): FilterColumn[] {
+    return [
+      {
+        key: 'id',
+        label: 'dataTable.notifications.headers.id',
+        type: 'number'
+      }
     ]
   }
 }

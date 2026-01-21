@@ -6,9 +6,9 @@
     <AppBar v-if="isLayoutVisible" @toggle-drawer="toggleDrawer" />
 
     <v-main class="main-scroll position-relative">
-      <!-- <div class="app-watermark">
+      <div v-if="isLayoutVisible" class="app-watermark">
         <img src="/WatermarkAvelito.jpg" />
-      </div> -->
+      </div>
 
       <Breadcrumbs v-if="isLayoutVisible" />
 
@@ -79,10 +79,15 @@ v-main {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
+  /* z-index: 9999; */
   pointer-events: none;
   user-select: none;
   width: 400px;
   max-width: 80%;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .app-watermark img {

@@ -60,7 +60,9 @@ export const routes: Array<RouteRecordRaw> = [
       title: 'routes.notifications.title',
       icon: 'mdi-bell',
       hotkey: 'cmd+n+t',
-      requiresAuth: true
+      requiresAuth: true,
+      hasFilters: true,
+      filterConfig: ClassDefinitions.getFilterColumnsNotifications
     },
   },
   {
@@ -74,7 +76,7 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+p',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.filterColumnsUsers
+      filterConfig: ClassDefinitions.getFilterColumnsProducts
     },
     children: [
       {
@@ -159,7 +161,7 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
           authorize: ['ADMIN'],
           hasFilters: true,
-          filterConfig: ClassDefinitions.filterColumnsUsers
+          filterConfig: ClassDefinitions.getFilterColumnsUsers
         },
       },
       {

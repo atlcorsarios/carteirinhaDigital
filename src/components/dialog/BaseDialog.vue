@@ -3,7 +3,7 @@
     v-model="isDialogVisible"
     :max-width="dialog.maxWidth || 400"
     :max-height="dialog.maxHeight || 400"
-    :persistent="dialog.persistent" || false
+    :persistent="dialog.persistent || false"
   >
     <v-card>
       <v-card-title class="d-flex justify-space-between align-baseline">

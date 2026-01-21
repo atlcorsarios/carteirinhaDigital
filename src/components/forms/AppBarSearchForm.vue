@@ -15,7 +15,7 @@
       :placeholder="t('forms.formSearch.inputSearch.placeholder')"
       :rules="[rules.required()]"
     >
-      <template #prepend-inner v-if="mdAndUp">
+      <template #prepend-inner>
         <div class="d-flex flex-row" v-if="hasFilters">
           <BtnOpenDialog
             icon="mdi-filter-cog"
@@ -169,7 +169,7 @@ import { useDisplay, useHotkey } from 'vuetify'
 import { useRules } from 'vuetify/labs/rules'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, reactive, ref } from 'vue'
 
 const { mdAndUp } = useDisplay();
 const route = useRoute();

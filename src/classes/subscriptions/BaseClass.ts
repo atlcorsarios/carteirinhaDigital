@@ -1,5 +1,7 @@
-import { reactive } from 'vue'
+import { reactive, type Ref } from 'vue'
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
+import type { FilterColumn } from '../models/ModelFilterColumns'
+import type { ReactiveMarker } from '@vue/reactivity'
 
 export abstract class BaseClass<T extends object> {
   private _model: T
@@ -8,8 +10,16 @@ export abstract class BaseClass<T extends object> {
     this._model = reactive(this.getDefault(data)) as T
   }
 
+  attachModel(model: T) {
+    this._model = model
+  }
+
   get model(): T {
     return this._model
+  }
+
+  set model(value: T) {
+    this.updateModel(value)
   }
 
   protected createWithDefaults<S extends object>(data: Partial<S>, defaultModel: S): S {
@@ -51,5 +61,9 @@ export abstract class BaseClass<T extends object> {
 
   static getHeaders(): IHeadersDataTable[] {
     throw new Error("The static method 'getHeaders' must be implemented in the child class.")
+  }
+
+  static getFilterColumn(): FilterColumn[] {
+    throw new Error("The static method 'getFilterColumn' must be implemented in the child class.")
   }
 }

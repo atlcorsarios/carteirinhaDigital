@@ -1,11 +1,11 @@
-import type { FilterColumn } from "./ClassDefinitions";
 import type { IQueryFilter } from "./models/modelComponents/ModelQueryFilter";
+import type { FilterColumn } from "./models/ModelFilterColumns";
 import { formattedDate } from "@/utils/formattedDate";
 import { StorageUtils } from "@/utils/StorageUtils";
+import { BaseClass } from "./subscriptions/BaseClass";
 import { FALLBACK_LOCALE } from "@/plugins/i18n";
 import { useRoute } from "vue-router";
 import { reactive, ref, watch } from "vue";
-import { BaseClass } from "./subscriptions/BaseClass";
 
 export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
   private staging: IQueryFilter;
@@ -50,10 +50,6 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
         StorageUtils.set(this.storageKey, newVal, 'session');
       }
     }, { deep: true });
-  }
-
-  get query(): IQueryFilter[] {
-    return this.model;
   }
 
   get stagingModel(): IQueryFilter {

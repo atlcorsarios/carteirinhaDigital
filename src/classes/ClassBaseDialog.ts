@@ -6,10 +6,6 @@ export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
     super(data)
   }
 
-  get dialog() {
-    return this.model
-  }
-
   private get defaultDailog(): IModelBaseDialog<T> {
     return {
       view: false,
@@ -25,19 +21,19 @@ export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
     return this.createWithDefaults(data || {}, this.defaultDailog)
   }
 
-  openNew() {
-    this.dialog.formEditingMode = false
-    this.dialog.itemEdition = null
-    this.dialog.view = true
+  openNew(data?: Partial<T>) {
+    this.model.formEditingMode = false
+    this.model.itemEdition = data as T || null
+    this.model.view = true
   }
 
   openEditingMode(item: T) {
-    this.dialog.formEditingMode = true
-    this.dialog.itemEdition = { ...item }
-    this.dialog.view = true
+    this.model.formEditingMode = true
+    this.model.itemEdition = { ...item }
+    this.model.view = true
   }
 
   toggleDialog() {
-    this.dialog.view = !this.dialog.view
+    this.model.view = !this.model.view
   }
 }

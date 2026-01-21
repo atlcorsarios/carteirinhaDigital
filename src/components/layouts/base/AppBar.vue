@@ -74,7 +74,7 @@ import { formattedDate } from '@/utils/formattedDate'
 import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useI18n } from 'vue-i18n'
 import { useDisplay } from 'vuetify'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { t, locale } = useI18n()
@@ -107,7 +107,6 @@ const classDialogLicence = new ClassBaseDialog({
 function toggleDialogLicence() {
   classDialogLicence.toggleDialog()
 }
-
 </script>
 
 <style scoped>
