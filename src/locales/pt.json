@@ -71,6 +71,9 @@
   },
   "forms": {
     "formSearch": {
+      "validation": {
+        "required": "Devem existir um valor ou filtros aplicados para realizar a consulta"
+      },
       "inputSearch": {
         "placeholder": "Buscar"
       },

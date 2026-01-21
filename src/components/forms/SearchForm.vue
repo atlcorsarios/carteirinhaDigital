@@ -13,12 +13,13 @@
       loader-height="2"
       :loading="loading"
       :placeholder="t('forms.formSearch.inputSearch.placeholder')"
-      :rules="[rules.required()]"
+      :rules="dynamicSearchRules"
     >
       <template #prepend-inner>
         <div class="d-flex flex-row" v-if="hasFilters">
           <BtnOpenDialog
             icon="mdi-filter-cog"
+            size="small"
             v-tooltip="t('tooltips.appBar.filter')"
             :rotate="false"
             @click="openDialog"
@@ -220,6 +221,17 @@ function formatSubtitle(item: IQueryFilter) {
   if (item.condition === 'between') return `${item.startDate} - ${item.endDate}`;
   return item.value;
 }
+
+const dynamicSearchRules = computed(() => {
+  return [
+    (value: any) => {
+      const hasText = value && value.toString().trim().length > 0;
+      const hasFilters = queryManager.value.model.length > 0;
+
+      return (hasText || hasFilters) || t('forms.formSearch.validation.required');
+    }
+  ];
+});
 
 defineExpose({
   resetForm: () => refFormQuery.value?.reset(),
