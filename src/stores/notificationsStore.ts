@@ -7,7 +7,7 @@ import { useAuthStore } from './authStore'
 export const useNotificationsStore = defineStore('notifications', () => {
   const authStore = useAuthStore()
 
-  const defaultNotificationsTest = ref<Partial<INotification>[]>([
+  const defaultNotificationsTest: Partial<INotification>[] = [
     {
       id: 1,
       title: 'Teste notificação',
@@ -36,10 +36,11 @@ export const useNotificationsStore = defineStore('notifications', () => {
       sender: 'Usuário.ficticio2@gmail.com',
       recipients: ['funcionarioAvelito@gmail.com'],
     },
-  ])
+  ];
 
-  const classNotifications = new ClassNotifications(defaultNotificationsTest.value)
-  const notifications = ref<INotification[]>(classNotifications.model)
+  const notifications = ref<INotification[]>(
+    defaultNotificationsTest.map((item) => new ClassNotifications(item).model)
+  )
 
   async function fetchNotifications(): Promise<INotification[]> {
     return notifications.value

@@ -6,10 +6,10 @@ import { i18n } from '@/plugins/i18n'
 
 export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
-    super(data as any)
+    super(data)
   }
 
-  private get defaultUser(): IUser {
+  static defaultUser(): IUser {
     return {
       idUser: 0,
       username: '',
@@ -18,11 +18,11 @@ export class ClassUsers extends BaseClass<IUser> {
       phoneNumber: '',
       receiveNotifications: false,
       active: true,
-    } as IUser
+    }
   }
 
-  protected getDefault(data?: Partial<IUser>): IUser {
-    return this.createWithDefaults(data || {}, this.defaultUser)
+  protected getDefault(data: Partial<IUser> = {}): IUser {
+    return this.createWithDefaults(data, ClassUsers.defaultUser())
   }
 
   static formatBoolean(value?: boolean): string {
@@ -34,7 +34,6 @@ export class ClassUsers extends BaseClass<IUser> {
   static getHeaders(): IHeadersDataTable[] {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
-
     return [
       {
         title: t('dataTable.users.headers.id'),
@@ -95,17 +94,17 @@ export class ClassUsers extends BaseClass<IUser> {
       {
         key: 'id',
         label: 'forms.formUser.id',
-        type: 'number'
+        type: 'number',
       },
       {
         key: 'username',
         label: 'forms.formUser.inputUsername.label',
-        type: 'text'
+        type: 'text',
       },
       {
         key: 'email',
         label: 'forms.formUser.inputEmail.label',
-        type: 'text'
+        type: 'text',
       },
       {
         key: 'role',
@@ -113,14 +112,14 @@ export class ClassUsers extends BaseClass<IUser> {
         type: 'select',
         options: [
           { title: 'Admin', value: 'ADMIN' },
-          { title: 'User', value: 'USER' }
-        ]
+          { title: 'User', value: 'USER' },
+        ],
       },
       {
         key: 'active',
         label: 'forms.formUser.inputUserActive.label',
-        type: 'boolean'
+        type: 'boolean',
       },
-    ];
+    ]
   }
 }

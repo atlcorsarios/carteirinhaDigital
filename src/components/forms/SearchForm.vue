@@ -1,8 +1,8 @@
 <template>
-  <v-form @submit.prevent="onSubmit" class="search-form w-100">
+  <v-form @submit.prevent="emits('submit')" class="search-form w-100">
     <v-text-field
       ref="inputRef"
-      v-model="classFormQuery.stagingModel.value"
+      v-model="queryManager.stagingModel.value"
       class="rounded-search w-100"
       hide-details
       single-line
@@ -21,7 +21,7 @@
             icon="mdi-filter-cog"
             v-tooltip="t('tooltips.appBar.filter')"
             :rotate="false"
-            @click="toggleDialogQueryFilter"
+            @click="openDialog"
           />
 
           <v-divider
@@ -46,15 +46,19 @@
           icon="mdi-magnify"
           v-tooltip="t('tooltips.appBar.search')"
           variant="plain"
-          @click="onSubmit"
+          :disabled="!canSubmit"
+          @click="emits('submit')"
         />
       </template>
     </v-text-field>
   </v-form>
 
-  <BaseDialog v-model:attributes="classDialogQueryFilter.model">
+  <BaseDialog v-model:attributes="dialogAttributes">
     <template v-slot:title>
-      {{ t('messages.components.queryFilter.title') }} {{ titleDialogFilter }}
+      <div :class="[mdAndDown ? 'd-flex flex-column' : '']">
+        <span class="text-h6 me-2">{{ t('messages.components.queryFilter.title') }}</span>
+        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">{{ titleDialogFilter }}</span>
+      </div>
     </template>
 
     <template v-slot:default>
@@ -67,18 +71,18 @@
           <v-tabs-window-item value="form">
             <div class="mt-3">
               <QueryFilterForm
-              ref="refFormQuery"
-              v-model:filter="classFormQuery.stagingModel"
-              v-model:valid="isFormValid"
-              :filter-manager="classFormQuery"
+                ref="refFormQuery"
+                v-model:filter="queryManager.stagingModel"
+                v-model:valid="isFormValid"
+                :filter-manager="queryManager"
               />
             </div>
           </v-tabs-window-item>
 
           <v-tabs-window-item value="list">
             <v-virtual-scroll
-              v-if="classFormQuery.model.length > 0"
-              :items="classFormQuery.model"
+              v-if="queryManager.model.length > 0"
+              :items="queryManager.model"
               height="300"
             >
               <template v-slot:default="{ index, item }">
@@ -107,7 +111,7 @@
                         color="error"
                         variant="text"
                         size="small"
-                        @click="classFormQuery.removeFilter(index)"
+                        @click="queryManager.removeFilter(index)"
                       />
                     </template>
                   </v-list-item>
@@ -129,7 +133,7 @@
         v-tooltip="t('tooltips.forms.reset')"
         variant="text"
         color="amber"
-        @click="handleReset"
+        @click="emits('reset')"
       />
 
       <v-spacer />
@@ -140,7 +144,7 @@
         variant="text"
         color="info"
         :disabled="!isFormValid"
-        @click="handleAddFilter"
+        @click="emits('add-filter')"
       />
 
       <v-spacer />
@@ -151,7 +155,8 @@
         v-tooltip="t('tooltips.appBar.search')"
         variant="text"
         color="success"
-        @click="onSubmit"
+        :disabled="!canSubmit"
+        @click="emits('submit')"
       />
     </template>
   </BaseDialog>
@@ -162,61 +167,45 @@ import BaseDialog from '../dialog/BaseDialog.vue'
 import BtnOpenDialog from '../dialog/BtnOpenDialog.vue'
 import QueryFilterForm from './QueryFilterForm.vue'
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
-import { useSnackbarStore } from '@/stores/SnackbarStore'
-import { useDisplay, useHotkey } from 'vuetify'
+import { useDisplay } from 'vuetify'
 import { useRules } from 'vuetify/labs/rules'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 
-const { mdAndUp } = useDisplay();
-const route = useRoute();
+const { mdAndDown } = useDisplay();
 const rules = useRules();
 const { t } = useI18n();
-const snackbar = useSnackbarStore();
 
-const titleDialogFilter = computed(() => {
-  const titleKey = route.meta?.title as string | undefined
+const props = defineProps<{
+  loading: boolean;
+  hasFilters: boolean;
+  titleDialogFilter: string;
+}>();
 
-  if (titleKey) {
-    return t(titleKey)
-  }
+const queryManager = defineModel<ClassQueryFilter>('manager', { required: true });
+const dialogAttributes = defineModel<any>('dialogAttributes', { required: true });
+const tab = defineModel<string>('tab', { default: 'form' });
 
-  return ''
-})
+const emits = defineEmits(['submit', 'reset', 'add-filter', 'open-filter']);
 
-const hasFilters = computed(() => { return !!route.meta?.hasFilters; });
-const tab = ref('form')
-const props = defineProps<{ loading: boolean }>()
-const emits = defineEmits(['search'])
+const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null);
+const inputRef = ref<any>(null);
+const isFormValid = ref(false);
 
-const classDialogQueryFilter = new ClassBaseDialog({
-  view: false,
-  maxHeight: 500,
-  maxWidth: 600,
-})
+const canSubmit = computed(() => {
+  const hasText = queryManager.value.stagingModel.value &&
+                  queryManager.value.stagingModel.value.trim() !== '';
+  const hasList = queryManager.value.model.length > 0;
+  return hasText || hasList;
+});
 
-function toggleDialogQueryFilter() {
-  classFormQuery.updateStaging({
-    field: classFormQuery.filters[1]?.key,
-    condition: 'contains'
-  });
-  classDialogQueryFilter.toggleDialog()
+function openDialog() {
+  emits('open-filter');
 }
 
-const classFormQuery = new ClassQueryFilter()
-const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null);
-const isFormValid = ref(false);
-const inputRef = ref<any>(null)
-
-useHotkey('ctrl+k', () => {
-  inputRef.value?.focus()
-})
-
 function formatTitle(item: IQueryFilter) {
-  const col = classFormQuery.getColumnType(item.field);
+  const col = queryManager.value.getColumnType(item.field);
   const label = col ? t(col.label) : item.field;
 
   let conditionLabel = '';
@@ -232,38 +221,10 @@ function formatSubtitle(item: IQueryFilter) {
   return item.value;
 }
 
-async function handleAddFilter() {
-  const validFilter = classFormQuery.addFilter();
-  if (validFilter) {
-    await nextTick();
-    refFormQuery.value?.reset();
-  }
-  else {
-    const errorMessage = t('messages.components.queryFilter.alertDuplicate');
-    snackbar.showSnackbar(errorMessage, 'warning');
-  }
-}
-
-async function handleReset() {
-  if (tab.value === 'form') {
-    classFormQuery.resetStaging();
-    await nextTick();
-    refFormQuery.value?.reset();
-  } else {
-    classFormQuery.reset();
-  }
-}
-
-function onSubmit() {
-  const filtrosParaEnviar = [...classFormQuery.model];
-  const staging = classFormQuery.stagingModel;
-
-  if (filtrosParaEnviar.length === 0 && staging.value) {
-    filtrosParaEnviar.push(staging);
-  }
-
-  emits('search', filtrosParaEnviar);
-}
+defineExpose({
+  resetForm: () => refFormQuery.value?.reset(),
+  focusInput: () => inputRef.value?.focus()
+});
 </script>
 
 <style scoped>

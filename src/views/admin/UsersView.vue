@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="fill-height">
-    <grid-data-chart
+    <GridDataChart
       :hidden-chart="gridConfig.modelTable.model.hiddenChart"
       @toggle-chart="toggleChartState"
     >
@@ -19,13 +19,17 @@
       <template #dataChart>
         <ChartPie
           v-model:selectedFilter="selectedChartFilter"
+          :key="String(gridConfig.modelTable.model.hiddenChart)"
           :chart-data="chartDataComputed"
           :filter-options="headersToGraph"
           :active-config="activeHeaderConfig"
-          :key="String(gridConfig.modelTable.model.hiddenChart)"
         />
       </template>
-    </grid-data-chart>
+
+      <template #moreInfo>
+        
+      </template>
+    </GridDataChart>
   </v-container>
 
   <BaseDialog v-model:attributes="classDialogUser.model">

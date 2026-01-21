@@ -6,14 +6,38 @@
     <template v-if="mdAndUp">
       <v-spacer />
       <div style="width: 100%; max-width: 480px">
-        <AppBarSearchForm :loading="loading" @search="handleSearch" />
+        <SearchForm
+          ref="refSearchForm"
+          v-model:manager="classFormQuery"
+          v-model:dialogAttributes="classDialogQueryFilter.model"
+          v-model:tab="activeTab"
+          :loading="loading"
+          :has-filters="hasFilters"
+          :title-dialog-filter="titleDialogFilter"
+          @submit="handleSearch"
+          @reset="handleReset"
+          @add-filter="handleAddFilter"
+          @open-filter="handleOpenFilter"
+        />
       </div>
       <v-spacer />
     </template>
 
     <template v-slot:extension v-if="!mdAndUp">
       <div class="px-4 pb-2 w-100">
-        <AppBarSearchForm :loading="loading" @search="handleSearch" />
+        <SearchForm
+          ref="refSearchForm"
+          v-model:manager="classFormQuery"
+          v-model:dialogAttributes="classDialogQueryFilter.model"
+          v-model:tab="activeTab"
+          :loading="loading"
+          :has-filters="hasFilters"
+          :title-dialog-filter="titleDialogFilter"
+          @submit="handleSearch"
+          @reset="handleReset"
+          @add-filter="handleAddFilter"
+          @open-filter="handleOpenFilter"
+        />
       </div>
     </template>
 
@@ -65,26 +89,46 @@
 
 <script setup lang="ts">
 import pkg from '../../../../package.json'
+
+// Componentes
 import OptionsAppBar from './OptionsAppBar.vue'
 import MobileOptionsAppBar from './MobileOptionsAppBar.vue'
-import AppBarSearchForm from '@/components/forms/AppBarSearchForm.vue'
+import SearchForm from '@/components/forms/SearchForm.vue'
 import BaseDialog from '@/components/dialog/BaseDialog.vue'
+
+// Classes
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
+
+// Utils
 import { formattedDate } from '@/utils/formattedDate'
+
+// Stores
 import { useNotificationsStore } from '@/stores/notificationsStore'
+
+// Composables
+import { useSnackbar } from '@/composables/useSnackbar'
+
+// Vue
+import { useDisplay, useHotkey } from 'vuetify'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useDisplay } from 'vuetify'
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { t, locale } = useI18n()
-const notificationsStore = useNotificationsStore()
-const hasUnreadNotifications = ref(false)
+
+const route = useRoute()
+const { notify } = useSnackbar()
+
 const loading = ref(false)
 const systemVersion = pkg.version
 const formattedVersionDate = computed(() => {
   return formattedDate(new Date(__APP_BUILD_DATE__), locale.value);
 })
+
+const notificationsStore = useNotificationsStore()
+const hasUnreadNotifications = ref(false)
 
 onMounted(async () => {
   notificationsStore.fetchNotifications();
@@ -93,8 +137,79 @@ onMounted(async () => {
 
 const emits = defineEmits(['toggle-drawer'])
 
-function handleSearch(term: string) {
-  loading.value = true
+const classFormQuery = new ClassQueryFilter()
+const classDialogQueryFilter = new ClassBaseDialog({
+  view: false,
+  maxHeight: 500,
+  maxWidth: 600,
+})
+
+const refSearchForm = ref<InstanceType<typeof SearchForm> | null>(null)
+const activeTab = ref('form')
+
+const hasFilters = computed(() => !!route.meta?.hasFilters);
+
+const titleDialogFilter = computed(() => {
+  const titleKey = route.meta?.title as string | undefined
+  return titleKey ? t(titleKey) : ''
+})
+
+useHotkey('ctrl+k', () => {
+  refSearchForm.value?.focusInput()
+})
+
+function handleOpenFilter() {
+  classFormQuery.updateStaging({
+    field: classFormQuery.filters[1]?.key,
+    condition: 'contains'
+  });
+
+  classDialogQueryFilter.toggleDialog();
+}
+
+async function handleAddFilter() {
+  const validFilter = classFormQuery.addFilter();
+  if (validFilter) {
+    await nextTick();
+    refSearchForm.value?.resetForm();
+  } else {
+    const errorMessage = t('messages.components.queryFilter.alertDuplicate');
+    notify(errorMessage, 'warning');
+  }
+}
+
+async function handleReset() {
+  if (activeTab.value === 'form') {
+    classFormQuery.resetStaging();
+    await nextTick();
+    refSearchForm.value?.resetForm();
+  } else {
+    classFormQuery.reset();
+  }
+}
+
+function handleSearch() {
+  const stagingValue = classFormQuery.stagingModel.value;
+  const hasTextQuery = stagingValue && stagingValue.trim() !== '';
+  const hasFilterList = classFormQuery.model.length > 0;
+
+  if (!hasTextQuery && !hasFilterList) {
+    return;
+  }
+
+  loading.value = true;
+
+  if (classDialogQueryFilter.model.view) {
+    classDialogQueryFilter.toggleDialog()
+  }
+
+  const filtrosParaEnviar = [...classFormQuery.model];
+  if (hasTextQuery) {
+    filtrosParaEnviar.push(classFormQuery.stagingModel);
+  }
+
+  console.log('Buscando com:', filtrosParaEnviar);
+
   setTimeout(() => (loading.value = false), 2000)
 }
 

@@ -6,7 +6,7 @@ export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
     super(data)
   }
 
-  private get defaultDailog(): IModelBaseDialog<T> {
+  static defaultDialog<T>(): IModelBaseDialog<T> {
     return {
       view: false,
       persistent: false,
@@ -14,16 +14,16 @@ export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
       maxHeight: 400,
       formEditingMode: false,
       itemEdition: null,
-    } as IModelBaseDialog<T>
+    }
   }
 
-  protected getDefault(data?: Partial<IModelBaseDialog<T>>): IModelBaseDialog<T> {
-    return this.createWithDefaults(data || {}, this.defaultDailog)
+  protected getDefault(data: Partial<IModelBaseDialog<T>> = {}): IModelBaseDialog<T> {
+    return this.createWithDefaults(data, ClassBaseDialog.defaultDialog<T>())
   }
 
   openNew(data?: Partial<T>) {
     this.model.formEditingMode = false
-    this.model.itemEdition = data as T || null
+    this.model.itemEdition = (data as T) || null
     this.model.view = true
   }
 

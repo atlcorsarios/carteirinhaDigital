@@ -1,17 +1,12 @@
-import { reactive, type Ref } from 'vue'
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
 import type { FilterColumn } from '../models/ModelFilterColumns'
-import type { ReactiveMarker } from '@vue/reactivity'
+import { reactive } from 'vue'
 
 export abstract class BaseClass<T extends object> {
   private _model: T
 
   constructor(data?: Partial<T>) {
     this._model = reactive(this.getDefault(data)) as T
-  }
-
-  attachModel(model: T) {
-    this._model = model
   }
 
   get model(): T {
@@ -24,6 +19,7 @@ export abstract class BaseClass<T extends object> {
 
   protected createWithDefaults<S extends object>(data: Partial<S>, defaultModel: S): S {
     const result = { ...defaultModel }
+
     Object.keys(data).forEach((key) => {
       if (Object.prototype.hasOwnProperty.call(defaultModel, key)) {
         // @ts-ignore

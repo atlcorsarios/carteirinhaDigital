@@ -1,69 +1,79 @@
-import type { IQueryFilter } from "./models/modelComponents/ModelQueryFilter";
-import type { FilterColumn } from "./models/ModelFilterColumns";
-import { formattedDate } from "@/utils/formattedDate";
-import { StorageUtils } from "@/utils/StorageUtils";
-import { BaseClass } from "./subscriptions/BaseClass";
-import { FALLBACK_LOCALE } from "@/plugins/i18n";
-import { useRoute } from "vue-router";
-import { reactive, ref, watch } from "vue";
+import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
+import type { FilterColumn } from './models/ModelFilterColumns'
+import { formattedDate } from '@/utils/formattedDate'
+import { StorageUtils } from '@/utils/StorageUtils'
+import { BaseClass } from './subscriptions/BaseClass'
+import { FALLBACK_LOCALE } from '@/plugins/i18n'
+import { useRoute } from 'vue-router'
+import { reactive, ref, watch } from 'vue'
 
 export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
-  private staging: IQueryFilter;
-  private availableColumns = ref<FilterColumn[]>([]);
-  private storageKey: string = '';
+  private staging: IQueryFilter
+  private availableColumns = ref<FilterColumn[]>([])
+  private storageKey: string = ''
 
   constructor(data?: Partial<IQueryFilter>[]) {
     super(data as any)
-    this.staging = reactive(this.createWithDefaults({}, this.defaultItem));
-
-    const route = useRoute();
+    this.staging = reactive(this.createWithDefaults({}, ClassQueryFilter.defaultQuery()))
+    const route = useRoute()
 
     watch(
       () => route.name,
       (newName) => {
-        if (!newName) return;
+        if (!newName) return
 
-        this.storageKey = `filter_context_${String(newName)}`;
-        const savedData = StorageUtils.get<IQueryFilter[]>(this.storageKey, [], 'session');
+        this.storageKey = `filter_context_${String(newName)}`
+        const savedData = StorageUtils.get<IQueryFilter[]>(this.storageKey, [], 'session')
 
-        this.model.length = 0;
+        this.model.length = 0
         if (savedData && savedData.length > 0) {
-          const cleanData = savedData.map(item =>
-            this.createWithDefaults(item, this.defaultItem)
-          );
-          this.model.push(...cleanData);
+          const cleanData = savedData.map((item) =>
+            this.createWithDefaults(item, ClassQueryFilter.defaultQuery()),
+          )
+          this.model.push(...cleanData)
         }
 
-        this.resetStaging();
-      },{ immediate: true }
-    );
+        this.resetStaging()
+      },
+      { immediate: true },
+    )
 
     watch(
       () => route.meta?.filterConfig,
       (newConfig) => {
-        this.availableColumns.value = (newConfig as FilterColumn[]) || [];
-      }, { immediate: true }
-    );
+        this.availableColumns.value = (newConfig as FilterColumn[]) || []
+      },
+      { immediate: true },
+    )
 
-    watch(() => this.model, (newVal) => {
-      if (this.storageKey) {
-        StorageUtils.set(this.storageKey, newVal, 'session');
-      }
-    }, { deep: true });
+    watch(
+      () => this.model,
+      (newVal) => {
+        if (this.storageKey) {
+          StorageUtils.set(this.storageKey, newVal, 'session')
+        }
+      },
+      { deep: true },
+    )
   }
 
   get stagingModel(): IQueryFilter {
-    return this.staging;
+    return this.staging
+  }
+
+  set stagingModel(value: IQueryFilter) {
+    Object.keys(this.staging).forEach(k => delete (this.staging as any)[k])
+    Object.assign(this.staging, value)
   }
 
   get filters(): FilterColumn[] {
-    return this.availableColumns.value;
+    return this.availableColumns.value
   }
 
-  private get defaultItem(): IQueryFilter {
-    const today = new Date();
-    const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE;
-    const dateStr = formattedDate(today, locale);
+  static defaultQuery(): IQueryFilter {
+    const today = new Date()
+    const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE
+    const dateStr = formattedDate(today, locale)
 
     return {
       field: '',
@@ -71,77 +81,78 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
       value: '',
       startDate: dateStr,
       endDate: dateStr,
-      selectValues: []
-    } as IQueryFilter;
+      selectValues: [],
+    }
   }
 
-  protected getDefault(data?: unknown): IQueryFilter[] {
-    const items = (data as Partial<IQueryFilter>[]) || []
+  protected getDefault(data: unknown = []): IQueryFilter[] {
+    const items = data as Partial<IQueryFilter>[]
 
     if (items.length > 0) {
-      return items.map(item => this.createWithDefaults(item, this.defaultItem));
+      return items.map((item) => this.createWithDefaults(item, ClassQueryFilter.defaultQuery()))
     }
 
-    return [];
+    return []
   }
 
   addFilter(): boolean {
     if (this.isDuplicate(this.staging)) {
-      return false;
+      return false
     }
 
-    this.model.push(this.createWithDefaults(this.staging, this.defaultItem));
-    this.resetStaging();
-    return true;
+    this.model.push(this.createWithDefaults(this.staging, ClassQueryFilter.defaultQuery()))
+    this.resetStaging()
+    return true
   }
 
   removeFilter(index: number) {
     if (this.model.length === 1) {
-      this.reset();
+      this.reset()
     } else {
-      this.model.splice(index, 1);
+      this.model.splice(index, 1)
     }
   }
 
   reset() {
-    this.model.length = 0;
+    this.model.length = 0
   }
 
   resetStaging() {
-    const freshItem = this.createWithDefaults({}, this.defaultItem);
-    Object.keys(this.staging).forEach(key => {
+    const freshItem = this.createWithDefaults({}, ClassQueryFilter.defaultQuery())
+    Object.keys(this.staging).forEach((key) => {
       // @ts-ignore
-      delete this.staging[key];
-    });
+      delete this.staging[key]
+    })
 
-    Object.assign(this.staging, freshItem);
+    Object.assign(this.staging, freshItem)
   }
 
   private isDuplicate(newItem: IQueryFilter): boolean {
-    return this.model.some(existing =>
-      existing.field === newItem.field &&
-      existing.condition === newItem.condition &&
-      existing.value === newItem.value &&
-      existing.startDate === newItem.startDate &&
-      existing.endDate === newItem.endDate
-    );
+    return this.model.some(
+      (existing) =>
+        existing.field === newItem.field &&
+        existing.condition === newItem.condition &&
+        existing.value === newItem.value &&
+        existing.startDate === newItem.startDate &&
+        existing.endDate === newItem.endDate,
+    )
   }
 
   getColumnType(key: string): FilterColumn | undefined {
-    return this.availableColumns.value.find(col => col.key === key);
+    return this.availableColumns.value.find((col) => col.key === key)
   }
 
   fieldChanged(newField: string) {
-    const newItem = this.createWithDefaults({ field: newField }, this.defaultItem);
+    const newItem = this.createWithDefaults({ field: newField }, ClassQueryFilter.defaultQuery())
 
-    Object.keys(this.staging).forEach(key => {
+    Object.keys(this.staging).forEach((key) => {
       // @ts-ignore
-      delete this.staging[key];
-    });
-    Object.assign(this.staging, newItem);
+      delete this.staging[key]
+    })
+    Object.assign(this.staging, newItem)
   }
 
   updateStaging(data: Partial<IQueryFilter>) {
-    Object.assign(this.staging, data);
+    Object.assign(this.staging, data)
   }
 }

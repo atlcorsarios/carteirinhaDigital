@@ -1,7 +1,7 @@
-import { ClassNotifications } from "./ClassNotifications";
-import { ClassProducts } from "./ClassProducts";
-import { ClassUsers } from "./ClassUsers";
-import type { FilterColumn } from "./models/ModelFilterColumns";
+import { ClassNotifications } from './ClassNotifications'
+import { ClassProducts } from './products/ClassProducts'
+import { ClassUsers } from './ClassUsers'
+import type { FilterColumn } from './models/ModelFilterColumns'
 
 export class ClassDefinitions {
   static get getFilterColumnsUsers(): FilterColumn[] {

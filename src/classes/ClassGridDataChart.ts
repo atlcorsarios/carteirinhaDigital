@@ -1,7 +1,11 @@
-import type { IModelValueDataChart, IModelValueGridDataChart, IPropsDataTable } from './models/modelComponents/ModelGridDataChart'
+import type {
+  IModelValueDataChart,
+  IModelValueGridDataChart,
+  IPropsDataTable,
+} from './models/modelComponents/ModelGridDataChart'
 import { BaseClass } from './subscriptions/BaseClass'
 
-type GridPartialConstructor<T> = {
+export type GridPartialConstructor<T> = {
   modelTable?: {
     model?: Partial<IPropsDataTable<T>>
   }
@@ -9,11 +13,11 @@ type GridPartialConstructor<T> = {
 }
 
 export class ClassGridDataChart<T> extends BaseClass<IModelValueGridDataChart<T>> {
-  constructor(data?: GridPartialConstructor<T>) {
+  constructor(data?: Partial<GridPartialConstructor<T>>) {
     super(data as any)
   }
 
-  private get defaultGrid(): IModelValueGridDataChart<T> {
+  static defaultGrid<T>(): IModelValueGridDataChart<T> {
     return {
       modelTable: {
         model: {
@@ -39,12 +43,12 @@ export class ClassGridDataChart<T> extends BaseClass<IModelValueGridDataChart<T>
           },
         ],
       },
-    } as IModelValueGridDataChart<T>
+    }
   }
 
-  protected getDefault(data?: unknown): IModelValueGridDataChart<T> {
-    const defaults = this.defaultGrid
-    const input = (data as GridPartialConstructor<T>) || {}
+  protected getDefault(data: unknown = {}): IModelValueGridDataChart<T> {
+    const defaults = ClassGridDataChart.defaultGrid<T>()
+    const input = data as Partial<GridPartialConstructor<T>>
     return {
       modelTable: {
         model: this.createWithDefaults(input.modelTable?.model || {}, defaults.modelTable.model),
