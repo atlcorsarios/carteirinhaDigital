@@ -1,4 +1,4 @@
-import type { FilterColumn } from './models/ModelFilterColumns'
+import type { IFilterColumn } from './models/ModelFilterColumns'
 import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
 import type { INotification } from './models/ModelNotifications'
 import { formattedDate } from '@/utils/formattedDate'
@@ -52,7 +52,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     ]
   }
 
-  static getFilterColumn(): FilterColumn[] {
+  static getFilterColumn(): IFilterColumn[] {
     return [
       {
         key: 'id',

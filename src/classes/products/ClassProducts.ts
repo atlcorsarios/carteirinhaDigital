@@ -1,7 +1,7 @@
 import { ClassCategories } from './ClassCategories'
 import { ClassRevenues } from './ClassRevenues'
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
-import type { FilterColumn } from '../models/ModelFilterColumns'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IProduct } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
@@ -19,7 +19,7 @@ export class ClassProducts extends BaseClass<IProduct> {
       price: 0.0,
       active: true,
       category: ClassCategories.defaultCategory(),
-      revenue: ClassRevenues.defaultRevenue()
+      revenue: ClassRevenues.defaultRevenue(),
     }
   }
 
@@ -47,7 +47,7 @@ export class ClassProducts extends BaseClass<IProduct> {
     ]
   }
 
-  static getFilterColumn(): FilterColumn[] {
+  static getFilterColumn(): IFilterColumn[] {
     return [
       {
         key: 'id',

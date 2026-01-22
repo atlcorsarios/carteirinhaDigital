@@ -27,7 +27,7 @@
       </template>
 
       <template #moreInfo>
-        
+
       </template>
     </GridDataChart>
   </v-container>
@@ -110,7 +110,7 @@ import { ref, watchEffect, computed, reactive } from 'vue'
 const route = useRoute()
 const { t } = useI18n()
 
-const headers = computed(() => ClassUsers.getHeaders())
+const headers = computed(() => ClassUsers.getHeaders)
 const optionsChartFilter = computed(() => headers.value.map((h) => h.title).slice(0, -1))
 
 const gridManager = new ClassGridDataChart<IUser>({

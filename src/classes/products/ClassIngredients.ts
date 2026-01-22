@@ -1,7 +1,7 @@
-import type { IHeadersDataTable } from "../models/modelComponents/ModelHeaderTable";
-import type { FilterColumn } from "../models/ModelFilterColumns";
-import type { IIngredient } from "../models/ModelIProduct";
-import { BaseClass } from "../subscriptions/BaseClass";
+import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
+import type { IIngredient } from '../models/ModelIProduct'
+import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
 
 export class ClassIngredients extends BaseClass<IIngredient> {
@@ -14,7 +14,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
       id: 0,
       description: '',
       measurement: '',
-      stock: 0.0
+      stock: 0.0,
     }
   }
 
@@ -36,7 +36,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
     ]
   }
 
-  static getFilterColumn(): FilterColumn[] {
+  static getFilterColumn(): IFilterColumn[] {
     return [
       {
         key: 'id',

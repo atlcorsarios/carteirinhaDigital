@@ -1,6 +1,6 @@
-import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
+import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
 import type { IUser } from '@/classes/models/ModelUser'
-import type { FilterColumn } from './models/ModelFilterColumns'
+import type { IFilterColumn } from './models/ModelFilterColumns'
 import { BaseClass } from './subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
 
@@ -31,95 +31,51 @@ export class ClassUsers extends BaseClass<IUser> {
     return value ? t('messages.yes') : t('messages.no')
   }
 
-  static getHeaders(): IHeadersDataTable[] {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return [
-      {
-        title: t('dataTable.users.headers.id'),
-        align: 'start',
-        key: 'idUser',
+  static get fieldConfig(): TEntityConfig<IUser> {
+    return {
+      idUser: {
         width: 50,
+        excludeFromFilter: true,
       },
-      {
-        title: t('dataTable.users.headers.username'),
-        align: 'start',
-        key: 'username',
+      username: {
         width: 250,
       },
-      {
-        title: t('dataTable.users.headers.email'),
-        align: 'start',
-        key: 'email',
+      email: {
         width: 200,
       },
-      {
-        title: t('dataTable.users.headers.role'),
-        align: 'start',
-        key: 'role',
-        width: 'auto',
-        maxWidth: 100,
-      },
-      {
-        title: t('dataTable.users.headers.phoneNumber'),
-        align: 'end',
-        key: 'phoneNumber',
-        width: 'auto',
-        maxWidth: 200,
-      },
-      {
-        title: t('dataTable.users.headers.receiveNotifications'),
-        key: 'receiveNotifications',
-        align: 'center',
-        value: (item: IUser) => ClassUsers.formatBoolean(item.receiveNotifications),
-        chartFormatter: ClassUsers.formatBoolean,
-      },
-      {
-        title: t('dataTable.users.headers.active'),
-        key: 'active',
-        align: 'center',
-        value: (item: IUser) => ClassUsers.formatBoolean(item.active),
-        chartFormatter: ClassUsers.formatBoolean,
-      },
-      {
-        title: t('dataTable.headersDefault.actions'),
-        key: 'actions',
-        align: 'center',
-      },
-    ]
-  }
-
-  static getFilterColumns(): FilterColumn[] {
-    return [
-      {
-        key: 'id',
-        label: 'forms.formUser.id',
-        type: 'number',
-      },
-      {
-        key: 'username',
-        label: 'forms.formUser.inputUsername.label',
-        type: 'text',
-      },
-      {
-        key: 'email',
-        label: 'forms.formUser.inputEmail.label',
-        type: 'text',
-      },
-      {
-        key: 'role',
-        label: 'forms.formUser.inputRole.label',
-        type: 'select',
-        options: [
+      role: {
+        width: 100,
+        filterType: 'select',
+        selectOptions: [
           { title: 'Admin', value: 'ADMIN' },
           { title: 'User', value: 'USER' },
         ],
       },
-      {
-        key: 'active',
-        label: 'forms.formUser.inputUserActive.label',
-        type: 'boolean',
+      phoneNumber: {
+        align: 'end',
+        width: 200,
       },
-    ]
+      receiveNotifications: {
+        align: 'center',
+        chartFormatter: ClassUsers.formatBoolean,
+        value: (item) => ClassUsers.formatBoolean(item.receiveNotifications),
+        excludeFromFilter: true,
+      },
+      active: {
+        align: 'center',
+        chartFormatter: ClassUsers.formatBoolean,
+        value: (item: IUser) => ClassUsers.formatBoolean(item.active),
+      },
+    }
+  }
+
+  static get getHeaders(): IHeadersDataTable[] {
+    const defaultModel = new ClassUsers().getDefault()
+    return BaseClass.generateHeadersFromModel(defaultModel, 'forms.formUser', ClassUsers.fieldConfig)
+  }
+
+  static get getFilterColumns(): IFilterColumn[] {
+    const defaultModel = new ClassUsers().getDefault()
+    return BaseClass.generateFiltersFromModel(defaultModel, 'forms.formUser', ClassUsers.fieldConfig)
   }
 }

@@ -1,5 +1,5 @@
 import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
-import type { FilterColumn } from './models/ModelFilterColumns'
+import type { IFilterColumn } from './models/ModelFilterColumns'
 import { formattedDate } from '@/utils/formattedDate'
 import { StorageUtils } from '@/utils/StorageUtils'
 import { BaseClass } from './subscriptions/BaseClass'
@@ -9,7 +9,7 @@ import { reactive, ref, watch } from 'vue'
 
 export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
   private staging: IQueryFilter
-  private availableColumns = ref<FilterColumn[]>([])
+  private availableColumns = ref<IFilterColumn[]>([])
   private storageKey: string = ''
 
   constructor(data?: Partial<IQueryFilter>[]) {
@@ -34,14 +34,16 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
         }
 
         this.resetStaging()
-      }, { immediate: true },
+      },
+      { immediate: true },
     )
 
     watch(
       () => route.meta?.filterConfig,
       (newConfig) => {
-        this.availableColumns.value = (newConfig as FilterColumn[]) || []
-      }, { immediate: true },
+        this.availableColumns.value = (newConfig as IFilterColumn[]) || []
+      },
+      { immediate: true },
     )
 
     watch(
@@ -50,7 +52,8 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
         if (this.storageKey) {
           StorageUtils.set(this.storageKey, newVal, 'session')
         }
-      }, { deep: true },
+      },
+      { deep: true },
     )
   }
 
@@ -59,11 +62,11 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
   }
 
   set stagingModel(value: IQueryFilter) {
-    Object.keys(this.staging).forEach(k => delete (this.staging as any)[k])
+    Object.keys(this.staging).forEach((k) => delete (this.staging as any)[k])
     Object.assign(this.staging, value)
   }
 
-  get filters(): FilterColumn[] {
+  get filters(): IFilterColumn[] {
     return this.availableColumns.value
   }
 
@@ -135,7 +138,7 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
     )
   }
 
-  getColumnType(key: string): FilterColumn | undefined {
+  getColumnType(key: string): IFilterColumn | undefined {
     return this.availableColumns.value.find((col) => col.key === key)
   }
 

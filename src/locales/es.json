@@ -85,25 +85,34 @@
       }
     },
     "formUser": {
-      "id": "id",
-      "inputUsername": {
+      "idUser": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "username": {
+        "headerTable": "Nombre",
         "label": "Nombre de usuario",
         "hint": "Ingrese su nombre"
       },
-      "inputEmail": {
+      "email": {
+        "headerTable": "Correo electrónico",
         "label": "Correo electrónico",
         "hint": "Ingrese su correo electrónico"
       },
-      "inputRole": {
+      "role": {
+        "headerTable": "Permiso",
         "label": "Permiso"
       },
-      "inputPhoneNumber": {
+      "phoneNumber": {
+        "headerTable": "Teléfono",
         "label": "Número de teléfono"
       },
-      "inputReceiveNotifications": {
+      "receiveNotifications": {
+        "headerTable": "Notificar",
         "label": "¿Recibe notificaciones?"
       },
-      "inputUserActive": {
+      "active": {
+        "headerTable": "Ativo",
         "label": "¿Usuario activo?"
       }
     },
@@ -183,16 +192,7 @@
   },
   "dataTable": {
     "users": {
-      "title": "Informe de usuarios",
-      "headers": {
-        "id": "Id",
-        "username": "Nombre de usuario",
-        "email": "Correo electrónico",
-        "role": "Permiso",
-        "phoneNumber": "Número de teléfono",
-        "receiveNotifications": "Recibe notificaciones",
-        "active": "Activo"
-      }
+      "title": "Informe de usuarios"
     },
     "headersDefault": {
       "actions": "Acciones"

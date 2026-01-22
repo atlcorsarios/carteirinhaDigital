@@ -1,8 +1,8 @@
-import { ClassIngredientsInRevenue } from "./ClassIngredientsInRevenue";
-import type { IHeadersDataTable } from "../models/modelComponents/ModelHeaderTable";
-import type { FilterColumn } from "../models/ModelFilterColumns";
-import type { IRevenue } from "../models/ModelIProduct";
-import { BaseClass } from "../subscriptions/BaseClass";
+import { ClassIngredientsInRevenue } from './ClassIngredientsInRevenue'
+import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
+import type { IRevenue } from '../models/ModelIProduct'
+import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
 
 export class ClassRevenues extends BaseClass<IRevenue> {
@@ -15,7 +15,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
       id: 0,
       idProduct: 0,
       description: '',
-      ingredients: [ClassIngredientsInRevenue.defaultIngredientsInRevenue()]
+      ingredients: [ClassIngredientsInRevenue.defaultIngredientsInRevenue()],
     }
   }
 
@@ -37,7 +37,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
     ]
   }
 
-  static getFilterColumn(): FilterColumn[] {
+  static getFilterColumn(): IFilterColumn[] {
     return [
       {
         key: 'id',

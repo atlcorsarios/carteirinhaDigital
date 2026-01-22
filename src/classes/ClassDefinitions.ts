@@ -1,18 +1,18 @@
 import { ClassNotifications } from './ClassNotifications'
 import { ClassProducts } from './products/ClassProducts'
 import { ClassUsers } from './ClassUsers'
-import type { FilterColumn } from './models/ModelFilterColumns'
+import type { IFilterColumn } from './models/ModelFilterColumns'
 
 export class ClassDefinitions {
-  static get getFilterColumnsUsers(): FilterColumn[] {
-    return ClassUsers.getFilterColumns()
+  static get getFilterColumnsUsers(): IFilterColumn[] {
+    return ClassUsers.getFilterColumns
   }
 
-  static get getFilterColumnsProducts(): FilterColumn[] {
+  static get getFilterColumnsProducts(): IFilterColumn[] {
     return ClassProducts.getFilterColumn()
   }
 
-  static get getFilterColumnsNotifications(): FilterColumn[] {
+  static get getFilterColumnsNotifications(): IFilterColumn[] {
     return ClassNotifications.getFilterColumn()
   }
 }

@@ -85,25 +85,34 @@
       }
     },
     "formUser": {
-      "id": "id",
-      "inputUsername": {
+      "idUser": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "username": {
+        "headerTable": "Name",
         "label": "Username",
         "hint": "Enter your name"
       },
-      "inputEmail": {
+      "email": {
+        "headerTable": "Email",
         "label": "Email",
         "hint": "Enter your email"
       },
-      "inputRole": {
+      "role": {
+        "headerTable": "Role",
         "label": "Role"
       },
-      "inputPhoneNumber": {
+      "phoneNumber": {
+        "headerTable": "Telephone",
         "label": "Phone number"
       },
-      "inputReceiveNotifications": {
-        "label": "Receive notifications?"
+      "receiveNotifications": {
+        "headerTable": "Notify",
+        "label": "Receives notifications?"
       },
-      "inputUserActive": {
+      "active": {
+        "headerTable": "Active",
         "label": "Active user?"
       }
     },
@@ -183,16 +192,7 @@
   },
   "dataTable": {
     "users": {
-      "title": "User report",
-      "headers": {
-        "id": "Id",
-        "username": "Username",
-        "email": "Email",
-        "role": "Role",
-        "phoneNumber": "Phone number",
-        "receiveNotifications": "Receives notifications",
-        "active": "Active"
-      }
+      "title": "User report"
     },
     "headersDefault": {
       "actions": "Actions"

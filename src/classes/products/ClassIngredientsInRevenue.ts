@@ -1,5 +1,5 @@
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
-import type { FilterColumn } from '../models/ModelFilterColumns'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IIngredientsInRevenue } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassIngredients } from './ClassIngredients'
@@ -35,7 +35,7 @@ export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> 
     ]
   }
 
-  static getFilterColumn(): FilterColumn[] {
+  static getFilterColumn(): IFilterColumn[] {
     return [
       {
         key: 'id',
