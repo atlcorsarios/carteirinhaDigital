@@ -18,8 +18,8 @@
       <template #prepend-inner>
         <div class="d-flex flex-row" v-if="hasFilters">
           <BtnOpenDialog
-            icon="mdi-filter-cog"
-            size="small"
+            icon="mdi-filter-cog" 
+            variant="plain"
             v-tooltip="t('tooltips.appBar.filter')"
             :rotate="false"
             @click="openDialog"
