@@ -23,7 +23,7 @@ export interface IIngredientsInRevenue {
 }
 
 export interface IProduct {
-  id?: string | number
+  idProduct?: string | number
   productName: string
   image?: string
   price?: number

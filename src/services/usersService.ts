@@ -25,6 +25,24 @@ export const usersServices = {
             receiveNotifications: true,
             active: true,
           },
+          {
+            idUser: 2,
+            username: 'DUDA',
+            email: 'duda@gmail.com',
+            role: 'USER',
+            phoneNumber: '(32) 98888-8888',
+            receiveNotifications: false,
+            active: true,
+          },
+          {
+            idUser: 3,
+            username: 'MOISES',
+            email: 'moises@gmail.com',
+            role: 'USER',
+            phoneNumber: '(32) 97777-7777',
+            receiveNotifications: false,
+            active: false,
+          },
         ]
       };
 

@@ -88,6 +88,7 @@
         :loading="dataTable.model.loadingDataTable"
         fixed-header
         density="compact"
+        striped="even"
         hover
         :row-props="rowProps"
         @click:row="clickOnTheLine"

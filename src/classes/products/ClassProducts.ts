@@ -1,10 +1,10 @@
 import { ClassCategories } from './ClassCategories'
 import { ClassRevenues } from './ClassRevenues'
-import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
+import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IProduct } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
-import { i18n } from '@/plugins/i18n'
+import { ClassFormatters } from '../ClassFormatters'
 
 export class ClassProducts extends BaseClass<IProduct> {
   constructor(data?: Partial<IProduct>) {
@@ -13,7 +13,7 @@ export class ClassProducts extends BaseClass<IProduct> {
 
   static defaultProduct(): IProduct {
     return {
-      id: 0,
+      idProduct: 0,
       productName: '',
       image: '',
       price: 0.0,
@@ -28,32 +28,53 @@ export class ClassProducts extends BaseClass<IProduct> {
     return this.createWithDefaults(item, ClassProducts.defaultProduct())
   }
 
-  static getHeaders(): IHeadersDataTable[] {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return [
-      {
-        title: t('dataTable.products.headers.id'),
-        align: 'start',
-        key: 'id',
+  static get fieldConfig(): TEntityConfig<IProduct> {
+    return {
+      idProduct: {
         width: 50,
       },
-      {
-        title: t('dataTable.products.headers.productName'),
-        align: 'start',
-        key: 'productName',
-        width: 200,
+      productName: {
+        maxWidth: 250,
       },
-    ]
+      image: {
+        hidden: true,
+      },
+      price: {
+        align: 'end',
+        maxWidth: 150,
+        chartFormatter: ClassFormatters.formatPriceDynamic,
+        value: (item) => ClassFormatters.formatPriceDynamic(item.price),
+      },
+      active: {
+        align: 'center',
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (item) => ClassFormatters.formatBoolean(item.active),
+        width: 50,
+      },
+      category: {
+        hidden: true,
+      },
+      revenue: {
+        hidden: true,
+      },
+    }
   }
 
-  static getFilterColumn(): IFilterColumn[] {
-    return [
-      {
-        key: 'id',
-        label: 'forms.formProduct.id',
-        type: 'number',
-      },
-    ]
+  static get headers(): IHeadersDataTable[] {
+    const defaultModel = new ClassProducts().getDefault()
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formProduct',
+      ClassProducts.fieldConfig,
+    )
+  }
+
+  static get filters(): IFilterColumn[] {
+    const defaultModel = new ClassProducts().getDefault()
+    return BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formProduct',
+      ClassProducts.fieldConfig,
+    )
   }
 }

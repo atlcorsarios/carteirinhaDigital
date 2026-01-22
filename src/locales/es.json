@@ -171,7 +171,8 @@
     "errors": {
       "reqGenerics": "¡Se produjo un error en la solicitud!",
       "accessDenied": "No tienes permiso para acceder a esta página",
-      "requiredAuth": "¡Necesitas estar autenticado para acceder. Por favor, inicia sesión!"
+      "requiredAuth": "¡Necesitas estar autenticado para acceder. Por favor, inicia sesión!",
+      "searchQuote": "Error al recuperar la cotización para: "
     },
     "forms": {
       "formUsers": {

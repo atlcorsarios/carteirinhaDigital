@@ -27,12 +27,14 @@ import AppBar from './components/layouts/base/AppBar.vue';
 import Navigation from './components/layouts/base/Navigation.vue';
 import Breadcrumbs from './components/layouts/base/Breadcrumbs.vue';
 import BtnFabOtherTemplate from './components/layouts/BtnFabOtherTemplate.vue';
+import { useQuotationStore } from './stores/quotationStore';
+import { BASE_CURRENCY, getCurrency } from './locales/definitionsLocales';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { computed, watch, ref } from 'vue';
 
+const quotationStore = useQuotationStore()
 const { t, locale } = useI18n();
-
 const route = useRoute();
 
 watch(
@@ -48,6 +50,13 @@ watch(
     }
   }, { immediate: true }
 );
+
+watch(locale, (newLocale) => {
+  const targetCurrency = getCurrency(newLocale as string)
+  if (targetCurrency !== BASE_CURRENCY) {
+    quotationStore.ensureRateFor(targetCurrency)
+  }
+}, { immediate: true })
 
 const isLayoutVisible = computed(() => {
   return route.meta.hidden !== true;

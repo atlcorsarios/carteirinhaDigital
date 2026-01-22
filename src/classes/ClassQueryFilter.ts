@@ -3,7 +3,7 @@ import type { IFilterColumn } from './models/ModelFilterColumns'
 import { formattedDate } from '@/utils/formattedDate'
 import { StorageUtils } from '@/utils/StorageUtils'
 import { BaseClass } from './subscriptions/BaseClass'
-import { FALLBACK_LOCALE } from '@/plugins/i18n'
+import { FALLBACK_LOCALE } from '@/locales/definitionsLocales'
 import { useRoute } from 'vue-router'
 import { reactive, ref, watch } from 'vue'
 
@@ -74,7 +74,6 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
     const today = new Date()
     const locale = typeof navigator !== 'undefined' ? navigator.language : FALLBACK_LOCALE
     const dateStr = formattedDate(today, locale)
-
     return {
       field: '',
       condition: '',

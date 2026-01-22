@@ -6,12 +6,7 @@
     transition="scale-transition"
   >
     <template v-slot:activator="{ props }">
-      <v-btn
-        icon="mdi-dots-vertical"
-        variant="text"
-        v-bind="props"
-        color="high-emphasis"
-      />
+      <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props" color="high-emphasis" />
     </template>
 
     <v-list density="comfortable" min-width="200" elevation="10" rounded="lg" nav>
@@ -22,11 +17,7 @@
         link
       >
         <template v-slot:append v-if="hasNotifications">
-          <v-badge
-            color="warning"
-            dot
-            inline
-          />
+          <v-badge color="warning" dot inline />
         </template>
       </v-list-item>
 
@@ -51,17 +42,17 @@
             class="me-3"
           />
         </template>
-         <template v-slot:append>
-            <v-switch
-              :model-value="isDark"
-              class="ms-3"
-              color="primary"
-              density="compact"
-              hide-details
-              inset
-              @click.stop="toggleTheme"
-            />
-         </template>
+        <template v-slot:append>
+          <v-switch
+            :model-value="isDark"
+            class="ms-3"
+            color="primary"
+            density="compact"
+            hide-details
+            inset
+            @click.stop="toggleTheme"
+          />
+        </template>
       </v-list-item>
 
       <v-divider class="my-2" />
@@ -93,25 +84,25 @@
 </template>
 
 <script setup lang="ts">
-import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue';
-import { availableLocales } from '@/locales/AvailableLocales'; //
-import { StorageUtils } from '@/utils/StorageUtils'; //
-import { useThemeSwitch } from '@/composables/useThemeSwitch'; //
-import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
+import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
+import { availableLocales } from '@/locales/definitionsLocales' //
+import { StorageUtils } from '@/utils/StorageUtils' //
+import { useThemeSwitch } from '@/composables/useThemeSwitch' //
+import { useI18n } from 'vue-i18n'
+import { computed, ref } from 'vue'
 
-const open = ref(false);
+const open = ref(false)
 const props = defineProps<{
   hasNotifications: boolean
-}>();
-const emits = defineEmits(['open-dialog-licence']);
+}>()
+const emits = defineEmits(['open-dialog-licence'])
 
-const { theme, toggleTheme } = useThemeSwitch();
-const isDark = computed(() => theme.global.current.value.dark);
-const { t, locale } = useI18n();
+const { theme, toggleTheme } = useThemeSwitch()
+const isDark = computed(() => theme.global.current.value.dark)
+const { t, locale } = useI18n()
 
 function changeLocale(lang: string) {
-  locale.value = lang;
-  StorageUtils.set('user_locale', lang, 'local');
+  locale.value = lang
+  StorageUtils.set('user_locale', lang, 'local')
 }
 </script>

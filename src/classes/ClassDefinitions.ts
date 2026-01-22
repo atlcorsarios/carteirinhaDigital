@@ -5,14 +5,14 @@ import type { IFilterColumn } from './models/ModelFilterColumns'
 
 export class ClassDefinitions {
   static get getFilterColumnsUsers(): IFilterColumn[] {
-    return ClassUsers.getFilterColumns
+    return ClassUsers.filters
   }
 
   static get getFilterColumnsProducts(): IFilterColumn[] {
-    return ClassProducts.getFilterColumn()
+    return ClassProducts.filters
   }
 
   static get getFilterColumnsNotifications(): IFilterColumn[] {
-    return ClassNotifications.getFilterColumn()
+    return ClassNotifications.filters
   }
 }

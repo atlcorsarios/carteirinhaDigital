@@ -22,7 +22,7 @@ export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> 
     return this.createWithDefaults(item, ClassIngredientsInRevenue.defaultIngredientsInRevenue())
   }
 
-  static getHeaders(): IHeadersDataTable[] {
+  static get headers(): IHeadersDataTable[] {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
@@ -35,7 +35,7 @@ export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> 
     ]
   }
 
-  static getFilterColumn(): IFilterColumn[] {
+  static get filters(): IFilterColumn[] {
     return [
       {
         key: 'id',

@@ -1,8 +1,8 @@
+import { ClassFormatters } from './ClassFormatters'
 import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
-import type { IUser } from '@/classes/models/ModelUser'
 import type { IFilterColumn } from './models/ModelFilterColumns'
+import type { IUser } from '@/classes/models/ModelUser'
 import { BaseClass } from './subscriptions/BaseClass'
-import { i18n } from '@/plugins/i18n'
 
 export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
@@ -25,12 +25,6 @@ export class ClassUsers extends BaseClass<IUser> {
     return this.createWithDefaults(data, ClassUsers.defaultUser())
   }
 
-  static formatBoolean(value?: boolean): string {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return value ? t('messages.yes') : t('messages.no')
-  }
-
   static get fieldConfig(): TEntityConfig<IUser> {
     return {
       idUser: {
@@ -38,13 +32,13 @@ export class ClassUsers extends BaseClass<IUser> {
         excludeFromFilter: true,
       },
       username: {
-        width: 250,
+        maxWidth: 250,
       },
       email: {
-        width: 200,
+        maxWidth: 200,
       },
       role: {
-        width: 100,
+        maxWidth: 100,
         filterType: 'select',
         selectOptions: [
           { title: 'Admin', value: 'ADMIN' },
@@ -53,29 +47,39 @@ export class ClassUsers extends BaseClass<IUser> {
       },
       phoneNumber: {
         align: 'end',
-        width: 200,
+        maxWidth: 200,
       },
       receiveNotifications: {
         align: 'center',
-        chartFormatter: ClassUsers.formatBoolean,
-        value: (item) => ClassUsers.formatBoolean(item.receiveNotifications),
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (item) => ClassFormatters.formatBoolean(item.receiveNotifications),
         excludeFromFilter: true,
+        width: 50,
       },
       active: {
         align: 'center',
-        chartFormatter: ClassUsers.formatBoolean,
-        value: (item: IUser) => ClassUsers.formatBoolean(item.active),
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (item) => ClassFormatters.formatBoolean(item.active),
+        width: 50,
       },
     }
   }
 
-  static get getHeaders(): IHeadersDataTable[] {
+  static get headers(): IHeadersDataTable[] {
     const defaultModel = new ClassUsers().getDefault()
-    return BaseClass.generateHeadersFromModel(defaultModel, 'forms.formUser', ClassUsers.fieldConfig)
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formUser',
+      ClassUsers.fieldConfig,
+    )
   }
 
-  static get getFilterColumns(): IFilterColumn[] {
+  static get filters(): IFilterColumn[] {
     const defaultModel = new ClassUsers().getDefault()
-    return BaseClass.generateFiltersFromModel(defaultModel, 'forms.formUser', ClassUsers.fieldConfig)
+    return BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formUser',
+      ClassUsers.fieldConfig,
+    )
   }
 }

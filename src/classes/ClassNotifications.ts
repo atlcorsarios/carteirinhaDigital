@@ -2,8 +2,9 @@ import type { IFilterColumn } from './models/ModelFilterColumns'
 import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
 import type { INotification } from './models/ModelNotifications'
 import { formattedDate } from '@/utils/formattedDate'
+import { i18n } from '@/plugins/i18n'
+import { FALLBACK_LOCALE } from '@/locales/definitionsLocales'
 import { BaseClass } from './subscriptions/BaseClass'
-import { FALLBACK_LOCALE, i18n } from '@/plugins/i18n'
 
 export class ClassNotifications extends BaseClass<INotification> {
   constructor(data?: Partial<INotification>) {
@@ -33,7 +34,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
   }
 
-  static getHeaders(): IHeadersDataTable[] {
+  static get headers(): IHeadersDataTable[] {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
@@ -52,7 +53,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     ]
   }
 
-  static getFilterColumn(): IFilterColumn[] {
+  static get filters(): IFilterColumn[] {
     return [
       {
         key: 'id',

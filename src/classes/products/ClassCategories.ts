@@ -21,7 +21,7 @@ export class ClassCategories extends BaseClass<ICategory> {
     return this.createWithDefaults(item, ClassCategories.defaultCategory())
   }
 
-  static getHeaders(): IHeadersDataTable[] {
+  static get headers(): IHeadersDataTable[] {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
@@ -40,7 +40,7 @@ export class ClassCategories extends BaseClass<ICategory> {
     ]
   }
 
-  static getFilterColumn(): IFilterColumn[] {
+  static get filters(): IFilterColumn[] {
     return [
       {
         key: 'id',

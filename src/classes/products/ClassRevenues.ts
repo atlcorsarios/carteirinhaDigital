@@ -24,7 +24,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
     return this.createWithDefaults(item, ClassRevenues.defaultRevenue())
   }
 
-  static getHeaders(): IHeadersDataTable[] {
+  static get headers(): IHeadersDataTable[] {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return [
@@ -37,7 +37,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
     ]
   }
 
-  static getFilterColumn(): IFilterColumn[] {
+  static get filters(): IFilterColumn[] {
     return [
       {
         key: 'id',

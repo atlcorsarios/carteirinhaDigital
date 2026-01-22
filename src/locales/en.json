@@ -171,7 +171,8 @@
     "errors": {
       "reqGenerics": "An error occurred in the request!",
       "accessDenied": "You do not have permission to access this page.",
-      "requiredAuth": "You need to be authenticated to access it. Log in!"
+      "requiredAuth": "You need to be authenticated to access it. Log in!",
+      "searchQuote": "Error retrieving quote for: "
     },
     "forms": {
       "formUsers": {
