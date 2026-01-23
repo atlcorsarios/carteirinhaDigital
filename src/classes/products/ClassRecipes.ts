@@ -12,7 +12,7 @@ export class ClassRecipes extends BaseClass<IRecipe> {
 
   static defaultRecipe(): IRecipe {
     return {
-      id: 0,
+      idRecipe: 0,
       idProduct: 0,
       description: '',
       ingredients: [ClassIngredientsInRecipe.defaultIngredientsInRecipe()],

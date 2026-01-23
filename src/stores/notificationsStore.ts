@@ -9,7 +9,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
 
   const defaultNotificationsTest: Partial<INotification>[] = [
     {
-      id: 1,
+      idNotification: 1,
       title: 'Teste notificação',
       description: 'Tem nem i18n ainda',
       message: 'Era pra fazer a tela de cadastro de produto, seu animal kkkkk',
@@ -17,7 +17,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
       recipients: ['avelito@gmail.com'],
     },
     {
-      id: 2,
+      idNotification: 2,
       title: 'Teste notificação visualizada',
       description: 'Precisa de lógica para marcar as mensagens como visualizada',
       message:
@@ -27,7 +27,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
       recipients: ['avelito@gmail.com'],
     },
     {
-      id: 3,
+      idNotification: 3,
       title: 'Teste notificação visualizada',
       description: 'Precisa de lógica para marcar as mensagens como visualizada',
       message:
@@ -36,10 +36,10 @@ export const useNotificationsStore = defineStore('notifications', () => {
       sender: 'Usuário.ficticio2@gmail.com',
       recipients: ['funcionarioAvelito@gmail.com'],
     },
-  ];
+  ]
 
   const notifications = ref<INotification[]>(
-    defaultNotificationsTest.map((item) => new ClassNotifications(item).model)
+    defaultNotificationsTest.map((item) => new ClassNotifications(item).model),
   )
 
   async function fetchNotifications(): Promise<INotification[]> {

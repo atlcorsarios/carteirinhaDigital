@@ -1,8 +1,9 @@
-import { ClassCategories } from './ClassCategories'
-import { ClassRecipes } from './ClassRecipes'
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IProduct } from '../models/ModelIProduct'
+import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
+import { ClassCategories } from './ClassCategories'
+import { ClassRecipes } from './ClassRecipes'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
 
@@ -76,10 +77,31 @@ export class ClassProducts extends BaseClass<IProduct> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassProducts().getDefault()
-    return BaseClass.generateFiltersFromModel(
+    const autoFilters = BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formProduct',
       ClassProducts.fieldConfig,
     )
+
+    autoFilters.push({
+      key: 'category.description',
+      label: 'forms.formProduct.category.headerTable',
+      type: 'text',
+    })
+
+    autoFilters.push({
+      key: 'recipe.description',
+      label: 'forms.formProduct.recipe.headerTable',
+      type: 'text',
+    })
+
+    return autoFilters;
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'productName',
+      condition: 'contains'
+    }
   }
 }

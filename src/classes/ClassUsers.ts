@@ -1,8 +1,9 @@
-import { ClassFormatters } from './ClassFormatters'
 import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from './models/ModelFilterColumns'
 import type { IUser } from '@/classes/models/ModelUser'
+import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
 import { BaseClass } from './subscriptions/BaseClass'
+import { ClassFormatters } from './ClassFormatters'
 
 export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
@@ -57,8 +58,7 @@ export class ClassUsers extends BaseClass<IUser> {
         width: 50,
         cellClass: (value: boolean) => {
           if (value === true) return 'text-success font-weight-bold'
-          if (value === false) return 'text-error font-weight-bold'
-          return ''
+          else return 'text-error font-weight-bold'
         }
       },
       active: {
@@ -86,5 +86,12 @@ export class ClassUsers extends BaseClass<IUser> {
       'forms.formUser',
       ClassUsers.fieldConfig,
     )
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'username',
+      condition: 'contains'
+    }
   }
 }

@@ -1,17 +1,18 @@
 export interface ICategory {
-  id?: string | number
+  idCategory?: number
   description: string
+  active?: boolean
 }
 
 export interface IRecipe {
-  id?: string | number
+  idRecipe?: number
   idProduct: string | number
   description: string
   ingredients: IIngredientsInRecipe[]
 }
 
 export interface IIngredient {
-  id?: string | number
+  idIngredient?: number
   description: string
   measurement: string
   stock: number

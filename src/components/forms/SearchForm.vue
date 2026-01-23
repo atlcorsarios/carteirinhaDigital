@@ -18,19 +18,14 @@
       <template #prepend-inner>
         <div class="d-flex flex-row" v-if="hasFilters">
           <BtnOpenDialog
-            icon="mdi-filter-cog" 
+            icon="mdi-filter-cog"
             variant="plain"
             v-tooltip="t('tooltips.appBar.filter')"
             :rotate="false"
             @click="openDialog"
           />
 
-          <v-divider
-            vertical
-            class="mx-1 me-2 my-auto"
-            style="height: 24px"
-            :thickness="2"
-          />
+          <v-divider vertical class="mx-1 me-2 my-auto" style="height: 24px" :thickness="2" />
         </div>
 
         <v-hotkey
@@ -58,7 +53,9 @@
     <template v-slot:title>
       <div :class="[mdAndDown ? 'd-flex flex-column' : '']">
         <span class="text-h6 me-2">{{ t('messages.components.queryFilter.title') }}</span>
-        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">{{ titleDialogFilter }}</span>
+        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">{{
+          titleDialogFilter
+        }}</span>
       </div>
     </template>
 
@@ -68,64 +65,56 @@
         <v-tab value="list">{{ t('tabs.dialogQueryFilter.list') }}</v-tab>
       </v-tabs>
 
-        <v-tabs-window v-model="tab">
-          <v-tabs-window-item value="form">
-            <div class="mt-3">
-              <QueryFilterForm
-                ref="refFormQuery"
-                v-model:filter="queryManager.stagingModel"
-                v-model:valid="isFormValid"
-                :filter-manager="queryManager"
-              />
-            </div>
-          </v-tabs-window-item>
+      <v-tabs-window v-model="tab">
+        <v-tabs-window-item value="form">
+          <div class="mt-3">
+            <QueryFilterForm
+              ref="refFormQuery"
+              v-model:filter="queryManager.stagingModel"
+              v-model:valid="isFormValid"
+              :filter-manager="queryManager"
+            />
+          </div>
+        </v-tabs-window-item>
 
-          <v-tabs-window-item value="list">
-            <v-virtual-scroll
-              v-if="queryManager.model.length > 0"
-              :items="queryManager.model"
-              height="300"
-            >
-              <template v-slot:default="{ index, item }">
-                <v-list
-                  lines="two"
-                  rounded
-                  variant="elevated"
+        <v-tabs-window-item value="list">
+          <v-virtual-scroll
+            v-if="queryManager.model.length > 0"
+            :items="queryManager.model"
+            height="300"
+          >
+            <template v-slot:default="{ index, item }">
+              <v-list lines="two" rounded variant="elevated">
+                <v-list-item
+                  :title="formatTitle(item)"
+                  :subtitle="formatSubtitle(item)"
+                  class="mb-2"
                 >
-                  <v-list-item
-                    :title="formatTitle(item)"
-                    :subtitle="formatSubtitle(item)"
-                    class="mb-2"
-                  >
-                    <template #prepend>
-                      <v-avatar
-                        color="primary"
-                        variant="tonal"
-                        size="small"
-                      >
-                        {{ index + 1 }}
-                      </v-avatar>
-                    </template>
-                    <template #append>
-                      <v-btn
-                        icon="mdi-delete"
-                        color="error"
-                        variant="text"
-                        size="small"
-                        @click="queryManager.removeFilter(index)"
-                      />
-                    </template>
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-virtual-scroll>
+                  <template #prepend>
+                    <v-avatar color="primary" variant="tonal" size="small">
+                      {{ index + 1 }}
+                    </v-avatar>
+                  </template>
+                  <template #append>
+                    <v-btn
+                      icon="mdi-delete"
+                      color="error"
+                      variant="text"
+                      size="small"
+                      @click="queryManager.removeFilter(index)"
+                    />
+                  </template>
+                </v-list-item>
+              </v-list>
+            </template>
+          </v-virtual-scroll>
 
-            <div v-else class="text-center text-medium-emphasis mt-10">
-              <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
-              <div>{{ t('filterColumn.none') }}</div>
-            </div>
-          </v-tabs-window-item>
-        </v-tabs-window>
+          <div v-else class="text-center text-medium-emphasis mt-10">
+            <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2" />
+            <div>{{ t('filterColumn.none') }}</div>
+          </div>
+        </v-tabs-window-item>
+      </v-tabs-window>
     </template>
 
     <template v-slot:actions>
@@ -173,67 +162,67 @@ import { useDisplay } from 'vuetify'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
-const { mdAndDown } = useDisplay();
-const { t } = useI18n();
+const { mdAndDown } = useDisplay()
+const { t } = useI18n()
 
 const props = defineProps<{
-  loading: boolean;
-  hasFilters: boolean;
-  titleDialogFilter: string;
-}>();
+  loading: boolean
+  hasFilters: boolean
+  titleDialogFilter: string
+}>()
 
-const queryManager = defineModel<ClassQueryFilter>('manager', { required: true });
-const dialogAttributes = defineModel<any>('dialogAttributes', { required: true });
-const tab = defineModel<string>('tab', { default: 'form' });
+const queryManager = defineModel<ClassQueryFilter>('manager', { required: true })
+const dialogAttributes = defineModel<any>('dialogAttributes', { required: true })
+const tab = defineModel<string>('tab', { default: 'form' })
 
-const emits = defineEmits(['submit', 'reset', 'add-filter', 'open-filter']);
+const emits = defineEmits(['submit', 'reset', 'add-filter', 'open-filter'])
 
-const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null);
-const inputRef = ref<any>(null);
-const isFormValid = ref(false);
+const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null)
+const inputRef = ref<any>(null)
+const isFormValid = ref(false)
 
 const canSubmit = computed(() => {
-  const hasText = queryManager.value.stagingModel.value &&
-                  queryManager.value.stagingModel.value.trim() !== '';
-  const hasList = queryManager.value.model.length > 0;
-  return hasText || hasList;
-});
+  const hasText =
+    queryManager.value.stagingModel.value && queryManager.value.stagingModel.value.trim() !== ''
+  const hasList = queryManager.value.model.length > 0
+  return hasText || hasList
+})
 
 function openDialog() {
-  emits('open-filter');
+  emits('open-filter')
 }
 
 function formatTitle(item: IQueryFilter) {
-  const col = queryManager.value.getColumnType(item.field);
-  const label = col ? t(col.label) : item.field;
+  const col = queryManager.value.getColumnType(item.field)
+  const label = col ? t(col.label) : item.field
 
-  let conditionLabel = '';
+  let conditionLabel = ''
   if (item.condition) {
-    conditionLabel = t(`filterColumn.operators.${item.condition}`);
+    conditionLabel = t(`filterColumn.operators.${item.condition}`)
   }
 
-  return `${label} (${conditionLabel})`;
+  return `${label} (${conditionLabel})`
 }
 
 function formatSubtitle(item: IQueryFilter) {
-  if (item.condition === 'between') return `${item.startDate} - ${item.endDate}`;
-  return item.value;
+  if (item.condition === 'between') return `${item.startDate} - ${item.endDate}`
+  return item.value
 }
 
 const dynamicSearchRules = computed(() => {
   return [
     (value: any) => {
-      const hasText = value && value.toString().trim().length > 0;
-      const hasFilters = queryManager.value.model.length > 0;
-      return (hasText || hasFilters) || t('forms.formSearch.validation.required');
-    }
-  ];
-});
+      const hasText = value && value.toString().trim().length > 0
+      const hasFilters = queryManager.value.model.length > 0
+      return hasText || hasFilters || t('forms.formSearch.validation.required')
+    },
+  ]
+})
 
 defineExpose({
-  resetForm: () => refFormQuery.value?.reset(),
-  focusInput: () => inputRef.value?.focus()
-});
+  reset: () => refFormQuery.value?.reset(),
+  focusInput: () => inputRef.value?.focus(),
+})
 </script>
 
 <style scoped>

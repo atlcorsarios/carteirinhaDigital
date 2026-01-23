@@ -140,12 +140,31 @@
       },
       "category": {
         "headerTable": "Category",
-        "label": "Product category"
+        "label": "Product category",
+        "hint": "Click the icon on the left to view"
       },
       "recipe": {
         "headerTable": "Recipe",
-        "label": "Product recipe"
+        "label": "Product recipe",
+        "hint": "Click the icon on the left to view"
       }
+    },
+    "formCategory": {
+      "idCategory": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Description",
+        "label": "Category description"
+      },
+      "active": {
+        "headerTable": "Active",
+        "label": "Active category?"
+      }
+    },
+    "formNotifications": {
+      
     },
     "formLogin": {
       "inputEmail": {
@@ -246,6 +265,11 @@
     "chartAggregator": {
       "sum": "Total Cumulative",
       "count": "Total Records"
+    }
+  },
+  "dialogSearch": {
+    "searchCategory": {
+      "title": "Categories"
     }
   },
   "filterColumn": {

@@ -11,7 +11,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
 
   static defaultIngredient(): IIngredient {
     return {
-      id: 0,
+      idIngredient: 0,
       description: '',
       measurement: '',
       stock: 0.0,

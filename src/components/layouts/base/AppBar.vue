@@ -74,10 +74,7 @@
           </template>
         </v-list-item>
 
-        <v-list-item
-          :title="t('app.software')"
-          :subtitle="t('app.title')"
-        >
+        <v-list-item :title="t('app.software')" :subtitle="t('app.title')">
           <template v-slot:prepend>
             <v-icon size="x-large" color="warning" class="mr-3">mdi-license</v-icon>
           </template>
@@ -124,16 +121,16 @@ const { notify } = useSnackbar()
 const loading = ref(false)
 const systemVersion = pkg.version
 const formattedVersionDate = computed(() => {
-  return formattedDate(new Date(__APP_BUILD_DATE__), locale.value);
+  return formattedDate(new Date(__APP_BUILD_DATE__), locale.value)
 })
 
 const notificationsStore = useNotificationsStore()
 const hasUnreadNotifications = ref(false)
 
 onMounted(async () => {
-  notificationsStore.fetchNotifications();
-  hasUnreadNotifications.value = await notificationsStore.hasUnread();
-});
+  notificationsStore.fetchNotifications()
+  hasUnreadNotifications.value = await notificationsStore.hasUnread()
+})
 
 const emits = defineEmits(['toggle-drawer'])
 
@@ -147,7 +144,7 @@ const classDialogQueryFilter = new ClassBaseDialog({
 const refSearchForm = ref<InstanceType<typeof SearchForm> | null>(null)
 const activeTab = ref('form')
 
-const hasFilters = computed(() => !!route.meta?.hasFilters);
+const hasFilters = computed(() => !!route.meta?.hasFilters)
 
 const titleDialogFilter = computed(() => {
   const titleKey = route.meta?.title as string | undefined
@@ -158,60 +155,56 @@ useHotkey('ctrl+k', () => {
   refSearchForm.value?.focusInput()
 })
 
-function handleOpenFilter() {
-  classFormQuery.updateStaging({
-    field: classFormQuery.filters[1]?.key,
-    condition: 'contains'
-  });
-
-  classDialogQueryFilter.toggleDialog();
+async function handleOpenFilter() {
+  classFormQuery.resetStaging()
+  await nextTick()
+  classDialogQueryFilter.toggleDialog()
 }
 
 async function handleAddFilter() {
-  const validFilter = classFormQuery.addFilter();
+  const validFilter = classFormQuery.addFilter()
   if (validFilter) {
-    await nextTick();
-    refSearchForm.value?.resetForm();
+    classFormQuery.resetStaging()
+    await nextTick()
+    refSearchForm.value?.reset()
   } else {
-    const errorMessage = t('messages.components.queryFilter.alertDuplicate');
-    notify(errorMessage, 'warning');
+    const errorMessage = t('messages.components.queryFilter.alertDuplicate')
+    notify(errorMessage, 'warning')
   }
 }
 
 async function handleReset() {
+  classFormQuery.resetStaging()
   if (activeTab.value === 'form') {
-    classFormQuery.resetStaging({
-      field: classFormQuery.filters[1]?.key,
-      condition: 'contains'
-    });
-    await nextTick();
-    refSearchForm.value?.resetForm();
+    await nextTick()
+    refSearchForm.value?.reset()
   } else {
-    classFormQuery.reset();
+    classFormQuery.reset()
+    activeTab.value = 'form'
   }
 }
 
 function handleSearch() {
-  const stagingValue = classFormQuery.stagingModel.value;
-  const hasTextQuery = stagingValue && stagingValue.trim() !== '';
-  const hasFilterList = classFormQuery.model.length > 0;
+  const stagingValue = classFormQuery.stagingModel.value
+  const hasTextQuery = stagingValue && stagingValue.trim() !== ''
+  const hasFilterList = classFormQuery.model.length > 0
 
   if (!hasTextQuery && !hasFilterList) {
-    return;
+    return
   }
 
-  loading.value = true;
+  loading.value = true
 
   if (classDialogQueryFilter.model.view) {
     classDialogQueryFilter.toggleDialog()
   }
 
-  const filtrosParaEnviar = [...classFormQuery.model];
+  const filtrosParaEnviar = [...classFormQuery.model]
   if (hasTextQuery) {
-    filtrosParaEnviar.push(classFormQuery.stagingModel);
+    filtrosParaEnviar.push(classFormQuery.stagingModel)
   }
 
-  console.log('Buscando com:', filtrosParaEnviar);
+  console.log('Buscando com:', filtrosParaEnviar)
 
   setTimeout(() => (loading.value = false), 2000)
 }

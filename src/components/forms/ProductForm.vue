@@ -1,24 +1,26 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense align="center">
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="5">
         <v-text-field
           v-model="product.productName"
           :rules="[rules.required(), rules.maxLength(100)]"
           :label="t('forms.formProduct.productName.label')"
+          counter
           density="compact"
           variant="outlined"
-          counter
           clearable
         />
       </v-col>
       <v-col cols="12" md="4">
         <v-mask-input
           v-model="product.price"
+          :rules="[rules.required()]"
           :options="currencyOptions"
           :label="t('forms.formProduct.price.label')"
           :hint="convertedHint"
           :placeholder="currencyPlaceholder"
+          type="number"
           density="compact"
           variant="outlined"
           clearable
@@ -31,7 +33,7 @@
           </template>
         </v-mask-input>
       </v-col>
-      <v-col cols="12" md="2" class="d-flex justify-center">
+      <v-col cols="12" md="3" class="d-flex justify-center">
         <v-checkbox
           v-model="product.active"
           :label="t('forms.formProduct.active.label')"
@@ -42,70 +44,72 @@
     </v-row>
     <v-row dense>
       <v-col cols="12" md="6">
-        <v-text-field
-          v-model="product.category.id"
+        <v-number-input
+          v-model="product.category.idCategory"
+          :label="t('forms.formProduct.category.label')"
+          :hint="t('forms.formProduct.category.hint')"
+          controlVariant="stacked"
           density="compact"
           variant="outlined"
+          clearable
+          inset
         >
           <template #prepend-inner>
             <v-icon-btn
               icon="mdi-tag-search"
               icon-color="info"
               variant="plain"
+              @click="handleSearchCategories"
             />
           </template>
-        </v-text-field>
+        </v-number-input>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field
-          v-model="product.recipe.id"
+        <v-number-input
+          v-model="product.recipe.idRecipe"
+          :label="t('forms.formProduct.recipe.label')"
+          :hint="t('forms.formProduct.recipe.hint')"
+          controlVariant="stacked"
           density="compact"
           variant="outlined"
+          clearable
+          inset
         >
           <template #prepend-inner>
-            <v-icon-btn
-              icon="mdi-silverware-variant"
-              icon-color="info"
-              variant="plain"
-            />
+            <v-icon-btn icon="mdi-silverware-variant" icon-color="info" variant="plain" />
           </template>
-        </v-text-field>
+        </v-number-input>
       </v-col>
       <v-col cols="12" class="d-flex flex-column">
-        <InputUploadImage
-          v-model="product.imageFile"
-          :label="t('forms.formProduct.image.label')"
-        />
+        <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
         <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
-          <v-img
-            :src="product.image"
-            aspect-ratio="16/9"
-            cover
-            class="rounded-lg mt-5"
-          />
+          <v-img :src="product.image" aspect-ratio="16/9" cover class="rounded-lg mt-5" />
           <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
         </div>
       </v-col>
     </v-row>
   </v-form>
+  <DialogSearchCategories ref="refDialogSearchCategories" :dialogSearch="dialogSearchCategories.model" />
 </template>
 
 <script setup lang="ts">
-import InputUploadImage from './fixtures/InputUploadImage.vue';
-import { type IProduct } from '@/classes/models/ModelIProduct';
-import { useQuotationStore } from '@/stores/quotationStore';
-import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales';
-import { useRules } from 'vuetify/labs/rules';
-import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
+import InputUploadImage from './fixtures/InputUploadImage.vue'
+import DialogSearchCategories from '../dialog/searchs/DialogSearchCategories.vue'
+import { type IProduct } from '@/classes/models/ModelIProduct'
+import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import { useQuotationStore } from '@/stores/quotationStore'
+import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
+import { useRules } from 'vuetify/labs/rules'
+import { useI18n } from 'vue-i18n'
+import { computed, ref } from 'vue'
 
+const rules = useRules()
+const { t, locale } = useI18n()
 const quotationStore = useQuotationStore()
-const rules = useRules();
-const { t, locale } = useI18n();
 
-const formRef = ref<any>(null);
-const product = defineModel<IProduct>('product', { required: true });
-const formIsValid = defineModel<boolean>('valid', { default: false });
+const formRef = ref<any>(null)
+const product = defineModel<IProduct>('product', { required: true })
+const formIsValid = defineModel<boolean>('valid', { default: false })
 
 const coinCode = computed(() => {
   return getCurrency(locale.value)
@@ -126,7 +130,7 @@ const convertedHint = computed(() => {
 
   const formatted = new Intl.NumberFormat(locale.value, {
     style: 'currency',
-    currency: BASE_CURRENCY
+    currency: BASE_CURRENCY,
   }).format(convertedValue)
 
   return `${t('forms.formProduct.price.hint')} ${formatted} ${BASE_CURRENCY}`
@@ -136,8 +140,8 @@ const currencyOptions = computed(() => {
   const parts = new Intl.NumberFormat(locale.value).formatToParts(1000.1)
 
   return {
-    decimal: parts.find(p => p.type === 'decimal')?.value,
-    separator: parts.find(p => p.type === 'group')?.value,
+    decimal: parts.find((p) => p.type === 'decimal')?.value,
+    separator: parts.find((p) => p.type === 'group')?.value,
     prefix: '',
     precision: 2,
   }
@@ -146,16 +150,25 @@ const currencyOptions = computed(() => {
 const currencyPlaceholder = computed(() => {
   return new Intl.NumberFormat(locale.value, {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   }).format(0)
 })
+
+// Dialogs de consultas
+const refDialogSearchCategories = ref<InstanceType<typeof DialogSearchCategories> | null>(null)
+const dialogSearchCategories = new ClassBaseDialog({
+  maxWidth: 600
+})
+
+function handleSearchCategories() {
+  refDialogSearchCategories.value?.toggleDialog()
+}
 
 defineExpose({
   reset: () => formRef.value?.resetValidation(),
   validate: async () => {
-    const { valid } = await formRef.value?.validate();
-    return valid;
-  }
-});
-
+    const { valid } = await formRef.value?.validate()
+    return valid
+  },
+})
 </script>

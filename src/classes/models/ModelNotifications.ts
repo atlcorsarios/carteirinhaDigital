@@ -1,5 +1,5 @@
 export interface INotification {
-  id: string | number
+  idNotification: number
   title: string
   description: string
   message: string

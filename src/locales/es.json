@@ -140,12 +140,31 @@
       },
       "category": {
         "headerTable": "Categoría",
-        "label": "Categoría del producto"
+        "label": "Categoría del producto",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
       },
       "recipe": {
         "headerTable": "Receta",
-        "label": "Receta del producto"
+        "label": "Receta del producto",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
       }
+    },
+    "formCategory": {
+      "idCategory": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Categoría",
+        "label": "Descripción de la categoría"
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "¿Categoría activa?"
+      }
+    },
+    "formNotifications": {
+      
     },
     "formLogin": {
       "inputEmail": {
@@ -246,6 +265,11 @@
     "chartAggregator": {
       "sum": "Total Acumulado",
       "count": "Total de Registros"
+    }
+  },
+  "dialogSearch": {
+    "searchCategory": {
+      "title": "Categorías"
     }
   },
   "filterColumn": {

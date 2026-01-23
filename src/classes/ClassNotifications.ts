@@ -1,10 +1,11 @@
+import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from './models/ModelFilterColumns'
-import type { IHeadersDataTable } from './models/modelComponents/ModelHeaderTable'
 import type { INotification } from './models/ModelNotifications'
+import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
 import { formattedDate } from '@/utils/formattedDate'
-import { i18n } from '@/plugins/i18n'
 import { FALLBACK_LOCALE } from '@/locales/definitionsLocales'
 import { BaseClass } from './subscriptions/BaseClass'
+import { ClassFormatters } from './ClassFormatters'
 
 export class ClassNotifications extends BaseClass<INotification> {
   constructor(data?: Partial<INotification>) {
@@ -17,7 +18,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     const dateStr = formattedDate(today, locale)
 
     return {
-      id: 0,
+      idNotification: 0,
       title: '',
       description: '',
       message: '',
@@ -34,32 +35,69 @@ export class ClassNotifications extends BaseClass<INotification> {
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
   }
 
-  static get headers(): IHeadersDataTable[] {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return [
-      {
-        title: t('dataTable.notifications.headers.id'),
-        align: 'start',
-        key: 'idNotification',
+  static get fieldConfig(): TEntityConfig<INotification> {
+    return {
+      idNotification: {
         width: 50,
+        excludeFromFilter: true,
       },
-      {
-        title: t('dataTable.notifications.headers.title'),
-        align: 'start',
-        key: 'title',
-        width: 200,
+      title: {
+        maxWidth: 250,
       },
-    ]
+      description: {
+        hidden: true
+      },
+      message: {
+        hidden: true
+      },
+      date: {
+        maxWidth: 100
+      },
+      seen: {
+        align: 'center',
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (item) => ClassFormatters.formatBoolean(item.seen),
+        excludeFromFilter: true,
+        width: 50,
+        cellClass: (value: boolean) => {
+          if (value === true) return 'text-success font-weight-bold'
+          else return 'text-error font-weight-bold'
+        }
+      },
+      sender: {
+        maxWidth: 100,
+      },
+      recipients: {
+        hidden: true
+      },
+      origin: {
+        maxWidth: 100
+      }
+    }
+  }
+
+  static get headers(): IHeadersDataTable[] {
+    const defaultModel = new ClassNotifications().getDefault()
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formNotifications',
+      ClassNotifications.fieldConfig,
+    )
   }
 
   static get filters(): IFilterColumn[] {
-    return [
-      {
-        key: 'id',
-        label: 'dataTable.notifications.headers.id',
-        type: 'number',
-      },
-    ]
+    const defaultModel = new ClassNotifications().getDefault()
+    return BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formNotifications',
+      ClassNotifications.fieldConfig,
+    )
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'title',
+      condition: 'contains',
+    }
   }
 }

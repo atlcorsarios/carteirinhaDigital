@@ -62,7 +62,8 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+n+t',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.getFilterColumnsNotifications,
+      filterConfig: ClassDefinitions.queryFilterNotifications.filters,
+      defaultFilterConfig: ClassDefinitions.queryFilterNotifications.defaultFilter
     },
   },
   {
@@ -76,7 +77,8 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+p',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.getFilterColumnsProducts,
+      filterConfig: ClassDefinitions.queryFilterUsers.filters,
+      defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter,
     },
     children: [
       {
@@ -161,7 +163,8 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
           authorize: ['ADMIN'],
           hasFilters: true,
-          filterConfig: ClassDefinitions.getFilterColumnsUsers,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
         },
       },
       {
