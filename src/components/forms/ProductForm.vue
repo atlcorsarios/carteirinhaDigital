@@ -1,6 +1,6 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
-    <v-row dense align="stretch">
+    <v-row dense align="center">
       <v-col cols="12" md="6">
         <v-text-field
           v-model="product.productName"
@@ -31,7 +31,7 @@
           </template>
         </v-mask-input>
       </v-col>
-      <v-col cols="12" md="2" class="d-flex flex-column">
+      <v-col cols="12" md="2" class="d-flex justify-center">
         <v-checkbox
           v-model="product.active"
           :label="t('forms.formProduct.active.label')"
@@ -39,7 +39,39 @@
           class="m-0 p-0"
         />
       </v-col>
+    </v-row>
+    <v-row dense>
       <v-col cols="12" md="6">
+        <v-text-field
+          v-model="product.category.id"
+          density="compact"
+          variant="outlined"
+        >
+          <template #prepend-inner>
+            <v-icon-btn
+              icon="mdi-tag-search"
+              icon-color="info"
+              variant="plain"
+            />
+          </template>
+        </v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model="product.recipe.id"
+          density="compact"
+          variant="outlined"
+        >
+          <template #prepend-inner>
+            <v-icon-btn
+              icon="mdi-silverware-variant"
+              icon-color="info"
+              variant="plain"
+            />
+          </template>
+        </v-text-field>
+      </v-col>
+      <v-col cols="12" class="d-flex flex-column">
         <InputUploadImage
           v-model="product.imageFile"
           :label="t('forms.formProduct.image.label')"
@@ -52,38 +84,6 @@
             class="rounded-lg mt-5"
           />
           <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
-        </div>
-      </v-col>
-      <v-col cols="12" md="6">
-        <div class="d-flex flex-row ga-3">
-          <v-text-field
-            v-model="product.category.id"
-            density="compact"
-            variant="outlined"
-            class="w-25"
-          >
-            <template #prepend-inner>
-              <v-icon-btn
-                icon="mdi-tag-search"
-                icon-color="info"
-                variant="plain"
-              />
-            </template>
-          </v-text-field>
-          <v-text-field
-            v-model="product.recipe.id"
-            density="compact"
-            variant="outlined"
-            class="w-25"
-          >
-            <template #prepend-inner>
-              <v-icon-btn
-                icon="mdi-silverware-variant"
-                icon-color="info"
-                variant="plain"
-              />
-            </template>
-          </v-text-field>
         </div>
       </v-col>
     </v-row>

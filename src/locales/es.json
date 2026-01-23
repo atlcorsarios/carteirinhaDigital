@@ -210,6 +210,10 @@
       "formUsers": {
         "createUser": "Crear usuario",
         "editingUser": "Editar usuario"
+      },
+      "formProduct": {
+        "createProduct": "Crear producto",
+        "editingProduct": "Editar producto"
       }
     },
     "components": {

@@ -67,7 +67,7 @@
       <v-spacer />
 
       <v-icon-btn
-        icon="mdi-content-save"
+        icon="mdi-account-check"
         v-tooltip="t('tooltips.forms.save')"
         variant="text"
         color="success"

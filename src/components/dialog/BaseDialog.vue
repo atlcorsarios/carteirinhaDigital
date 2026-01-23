@@ -6,7 +6,7 @@
     :persistent="dialog.persistent || false"
   >
     <v-card>
-      <v-card-title class="d-flex justify-space-between align-baseline">
+      <v-card-title class="d-flex justify-space-between align-baseline sticky-title bg-surface">
         <div class="text-h6">
           <slot name="title">TITLE</slot>
         </div>
