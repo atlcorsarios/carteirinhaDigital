@@ -61,6 +61,7 @@ export abstract class BaseClass<T extends object> {
     i18nPrefix: string,
     config: TEntityConfig<T> = {},
   ): IHeadersDataTable[] {
+    //@ts-ignore
     const t = (key: string) => i18n.global.t(key)
     const headers: IHeadersDataTable[] = []
     const keys = Object.keys(defaultModel as object) as (keyof T)[]
@@ -73,6 +74,7 @@ export abstract class BaseClass<T extends object> {
       headers.push({
         title: t(`${i18nPrefix}.${String(key)}.headerTable`),
         key: String(key),
+        dataType: conf?.filterType === 'boolean' || typeof defaultModel[key] === 'boolean' ? 'boolean' : 'text',
         ...conf,
         align: conf?.align || 'start',
       })
