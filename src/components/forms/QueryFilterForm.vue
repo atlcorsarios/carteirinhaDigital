@@ -6,7 +6,7 @@
           v-model="filter.field"
           :rules="[rules.required()]"
           @update:model-value="handleFieldChange"
-          :label="t('forms.formSearch.inputField.label')"
+          :label="t('forms.formSearch.field.label')"
           :items="filterManager.filters"
           item-value="key"
           hide-details="auto"
@@ -27,7 +27,7 @@
         <v-select
           v-model="filter.condition"
           :rules="[rules.required()]"
-          :label="t('forms.formSearch.inputCondition.label')"
+          :label="t('forms.formSearch.condition.label')"
           :items="getOperators(filter.field)"
           item-title="title"
           item-value="value"
@@ -54,8 +54,8 @@
             type="date"
             :label="t('messages.from')"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
           <v-spacer />
           <v-text-field
@@ -64,8 +64,8 @@
             type="date"
             :label="t('messages.until')"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
         </div>
 
@@ -75,8 +75,8 @@
           :rules="[rules.required()]"
           type="date"
           density="compact"
-          hide-details
           variant="outlined"
+          hide-details
         />
 
         <v-select
@@ -85,8 +85,8 @@
           :rules="[rules.required()]"
           :items="[{title: t('messages.yes'), value: 'true'}, {title: t('messages.no'), value: 'false'}]"
           density="compact"
-          hide-details
           variant="outlined"
+          hide-details
         />
 
         <v-select
@@ -95,8 +95,9 @@
           :rules="[rules.required()]"
           :label="t('filterColumn.operators.select')"
           :items="getOptions(filter.field)"
-          density="compact" hide-details
+          density="compact"
           variant="outlined"
+          hide-details
         />
 
         <div v-else-if="getType(filter.field) === 'number' && filter.condition === 'between'" class="d-flex gap-2">
@@ -106,8 +107,8 @@
             type="number"
             label="Min"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
           <v-text-field
             v-model="filter.endDate"
@@ -115,8 +116,8 @@
             type="number"
             label="Max"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
         </div>
 

@@ -74,14 +74,14 @@
       "validation": {
         "required": "¡Debe haber un valor o filtros aplicados para realizar la consulta!"
       },
-      "inputSearch": {
-        "placeholder": "Buscar"
-      },
-      "inputField": {
+      "field": {
         "label": "Campo"
       },
-      "inputCondition": {
+      "condition": {
         "label": "Condición"
+      },
+      "search": {
+        "label": "Buscar"
       }
     },
     "formUser": {
@@ -167,10 +167,10 @@
       
     },
     "formLogin": {
-      "inputEmail": {
+      "email": {
         "label": "Correo electrónico"
       },
-      "inputPassword": {
+      "password": {
         "label": "Contraseña"
       }
     }
@@ -253,7 +253,19 @@
   },
   "dataTable": {
     "users": {
-      "title": "Informe de usuarios"
+      "title": "Lista de usuarios"
+    },
+    "products": {
+      "title": ""
+    },
+    "categories": {
+      "title": ""
+    },
+    "recipes": {
+      "title": ""
+    },
+    "notifications": {
+      "title": ""
     },
     "headersDefault": {
       "actions": "Acciones"

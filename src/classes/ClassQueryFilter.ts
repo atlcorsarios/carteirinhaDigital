@@ -167,14 +167,25 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
   }
 
   private isDuplicate(newItem: IQueryFilter): boolean {
-    return this.model.some(
-      (existing) =>
-        existing.field === newItem.field &&
-        existing.condition === newItem.condition &&
-        existing.value === newItem.value &&
-        existing.startDate === newItem.startDate &&
-        existing.endDate === newItem.endDate,
-    )
+    return this.model.some((filterExisting) => {
+      if (filterExisting.field !== newItem.field || filterExisting.condition !== newItem.condition) {
+        return false
+      }
+
+      const colType = this.getColumnType(newItem.field)?.type
+
+      if (colType === 'date' || newItem.condition === 'between') {
+        return filterExisting.startDate === newItem.startDate && filterExisting.endDate === newItem.endDate
+      }
+
+      if (colType === 'select' || newItem.selectValues?.length) {
+        const existingSet = JSON.stringify(filterExisting.selectValues?.sort())
+        const newSet = JSON.stringify(newItem.selectValues?.sort())
+        return existingSet === newSet
+      }
+
+      return filterExisting.value === newItem.value
+    })
   }
 
   getColumnType(key: string): IFilterColumn | undefined {

@@ -74,14 +74,14 @@
       "validation": {
         "required": "There must be a value or filters applied to perform the query!"
       },
-      "inputSearch": {
-        "placeholder": "Search"
-      },
-      "inputField": {
+      "field": {
         "label": "Field"
       },
-      "inputCondition": {
+      "condition": {
         "label": "Condition"
+      },
+      "search": {
+        "label": "Search"
       }
     },
     "formUser": {
@@ -167,10 +167,10 @@
       
     },
     "formLogin": {
-      "inputEmail": {
+      "email": {
         "label": "Email"
       },
-      "inputPassword": {
+      "password": {
         "label": "Password"
       }
     }
@@ -253,7 +253,19 @@
   },
   "dataTable": {
     "users": {
-      "title": "User report"
+      "title": "List of users"
+    },
+    "products": {
+      "title": ""
+    },
+    "categories": {
+      "title": ""
+    },
+    "recipes": {
+      "title": ""
+    },
+    "notifications": {
+      "title": ""
     },
     "headersDefault": {
       "actions": "Actions"

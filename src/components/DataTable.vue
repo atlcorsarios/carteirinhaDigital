@@ -119,7 +119,7 @@
           </div>
         </template>
 
-        <template #item.actions="{ item }">
+        <template v-if="hasActions" #item.actions="{ item }">
           <div class="d-flex justify-center gap-2">
             <v-icon-btn
               icon="mdi-pencil"
@@ -186,9 +186,14 @@ const { t } = useI18n()
 const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true });
 const pagination = defineModel<TPagination>('pagination', { required: true });
 
-defineProps<{
+
+const props = withDefaults(defineProps<{
   id?: string
-}>();
+  hasActions?: boolean
+}>(), {
+  id: 'id',
+  hasActions: true
+});
 
 const emits = defineEmits<{
   (e: 'selected-item', item: any[]): void;
@@ -198,13 +203,23 @@ const emits = defineEmits<{
 }>();
 
 const allHeaders = computed(() => {
-  return dataTable.value.model.headersTable.map((header) => ({
+  const headersAuto = dataTable.value.model.headersTable.map((header) => ({
     ...header,
     title: header.title,
     align: header.align || 'start',
     key: header.key,
     sortable: header.sortable ?? true
   }));
+
+  const headers = headersAuto.filter((header) => {
+    if (!props.hasActions) {
+      return header.title != 'actions'
+    } else {
+      return header
+    }
+  })
+
+  return headers
 });
 
 const selectedHeadersKeys = ref<string[]>([]);

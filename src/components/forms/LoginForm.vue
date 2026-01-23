@@ -10,7 +10,7 @@
             <v-text-field
               v-model="loginForm.email"
               :rules="[rules.required(), rules.email()]"
-              :label="t('forms.formLogin.inputEmail.label')"
+              :label="t('forms.formLogin.email.label')"
               density="compact"
               variant="outlined"
               clearable
@@ -22,7 +22,7 @@
               v-model="loginForm.password"
               :rules="[rules.required()]"
               :type="showPassword ? 'text' : 'password'"
-              :label="t('forms.formLogin.inputPassword.label')"
+              :label="t('forms.formLogin.password.label')"
               density="compact"
               variant="outlined"
               clearable

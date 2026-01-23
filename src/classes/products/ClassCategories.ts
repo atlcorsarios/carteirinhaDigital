@@ -4,7 +4,6 @@ import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { ICategory } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
-import { i18n } from '@/plugins/i18n'
 
 export class ClassCategories extends BaseClass<ICategory> {
   constructor(data?: Partial<ICategory>) {

@@ -3,17 +3,17 @@
     <v-text-field
       ref="inputRef"
       v-model="queryManager.stagingModel.value"
-      class="rounded-search w-100"
+      :rules="dynamicSearchRules"
+      :label="t('forms.formSearch.search.label')"
+      :loading="loading"
+      loader-height="2"
+      density="compact"
+      variant="solo"
+      rounded="pill"
       hide-details
       single-line
       clearable
-      rounded="pill"
-      density="compact"
-      variant="solo"
-      loader-height="2"
-      :loading="loading"
-      :placeholder="t('forms.formSearch.inputSearch.placeholder')"
-      :rules="dynamicSearchRules"
+      class="rounded-search w-100"
     >
       <template #prepend-inner>
         <div class="d-flex flex-row" v-if="hasFilters">
@@ -78,6 +78,49 @@
         </v-tabs-window-item>
 
         <v-tabs-window-item value="list">
+          <v-list
+            v-if="queryManager.model.length > 0"
+            rounded
+            lines="two"
+            density="compact"
+            variant="elevated"
+            class="bg-transparent"
+            style="max-height: 300px; overflow-y: auto;"
+          >
+            <v-list-item
+              v-for="(item, index) in queryManager.model"
+              :key="`${item.field}-${index}`"
+              :title="formatTitle(item)"
+              :subtitle="formatSubtitle(item)"
+              class="mb-2"
+            >
+              <template #prepend>
+                <v-avatar
+                  color="primary"
+                  variant="tonal"
+                  size="small"
+                >
+                  {{ index + 1 }}
+                </v-avatar>
+              </template>
+              <template #append>
+                <v-btn
+                  icon="mdi-delete"
+                  color="error"
+                  variant="text"
+                  size="small"
+                  @click="queryManager.removeFilter(index)"
+                />
+              </template>
+            </v-list-item>
+          </v-list>
+
+          <div v-else class="text-center text-medium-emphasis mt-10">
+            <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
+          <div>{{ t('components.queryFilter.none') }}</div> </div>
+        </v-tabs-window-item>
+
+        <!-- <v-tabs-window-item value="list">
           <v-virtual-scroll
             v-if="queryManager.model.length > 0"
             :items="queryManager.model"
@@ -113,7 +156,7 @@
             <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2" />
             <div>{{ t('filterColumn.none') }}</div>
           </div>
-        </v-tabs-window-item>
+        </v-tabs-window-item> -->
       </v-tabs-window>
     </template>
 

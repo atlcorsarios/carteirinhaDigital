@@ -3,7 +3,7 @@ import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginato
 import type { IUser } from '@/classes/models/ModelUser'
 
 // Services
-import http from './axios'
+import http from '../axios';
 
 export const usersServices = {
   async getAllUsers(offset: number, limit: number): Promise<IHeaderPaginatorModel<IUser>> {

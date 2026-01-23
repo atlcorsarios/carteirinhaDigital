@@ -100,7 +100,7 @@ import { useInfiniteList } from '@/composables/useInfiniteList'
 import { useChartHelpers } from '@/composables/useChartHelpers'
 
 // Services
-import { usersServices } from '@/services/usersService'
+import { usersServices } from '@/services/resources/usersService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
