@@ -1,5 +1,5 @@
 import { ClassCategories } from './ClassCategories'
-import { ClassRevenues } from './ClassRevenues'
+import { ClassRecipes } from './ClassRecipes'
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IProduct } from '../models/ModelIProduct'
@@ -15,11 +15,13 @@ export class ClassProducts extends BaseClass<IProduct> {
     return {
       idProduct: 0,
       productName: '',
-      image: '',
-      price: 0.0,
+      image:
+        'https://imgs.search.brave.com/lDiW-1b5kOsYRosEPnXWw06Shr1RFjwCkeiXswevt70/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnNz/dGF0aWMubmV0L3lt/ZndPLnBuZw',
+      imageFile: null,
+      price: undefined,
       active: true,
       category: ClassCategories.defaultCategory(),
-      revenue: ClassRevenues.defaultRevenue(),
+      recipe: ClassRecipes.defaultRecipe(),
     }
   }
 
@@ -37,6 +39,9 @@ export class ClassProducts extends BaseClass<IProduct> {
         maxWidth: 250,
       },
       image: {
+        excludeFromFilter: true,
+      },
+      imageFile: {
         hidden: true,
       },
       price: {
@@ -54,7 +59,7 @@ export class ClassProducts extends BaseClass<IProduct> {
       category: {
         hidden: true,
       },
-      revenue: {
+      recipe: {
         hidden: true,
       },
     }

@@ -1,27 +1,27 @@
-import { ClassIngredientsInRevenue } from './ClassIngredientsInRevenue'
+import { ClassIngredientsInRecipe } from './ClassIngredientsInRecipe'
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IRevenue } from '../models/ModelIProduct'
+import type { IRecipe } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
 
-export class ClassRevenues extends BaseClass<IRevenue> {
-  constructor(data?: Partial<IRevenue>) {
+export class ClassRecipes extends BaseClass<IRecipe> {
+  constructor(data?: Partial<IRecipe>) {
     super(data)
   }
 
-  static defaultRevenue(): IRevenue {
+  static defaultRecipe(): IRecipe {
     return {
       id: 0,
       idProduct: 0,
       description: '',
-      ingredients: [ClassIngredientsInRevenue.defaultIngredientsInRevenue()],
+      ingredients: [ClassIngredientsInRecipe.defaultIngredientsInRecipe()],
     }
   }
 
-  protected getDefault(data: unknown = {}): IRevenue {
-    const item = data as Partial<IRevenue>
-    return this.createWithDefaults(item, ClassRevenues.defaultRevenue())
+  protected getDefault(data: unknown = {}): IRecipe {
+    const item = data as Partial<IRecipe>
+    return this.createWithDefaults(item, ClassRecipes.defaultRecipe())
   }
 
   static get headers(): IHeadersDataTable[] {
@@ -29,7 +29,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
     const t = (key: string) => i18n.global.t(key)
     return [
       {
-        title: t('dataTable.revenues.headers.id'),
+        title: t(''),
         align: 'start',
         key: 'id',
         width: 50,
@@ -41,7 +41,7 @@ export class ClassRevenues extends BaseClass<IRevenue> {
     return [
       {
         key: 'id',
-        label: 'dataTable.revenues.headers.id',
+        label: '',
         type: 'number',
       },
     ]

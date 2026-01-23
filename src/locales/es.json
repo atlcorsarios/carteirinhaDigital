@@ -37,8 +37,8 @@
         "categories": {
           "title": "Categorías"
         },
-        "revenues": {
-          "title": "Ingresos"
+        "recipes": {
+          "title": "Recetas"
         },
         "ingredients": {
           "title": "Ingredientes"
@@ -116,6 +116,37 @@
         "label": "¿Usuario activo?"
       }
     },
+    "formProduct": {
+      "idProduct": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "productName": {
+        "headerTable": "Producto",
+        "label": "Descripción del producto"
+      },
+      "image": {
+        "headerTable": "Portada",
+        "label": "Imagen del producto"
+      },
+      "price": {
+        "headerTable": "Precio",
+        "label": "Precio de venta",
+        "hint": "Convertido a: "
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "¿Producto activo?"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría del producto"
+      },
+      "recipe": {
+        "headerTable": "Receta",
+        "label": "Receta del producto"
+      }
+    },
     "formLogin": {
       "inputEmail": {
         "label": "Correo electrónico"
@@ -146,7 +177,8 @@
       "edit": "Editar",
       "delete": "Eliminar",
       "submit": "Confirmar",
-      "forgotPassword": "Olvidé mi contraseña"
+      "forgotPassword": "Olvidé mi contraseña",
+      "attach": "Adjuntar"
     },
     "components": {
       "dataTable": {
@@ -188,6 +220,11 @@
       "queryFilter": {
         "title": "Filtrar recursos por:",
         "alertDuplicate": "¡Este filtro ya ha sido añadido!"
+      },
+      "inputUploadImage": {
+        "empty": "Arrastre o haga clic para seleccionar",
+        "inLoading": "Processando...",
+        "isCompressing": "Optimizando imagen..."
       }
     }
   },

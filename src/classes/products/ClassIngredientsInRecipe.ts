@@ -1,25 +1,25 @@
 import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IIngredientsInRevenue } from '../models/ModelIProduct'
+import type { IIngredientsInRecipe } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassIngredients } from './ClassIngredients'
 import { i18n } from '@/plugins/i18n'
 
-export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> {
-  constructor(data?: Partial<IIngredientsInRevenue>) {
+export class ClassIngredientsInRecipe extends BaseClass<IIngredientsInRecipe> {
+  constructor(data?: Partial<IIngredientsInRecipe>) {
     super(data)
   }
 
-  static defaultIngredientsInRevenue(): IIngredientsInRevenue {
+  static defaultIngredientsInRecipe(): IIngredientsInRecipe {
     return {
       amount: 0,
       ingredient: ClassIngredients.defaultIngredient(),
     }
   }
 
-  protected getDefault(data: unknown = {}): IIngredientsInRevenue {
-    const item = data as Partial<IIngredientsInRevenue>
-    return this.createWithDefaults(item, ClassIngredientsInRevenue.defaultIngredientsInRevenue())
+  protected getDefault(data: unknown = {}): IIngredientsInRecipe {
+    const item = data as Partial<IIngredientsInRecipe>
+    return this.createWithDefaults(item, ClassIngredientsInRecipe.defaultIngredientsInRecipe())
   }
 
   static get headers(): IHeadersDataTable[] {
@@ -27,7 +27,7 @@ export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> 
     const t = (key: string) => i18n.global.t(key)
     return [
       {
-        title: t('dataTable.revenues.ingredients.headers.id'),
+        title: t('dataTable.recipes.ingredients.headers.id'),
         align: 'start',
         key: 'id',
         width: 50,
@@ -39,7 +39,7 @@ export class ClassIngredientsInRevenue extends BaseClass<IIngredientsInRevenue> 
     return [
       {
         key: 'id',
-        label: 'dataTable.revenues.ingredients.headers.id',
+        label: 'dataTable.recipes.ingredients.headers.id',
         type: 'number',
       },
     ]

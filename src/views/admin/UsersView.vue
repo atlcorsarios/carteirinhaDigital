@@ -105,7 +105,7 @@ import { usersServices } from '@/services/usersService'
 // Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { ref, watchEffect, computed, reactive } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 
 const route = useRoute()
 const { t } = useI18n()

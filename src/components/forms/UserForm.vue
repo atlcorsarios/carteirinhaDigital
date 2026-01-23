@@ -1,61 +1,61 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-text-field
           v-model="user.username"
           :counter="30"
           :rules="[rules.required(), rules.maxLength(30)]"
-          :label="t('forms.formUser.inputUsername.label')"
-          :hint="t('forms.formUser.inputUsername.hint')"
+          :label="t('forms.formUser.username.label')"
+          :hint="t('forms.formUser.username.hint')"
           density="compact"
           variant="outlined"
         />
       </v-col>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-text-field
           v-model="user.email"
           :counter="150"
           :rules="[rules.required(), rules.email(), rules.maxLength(150)]"
-          :label="t('forms.formUser.inputEmail.label')"
-          :hint="t('forms.formUser.inputEmail.hint')"
+          :label="t('forms.formUser.email.label')"
+          :hint="t('forms.formUser.email.hint')"
           density="compact"
           variant="outlined"
         />
       </v-col>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-autocomplete
           v-model="user.role"
           :rules="[rules.required()]"
           :filter-keys="['title', 'raw.abbr']"
           :items="ValidRoles"
           item-title="name"
-          :label="t('forms.formUser.inputRole.label')"
+          :label="t('forms.formUser.role.label')"
           density="compact"
           variant="outlined"
         />
       </v-col>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-mask-input
           v-model="user.phoneNumber"
           mask="(##) #####-####"
           placeholder="(##) #####-####"
-          :label="t('forms.formUser.inputPhoneNumber.label')"
+          :label="t('forms.formUser.phoneNumber.label')"
           density="compact"
           variant="outlined"
         />
       </v-col>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-checkbox
           v-model="user.receiveNotifications"
-          :label="t('forms.formUser.inputReceiveNotifications.label')"
+          :label="t('forms.formUser.receiveNotifications.label')"
           color="success"
         />
       </v-col>
-      <v-col :cols="mdAndUp ? 6 : 12">
+      <v-col cols="12" md="6">
         <v-checkbox
           v-model="user.active"
-          :label="t('forms.formUser.inputUserActive.label')"
+          :label="t('forms.formUser.active.label')"
           color="success"
         />
       </v-col>
@@ -66,11 +66,9 @@
 <script setup lang="ts">
 import { ValidRoles, type IUser } from '@/classes/models/ModelUser'
 import { useRules } from 'vuetify/labs/rules'
-import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const { mdAndUp } = useDisplay();
 const rules = useRules()
 const { t } = useI18n()
 

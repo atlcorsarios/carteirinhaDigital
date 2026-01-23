@@ -1,7 +1,7 @@
 import HomeView from '@/views/HomeView.vue'
 import ErrorsView from '@/views/ErrorsView.vue'
 import { ClassDefinitions } from '@/classes/ClassDefinitions'
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -30,7 +30,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/LoginView.vue'),
     meta: {
       title: 'routes.login.title',
-      hidden: true
+      hidden: true,
     },
   },
   {
@@ -39,7 +39,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/ForgotPasswordView.vue'),
     meta: {
       title: 'routes.forgotPassword.title',
-      hidden: true
+      hidden: true,
     },
   },
   {
@@ -62,7 +62,7 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+n+t',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.getFilterColumnsNotifications
+      filterConfig: ClassDefinitions.getFilterColumnsNotifications,
     },
   },
   {
@@ -76,13 +76,13 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+p',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.getFilterColumnsProducts
+      filterConfig: ClassDefinitions.getFilterColumnsProducts,
     },
     children: [
       {
         path: 'list',
         name: 'ProductsList',
-        component: () => import('@/views/Products/ProductsView.vue'),
+        component: () => import('@/views/Products/ProductListView.vue'),
         meta: {
           title: 'routes.products.children.list.title',
           icon: 'mdi-format-list-bulleted',
@@ -97,17 +97,17 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.categories.title',
           icon: 'mdi-tag-text-outline',
-          hotkey: 'cmd+p+c',
+          hotkey: 'cmd+shift+c',
           requiresAuth: true,
         },
       },
       {
-        path: 'revenues',
-        name: 'ProductRevenues',
-        component: () => import('@/views/Products/ProductRevenuesView.vue'),
+        path: 'recipes',
+        name: 'ProductRecipes',
+        component: () => import('@/views/Products/ProductRecipesView.vue'),
         meta: {
-          title: 'routes.products.children.revenues.title',
-          icon: 'mdi-cash-multiple',
+          title: 'routes.products.children.recipes.title',
+          icon: 'mdi-silverware-variant',
           hotkey: 'cmd+p+r',
           requiresAuth: true,
           authorize: ['ADMIN'],
@@ -119,7 +119,7 @@ export const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Products/ProductIngredientsView.vue'),
         meta: {
           title: 'routes.products.children.ingredients.title',
-          icon: 'mdi-silverware-fork-knife',
+          icon: 'mdi-shaker',
           hotkey: 'cmd+p+i',
           requiresAuth: true,
         },
@@ -134,7 +134,7 @@ export const routes: Array<RouteRecordRaw> = [
           hotkey: 'cmd+p+s',
           requiresAuth: true,
         },
-      }
+      },
     ],
   },
   {
@@ -161,7 +161,7 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
           authorize: ['ADMIN'],
           hasFilters: true,
-          filterConfig: ClassDefinitions.getFilterColumnsUsers
+          filterConfig: ClassDefinitions.getFilterColumnsUsers,
         },
       },
       {
@@ -171,7 +171,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.adm.children.settings.title',
           icon: 'mdi-cog',
-          hotkey: 'cmd+a+c',
+          hotkey: 'cmd+shift+c',
           requiresAuth: true,
           authorize: ['ADMIN'],
         },
@@ -186,7 +186,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       hidden: true,
       title: 'routes.forbidden.title',
-    }
+    },
   },
   {
     path: '/server-error',
@@ -196,7 +196,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       hidden: true,
       title: 'routes.serverError.title',
-    }
+    },
   },
   {
     path: '/:pathMatch(.*)*',
@@ -206,6 +206,6 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       hidden: true,
       title: 'routes.notFound.title',
-    }
-  }
-];
+    },
+  },
+]

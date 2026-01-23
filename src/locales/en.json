@@ -37,8 +37,8 @@
         "categories": {
           "title": "Categories"
         },
-        "revenues": {
-          "title": "Revenues"
+        "recipes": {
+          "title": "Recipes"
         },
         "ingredients": {
           "title": "Ingredients"
@@ -116,6 +116,37 @@
         "label": "Active user?"
       }
     },
+    "formProduct": {
+      "idProduct": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "productName": {
+        "headerTable": "Product",
+        "label": "Product description"
+      },
+      "image": {
+        "headerTable": "Cover",
+        "label": "Product image"
+      },
+      "price": {
+        "headerTable": "Price",
+        "label": "Sale price",
+        "hint": "Converted to: "
+      },
+      "active": {
+        "headerTable": "Active",
+        "label": "Active product?"
+      },
+      "category": {
+        "headerTable": "Category",
+        "label": "Product category"
+      },
+      "recipe": {
+        "headerTable": "Recipe",
+        "label": "Product recipe"
+      }
+    },
     "formLogin": {
       "inputEmail": {
         "label": "Email"
@@ -146,7 +177,8 @@
       "edit": "Edit",
       "delete": "Delete",
       "submit": "Confirm",
-      "forgotPassword": "I forgot my password"
+      "forgotPassword": "I forgot my password",
+      "attach": "attach"
     },
     "components": {
       "dataTable": {
@@ -188,6 +220,11 @@
       "queryFilter": {
         "title": "Filter resources by:",
         "alertDuplicate": "This filter has already been added!"
+      },
+      "inputUploadImage": {
+        "empty": "Drag or click to select",
+        "inLoading": "Processing...",
+        "isCompressing": "Optimizing image..."
       }
     }
   },

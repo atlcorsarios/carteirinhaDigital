@@ -3,11 +3,11 @@ export interface ICategory {
   description: string
 }
 
-export interface IRevenue {
+export interface IRecipe {
   id?: string | number
   idProduct: string | number
   description: string
-  ingredients: IIngredientsInRevenue[]
+  ingredients: IIngredientsInRecipe[]
 }
 
 export interface IIngredient {
@@ -17,7 +17,7 @@ export interface IIngredient {
   stock: number
 }
 
-export interface IIngredientsInRevenue {
+export interface IIngredientsInRecipe {
   amount: number
   ingredient: IIngredient
 }
@@ -25,9 +25,10 @@ export interface IIngredientsInRevenue {
 export interface IProduct {
   idProduct?: string | number
   productName: string
-  image?: string
+  image?: string | null
+  imageFile?: File | null
   price?: number
   active?: boolean
   category: ICategory
-  revenue: IRevenue
+  recipe: IRecipe
 }
