@@ -82,7 +82,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'list',
         name: 'ProductsList',
-        component: () => import('@/views/Products/ProductsListView.vue'),
+        component: () => import('@/views/Products/ProductsView.vue'),
         meta: {
           title: 'routes.products.children.list.title',
           icon: 'mdi-format-list-bulleted',

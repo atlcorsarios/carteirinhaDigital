@@ -55,6 +55,11 @@ export class ClassUsers extends BaseClass<IUser> {
         value: (item) => ClassFormatters.formatBoolean(item.receiveNotifications),
         excludeFromFilter: true,
         width: 50,
+        cellClass: (value: boolean) => {
+          if (value === true) return 'text-success font-weight-bold'
+          if (value === false) return 'text-error font-weight-bold'
+          return ''
+        }
       },
       active: {
         align: 'center',

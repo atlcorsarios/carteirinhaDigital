@@ -86,14 +86,58 @@
         :height="dataTable.model.heightTable || 'auto'"
         :max-height="dataTable.model.maxHeightTable || 500"
         :loading="dataTable.model.loadingDataTable"
+        :mobile-breakpoint="0"
+        :row-props="rowProps"
         fixed-header
         density="compact"
         striped="even"
         hover
-        :row-props="rowProps"
         @click:row="clickOnTheLine"
-        :mobile-breakpoint="0"
       >
+        <template
+          v-for="header in headersForSlots"
+          :key="header.key"
+          v-slot:[`item.${header.key}`]="{ item, value }"
+        >
+          <div
+            class="d-flex align-center h-100"
+            :class="header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : ''"
+          >
+            <v-chip
+              v-if="header.dataType === 'boolean'"
+              :color="getRawValue(item, header.key) ? 'success' : 'error'"
+              variant="outlined"
+              size="small"
+              class="font-weight-bold"
+            >
+              {{ header.value ? header.value(item) : (value ? 'Sim' : 'Não') }}
+            </v-chip>
+
+            <span v-else>
+              {{ header.value ? header.value(item) : value }}
+            </span>
+          </div>
+        </template>
+
+        <template #item.actions="{ item }">
+          <div class="d-flex justify-center gap-2">
+            <v-icon-btn
+              icon="mdi-pencil"
+              v-tooltip="t('tooltips.forms.edit')"
+              variant="plain"
+              color="primary"
+              @click="editRegistration(item)"
+            />
+
+            <v-icon-btn
+              icon="mdi-delete"
+              v-tooltip="t('tooltips.forms.delete')"
+              variant="plain"
+              color="error"
+            />
+          </div>
+        </template>
+
         <template v-slot:loading>
           <v-skeleton-loader type="table-row@5" />
         </template>
@@ -122,25 +166,6 @@
             <div class="text-no-wrap ml-4">
               {{ dataTable.model.itemsTable.length }} / {{ pagination.total }}
             </div>
-          </div>
-        </template>
-
-        <template #item.actions="{ item }">
-          <div class="d-flex justify-center gap-2">
-            <v-icon-btn
-              icon="mdi-pencil"
-              v-tooltip="t('tooltips.forms.edit')"
-              variant="plain"
-              color="primary"
-              @click="editRegistration(item)"
-            />
-
-            <v-icon-btn
-              icon="mdi-delete"
-              v-tooltip="t('tooltips.forms.delete')"
-              variant="plain"
-              color="error"
-            />
           </div>
         </template>
       </v-data-table-virtual>
@@ -194,6 +219,10 @@ const filteredHeaders = computed(() => {
   return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
 });
 
+ const headersForSlots = computed(() => {
+  return filteredHeaders.value.filter(h => h.key !== 'actions');
+});
+
 function toggleHeader(key: string) {
   const index = selectedHeadersKeys.value.indexOf(key)
 
@@ -205,19 +234,33 @@ function toggleHeader(key: string) {
 }
 
 const idSelectedItem = ref<any>(null);
+
 const clickOnTheLine = (_event: Event, { item }: any) => {
   const id = item.id || item;
   idSelectedItem.value = id;
   emits('selected-item', item);
 }
 
-const rowProps = ({ item }: any) => {
-  const id = item.id || item;
-  if (id && id === idSelectedItem.value) {
-    return { class: 'bg-primary-lighten-4 cursor-pointer font-weight-medium' };
+const rowProps = (data: { item: any }) => {
+  const item = data.item
+  const isInactive = 'active' in item && item.active === false
+
+  return {
+    class: {
+      'row-inactive': isInactive,
+      'cursor-pointer': true
+    }
   }
-  return { class: 'cursor-pointer' };
 };
+
+const colorVChipBooleans = (value: boolean) => {
+  return value === false ? 'error' : 'success'
+};
+
+function getRawValue(item: any, key: string) {
+  if (!key || !item) return null
+  return key.split('.').reduce((obj, k) => (obj || {})[k], item)
+}
 
 function toggleChart() {
   emits('toggle-chart');
@@ -249,6 +292,7 @@ watch(() => pagination.value.limit, (newLimit) => {
     StorageUtils.set('limit_preference', pagination.value.limit, 'local')
   }
 })
+
 </script>
 
 <style scoped>
@@ -257,5 +301,15 @@ watch(() => pagination.value.limit, (newLimit) => {
   padding-top: 6px;
   padding-bottom: 6px;
   min-height: 32px;
+}
+
+:deep(.row-inactive) {
+  opacity: 0.6;
+  background-color: rgb(var(--v-theme-surface-variant), 0.1);
+  transition: opacity 0.2s;
+}
+
+:deep(.row-inactive:hover) {
+  opacity: 0.85;
 }
 </style>

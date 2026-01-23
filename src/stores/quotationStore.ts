@@ -15,7 +15,7 @@ export const useQuotationStore = defineStore('quotation', () => {
   const loading = ref(false)
 
   async function ensureRateFor(targetCurrency: string) {
-    if (targetCurrency === BASE_CURRENCY || rates.value[targetCurrency]) return
+    if (!targetCurrency || targetCurrency === BASE_CURRENCY || rates.value[targetCurrency]) return
 
     if (loading.value) return
     loading.value = true

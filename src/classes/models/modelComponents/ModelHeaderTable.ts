@@ -4,6 +4,7 @@ export interface IHeadersDataTable {
   title: string
   key: string
   dataType?: 'text' | 'boolean' | 'currency' | 'date'
+  cellClass?: (value: any, item: any) => string
   align?: 'start' | 'end' | 'center'
   height?: string | number
   maxHeight?: string | number
