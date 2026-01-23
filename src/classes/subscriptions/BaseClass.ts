@@ -73,6 +73,7 @@ export abstract class BaseClass<T extends object> {
       headers.push({
         title: t(`${i18nPrefix}.${String(key)}.headerTable`),
         key: String(key),
+        dataType: conf?.filterType === 'boolean' || typeof defaultModel[key] === 'boolean' ? 'boolean' : 'text',
         ...conf,
         align: conf?.align || 'start',
       })

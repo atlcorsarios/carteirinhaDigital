@@ -3,6 +3,7 @@ import type { IFilterColumn } from '../ModelFilterColumns'
 export interface IHeadersDataTable {
   title: string
   key: string
+  dataType?: 'text' | 'boolean' | 'currency' | 'date'
   align?: 'start' | 'end' | 'center'
   height?: string | number
   maxHeight?: string | number
