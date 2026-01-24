@@ -1,9 +1,9 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense class="d-flex justify-center">
-      <v-col cols="12" md="9">
+      <v-col cols="12" :md="createFast ? 12 : 6">
         <v-text-field
-          v-model="categoryForm.description"
+          v-model="category.description"
           :rules="[rules.required(), rules.maxLength(100)]"
           :label="t('forms.formCategory.description.label')"
           density="compact"
@@ -12,11 +12,23 @@
           clearable
         />
       </v-col>
-
-      <v-col cols="12" md="3">
+      <v-col v-if="!createFast" cols="12" md="6">
+        <v-autocomplete
+          v-model="category.group"
+          :rules="[rules.required()]"
+          :items="groupOptions"
+          :label="t('forms.formCategory.group.label')"
+          :filter-keys="['title', 'raw.abbr']"
+          item-title="title"
+          item-value="value"
+          density="compact"
+          variant="outlined"
+        />
+      </v-col>
+      <v-col v-if="!createFast" cols="12">
         <v-checkbox
-          v-model="categoryForm.active"
-          :label="t('forms.formProduct.active.label')"
+          v-model="category.active"
+          :label="t('forms.formCategory.active.label')"
           color="success"
           class="m-0 p-0"
         />
@@ -27,17 +39,30 @@
 </template>
 
 <script setup lang="ts">
-import type { ICategory } from '@/classes/models/ModelIProduct';
+import { GROUP_TRANSLATIONS, validCategoriesGroups, type ICategory } from '@/classes/models/ModelIProduct';
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const rules = useRules();
 const { t } = useI18n();
 
+withDefaults(defineProps<{
+  createFast?: boolean
+}>(), {
+  createFast: false
+})
+
 const formRef = ref<any>(null);
-const categoryForm = defineModel<ICategory>('category', { required: true });
+const category = defineModel<ICategory>('category', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
+
+const groupOptions = computed(() => {
+  return validCategoriesGroups.map((group) => ({
+    title: t(GROUP_TRANSLATIONS[group]),
+    value: group
+  }));
+});
 
 defineExpose({
   reset: () => formRef.value?.resetValidation(),
@@ -46,4 +71,5 @@ defineExpose({
     return valid;
   }
 });
+
 </script>

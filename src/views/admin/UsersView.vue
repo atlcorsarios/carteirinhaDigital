@@ -25,10 +25,6 @@
           :active-config="activeHeaderConfig"
         />
       </template>
-
-      <template #moreInfo>
-
-      </template>
     </GridDataChart>
   </v-container>
 

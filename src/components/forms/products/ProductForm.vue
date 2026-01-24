@@ -44,38 +44,11 @@
     </v-row>
     <v-row dense>
       <v-col cols="12" md="6">
-        <v-row dense gap="2">
-          <v-col cols="12" md="6">
-            <v-number-input
-              v-model="product.category.idCategory"
-              :label="t('forms.formProduct.category.label')"
-              :hint="t('forms.formProduct.category.hint')"
-              controlVariant="stacked"
-              density="compact"
-              variant="outlined"
-              clearable
-              inset
-            >
-              <template #prepend-inner>
-                <v-icon-btn
-                  icon="mdi-tag-search"
-                  icon-color="info"
-                  variant="plain"
-                  @click="handleSearchCategories"
-                />
-              </template>
-            </v-number-input>
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <v-text-field
-              :model-value="product.category?.description"
-              disabled
-              density="compact"
-              variant="outlined"
-            />
-          </v-col>
-        </v-row>
+        <InputCategoryWithSearch
+          v-model:category="product.category"
+          :label="t('forms.formProduct.category.label')"
+          :hint="t('forms.formProduct.category.hint')"
+        />
       </v-col>
       <v-col cols="12" md="6">
         <v-row dense gap="2">
@@ -107,7 +80,10 @@
         </v-row>
       </v-col>
       <v-col cols="12" class="d-flex flex-column">
-        <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
+        <InputUploadImage
+          v-model="product.imageFile"
+          :label="t('forms.formProduct.image.label')"
+        />
         <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
           <v-img :src="product.image" aspect-ratio="16/9" cover class="rounded-lg mt-5" />
           <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
@@ -115,22 +91,17 @@
       </v-col>
     </v-row>
   </v-form>
-  <DialogSearchCategories
-    v-model:dialog-search-category="dialogSearchCategories"
-    @select-item="onCategorySelected"
-  />
 </template>
 
 <script setup lang="ts">
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
-import DialogSearchCategories from '@/components/dialog/searchs/categories/DialogSearchCategories.vue'
-import { type ICategory, type IProduct } from '@/classes/models/ModelIProduct'
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
+import { type IProduct } from '@/classes/models/ModelIProduct'
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 const rules = useRules()
 const { t, locale } = useI18n()
@@ -167,7 +138,6 @@ const convertedHint = computed(() => {
 
 const currencyOptions = computed(() => {
   const parts = new Intl.NumberFormat(locale.value).formatToParts(1000.1)
-
   return {
     decimal: parts.find((p) => p.type === 'decimal')?.value,
     separator: parts.find((p) => p.type === 'group')?.value,
@@ -183,32 +153,6 @@ const currencyPlaceholder = computed(() => {
   }).format(0)
 })
 
-// Dialogs de consultas
-const dialogSearchCategories = new ClassBaseDialog({
-  maxWidth: 600
-})
-
-function handleSearchCategories() {
-  dialogSearchCategories.toggleDialog()
-}
-
-function onCategorySelected(item: ICategory) {
-  product.value.category = {
-    idCategory: item.idCategory,
-    description: item.description
-  }
-}
-
-watch(() => product.value.category?.idCategory, (newIdCategory) => {
-    if (!newIdCategory) {
-      if (product.value.category) {
-        product.value.category.idCategory = 0
-        product.value.category.description = ''
-      }
-    }
-  }
-)
-
 defineExpose({
   reset: () => formRef.value?.resetValidation(),
   validate: async () => {
@@ -216,4 +160,5 @@ defineExpose({
     return valid
   },
 })
+
 </script>

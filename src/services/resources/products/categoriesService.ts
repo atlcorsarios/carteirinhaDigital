@@ -12,13 +12,13 @@ export const categoriesServices = {
           {
             idCategory: 1,
             description: 'First',
+            group: 'PRODUCTS',
             active: true
           }
         ]
       }
 
       await new Promise(resolve => setTimeout(resolve, 2500));
-
       return mockData;
     } catch(error) {
       throw error;

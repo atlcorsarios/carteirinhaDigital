@@ -14,6 +14,7 @@
         ref="refFormCategory"
         v-model:category="classCategory.model"
         v-model:valid="isFormValid"
+        :create-fast="true"
       />
     </template>
 
@@ -67,7 +68,8 @@ function resetFormCategory() {
 
 function handleCreateFastItem() {
   // simular a criação com método post, depois vai enviar com id
-  emits('created-fast-item', classCategory.model)
+  const idCategoryCreated = 1
+  emits('created-fast-item', { ...classCategory.model, idCategory: idCategoryCreated })
   classDialogCreateCategory.value.toggleDialog()
 }
 

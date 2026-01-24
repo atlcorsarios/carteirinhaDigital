@@ -39,6 +39,8 @@ export class ClassUsers extends BaseClass<IUser> {
         maxWidth: 200,
       },
       role: {
+        chartFormatter: ClassFormatters.formatRolesTranslate,
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.role),
         maxWidth: 100,
         filterType: 'select',
         selectOptions: [
@@ -53,7 +55,7 @@ export class ClassUsers extends BaseClass<IUser> {
       receiveNotifications: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (item) => ClassFormatters.formatBoolean(item.receiveNotifications),
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.receiveNotifications),
         excludeFromFilter: true,
         width: 50,
         cellClass: (value: boolean) => {
@@ -64,7 +66,7 @@ export class ClassUsers extends BaseClass<IUser> {
       active: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (item) => ClassFormatters.formatBoolean(item.active),
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.active),
         width: 50,
       },
     }

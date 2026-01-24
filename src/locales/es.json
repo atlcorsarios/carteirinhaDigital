@@ -101,7 +101,11 @@
       },
       "role": {
         "headerTable": "Permiso",
-        "label": "Permiso"
+        "label": "Permiso",
+        "types": {
+          "admin": "Administrador",
+          "user": "Usuario normal"
+        }
       },
       "phoneNumber": {
         "headerTable": "Teléfono",
@@ -157,6 +161,15 @@
       "description": {
         "headerTable": "Categoría",
         "label": "Descripción de la categoría"
+      },
+      "group": {
+        "headerTable": "Grupo",
+        "label": "Grupo de categorías",
+        "types": {
+          "products": "Productos",
+          "recipes": "Recetas",
+          "ingredients": "Ingredientes"
+        }
       },
       "active": {
         "headerTable": "Activo",

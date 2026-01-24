@@ -1,12 +1,26 @@
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { i18n } from '@/plugins/i18n'
+import { ROLE_TRANSLATIONS, type TRole } from './models/ModelUser'
+import { GROUP_TRANSLATIONS, type TCategoryGroups } from './models/ModelIProduct'
 
 export class ClassFormatters {
   static formatBoolean(value: boolean, filterLabelKey?: string): string {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return value ? t(filterLabelKey ?? 'messages.yes') : t(filterLabelKey ?? 'messages.no')
+  }
+
+  static formatRolesTranslate(role: TRole): string {
+    // @ts-ignore
+    const t = (key: string) => i18n.global.t(key)
+    return t(ROLE_TRANSLATIONS[role])
+  }
+
+  static formatGroupsTranslate(group: TCategoryGroups): string {
+    // @ts-ignore
+    const t = (key: string) => i18n.global.t(key)
+    return t(GROUP_TRANSLATIONS[group])
   }
 
   static formatPriceDynamic(valueInBase: number): string {

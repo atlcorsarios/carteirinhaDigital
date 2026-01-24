@@ -14,6 +14,7 @@ export class ClassCategories extends BaseClass<ICategory> {
     return {
       idCategory: 0,
       description: '',
+      group: 'PRODUCTS',
       active: true
     }
   }
@@ -32,10 +33,16 @@ export class ClassCategories extends BaseClass<ICategory> {
         align: 'center',
         maxWidth: 'auto'
       },
+      group: {
+        align: 'center',
+        maxWidth: 100,
+        chartFormatter: ClassFormatters.formatGroupsTranslate,
+        value: (category: ICategory) => ClassFormatters.formatGroupsTranslate(category.group)
+      },
       active: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (item) => ClassFormatters.formatBoolean(item.active),
+        value: (category: ICategory) => ClassFormatters.formatBoolean(category.active),
         width: 50,
       },
     }

@@ -1,7 +1,17 @@
+export const validCategoriesGroups = ['PRODUCTS', 'RECIPES', 'INGREDIENTS'] as const;
+export type TCategoryGroups = typeof validCategoriesGroups[number];
+
+export const GROUP_TRANSLATIONS: Record<TCategoryGroups, string> = {
+  PRODUCTS: 'forms.formCategory.group.types.products',
+  RECIPES: 'forms.formCategory.group.types.recipes',
+  INGREDIENTS: 'forms.formCategory.group.types.ingredients'
+}
+
 export interface ICategory {
   idCategory?: number
   description: string
-  active?: boolean
+  group: TCategoryGroups
+  active: boolean
 }
 
 export interface IRecipe {
@@ -9,6 +19,7 @@ export interface IRecipe {
   idProduct: string | number
   description: string
   ingredients: IIngredientsInRecipe[]
+  category: ICategory
 }
 
 export interface IIngredient {
@@ -16,6 +27,7 @@ export interface IIngredient {
   description: string
   measurement: string
   stock: number
+  category: ICategory
 }
 
 export interface IIngredientsInRecipe {

@@ -1,19 +1,17 @@
-export const ValidRoles = [
-  'ADMIN',
-  'USER',
-] as const;
+export const validRoles = ['ADMIN', 'USER'] as const;
+export type TRole = typeof validRoles[number];
 
-export type RoleType = typeof ValidRoles[number];
+export const ROLE_TRANSLATIONS: Record<TRole, string> = {
+  ADMIN: 'forms.formUser.role.types.admin',
+  USER: 'forms.formUser.role.types.user',
+};
 
-export type UserRole = {
-  role: RoleType;
-}
-
-export interface IUser extends UserRole {
+export interface IUser {
   idUser?: number
   username: string
   email: string
+  role: TRole;
   phoneNumber?: string
-  receiveNotifications?: boolean
-  active?: boolean
+  receiveNotifications: boolean
+  active: boolean
 }

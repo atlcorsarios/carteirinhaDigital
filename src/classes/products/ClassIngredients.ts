@@ -3,6 +3,7 @@ import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IIngredient } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
+import { ClassCategories } from './ClassCategories'
 
 export class ClassIngredients extends BaseClass<IIngredient> {
   constructor(data?: Partial<IIngredient>) {
@@ -15,6 +16,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
       description: '',
       measurement: '',
       stock: 0.0,
+      category: { ...ClassCategories.defaultCategory(), group: 'INGREDIENTS' }
     }
   }
 

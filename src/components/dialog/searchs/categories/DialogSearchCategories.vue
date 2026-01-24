@@ -70,7 +70,7 @@ import { ClassCategories } from '@/classes/products/ClassCategories'
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 
 // Services
-import { categoriesServices } from '@/services/resources/categoriesService'
+import { categoriesServices } from '@/services/resources/products/categoriesService'
 
 // Composables
 import { useInfiniteList } from '@/composables/useInfiniteList'
@@ -209,7 +209,7 @@ function handleSelectItem(item: ICategory) {
 
 const classDialogCreateQuickly = new ClassBaseDialog({
   persistent: false,
-  maxHeight: 300
+  maxWidth: 500
 })
 
 function handleCreateNewCategory() {

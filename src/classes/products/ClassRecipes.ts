@@ -4,6 +4,7 @@ import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IRecipe } from '../models/ModelIProduct'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { i18n } from '@/plugins/i18n'
+import { ClassCategories } from './ClassCategories'
 
 export class ClassRecipes extends BaseClass<IRecipe> {
   constructor(data?: Partial<IRecipe>) {
@@ -16,6 +17,7 @@ export class ClassRecipes extends BaseClass<IRecipe> {
       idProduct: 0,
       description: '',
       ingredients: [ClassIngredientsInRecipe.defaultIngredientsInRecipe()],
+      category: { ...ClassCategories.defaultCategory(), group: 'RECIPES' }
     }
   }
 

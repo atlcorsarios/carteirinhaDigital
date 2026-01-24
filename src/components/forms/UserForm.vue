@@ -27,10 +27,11 @@
         <v-autocomplete
           v-model="user.role"
           :rules="[rules.required()]"
-          :filter-keys="['title', 'raw.abbr']"
-          :items="ValidRoles"
-          item-title="name"
+          :items="roleOptions"
           :label="t('forms.formUser.role.label')"
+          :filter-keys="['title', 'raw.abbr']"
+          item-title="title"
+          item-value="value"
           density="compact"
           variant="outlined"
         />
@@ -64,10 +65,10 @@
 </template>
 
 <script setup lang="ts">
-import { ValidRoles, type IUser } from '@/classes/models/ModelUser'
+import { ROLE_TRANSLATIONS, validRoles, type IUser } from '@/classes/models/ModelUser'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const rules = useRules()
 const { t } = useI18n()
@@ -75,6 +76,13 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const user = defineModel<IUser>('user', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+
+const roleOptions = computed(() => {
+  return validRoles.map((role) => ({
+    title: t(ROLE_TRANSLATIONS[role]),
+    value: role
+  }));
+});
 
 defineExpose({
   reset: () => formRef.value?.reset(),
