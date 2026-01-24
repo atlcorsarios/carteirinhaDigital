@@ -21,7 +21,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.about.title',
       icon: 'mdi-information-variant',
-      hotkey: 'cmd+i',
+      hotkey: 'cmd+shift+i',
     },
   },
   {
@@ -59,7 +59,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.notifications.title',
       icon: 'mdi-bell',
-      hotkey: 'cmd+n+t',
+      hotkey: 'cmd+shift+m',
       requiresAuth: true,
       hasFilters: true,
       filterConfig: ClassDefinitions.queryFilterNotifications.filters,
@@ -74,7 +74,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.products.title',
       icon: 'mdi-package-variant-closed',
-      hotkey: 'cmd+p',
+      hotkey: 'cmd+shift+p',
       requiresAuth: true,
       hasFilters: true,
       filterConfig: ClassDefinitions.queryFilterUsers.filters,
@@ -88,7 +88,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.list.title',
           icon: 'mdi-format-list-bulleted',
-          hotkey: 'cmd+p+l',
+          hotkey: 'cmd+alt+p',
           requiresAuth: true,
         },
       },
@@ -99,7 +99,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.categories.title',
           icon: 'mdi-tag-text-outline',
-          hotkey: 'cmd+shift+c',
+          hotkey: 'cmd+alt+c',
           requiresAuth: true,
         },
       },
@@ -110,7 +110,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.recipes.title',
           icon: 'mdi-silverware-variant',
-          hotkey: 'cmd+p+r',
+          hotkey: 'cmd+alt+r',
           requiresAuth: true,
           authorize: ['ADMIN'],
         },
@@ -122,7 +122,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.ingredients.title',
           icon: 'mdi-shaker',
-          hotkey: 'cmd+p+i',
+          hotkey: 'cmd+alt+i',
           requiresAuth: true,
         },
       },
@@ -133,7 +133,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.products.children.stock.title',
           icon: 'mdi-warehouse',
-          hotkey: 'cmd+p+s',
+          hotkey: 'cmd+alt+s',
           requiresAuth: true,
         },
       },
@@ -147,7 +147,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.adm.title',
       icon: 'mdi-shield-crown',
-      hotkey: 'cmd+a',
+      hotkey: 'cmd+shift+a',
       requiresAuth: true,
       authorize: ['ADMIN'],
     },
@@ -159,7 +159,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.adm.children.users.title',
           icon: 'mdi-account-group',
-          hotkey: 'cmd+a+u',
+          hotkey: 'cmd+alt+u',
           requiresAuth: true,
           authorize: ['ADMIN'],
           hasFilters: true,
@@ -174,7 +174,7 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.adm.children.settings.title',
           icon: 'mdi-cog',
-          hotkey: 'cmd+shift+c',
+          hotkey: 'cmd+alt+c',
           requiresAuth: true,
           authorize: ['ADMIN'],
         },

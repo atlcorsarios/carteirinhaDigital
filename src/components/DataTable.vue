@@ -52,26 +52,28 @@
         <slot name="actions">
           <v-spacer />
 
-          <BtnOpenDialog
-            icon="mdi-plus-circle"
-            v-tooltip="t('tooltips.forms.create')"
-            :rotate="true"
-            @click="newRegistration"
-          />
+          <template v-if="hasActions">
+            <BtnOpenDialog
+              icon="mdi-plus-circle"
+              v-tooltip="t('tooltips.forms.create')"
+              :rotate="true"
+              @click="newRegistration"
+            />
 
-          <v-divider
-            vertical
-            class="mx-2 my-auto"
-            style="height: 24px"
-            :thickness="3"
-          />
+            <v-divider
+              vertical
+              class="mx-2 my-auto"
+              style="height: 24px"
+              :thickness="3"
+            />
 
-          <BtnOpenDialog
-            icon="mdi-chart-donut-variant"
-            v-tooltip="t('tooltips.components.dataTable.graph')"
-            :rotate="true"
-            @click="toggleChart"
-          />
+            <BtnOpenDialog
+              icon="mdi-chart-donut-variant"
+              v-tooltip="t('tooltips.components.dataTable.graph')"
+              :rotate="true"
+              @click="toggleChart"
+            />
+          </template>
         </slot>
       </div>
     </v-card-title>
@@ -81,7 +83,7 @@
     <v-card-text class="pa-0">
       <v-data-table-virtual
         :id="id"
-        :headers="filteredHeaders"
+        :headers="headers"
         :items="dataTable.model.itemsTable"
         :height="dataTable.model.heightTable || 'auto'"
         :max-height="dataTable.model.maxHeightTable || 500"
@@ -101,7 +103,10 @@
         >
           <div
             class="d-flex align-center h-100"
-            :class="header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : ''"
+            :class="[
+              header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : '',
+              `justify-${header.align || 'start'}`
+            ]"
           >
             <v-chip
               v-if="header.dataType === 'boolean'"
@@ -196,7 +201,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emits = defineEmits<{
-  (e: 'selected-item', item: any[]): void;
+  (e: 'selected-item', item: any): void;
   (e: 'toggle-chart'): void;
   (e: 'manage-record', payload: { editingMode: boolean, item?: any }): void;
   (e: 'load-more'): void;
@@ -213,7 +218,7 @@ const allHeaders = computed(() => {
 
   const headers = headersAuto.filter((header) => {
     if (!props.hasActions) {
-      return header.title != 'actions'
+      return header.key != 'actions'
     } else {
       return header
     }
@@ -230,12 +235,12 @@ watchEffect(() => {
   }
 });
 
-const filteredHeaders = computed(() => {
+const headers = computed(() => {
   return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
 });
 
- const headersForSlots = computed(() => {
-  return filteredHeaders.value.filter(h => h.key !== 'actions');
+const headersForSlots = computed(() => {
+  return headers.value.filter(h => h.key !== 'actions');
 });
 
 function toggleHeader(key: string) {

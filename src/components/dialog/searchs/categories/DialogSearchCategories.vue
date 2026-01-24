@@ -19,51 +19,64 @@
     </template>
 
     <template v-slot:default>
-      <GridDataChart
-      :hidden-chart="true"
-    >
-      <template #dataTable>
-        <DataTable
-          :id="tableId"
-          :has-actions="false"
-          v-model:dataTable="gridConfig.modelTable"
-          v-model:pagination="paginationModel"
-          @selected-item="openQuickRegister"
-          @load-more="loadMore"
-        />
-      </template>
-    </GridDataChart>
+      <GridDataChart :hidden-chart="true">
+        <template #dataTable>
+          <DataTable
+            :id="tableId"
+            :has-actions="false"
+            v-model:dataTable="gridConfig.modelTable"
+            v-model:pagination="paginationModel"
+            @selected-item="handleSelectItem"
+            @load-more="loadMore"
+          />
+        </template>
+      </GridDataChart>
     </template>
 
     <template v-slot:actions>
       <v-spacer />
       <BtnOpenDialog
         v-tooltip="t('tooltips.forms.create')"
-        icon="mdi-plus"
-        text="Nova Categoria"
-        color="primary"
-        @click="openQuickRegister"
+        icon="mdi-tag-plus"
+        @click="handleCreateNewCategory"
       />
     </template>
   </BaseDialog>
+
+  <CreatedFastCategory
+    v-model:dialog-create-quickly="classDialogCreateQuickly"
+    @created-fast-item="handleCreateQuickly"
+  />
 </template>
 
 <script setup lang="ts">
-import BaseDialog from '../BaseDialog.vue'
-import BtnOpenDialog from '../BtnOpenDialog.vue'
+// componentes
+import BaseDialog from '../../BaseDialog.vue'
+import BtnOpenDialog from '../../BtnOpenDialog.vue'
 import SearchForm from '@/components/forms/SearchForm.vue'
 import GridDataChart from '@/components/layouts/GridDataChart.vue'
 import DataTable from '@/components/DataTable.vue'
+import CreatedFastCategory from './CreatedFastCategory.vue'
+
+// Models
 import type { IModelBaseDialog } from '@/classes/models/modelComponents/ModelBaseDialog'
 import type { ICategory } from '@/classes/models/ModelIProduct'
 import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
+
+// Classes
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
 import { ClassCategories } from '@/classes/products/ClassCategories'
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
+
+// Services
 import { categoriesServices } from '@/services/resources/categoriesService'
+
+// Composables
 import { useInfiniteList } from '@/composables/useInfiniteList'
 import { useSnackbar } from '@/composables/useSnackbar'
+
+// Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { computed, nextTick, ref, watchEffect } from 'vue'
@@ -72,13 +85,7 @@ const { t } = useI18n()
 const route = useRoute()
 const { notify } = useSnackbar()
 
-const props = defineProps<{
-  dialogSearch: IModelBaseDialog
-}>()
-
-const classDialogSearchCategory = new ClassBaseDialog({
-  ...props.dialogSearch,
-})
+const classDialogSearchCategory = defineModel<any>('dialog-search-category', { required: true })
 
 // Models para o SearchForm
 const refSearchForm = ref<InstanceType<typeof SearchForm> | null>(null)
@@ -87,6 +94,7 @@ const classFormQuery = new ClassQueryFilter([], {
   storageContext: 'dialog_search_categories',
   defaultFilter: ClassCategories.defaultFilterConfig
 })
+
 const classDialogQueryFilter = new ClassBaseDialog({
   view: false,
   maxHeight: 500,
@@ -150,7 +158,7 @@ function handleSearch() {
   setTimeout(() => (loadingSearchForm.value = false), 2000)
 }
 
-// DataTable
+// Grid e DataTable
 const headers = computed(() => ClassCategories.headers)
 const optionsChartFilter = computed(() => headers.value.map((h) => h.title).slice(0, -1))
 
@@ -185,17 +193,31 @@ watchEffect(() => {
   gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.loadingDataTable = loadingSearchForm.value
   gridConfig.modelTable.model.headersTable = headers.value
-  gridConfig.modelTable.model.titleTable = t('dataTable.users.title')
+  gridConfig.modelTable.model.titleTable = t('dataTable.categories.title')
 
   gridConfig.modelChart.optionsFilterSelectData = optionsChartFilter.value
 })
 
+const emits = defineEmits<{
+  (e: 'select-item', item: ICategory): void
+}>()
 
-function openQuickRegister() {
-
+function handleSelectItem(item: ICategory) {
+  emits('select-item', item)
+  classDialogSearchCategory.value.toggleDialog()
 }
 
-defineExpose({
-  toggleDialog: () => classDialogSearchCategory.toggleDialog(),
+const classDialogCreateQuickly = new ClassBaseDialog({
+  persistent: false,
+  maxHeight: 300
 })
+
+function handleCreateNewCategory() {
+  classDialogCreateQuickly.toggleDialog()
+}
+
+function handleCreateQuickly(createdFastItem: ICategory) {
+  handleSelectItem(createdFastItem)
+}
+
 </script>

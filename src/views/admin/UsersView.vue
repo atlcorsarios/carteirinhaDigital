@@ -35,9 +35,9 @@
   <BaseDialog v-model:attributes="classDialogUser.model">
     <template v-slot:title>
       <v-icon
+        :icon="classDialogUser.model.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
         size="small"
         class="mr-2"
-        :icon="classDialogUser.model.formEditingMode ? 'mdi-account-edit' : 'mdi-account-plus'"
       />
       {{
         classDialogUser.model.formEditingMode

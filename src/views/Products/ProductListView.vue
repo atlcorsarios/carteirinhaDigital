@@ -48,11 +48,11 @@
 </template>
 
 <script setup lang="ts">
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
-import type { IProduct } from '@/classes/models/ModelIProduct';
-import { ClassProducts } from '@/classes/products/ClassProducts';
 import BaseDialog from '@/components/dialog/BaseDialog.vue';
-import ProductForm from '@/components/forms/ProductForm.vue';
+import ProductForm from '@/components/forms/products/ProductForm.vue';
+import type { IProduct } from '@/classes/models/ModelIProduct';
+import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
+import { ClassProducts } from '@/classes/products/ClassProducts';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 

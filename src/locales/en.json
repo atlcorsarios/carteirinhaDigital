@@ -233,6 +233,10 @@
       "formProduct": {
         "createProduct": "Create product",
         "editingProduct": "Edit product"
+      },
+      "formCategory": {
+        "createCategory": "Create Category",
+        "editingCategory": "Edit Category"
       }
     },
     "components": {
@@ -262,6 +266,12 @@
       "title": ""
     },
     "recipes": {
+      "title": ""
+    },
+    "ingredients": {
+      "title": ""
+    },
+    "stock": {
       "title": ""
     },
     "notifications": {

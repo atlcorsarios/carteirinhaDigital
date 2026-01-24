@@ -44,41 +44,67 @@
     </v-row>
     <v-row dense>
       <v-col cols="12" md="6">
-        <v-number-input
-          v-model="product.category.idCategory"
-          :label="t('forms.formProduct.category.label')"
-          :hint="t('forms.formProduct.category.hint')"
-          controlVariant="stacked"
-          density="compact"
-          variant="outlined"
-          clearable
-          inset
-        >
-          <template #prepend-inner>
-            <v-icon-btn
-              icon="mdi-tag-search"
-              icon-color="info"
-              variant="plain"
-              @click="handleSearchCategories"
+        <v-row dense gap="2">
+          <v-col cols="12" md="6">
+            <v-number-input
+              v-model="product.category.idCategory"
+              :label="t('forms.formProduct.category.label')"
+              :hint="t('forms.formProduct.category.hint')"
+              controlVariant="stacked"
+              density="compact"
+              variant="outlined"
+              clearable
+              inset
+            >
+              <template #prepend-inner>
+                <v-icon-btn
+                  icon="mdi-tag-search"
+                  icon-color="info"
+                  variant="plain"
+                  @click="handleSearchCategories"
+                />
+              </template>
+            </v-number-input>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-text-field
+              :model-value="product.category?.description"
+              disabled
+              density="compact"
+              variant="outlined"
             />
-          </template>
-        </v-number-input>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" md="6">
-        <v-number-input
-          v-model="product.recipe.idRecipe"
-          :label="t('forms.formProduct.recipe.label')"
-          :hint="t('forms.formProduct.recipe.hint')"
-          controlVariant="stacked"
-          density="compact"
-          variant="outlined"
-          clearable
-          inset
-        >
-          <template #prepend-inner>
-            <v-icon-btn icon="mdi-silverware-variant" icon-color="info" variant="plain" />
-          </template>
-        </v-number-input>
+        <v-row dense gap="2">
+          <v-col cols="12" md="6">
+            <v-number-input
+              v-model="product.recipe.idRecipe"
+              :label="t('forms.formProduct.recipe.label')"
+              :hint="t('forms.formProduct.recipe.hint')"
+              controlVariant="stacked"
+              density="compact"
+              variant="outlined"
+              clearable
+              inset
+            >
+              <template #prepend-inner>
+                <v-icon-btn icon="mdi-silverware-variant" icon-color="info" variant="plain" />
+              </template>
+            </v-number-input>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-text-field
+              :model-value="product.recipe?.description"
+              disabled
+              density="compact"
+              variant="outlined"
+            />
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" class="d-flex flex-column">
         <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
@@ -89,19 +115,22 @@
       </v-col>
     </v-row>
   </v-form>
-  <DialogSearchCategories ref="refDialogSearchCategories" :dialogSearch="dialogSearchCategories.model" />
+  <DialogSearchCategories
+    v-model:dialog-search-category="dialogSearchCategories"
+    @select-item="onCategorySelected"
+  />
 </template>
 
 <script setup lang="ts">
-import InputUploadImage from './fixtures/InputUploadImage.vue'
-import DialogSearchCategories from '../dialog/searchs/DialogSearchCategories.vue'
-import { type IProduct } from '@/classes/models/ModelIProduct'
+import InputUploadImage from '../fixtures/InputUploadImage.vue'
+import DialogSearchCategories from '@/components/dialog/searchs/categories/DialogSearchCategories.vue'
+import { type ICategory, type IProduct } from '@/classes/models/ModelIProduct'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const rules = useRules()
 const { t, locale } = useI18n()
@@ -155,14 +184,30 @@ const currencyPlaceholder = computed(() => {
 })
 
 // Dialogs de consultas
-const refDialogSearchCategories = ref<InstanceType<typeof DialogSearchCategories> | null>(null)
 const dialogSearchCategories = new ClassBaseDialog({
   maxWidth: 600
 })
 
 function handleSearchCategories() {
-  refDialogSearchCategories.value?.toggleDialog()
+  dialogSearchCategories.toggleDialog()
 }
+
+function onCategorySelected(item: ICategory) {
+  product.value.category = {
+    idCategory: item.idCategory,
+    description: item.description
+  }
+}
+
+watch(() => product.value.category?.idCategory, (newIdCategory) => {
+    if (!newIdCategory) {
+      if (product.value.category) {
+        product.value.category.idCategory = 0
+        product.value.category.description = ''
+      }
+    }
+  }
+)
 
 defineExpose({
   reset: () => formRef.value?.resetValidation(),
