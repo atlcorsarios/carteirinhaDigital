@@ -21,7 +21,7 @@
         />
       </v-col>
     </v-row>
-    <v-row dense>
+    <v-row dense v-if="!createFast">
       <v-col cols="12">
         <v-select
           v-model="recipe.ingredients"
@@ -55,7 +55,12 @@
         </v-select>
       </v-col>
 
-      <v-col v-if="recipe.ingredients.length > 0" cols="12" v-for="(item, index) in recipe.ingredients" :key="item.ingredient?.idIngredient ?? index">
+      <v-col
+        v-if="recipe.ingredients.length > 0"
+        v-for="(item, index) in recipe.ingredients"
+        :key="item.ingredient?.idIngredient ?? index"
+        cols="12"
+      >
         <v-text-field
           v-model="item.amount"
           :suffix="item.ingredient?.measurement ?? 'Sufix'"
