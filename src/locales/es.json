@@ -125,7 +125,7 @@
         "headerTable": "Id",
         "label": "Id"
       },
-      "productName": {
+      "description": {
         "headerTable": "Producto",
         "label": "Descripción del producto"
       },
@@ -174,6 +174,30 @@
       "active": {
         "headerTable": "Activo",
         "label": "¿Categoría activa?"
+      }
+    },
+    "formRecipe": {
+      "idRecipe": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Descripción",
+        "label": "Descripción de la receta"
+      },
+      "ingredients": {
+        "headerTable": "Ingredientes",
+        "label": "Ingredientes de la receta",
+        "hint": "Consulta y selecciona los ingredientes"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría de la receta",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "Receta activa?"
       }
     },
     "formNotifications": {
@@ -250,6 +274,10 @@
       "formCategory": {
         "createCategory": "Crear categoría",
         "editingCategory": "Editar categoría"
+      },
+      "formRecipe": {
+        "createRecipe": "Crear receta",
+        "editingRecipe": "Editar receta"
       }
     },
     "components": {
@@ -305,6 +333,9 @@
   "dialogSearch": {
     "searchCategory": {
       "title": "Categorías"
+    },
+    "searchRecipe": {
+      "title": "Recetas"
     }
   },
   "filterColumn": {

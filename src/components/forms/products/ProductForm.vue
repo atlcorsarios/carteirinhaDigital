@@ -3,9 +3,9 @@
     <v-row dense align="center">
       <v-col cols="12" md="5">
         <v-text-field
-          v-model="product.productName"
+          v-model="product.description"
           :rules="[rules.required(), rules.maxLength(100)]"
-          :label="t('forms.formProduct.productName.label')"
+          :label="t('forms.formProduct.description.label')"
           counter
           density="compact"
           variant="outlined"
@@ -51,33 +51,11 @@
         />
       </v-col>
       <v-col cols="12" md="6">
-        <v-row dense gap="2">
-          <v-col cols="12" md="6">
-            <v-number-input
-              v-model="product.recipe.idRecipe"
-              :label="t('forms.formProduct.recipe.label')"
-              :hint="t('forms.formProduct.recipe.hint')"
-              controlVariant="stacked"
-              density="compact"
-              variant="outlined"
-              clearable
-              inset
-            >
-              <template #prepend-inner>
-                <v-icon-btn icon="mdi-silverware-variant" icon-color="info" variant="plain" />
-              </template>
-            </v-number-input>
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <v-text-field
-              :model-value="product.recipe?.description"
-              disabled
-              density="compact"
-              variant="outlined"
-            />
-          </v-col>
-        </v-row>
+        <InputRecipeWithSearch
+          v-model:recipe="product.recipe"
+          :label="t('forms.formProduct.recipe.label')"
+          :hint="t('forms.formProduct.recipe.hint')"
+        />
       </v-col>
       <v-col cols="12" class="d-flex flex-column">
         <InputUploadImage
@@ -94,8 +72,9 @@
 </template>
 
 <script setup lang="ts">
-import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
+import InputRecipeWithSearch from '../fixtures/InputRecipeWithSearch.vue'
+import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import { type IProduct } from '@/classes/models/ModelIProduct'
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'

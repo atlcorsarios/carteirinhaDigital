@@ -2,7 +2,7 @@
   <v-row dense>
     <v-col cols="12" md="6">
       <v-number-input
-        v-model="category.idCategory"
+        v-model="recipe.idRecipe"
         :label="label"
         :hint="hint"
         controlVariant="stacked"
@@ -13,10 +13,10 @@
       >
         <template #prepend-inner>
           <v-icon-btn
-            icon="mdi-tag-search"
+            icon="mdi-silverware-variant"
             icon-color="info"
             variant="plain"
-            @click="handleSearchCategories"
+            @click="handleSearchRecipes"
           />
         </template>
 
@@ -31,7 +31,7 @@
 
     <v-col cols="12" md="6">
       <v-text-field
-        :model-value="category.description"
+        :model-value="recipe.description"
         disabled
         density="compact"
         variant="outlined"
@@ -39,49 +39,49 @@
     </v-col>
   </v-row>
 
-  <DialogSearchCategories
-    v-model:dialog-search-category="dialogSearchCategories"
-    @select-item="onCategorySelected"
+  <DialogSearchRecipes
+    v-model:dialog-search-recipe="dialogSearchRecipes"
+    @select-item="onRecipeSelected"
   />
 </template>
 
 <script setup lang="ts">
-import DialogSearchCategories from '@/components/dialog/searchs/categories/DialogSearchCategories.vue';
-import { type ICategory } from '@/classes/models/ModelIProduct';
+import DialogSearchRecipes from '@/components/dialog/searchs/recipes/DialogSearchRecipes.vue';
+import { type IRecipe } from '@/classes/models/ModelIProduct';
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
 import { ref, watch } from 'vue';
 
 const loading = ref<boolean>(false)
 
 const props = defineProps<{
-  label?: string,
+  label?: string
   hint?: string
 }>()
 
-const category = defineModel<ICategory>('category', { required: true })
-const dialogSearchCategories = new ClassBaseDialog({
+const recipe = defineModel<IRecipe>('recipe', { required: true })
+const dialogSearchRecipes = new ClassBaseDialog({
   maxWidth: 600
 })
 
-function handleSearchCategories() {
-  dialogSearchCategories.toggleDialog()
+function handleSearchRecipes() {
+  dialogSearchRecipes.toggleDialog()
 }
 
-function onCategorySelected(selectedItem: ICategory) {
-  category.value = selectedItem
+function onRecipeSelected(selectedItem: IRecipe) {
+  recipe.value = selectedItem
 }
 
-function clearCategory() {
-  category.value = {
-    ...category.value,
-    idCategory: 0,
+function clearRecipe() {
+  recipe.value = {
+    ...recipe.value,
+    idRecipe: 0,
     description: ''
   }
 }
 
-watch(() => category.value.idCategory, (newIdCategory) => {
-  if (!newIdCategory) {
-    clearCategory()
+watch(() => recipe.value.idRecipe, (newIdRecipe) => {
+  if (!newIdRecipe) {
+    clearRecipe()
   }
 })
 </script>

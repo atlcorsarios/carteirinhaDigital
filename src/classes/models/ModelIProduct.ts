@@ -16,10 +16,10 @@ export interface ICategory {
 
 export interface IRecipe {
   idRecipe?: number
-  idProduct: string | number
   description: string
   ingredients: IIngredientsInRecipe[]
   category: ICategory
+  active: boolean
 }
 
 export interface IIngredient {
@@ -36,8 +36,8 @@ export interface IIngredientsInRecipe {
 }
 
 export interface IProduct {
-  idProduct?: string | number
-  productName: string
+  idProduct?: number
+  description: string
   image?: string | null
   imageFile?: File | null
   price?: number

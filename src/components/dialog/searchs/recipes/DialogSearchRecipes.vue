@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog v-model:attributes="classDialogSearchCategory.model">
+  <BaseDialog v-model:attributes="classDialogSearchRecipe.model">
     <template v-slot:title>
       <div class="w-100">
         <SearchForm
@@ -9,7 +9,7 @@
           v-model:tab="activeTab"
           :loading="loadingSearchForm"
           :has-filters="true"
-          :title-dialog-filter="t('dialogSearch.searchCategory.title')"
+          :title-dialog-filter="t('dialogSearch.searchRecipe.title')"
           @submit="handleSearch"
           @reset="handleReset"
           @add-filter="handleAddFilter"
@@ -37,13 +37,13 @@
       <v-spacer />
       <BtnOpenDialog
         v-tooltip="t('tooltips.forms.create')"
-        icon="mdi-tag-plus"
-        @click="handleCreateNewCategory"
+        icon="mdi-cookie-plus"
+        @click="handleCreateNewRecipe"
       />
     </template>
   </BaseDialog>
 
-  <CreatedFastCategory
+  <CreatedFastRecipe
     v-model:dialog-create-quickly="classDialogCreateQuickly"
     @created-fast-item="handleCreateQuickly"
   />
@@ -56,20 +56,20 @@ import BtnOpenDialog from '../../BtnOpenDialog.vue'
 import SearchForm from '@/components/forms/SearchForm.vue'
 import GridDataChart from '@/components/layouts/GridDataChart.vue'
 import DataTable from '@/components/DataTable.vue'
-import CreatedFastCategory from './CreatedFastCategory.vue'
+import CreatedFastRecipe from './CreatedFastRecipe.vue'
 
 // Models
-import { type ICategory } from '@/classes/models/ModelIProduct'
+import { type IRecipe } from '@/classes/models/ModelIProduct'
 import { type TPagination } from '@/classes/models/ModelHeaderPaginator'
 
 // Classes
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
-import { ClassCategories } from '@/classes/products/ClassCategories'
+import { ClassRecipes } from '@/classes/products/ClassRecipes'
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 
 // Services
-import { categoriesServices } from '@/services/resources/products/categoriesService'
+import { recipesServices } from '@/services/resources/products/recipesService'
 
 // Composables
 import { useInfiniteList } from '@/composables/useInfiniteList'
@@ -84,14 +84,14 @@ const { t } = useI18n()
 const route = useRoute()
 const { notify } = useSnackbar()
 
-const classDialogSearchCategory = defineModel<any>('dialog-search-category', { required: true })
+const classDialogSearchRecipe = defineModel<any>('dialog-search-recipe', { required: true })
 
 // Models para o SearchForm
 const refSearchForm = ref<InstanceType<typeof SearchForm> | null>(null)
 const classFormQuery = new ClassQueryFilter([], {
-  columns: ClassCategories.filters,
-  storageContext: 'dialog_search_categories',
-  defaultFilter: ClassCategories.defaultFilterConfig
+  columns: ClassRecipes.filters,
+  storageContext: 'dialog_search_recipes',
+  defaultFilter: ClassRecipes.defaultFilterConfig
 })
 
 const classDialogQueryFilter = new ClassBaseDialog({
@@ -155,22 +155,22 @@ function handleSearch() {
 }
 
 // Grid e DataTable
-const headers = computed(() => ClassCategories.headers)
+const headers = computed(() => ClassRecipes.headers)
 const optionsChartFilter = computed(() => headers.value.map((h) => h.title).slice(0, -1))
 
-const gridManager = new ClassGridDataChart<ICategory>({
+const gridManager = new ClassGridDataChart<IRecipe>({
   modelTable: {
     model: {
-      titleTable: t('dataTable.categories.title'),
+      titleTable: t('dataTable.recipes.title'),
     }
   }
 })
 
 const gridConfig = gridManager.model
 
-const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<ICategory>(
+const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<IRecipe>(
   route.fullPath,
-  categoriesServices.getAllCategories
+  recipesServices.getAllRecipes
 );
 
 const paginationModel = computed({
@@ -189,18 +189,18 @@ watchEffect(() => {
   gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.loadingDataTable = loadingSearchForm.value
   gridConfig.modelTable.model.headersTable = headers.value
-  gridConfig.modelTable.model.titleTable = t('dataTable.categories.title')
+  gridConfig.modelTable.model.titleTable = t('dataTable.recipes.title')
 
   gridConfig.modelChart.optionsFilterSelectData = optionsChartFilter.value
 })
 
 const emits = defineEmits<{
-  (e: 'select-item', item: ICategory): void
+  (e: 'select-item', item: IRecipe): void
 }>()
 
-function handleSelectItem(item: ICategory) {
+function handleSelectItem(item: IRecipe) {
   emits('select-item', item)
-  classDialogSearchCategory.value.toggleDialog()
+  classDialogSearchRecipe.value.toggleDialog()
 }
 
 const classDialogCreateQuickly = new ClassBaseDialog({
@@ -208,11 +208,11 @@ const classDialogCreateQuickly = new ClassBaseDialog({
   maxWidth: 500
 })
 
-function handleCreateNewCategory() {
+function handleCreateNewRecipe() {
   classDialogCreateQuickly.toggleDialog()
 }
 
-function handleCreateQuickly(createdFastItem: ICategory) {
+function handleCreateQuickly(createdFastItem: IRecipe) {
   handleSelectItem(createdFastItem)
 }
 

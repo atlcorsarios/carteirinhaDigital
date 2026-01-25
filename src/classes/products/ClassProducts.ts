@@ -15,7 +15,7 @@ export class ClassProducts extends BaseClass<IProduct> {
   static defaultProduct(): IProduct {
     return {
       idProduct: 0,
-      productName: '',
+      description: '',
       image:
         'https://imgs.search.brave.com/lDiW-1b5kOsYRosEPnXWw06Shr1RFjwCkeiXswevt70/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnNz/dGF0aWMubmV0L3lt/ZndPLnBuZw',
       imageFile: null,
@@ -36,7 +36,7 @@ export class ClassProducts extends BaseClass<IProduct> {
       idProduct: {
         width: 50,
       },
-      productName: {
+      description: {
         maxWidth: 250,
       },
       image: {
@@ -100,7 +100,7 @@ export class ClassProducts extends BaseClass<IProduct> {
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {
     return {
-      field: 'productName',
+      field: 'description',
       condition: 'contains'
     }
   }

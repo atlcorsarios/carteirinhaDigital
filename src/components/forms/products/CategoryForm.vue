@@ -1,6 +1,6 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
-    <v-row dense class="d-flex justify-center">
+    <v-row dense align="center">
       <v-col cols="12" :md="createFast ? 12 : 6">
         <v-text-field
           v-model="category.description"

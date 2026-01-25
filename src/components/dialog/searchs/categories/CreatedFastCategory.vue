@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import BaseDialog from '../../BaseDialog.vue';
 import CategoryForm from '@/components/forms/products/CategoryForm.vue';
-import type { ICategory } from '@/classes/models/ModelIProduct';
+import { type ICategory } from '@/classes/models/ModelIProduct';
 import { ClassCategories } from '@/classes/products/ClassCategories';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
@@ -72,5 +72,4 @@ function handleCreateFastItem() {
   emits('created-fast-item', { ...classCategory.model, idCategory: idCategoryCreated })
   classDialogCreateCategory.value.toggleDialog()
 }
-
 </script>

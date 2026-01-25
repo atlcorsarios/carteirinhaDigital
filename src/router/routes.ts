@@ -77,8 +77,8 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+shift+p',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.queryFilterUsers.filters,
-      defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter,
+      filterConfig: ClassDefinitions.queryFilterProducts.filters,
+      defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
     },
     children: [
       {
@@ -90,6 +90,9 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-format-list-bulleted',
           hotkey: 'cmd+alt+p',
           requiresAuth: true,
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
         },
       },
       {
@@ -101,6 +104,9 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-tag-text-outline',
           hotkey: 'cmd+alt+c',
           requiresAuth: true,
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterCategories.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterCategories.defaultFilter,
         },
       },
       {
@@ -112,6 +118,9 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-silverware-variant',
           hotkey: 'cmd+alt+r',
           requiresAuth: true,
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterRecipes.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterRecipes.defaultFilter,
           authorize: ['ADMIN'],
         },
       },

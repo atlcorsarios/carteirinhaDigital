@@ -82,6 +82,9 @@
 
     <v-card-text class="pa-0">
       <v-data-table-virtual
+        v-model="selectedItens"
+        :return-object="selectValues"
+        :show-select="selectValues"
         :id="id"
         :headers="headers"
         :items="dataTable.model.itemsTable"
@@ -190,14 +193,16 @@ const { t } = useI18n()
 
 const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true });
 const pagination = defineModel<TPagination>('pagination', { required: true });
-
+const selectedItens = defineModel<any[]>('selectedItens', { required: false , default: [{}]})
 
 const props = withDefaults(defineProps<{
   id?: string
   hasActions?: boolean
+  selectValues?: boolean
 }>(), {
   id: 'id',
-  hasActions: true
+  hasActions: true,
+  selectValues: false
 });
 
 const emits = defineEmits<{
@@ -273,10 +278,6 @@ const rowProps = (data: { item: any }) => {
   }
 };
 
-const colorVChipBooleans = (value: boolean) => {
-  return value === false ? 'error' : 'success'
-};
-
 function getRawValue(item: any, key: string) {
   if (!key || !item) return null
   return key.split('.').reduce((obj, k) => (obj || {})[k], item)
@@ -312,7 +313,6 @@ watch(() => pagination.value.limit, (newLimit) => {
     StorageUtils.set('limit_preference', pagination.value.limit, 'local')
   }
 })
-
 </script>
 
 <style scoped>
