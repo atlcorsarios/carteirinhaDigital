@@ -34,9 +34,10 @@
         </v-mask-input>
       </v-col>
       <v-col cols="12" md="3" class="d-flex justify-center">
-        <v-checkbox
+        <v-switch
           v-model="product.active"
           :label="t('forms.formProduct.active.label')"
+          :indeterminate="product.active === null || product.active === undefined"
           color="success"
           class="m-0 p-0"
         />

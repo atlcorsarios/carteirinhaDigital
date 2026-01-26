@@ -20,6 +20,7 @@ export const usersServices = {
             idUser: 1,
             username: 'AVELITO',
             email: 'avelito@gmail.com',
+            image: 'https://randomuser.me/api/portraits/men/84.jpg',
             role: 'ADMIN',
             phoneNumber: '(32) 99999-9999',
             receiveNotifications: true,
@@ -29,6 +30,7 @@ export const usersServices = {
             idUser: 2,
             username: 'DUDA',
             email: 'duda@gmail.com',
+            image: 'https://randomuser.me/api/portraits/men/85.jpg',
             role: 'USER',
             phoneNumber: '(32) 98888-8888',
             receiveNotifications: false,
@@ -38,6 +40,7 @@ export const usersServices = {
             idUser: 3,
             username: 'MOISES',
             email: 'moises@gmail.com',
+            image: 'https://randomuser.me/api/portraits/men/86.jpg',
             role: 'USER',
             phoneNumber: '(32) 97777-7777',
             receiveNotifications: false,
@@ -52,6 +55,10 @@ export const usersServices = {
     } catch (error) {
       throw error
     }
+  },
+
+  async saveUser() {
+
   },
 
   async searchUsuarios() {

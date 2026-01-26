@@ -126,7 +126,7 @@
         "label": "Id"
       },
       "description": {
-        "headerTable": "Producto",
+        "headerTable": "Descripción",
         "label": "Descripción del producto"
       },
       "image": {
@@ -159,7 +159,7 @@
         "label": "Id"
       },
       "description": {
-        "headerTable": "Categoría",
+        "headerTable": "Descripción",
         "label": "Descripción de la categoría"
       },
       "group": {
@@ -198,6 +198,30 @@
       "active": {
         "headerTable": "Activo",
         "label": "Receta activa?"
+      }
+    },
+    "formIngredient": {
+      "idIngredient": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Ingrediente",
+        "label": "Descripción del ingrediente"
+      },
+      "measurement": {
+        "headerTable": "Medida",
+        "label": "Unidad de medida"
+      },
+      "stock": {
+        "headerTable": "En stock",
+        "label": "Cantidad inicial de stock",
+        "hint": "La cantidad inicial puede empezar desde cero y luego añadirse al stock"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría del ingrediente",
+        "hint": "Haga clic en el icono de la izquierda para ver"
       }
     },
     "formNotifications": {
@@ -265,7 +289,9 @@
     "forms": {
       "formUsers": {
         "createUser": "Crear usuario",
-        "editingUser": "Editar usuario"
+        "editingUser": "Editar usuario",
+        "success": "Usuario guardado correctamente",
+        "error": "Error al guardar el usuario"
       },
       "formProduct": {
         "createProduct": "Crear producto",
@@ -336,6 +362,9 @@
     },
     "searchRecipe": {
       "title": "Recetas"
+    },
+    "searchIngredient": {
+      "title": "Ingredientes"
     }
   },
   "filterColumn": {

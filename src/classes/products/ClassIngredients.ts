@@ -1,9 +1,9 @@
-import type { IHeadersDataTable } from '../models/modelComponents/ModelHeaderTable'
+import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IIngredient } from '../models/ModelIProduct'
-import { BaseClass } from '../subscriptions/BaseClass'
-import { i18n } from '@/plugins/i18n'
+import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { ClassCategories } from './ClassCategories'
+import { BaseClass } from '../subscriptions/BaseClass'
 
 export class ClassIngredients extends BaseClass<IIngredient> {
   constructor(data?: Partial<IIngredient>) {
@@ -25,26 +25,69 @@ export class ClassIngredients extends BaseClass<IIngredient> {
     return this.createWithDefaults(item, ClassIngredients.defaultIngredient())
   }
 
-  static get headers(): IHeadersDataTable[] {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return [
-      {
-        title: t('dataTable.products.headers.id'),
-        align: 'start',
-        key: 'id',
+  static get filedConfig(): TEntityConfig<IIngredient> {
+    return {
+      idIngredient: {
         width: 50,
+        maxWidth: 100,
+        minWidth: 30,
+        excludeFromChart: true
       },
-    ]
+      description: {
+        align: 'center',
+        width: 700,
+        maxWidth: 850,
+        minWidth: 250,
+        excludeFromChart: true
+      },
+      measurement: {
+        align: 'center',
+        width: 100,
+        maxWidth: 250,
+        minWidth: 50,
+      },
+      stock: {
+        align: 'center',
+        width: 100,
+        maxWidth: 250,
+        minWidth: 50,
+      },
+      category: {
+        hidden: true
+      }
+    }
+  }
+
+  static get headers(): IHeadersDataTable[] {
+    const defaultModel = new ClassIngredients().getDefault()
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formIngredient',
+      ClassCategories.fieldConfig
+    )
   }
 
   static get filters(): IFilterColumn[] {
-    return [
-      {
-        key: 'id',
-        label: 'forms.formProduct.id',
-        type: 'number',
-      },
-    ]
+    const defaultModel = new ClassIngredients().getDefault()
+    const autoFilters = BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formIngredient',
+      ClassCategories.fieldConfig
+    )
+
+    autoFilters.push({
+      key: 'category.description',
+      label: 'forms.formIngredient.category.headerTable',
+      type: 'text',
+    })
+
+    return autoFilters;
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'description',
+      condition: 'contains'
+    }
   }
 }

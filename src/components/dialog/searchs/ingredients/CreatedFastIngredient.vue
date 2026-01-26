@@ -10,9 +10,9 @@
     </template>
 
     <template v-slot:default>
-      <RecipeForm
-        ref="refFormRecipe"
-        v-model:recipe="classRecipe.model"
+      <IngredientForm
+        ref="refFormIngredient"
+        v-model:ingredient="classIngredient.model"
         v-model:valid="isFormValid"
         :create-fast="true"
       />
@@ -43,14 +43,14 @@
 
 <script setup lang="ts">
 // Componentes
+import IngredientForm from '@/components/forms/products/IngredientForm.vue';
 import BaseDialog from '../../BaseDialog.vue';
-import RecipeForm from '@/components/forms/products/RecipeForm.vue';
 
 // Models
-import { type IRecipe } from '@/classes/models/ModelIProduct';
+import { type IIngredient } from '@/classes/models/ModelIProduct';
 
 // Classes
-import { ClassRecipes } from '@/classes/products/ClassRecipes';
+import { ClassIngredients } from '@/classes/products/ClassIngredients';
 
 // Vue
 import { useI18n } from 'vue-i18n';
@@ -59,23 +59,23 @@ import { ref } from 'vue';
 const { t } = useI18n()
 
 const classDialogCreateRecipe = defineModel<any>('dialog-create-quickly', { required: true })
-const classRecipe = new ClassRecipes()
-const refFormRecipe = ref<InstanceType<typeof RecipeForm> | null>(null)
+const classIngredient = new ClassIngredients()
+const refFormIngredient = ref<InstanceType<typeof IngredientForm> | null>(null)
 const isFormValid = ref<boolean>(false)
 
 const emits = defineEmits<{
-  (e: 'created-fast-item', item: IRecipe): void
+  (e: 'created-fast-item', item: IIngredient): void
 }>()
 
 function resetFormRecipe() {
-  refFormRecipe.value?.reset()
-  classRecipe.reset()
+  refFormIngredient.value?.reset()
+  classIngredient.reset()
 }
 
 function handleCreateFastItem() {
   // simular a criação com método post, depois vai enviar com id
-  const idRecipeCreated = 1
-  emits('created-fast-item', { ...classRecipe.model, idRecipe: idRecipeCreated })
+  const idIngredientCreated = 1
+  emits('created-fast-item', { ...classIngredient.model, idIngredient: idIngredientCreated })
   classDialogCreateRecipe.value.toggleDialog()
 }
 </script>

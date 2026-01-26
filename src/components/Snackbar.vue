@@ -6,7 +6,7 @@
     class="py-15"
     location="top right"
     variant="elevated"
-    rounded="pill"
+    rounded
     multi-line
   >
     {{ translatedMessage }}

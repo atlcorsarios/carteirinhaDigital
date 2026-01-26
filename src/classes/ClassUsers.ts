@@ -15,6 +15,7 @@ export class ClassUsers extends BaseClass<IUser> {
       idUser: 0,
       username: '',
       email: '@gmail.com',
+      image: '',
       role: 'USER',
       phoneNumber: '',
       receiveNotifications: false,
@@ -40,6 +41,9 @@ export class ClassUsers extends BaseClass<IUser> {
       email: {
         maxWidth: 200,
         excludeFromChart: true
+      },
+      image: {
+        hidden: true
       },
       role: {
         chartFormatter: ClassFormatters.formatRolesTranslate,

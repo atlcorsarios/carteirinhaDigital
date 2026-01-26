@@ -26,9 +26,10 @@
         />
       </v-col>
       <v-col v-if="!createFast" cols="12">
-        <v-checkbox
+        <v-switch
           v-model="category.active"
           :label="t('forms.formCategory.active.label')"
+          :indeterminate="category.active === null || category.active === undefined"
           color="success"
           class="m-0 p-0"
         />
@@ -71,5 +72,4 @@ defineExpose({
     return valid;
   }
 });
-
 </script>

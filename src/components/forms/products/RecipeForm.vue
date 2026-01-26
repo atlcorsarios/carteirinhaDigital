@@ -13,9 +13,10 @@
         />
       </v-col>
       <v-col v-if="!createFast" cols="12">
-        <v-checkbox
+        <v-switch
           v-model="recipe.active"
           :label="t('forms.formRecipe.active.label')"
+          :indeterminate="recipe.active === null || recipe.active === undefined"
           color="success"
           class="m-0 p-0"
         />

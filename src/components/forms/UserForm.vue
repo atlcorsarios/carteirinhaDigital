@@ -48,17 +48,21 @@
         />
       </v-col>
       <v-col cols="12" md="6">
-        <v-checkbox
-          v-model="user.receiveNotifications"
+        <v-switch
+          v-model="user.active"
           :label="t('forms.formUser.receiveNotifications.label')"
+          :indeterminate="user.active === null || user.active === undefined"
           color="success"
+          class="m-0 p-0"
         />
       </v-col>
       <v-col cols="12" md="6">
-        <v-checkbox
+        <v-switch
           v-model="user.active"
           :label="t('forms.formUser.active.label')"
+          :indeterminate="user.active === null || user.active === undefined"
           color="success"
+          class="m-0 p-0"
         />
       </v-col>
     </v-row>

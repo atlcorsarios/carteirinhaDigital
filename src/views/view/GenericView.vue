@@ -7,6 +7,8 @@
       <template #dataTable>
         <DataTable
           :id="tableId"
+          :selectItems="selectItems"
+          v-model:selected-itens="selectedItens"
           v-model:dataTable="gridConfig.modelTable"
           v-model:pagination="paginationModel"
           @selected-item="handleSelection"
@@ -32,17 +34,22 @@
     </GridDataChart>
   </v-container>
 
-  <BaseDialog v-model:attributes="dialogManager.model">
+  <BaseDialog v-model:attributes="dialogModelManager.model">
     <template v-slot:title>
       <v-icon
-        :icon="dialogManager.model.formEditingMode ? 'mdi-pencil' : 'mdi-plus'"
+        :icon="
+          dialogModelManager.model.formEditingMode
+            ? (iconEdit ?? 'mdi-pencil')
+            : (iconCreate ?? 'mdi-plus')
+        "
         size="small"
         class="mr-2"
       />
       {{
-        dialogManager.model.formEditingMode
-          ? (textEdit || t('tooltips.forms.edit')) + ` ${getItemIdentifier(dialogManager.model.itemEdition)}`
-          : (textCreate || t('tooltips.forms.create'))
+        dialogModelManager.model.formEditingMode
+          ? (textEdit || t('tooltips.forms.edit')) +
+            ` ${getItemIdentifier(dialogModelManager.model.itemEdition)}`
+          : textCreate || t('tooltips.forms.create')
       }}
     </template>
 
@@ -50,9 +57,9 @@
       <slot
         name="form"
         :ref-form="refForm"
-        :model="modelManager.model"
+        :model="classModelManager.model"
         :is-valid="isFormValid"
-        :update-valid="(val: boolean) => isFormValid = val"
+        :update-valid="(val: boolean) => (isFormValid = val)"
       />
     </template>
 
@@ -68,7 +75,7 @@
       <v-spacer />
 
       <v-icon-btn
-        icon="mdi-check"
+        :icon="iconSave ?? 'mdi-check'"
         v-tooltip="t('tooltips.forms.save')"
         variant="text"
         color="success"
@@ -98,55 +105,68 @@ import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { useInfiniteList } from '@/composables/useInfiniteList'
 import { useChartHelpers } from '@/composables/useChartHelpers'
 import { useStringColor } from '@/composables/useStringColor'
+import { useSnackbar } from '@/composables/useSnackbar'
 
 // Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ref, watchEffect, computed } from 'vue'
 
-// Definição das Props
 const props = defineProps<{
-  serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>;
-  headers: any[];
-  idField?: string;
-  title: string;
-  textCreate?: string;
-  textEdit?: string;
-  iconCreate?: string;
-  iconEdit?: string;
-  iconSave?: string;
-  modelManager: {
-    model: T;
-    reset: () => void;
-    updateModel: (item: T) => void;
-  };
-  serviceSave?: (item: T) => Promise<any>;
-}>();
+  headers: any[]
+  idField: string
+  title: string
+  textCreate?: string
+  textEdit?: string
+  iconCreate?: string
+  iconEdit?: string
+  iconSave?: string
+  dialogModelManager: ClassBaseDialog
+  classModelManager: {
+    model: T
+    reset: () => void
+    updateModel: (item: T) => void
+  }
+  successMessage: string
+  errorMessage: string
+  serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
+  serviceSave?: (item: T) => Promise<any>
+  selectItems?: boolean
+}>()
 
-const emit = defineEmits(['saved', 'error']);
+const selectedItens = defineModel<any[]>('selected-itens', { required: false })
+
+const emit = defineEmits(['saved', 'error'])
 
 const route = useRoute()
+const { notify } = useSnackbar()
 const { t } = useI18n()
-const { stringToColor } = useStringColor();
+const { stringToColor } = useStringColor()
 
-// --- Lógica de Grid ---
 const gridManager = new ClassGridDataChart<T>({
-  modelTable: { model: { titleTable: props.title } }
+  modelTable: { model: { titleTable: props.title } },
 })
+
 const gridConfig = gridManager.model
 
-const { limit, offset, total, items, isFinished, loading, tableId, loadMore, refresh } = useInfiniteList<T>(
+const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<T>(
   route.fullPath,
-  props.serviceFetch
-);
+  props.serviceFetch,
+)
 
-// Sincroniza paginação
 const paginationModel = computed({
-  get: () => ({ limit: limit.value, offset: offset.value, total: total.value, isFinished: isFinished.value } as TPagination),
-  set: (val: TPagination) => { limit.value = val.limit; }
-});
+  get: () =>
+    ({
+      limit: limit.value,
+      offset: offset.value,
+      total: total.value,
+      isFinished: isFinished.value,
+    }) as TPagination,
+  set: (val: TPagination) => {
+    limit.value = val.limit
+  },
+})
 
-// Watchers de configuração da tabela
 watchEffect(() => {
   gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.loadingDataTable = loading.value
@@ -156,7 +176,6 @@ watchEffect(() => {
   gridConfig.modelChart.optionsFilterSelectData = props.headers.map((h) => h.title).slice(0, -1)
 })
 
-// --- Lógica de Gráfico ---
 function toggleChartState() {
   gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
 }
@@ -168,7 +187,9 @@ const headersToGraph = computed(() => {
 })
 
 const selectedChartFilter = ref(headersToGraph.value[0]?.value)
-const activeHeaderConfig = computed(() => props.headers.find((h) => h.key === selectedChartFilter.value))
+const activeHeaderConfig = computed(() =>
+  props.headers.find((h) => h.key === selectedChartFilter.value),
+)
 
 const chartDataComputed = computed(() => {
   const items = gridConfig.modelTable.model.itemsTable
@@ -177,55 +198,61 @@ const chartDataComputed = computed(() => {
     selectedChartFilter.value,
     activeHeaderConfig.value?.chartAggregator || 'count',
     stringToColor,
-    activeHeaderConfig.value?.chartFormatter
+    activeHeaderConfig.value?.chartFormatter,
   )
 })
 
-// --- Lógica de Dialog e Form ---
-const dialogManager = new ClassBaseDialog<T>({ persistent: true, maxWidth: 800 })
 const isFormValid = ref(false)
 const refForm = ref<any>(null)
-const selectedItem = ref<T>()
+const selectedItem = ref<T | null>(null)
 
 function handleSelection(item: any) {
   selectedItem.value = item
 }
 
 function handleManageRecord(payload: { editingMode: boolean; item?: T }) {
+  isFormValid.value = false
+
   if (payload.editingMode && payload.item) {
-    props.modelManager.updateModel(payload.item)
-    dialogManager.openEditingMode(payload.item)
+    props.classModelManager.updateModel(payload.item)
+    props.dialogModelManager.openEditingMode(payload.item)
   } else {
-    props.modelManager.reset()
-    dialogManager.openNew()
+    props.classModelManager.reset()
+    props.dialogModelManager.openNew()
   }
-  // Tenta resetar validação visual se o form expor o método reset
-  if(refForm.value?.reset) refForm.value.reset()
+
+  if (refForm.value?.reset) refForm.value.reset()
 }
 
 function resetForm() {
-  if(refForm.value?.reset) refForm.value.reset()
-  props.modelManager.reset()
+  if (refForm.value?.reset) refForm.value.reset()
+  if (props.dialogModelManager.model.formEditingMode) {
+    const itemEditing = props.dialogModelManager.model.itemEdition
+    props.classModelManager.updateModel(itemEditing)
+  } else {
+    props.classModelManager.reset()
+  }
 }
 
 async function submit() {
   try {
     if (props.serviceSave) {
-        await props.serviceSave(props.modelManager.model);
-        // refresh() // Recarregar lista se necessário
+      await props.serviceSave(props.classModelManager.model)
     }
-    emit('saved', props.modelManager.model);
-    dialogManager.toggleDialog()
+    notify(props.successMessage, 'success')
+    emit('saved', props.classModelManager.model)
+    props.dialogModelManager.toggleDialog()
   } catch (error) {
-    emit('error', error);
+    notify(props.errorMessage, 'error')
+    emit('error', error)
   }
 }
 
-function  getItemIdentifier(item: any) {
-    if (!item) return '';
-    if (props.idField && item[props.idField]) return item[props.idField];
-    const keys = Object.keys(item);
-    const idKey = keys.find(k => k.startsWith('id'));
-    return idKey ? item[idKey] : '';
+function getItemIdentifier(item: any) {
+  if (!item) return ''
+  if (props.idField && item[props.idField]) return item[props.idField]
+  const keys = Object.keys(item)
+  const idKey = keys.find((k) => k.startsWith('id'))
+  return idKey ? item[idKey] : ''
 }
 </script>

@@ -126,7 +126,7 @@
         "label": "Id"
       },
       "description": {
-        "headerTable": "Produto",
+        "headerTable": "Descrição",
         "label": "Descrição do produto"
       },
       "image": {
@@ -200,6 +200,30 @@
         "label": "Receita ativa?"
       }
     },
+    "formIngredient": {
+      "idIngredient": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Descrição",
+        "label": "Descrição do ingrediente"
+      },
+      "measurement": {
+        "headerTable": "Medida",
+        "label": "Unidade de medida"
+      },
+      "stock": {
+        "headerTable": "Em estoque",
+        "label": "Quantidade inicial em estoque",
+        "hint": "Quantidade inicial pode começar com zero, depois dê entrada no estoque"
+      },
+      "category": {
+        "headerTable": "Categoria",
+        "label": "Categoria do ingrediente",
+        "hint": "Clique no ícone a esquerda para consultar"
+      }
+    },
     "formNotifications": {
 
     },
@@ -265,7 +289,9 @@
     "forms": {
       "formUsers": {
         "createUser": "Criar usuário",
-        "editingUser": "Editar usuário"
+        "editingUser": "Editar usuário",
+        "success": "Usuário salvo com sucesso",
+        "error": "Erro ao salvar usuário"
       },
       "formProduct": {
         "createProduct": "Criar produto",
@@ -336,6 +362,9 @@
     },
     "searchRecipe": {
       "title": "Receitas"
+    },
+    "searchIngredient": {
+      "title": "Ingredientes"
     }
   },
   "filterColumn": {

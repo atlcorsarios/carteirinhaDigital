@@ -14,12 +14,12 @@
           </template>
 
           <v-card min-width="250" max-height="400" class="overflow-y-auto">
-            <v-list density="compact" select-strategy="classic" v-model:selected="selectedHeadersKeys">
-              <v-list-item
-                v-for="header in allHeaders"
-                :key="header.key"
-                :value="header.key"
-              >
+            <v-list
+              density="compact"
+              select-strategy="classic"
+              v-model:selected="selectedHeadersKeys"
+            >
+              <v-list-item v-for="header in allHeaders" :key="header.key" :value="header.key">
                 <template v-slot:prepend="{ isActive }">
                   <v-list-item-action>
                     <v-checkbox-btn
@@ -38,12 +38,7 @@
           </v-card>
         </v-menu>
 
-        <v-divider
-          vertical
-          class="mx-2 my-auto"
-          style="height: 24px"
-          :thickness="3"
-        />
+        <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
 
         <div class="text-h6 font-weight-bold text-high-emphasis text-truncate">
           {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
@@ -60,12 +55,7 @@
               @click="newRegistration"
             />
 
-            <v-divider
-              vertical
-              class="mx-2 my-auto"
-              style="height: 24px"
-              :thickness="3"
-            />
+            <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
 
             <BtnOpenDialog
               icon="mdi-chart-donut-variant"
@@ -83,8 +73,8 @@
     <v-card-text class="pa-0">
       <v-data-table-virtual
         v-model="selectedItens"
-        :return-object="selectValues"
-        :show-select="selectValues"
+        :return-object="selectItems"
+        :show-select="selectItems"
         :id="id"
         :headers="headers"
         :items="dataTable.model.itemsTable"
@@ -108,7 +98,7 @@
             class="d-flex align-center h-100 w-100"
             :class="[
               header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : '',
-              `justify-${header.align || 'start'}`
+              `justify-${header.align || 'start'}`,
             ]"
           >
             <v-chip
@@ -118,7 +108,7 @@
               size="small"
               class="font-weight-bold"
             >
-              {{ header.value ? header.value(item) : (value ? t('messages.yes') : t('messages.no')) }}
+              {{ header.value ? header.value(item) : value ? t('messages.yes') : t('messages.no') }}
             </v-chip>
 
             <span v-else :class="{ 'text-truncate': !!header.maxWidth }">
@@ -151,7 +141,10 @@
         </template>
 
         <template v-slot:no-data>
-          <div v-if="!dataTable.model.loadingDataTable" class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis">
+          <div
+            v-if="!dataTable.model.loadingDataTable"
+            class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis"
+          >
             <v-icon icon="mdi-database-off" size="48" class="mb-2" />
             <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
           </div>
@@ -182,35 +175,38 @@
 </template>
 
 <script setup lang="ts">
-import BtnOpenDialog from "./dialog/BtnOpenDialog.vue";
-import type { IModelValueDataTable } from "@/classes/models/modelComponents/ModelGridDataChart";
-import type { TPagination } from "@/classes/models/ModelHeaderPaginator";
-import { StorageUtils } from "@/utils/StorageUtils";
-import { useI18n } from "vue-i18n";
-import { ref, computed, watchEffect, watch } from "vue";
+import BtnOpenDialog from './dialog/BtnOpenDialog.vue'
+import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
+import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
+import { StorageUtils } from '@/utils/StorageUtils'
+import { useI18n } from 'vue-i18n'
+import { ref, computed, watchEffect, watch } from 'vue'
 
 const { t } = useI18n()
 
-const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true });
-const pagination = defineModel<TPagination>('pagination', { required: true });
-const selectedItens = defineModel<any[]>('selectedItens', { required: false , default: [{}]})
+const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true })
+const pagination = defineModel<TPagination>('pagination', { required: true })
+const selectedItens = defineModel<any[]>('selectedItens', { required: false, default: [{}] })
 
-const props = withDefaults(defineProps<{
-  id?: string
-  hasActions?: boolean
-  selectValues?: boolean
-}>(), {
-  id: 'id',
-  hasActions: true,
-  selectValues: false
-});
+const props = withDefaults(
+  defineProps<{
+    id?: string
+    hasActions?: boolean
+    selectItems?: boolean
+  }>(),
+  {
+    id: 'id',
+    hasActions: true,
+    selectItems: false,
+  },
+)
 
 const emits = defineEmits<{
-  (e: 'selected-item', item: any): void;
-  (e: 'toggle-chart'): void;
-  (e: 'manage-record', payload: { editingMode: boolean, item?: any }): void;
-  (e: 'load-more'): void;
-}>();
+  (e: 'selected-item', item: any): void
+  (e: 'toggle-chart'): void
+  (e: 'manage-record', payload: { editingMode: boolean; item?: any }): void
+  (e: 'load-more'): void
+}>()
 
 const allHeaders = computed(() => {
   const headersAuto = dataTable.value.model.headersTable.map((header) => ({
@@ -218,8 +214,8 @@ const allHeaders = computed(() => {
     title: header.title,
     align: header.align || 'start',
     key: header.key,
-    sortable: header.sortable ?? true
-  }));
+    sortable: header.sortable ?? true,
+  }))
 
   const headers = headersAuto.filter((header) => {
     if (!props.hasActions) {
@@ -230,23 +226,23 @@ const allHeaders = computed(() => {
   })
 
   return headers
-});
+})
 
-const selectedHeadersKeys = ref<string[]>([]);
+const selectedHeadersKeys = ref<string[]>([])
 
 watchEffect(() => {
   if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
-    selectedHeadersKeys.value = allHeaders.value.map(h => h.key);
+    selectedHeadersKeys.value = allHeaders.value.map((h) => h.key)
   }
-});
+})
 
 const headers = computed(() => {
-  return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
-});
+  return allHeaders.value.filter((h) => selectedHeadersKeys.value.includes(h.key))
+})
 
 const headersForSlots = computed(() => {
-  return headers.value.filter(h => h.key !== 'actions');
-});
+  return headers.value.filter((h) => h.key !== 'actions')
+})
 
 function toggleHeader(key: string) {
   const index = selectedHeadersKeys.value.indexOf(key)
@@ -258,12 +254,12 @@ function toggleHeader(key: string) {
   }
 }
 
-const idSelectedItem = ref<any>(null);
+const idSelectedItem = ref<any>(null)
 
 const clickOnTheLine = (_event: Event, { item }: any) => {
-  const id = item.id || item;
-  idSelectedItem.value = id;
-  emits('selected-item', item);
+  const id = item.id || item
+  idSelectedItem.value = id
+  emits('selected-item', item)
 }
 
 const rowProps = (data: { item: any }) => {
@@ -275,10 +271,10 @@ const rowProps = (data: { item: any }) => {
     class: {
       'row-inactive': isInactive,
       'row-viewed': isViewed,
-      'cursor-pointer': true
-    }
+      'cursor-pointer': true,
+    },
   }
-};
+}
 
 function getRawValue(item: any, key: string) {
   if (!key || !item) return null
@@ -286,35 +282,38 @@ function getRawValue(item: any, key: string) {
 }
 
 function toggleChart() {
-  emits('toggle-chart');
+  emits('toggle-chart')
 }
 
 function newRegistration() {
-  emits('manage-record', { editingMode: false });
+  emits('manage-record', { editingMode: false })
 }
 
 function editRegistration(item: any) {
-  emits('manage-record', { editingMode: true, item: item });
+  emits('manage-record', { editingMode: true, item: item })
 }
 
 function onIntersect(isIntersecting: boolean) {
   if (isIntersecting && !pagination.value.isFinished) {
-    emits('load-more');
+    emits('load-more')
   }
 }
 
 function updateLimit(newLimit: number) {
   pagination.value = {
     ...pagination.value,
-    limit: newLimit
-  };
+    limit: newLimit,
+  }
 }
 
-watch(() => pagination.value.limit, (newLimit) => {
-  if (newLimit) {
-    StorageUtils.set('limit_preference', pagination.value.limit, 'local')
-  }
-})
+watch(
+  () => pagination.value.limit,
+  (newLimit) => {
+    if (newLimit) {
+      StorageUtils.set('limit_preference', pagination.value.limit, 'local')
+    }
+  },
+)
 </script>
 
 <style scoped>
