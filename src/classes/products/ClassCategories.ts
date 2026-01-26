@@ -28,6 +28,8 @@ export class ClassCategories extends BaseClass<ICategory> {
     return {
       idCategory: {
         width: 50,
+        maxWidth: 50,
+        minWidth: 30,
         excludeFromChart: true
       },
       description: {

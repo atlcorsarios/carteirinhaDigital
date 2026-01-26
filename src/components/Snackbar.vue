@@ -5,8 +5,8 @@
     :timeout="snackbarTimeout"
     class="py-15"
     location="top right"
-    variant="tonal"
-    rounded
+    variant="elevated"
+    rounded="pill"
     multi-line
   >
     {{ translatedMessage }}

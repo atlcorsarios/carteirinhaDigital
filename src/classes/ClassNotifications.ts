@@ -18,12 +18,12 @@ export class ClassNotifications extends BaseClass<INotification> {
     const dateStr = formattedDate(today, locale)
 
     return {
+      seen: false,
       idNotification: 0,
       title: '',
       description: '',
       message: '',
       date: dateStr,
-      seen: false,
       sender: '',
       recipients: [],
       origin: '',
@@ -37,6 +37,17 @@ export class ClassNotifications extends BaseClass<INotification> {
 
   static get fieldConfig(): TEntityConfig<INotification> {
     return {
+      seen: {
+        align: 'center',
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (item) => ClassFormatters.formatBoolean(item.seen),
+        excludeFromFilter: true,
+        width: 50,
+        cellClass: (value: boolean) => {
+          if (value === true) return 'text-success font-weight-bold'
+          else return 'text-error font-weight-bold'
+        }
+      },
       idNotification: {
         width: 50,
         excludeFromFilter: true,
@@ -52,17 +63,6 @@ export class ClassNotifications extends BaseClass<INotification> {
       },
       date: {
         maxWidth: 100
-      },
-      seen: {
-        align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (item) => ClassFormatters.formatBoolean(item.seen),
-        excludeFromFilter: true,
-        width: 50,
-        cellClass: (value: boolean) => {
-          if (value === true) return 'text-success font-weight-bold'
-          else return 'text-error font-weight-bold'
-        }
       },
       sender: {
         maxWidth: 100,
