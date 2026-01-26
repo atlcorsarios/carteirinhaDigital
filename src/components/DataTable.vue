@@ -110,18 +110,53 @@
               header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : '',
               `justify-${header.align || 'start'}`
             ]"
+            :style="{
+              maxWidth: header.maxWidth ? (typeof header.maxWidth === 'number' ? header.maxWidth + 'px' : header.maxWidth) : 'auto',
+              overflow: header.maxWidth ? 'hidden' : 'visible'
+            }"
           >
+            <!-- <v-img
+              v-if="header.key === 'image'"
+              :src="value"
+              :width="header.width || 40"
+              :height="header.width || 40"
+              class="rounded-lg my-1 elevation-1 border"
+              cover
+            >
+              <template v-slot:placeholder>
+                <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
+                  <v-icon color="grey-lighten-1" icon="mdi-image-off" />
+                </div>
+              </template>
+            </v-img> -->
+
+            <div v-if="header.key === 'image'" class="zoom-container rounded-lg my-1 elevation-1 border">
+              <v-img
+                :src="value"
+                :width="header.width || 40"
+                :height="header.width || 40"
+                class="inner-img"
+                cover
+              >
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
+                    <v-icon color="grey-lighten-1" icon="mdi-image-off" />
+                  </div>
+                </template>
+              </v-img>
+            </div>
+
             <v-chip
-              v-if="header.dataType === 'boolean'"
+              v-else-if="header.dataType === 'boolean'"
               :color="getRawValue(item, header.key) ? 'success' : 'error'"
               variant="outlined"
               size="small"
               class="font-weight-bold"
             >
-              {{ header.value ? header.value(item) : (value ? 'Sim' : 'Não') }}
+              {{ header.value ? header.value(item) : (value ? t('messages.yes') : t('messages.no')) }}
             </v-chip>
 
-            <span v-else>
+            <span v-else :class="{ 'text-truncate': !!header.maxWidth }">
               {{ header.value ? header.value(item) : value }}
             </span>
           </div>

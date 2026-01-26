@@ -2,22 +2,29 @@
   <div class="d-flex justify-center">
     <v-card class="pa-6" elevation="6" rounded="xl" width="100%">
       <v-card-title class="d-flex align-center justify-space-between">
-        <div class="text-truncate mr-6 text-subtitle-1 font-weight-bold">
-          {{ titleGraph }}
-        </div>
-        <v-select
-          v-model="selectedFilter"
-          :items="filterOptions"
-          item-title="title"
-          item-value="value"
-          density="compact"
-          label="Agrupar por"
-          max-width="200"
-          variant="solo-filled"
-          flat
-          hide-details
-          single-line
-        />
+        <v-row dense>
+          <v-col cols="12" md="8">
+            <div class="text-truncate mr-6 text-subtitle-1 font-weight-bold">
+              {{ titleGraph }}
+            </div>
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <v-select
+              v-model="selectedFilter"
+              :items="filterOptions"
+              item-title="title"
+              item-value="value"
+              density="compact"
+              label="Agrupar por"
+              variant="solo-filled"
+              flat
+              hide-details
+              single-line
+              class="w-100"
+            />
+          </v-col>
+        </v-row>
       </v-card-title>
 
       <div v-if="chartData.length > 0">
@@ -39,7 +46,7 @@
         >
           <template v-slot:center>
             <div class="text-center">
-              <div class="text-h6 font-weight-bold">{{ formatValue(totalValue) }}</div>
+              <div class="text-h6 font-weight-bold">{{ activeConfig?.chartAggregator === 'sum' ? formatValue(totalValue) : totalValue }}</div>
               <div class="opacity-70 text-caption text-medium-emphasis mt-1 mb-n1">
                 {{ labelCenter }}
               </div>
@@ -52,7 +59,7 @@
                 v-for="item in items"
                 :key="item.key"
                 :class="['my-1', { 'opacity-40': !isActive(item) }]"
-                :title="formatValue(item.title)"
+                :title="item.title"
                 rounded="lg"
                 link
                 @click="toggle(item)"
@@ -71,7 +78,7 @@
           </template>
 
           <template v-slot:tooltip="{ item }">
-            {{ item.title }}: {{ formatValue(item.value) }}x ({{ calculatePercentage(item.value) }}%)
+            {{ item.title }}: {{ item.value }} ({{ calculatePercentage(item.value) }}%)
           </template>
         </v-pie>
       </div>
@@ -111,7 +118,11 @@ const titleGraph = computed(() => {
 })
 
 const totalValue = computed(() => {
-  return props.chartData.reduce((acc, curr) => acc + curr.value, 0)
+  const total = props.chartData.reduce((acc, curr) => acc + curr.value, 0)
+  if (props.activeConfig?.chartAggregator === 'sum') {
+    return formatValue(total)
+  }
+  return total
 })
 
 function formatValue(value: any) {

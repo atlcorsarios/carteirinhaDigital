@@ -301,7 +301,7 @@
       "title": "Lista de usuários"
     },
     "products": {
-      "title": ""
+      "title": "Lista de produtos"
     },
     "categories": {
       "title": "Lista de categorias"
@@ -310,13 +310,13 @@
       "title": "Lista de receitas"
     },
     "ingredients": {
-      "title": ""
+      "title": "Lista de ingredientes"
     },
     "stock": {
-      "title": ""
+      "title": "Estoque dos produtos"
     },
     "notifications": {
-      "title": ""
+      "title": "Lista de notificações"
     },
     "headersDefault": {
       "actions": "Ações"

@@ -94,6 +94,7 @@ import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
 // Composables
 import { useInfiniteList } from '@/composables/useInfiniteList'
 import { useChartHelpers } from '@/composables/useChartHelpers'
+import { useStringColor } from '@/composables/useStringColor'
 
 // Services
 import { usersServices } from '@/services/resources/usersService'
@@ -105,6 +106,7 @@ import { ref, watchEffect, computed } from 'vue'
 
 const route = useRoute()
 const { t } = useI18n()
+const { stringToColor } = useStringColor();
 
 const headers = computed(() => ClassUsers.headers)
 const optionsChartFilter = computed(() => headers.value.map((h) => h.title).slice(0, -1))
@@ -150,8 +152,8 @@ function toggleChartState() {
 }
 
 const headersToGraph = computed(() => {
-  return headers.value
-    .filter((h) => h.key !== 'actions')
+  return ClassUsers.headers
+    .filter((h) => !h.excludeFromChart && h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
 })
 
@@ -165,7 +167,8 @@ const chartDataComputed = computed(() => {
   const items = gridConfig.modelTable.model.itemsTable
   const key = selectedChartFilter.value
   const strategy = activeHeaderConfig.value?.chartAggregator || 'count'
-  return useChartHelpers(items, key, strategy)
+  const formatter = activeHeaderConfig.value?.chartFormatter
+  return useChartHelpers(items, key, strategy, stringToColor, formatter)
 })
 
 const classUser = new ClassUsers()

@@ -11,6 +11,7 @@ export interface IHeadersDataTable {
   width?: string | number
   maxWidth?: string | number
   sortable?: boolean
+  excludeFromChart?: boolean
   chartAggregator?: 'sum' | 'count'
   chartFormatter?: (value?: any) => string
   value?: (item: any) => any

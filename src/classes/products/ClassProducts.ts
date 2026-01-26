@@ -16,8 +16,7 @@ export class ClassProducts extends BaseClass<IProduct> {
     return {
       idProduct: 0,
       description: '',
-      image:
-        'https://imgs.search.brave.com/lDiW-1b5kOsYRosEPnXWw06Shr1RFjwCkeiXswevt70/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnNz/dGF0aWMubmV0L3lt/ZndPLnBuZw',
+      image: '',
       imageFile: null,
       price: undefined,
       active: true,
@@ -35,12 +34,17 @@ export class ClassProducts extends BaseClass<IProduct> {
     return {
       idProduct: {
         width: 50,
+        excludeFromChart: true
       },
       description: {
+        align: 'center',
         maxWidth: 250,
+        excludeFromChart: true
       },
       image: {
+        width: 60,
         excludeFromFilter: true,
+        excludeFromChart: true
       },
       imageFile: {
         hidden: true,

@@ -19,6 +19,7 @@
           :rules="[rules.required(), rules.email(), rules.maxLength(150)]"
           :label="t('forms.formUser.email.label')"
           :hint="t('forms.formUser.email.hint')"
+          persistent-hint
           density="compact"
           variant="outlined"
         />
@@ -91,5 +92,4 @@ defineExpose({
     return valid
   },
 });
-
 </script>

@@ -31,12 +31,15 @@ export class ClassUsers extends BaseClass<IUser> {
       idUser: {
         width: 50,
         excludeFromFilter: true,
+        excludeFromChart: true
       },
       username: {
         maxWidth: 250,
+        excludeFromChart: true
       },
       email: {
         maxWidth: 200,
+        excludeFromChart: true
       },
       role: {
         chartFormatter: ClassFormatters.formatRolesTranslate,
@@ -51,6 +54,7 @@ export class ClassUsers extends BaseClass<IUser> {
       phoneNumber: {
         align: 'end',
         maxWidth: 200,
+        excludeFromChart: true
       },
       receiveNotifications: {
         align: 'center',

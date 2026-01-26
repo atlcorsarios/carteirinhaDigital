@@ -301,22 +301,22 @@
       "title": "Lista de usuarios"
     },
     "products": {
-      "title": ""
+      "title": "Lista de productos"
     },
     "categories": {
-      "title": ""
+      "title": "Lista de categorías"
     },
     "recipes": {
-      "title": ""
+      "title": "Lista de recetas"
     },
     "ingredients": {
-      "title": ""
+      "title": "Lista de ingredientes"
     },
     "stock": {
-      "title": ""
+      "title": "Stock de productos"
     },
     "notifications": {
-      "title": ""
+      "title": "Lista de notificaciones"
     },
     "headersDefault": {
       "actions": "Acciones"
