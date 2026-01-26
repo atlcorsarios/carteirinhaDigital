@@ -34,24 +34,28 @@ export class ClassProducts extends BaseClass<IProduct> {
     return {
       idProduct: {
         width: 50,
+        maxWidth: 100,
+        minWidth: 30,
         excludeFromChart: true
       },
       description: {
         align: 'center',
-        maxWidth: 250,
+        width: 700,
+        maxWidth: 850,
+        minWidth: 250,
         excludeFromChart: true
       },
       image: {
-        width: 60,
-        excludeFromFilter: true,
-        excludeFromChart: true
+        hidden: true
       },
       imageFile: {
         hidden: true,
       },
       price: {
         align: 'end',
-        maxWidth: 150,
+        width: 350,
+        maxWidth: 450,
+        minWidth: 100,
         chartFormatter: ClassFormatters.formatPriceDynamic,
         value: (item) => ClassFormatters.formatPriceDynamic(item.price),
       },
@@ -59,7 +63,9 @@ export class ClassProducts extends BaseClass<IProduct> {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
         value: (item) => ClassFormatters.formatBoolean(item.active),
-        width: 50,
+        width: 350,
+        maxWidth: 350,
+        minWidth: 50,
       },
       category: {
         hidden: true,

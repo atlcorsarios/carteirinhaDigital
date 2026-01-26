@@ -27,7 +27,8 @@ export class ClassCategories extends BaseClass<ICategory> {
   static get fieldConfig(): TEntityConfig<ICategory> {
     return {
       idCategory: {
-        width: 50
+        width: 50,
+        excludeFromChart: true
       },
       description: {
         align: 'center',

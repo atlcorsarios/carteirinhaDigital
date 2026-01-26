@@ -17,6 +17,7 @@ export interface ICategory {
 export interface IRecipe {
   idRecipe?: number
   description: string
+  preparation: string
   ingredients: IIngredientsInRecipe[]
   category: ICategory
   active: boolean
@@ -31,6 +32,7 @@ export interface IIngredient {
 }
 
 export interface IIngredientsInRecipe {
+  idRecipe: number
   amount: number
   ingredient: IIngredient
 }

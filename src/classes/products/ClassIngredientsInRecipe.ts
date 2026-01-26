@@ -12,6 +12,7 @@ export class ClassIngredientsInRecipe extends BaseClass<IIngredientsInRecipe> {
 
   static defaultIngredientsInRecipe(): IIngredientsInRecipe {
     return {
+      idRecipe: 1,
       amount: 0,
       ingredient: ClassIngredients.defaultIngredient(),
     }

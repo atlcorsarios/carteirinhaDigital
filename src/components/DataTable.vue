@@ -105,49 +105,14 @@
           v-slot:[`item.${header.key}`]="{ item, value }"
         >
           <div
-            class="d-flex align-center h-100"
+            class="d-flex align-center h-100 w-100"
             :class="[
               header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : '',
               `justify-${header.align || 'start'}`
             ]"
-            :style="{
-              maxWidth: header.maxWidth ? (typeof header.maxWidth === 'number' ? header.maxWidth + 'px' : header.maxWidth) : 'auto',
-              overflow: header.maxWidth ? 'hidden' : 'visible'
-            }"
           >
-            <!-- <v-img
-              v-if="header.key === 'image'"
-              :src="value"
-              :width="header.width || 40"
-              :height="header.width || 40"
-              class="rounded-lg my-1 elevation-1 border"
-              cover
-            >
-              <template v-slot:placeholder>
-                <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
-                  <v-icon color="grey-lighten-1" icon="mdi-image-off" />
-                </div>
-              </template>
-            </v-img> -->
-
-            <div v-if="header.key === 'image'" class="zoom-container rounded-lg my-1 elevation-1 border">
-              <v-img
-                :src="value"
-                :width="header.width || 40"
-                :height="header.width || 40"
-                class="inner-img"
-                cover
-              >
-                <template v-slot:placeholder>
-                  <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
-                    <v-icon color="grey-lighten-1" icon="mdi-image-off" />
-                  </div>
-                </template>
-              </v-img>
-            </div>
-
             <v-chip
-              v-else-if="header.dataType === 'boolean'"
+              v-if="header.dataType === 'boolean'"
               :color="getRawValue(item, header.key) ? 'success' : 'error'"
               variant="outlined"
               size="small"
@@ -304,10 +269,12 @@ const clickOnTheLine = (_event: Event, { item }: any) => {
 const rowProps = (data: { item: any }) => {
   const item = data.item
   const isInactive = 'active' in item && item.active === false
+  const isViewed = 'seen' in item && item.seen === true
 
   return {
     class: {
       'row-inactive': isInactive,
+      'row-viewed': isViewed,
       'cursor-pointer': true
     }
   }
@@ -359,12 +326,28 @@ watch(() => pagination.value.limit, (newLimit) => {
 }
 
 :deep(.row-inactive) {
-  opacity: 0.6;
+  opacity: 0.3;
   background-color: rgb(var(--v-theme-surface-variant), 0.1);
   transition: opacity 0.2s;
 }
 
 :deep(.row-inactive:hover) {
   opacity: 0.85;
+}
+
+:deep(.row-viewed) {
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border: 1px solid rgb(var(--v-theme-success), 0.4);
+  border-radius: 12px;
+  outline: 1px solid rgb(var(--v-theme-success), 0.4);
+  outline-offset: -1px;
+  border-collapse: separate;
+}
+
+:deep(.row-viewed:hover) {
+  opacity: 1;
+  outline-color: rgba(76, 175, 80, 0.9);
 }
 </style>

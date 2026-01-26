@@ -25,8 +25,10 @@ export const productsServices = {
             recipe: {
               idRecipe: 1,
               description: 'First recipe',
+              preparation: '',
               ingredients: [
                 {
+                  idRecipe: 1,
                   amount: 1,
                   ingredient: {
                     idIngredient: 1,

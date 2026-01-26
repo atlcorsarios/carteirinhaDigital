@@ -25,10 +25,8 @@
       />
     </template>
 
-    <template v-slot:moreInfo>
-      <!-- {{ selectedItem }}
-
-      {{ gridConfig.modelTable.model.itemsTable }} -->
+    <template v-if="selectedItem" v-slot:moreInfo>
+      <ProductsMoreInfo v-model:product="selectedItem"/>
     </template>
   </GridDataChart>
 
@@ -109,6 +107,7 @@ import { useStringColor } from '@/composables/useStringColor'
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { computed, ref, watchEffect } from 'vue';
+import ProductsMoreInfo from './ProductsMoreInfo.vue';
 
 const route = useRoute()
 const { t } = useI18n()

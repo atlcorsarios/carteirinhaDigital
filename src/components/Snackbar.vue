@@ -5,7 +5,7 @@
     :timeout="snackbarTimeout"
     class="py-15"
     location="top right"
-    variant="elevated"
+    variant="tonal"
     rounded
     multi-line
   >

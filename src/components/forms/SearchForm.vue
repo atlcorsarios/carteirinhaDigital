@@ -16,7 +16,7 @@
       class="rounded-search w-100"
     >
       <template #prepend-inner>
-        <div class="d-flex flex-row" v-if="hasFilters">
+        <div v-if="hasFilters" class="d-flex flex-row">
           <BtnOpenDialog
             icon="mdi-filter-cog"
             variant="plain"
@@ -24,8 +24,12 @@
             :rotate="false"
             @click="openDialog"
           />
-
-          <v-divider vertical class="mx-1 me-2 my-auto" style="height: 24px" :thickness="2" />
+          <v-divider
+            vertical
+            :thickness="2"
+            class="mx-1 me-2 my-auto"
+            style="height: 24px"
+          />
         </div>
 
         <v-hotkey
@@ -53,9 +57,9 @@
     <template v-slot:title>
       <div :class="[mdAndDown ? 'd-flex flex-column' : '']">
         <span class="text-h6 me-2">{{ t('messages.components.queryFilter.title') }}</span>
-        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">{{
-          titleDialogFilter
-        }}</span>
+        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">
+          {{titleDialogFilter}}
+        </span>
       </div>
     </template>
 
@@ -119,44 +123,6 @@
             <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
           <div>{{ t('components.queryFilter.none') }}</div> </div>
         </v-tabs-window-item>
-
-        <!-- <v-tabs-window-item value="list">
-          <v-virtual-scroll
-            v-if="queryManager.model.length > 0"
-            :items="queryManager.model"
-            height="300"
-          >
-            <template v-slot:default="{ index, item }">
-              <v-list lines="two" rounded variant="elevated">
-                <v-list-item
-                  :title="formatTitle(item)"
-                  :subtitle="formatSubtitle(item)"
-                  class="mb-2"
-                >
-                  <template #prepend>
-                    <v-avatar color="primary" variant="tonal" size="small">
-                      {{ index + 1 }}
-                    </v-avatar>
-                  </template>
-                  <template #append>
-                    <v-btn
-                      icon="mdi-delete"
-                      color="error"
-                      variant="text"
-                      size="small"
-                      @click="queryManager.removeFilter(index)"
-                    />
-                  </template>
-                </v-list-item>
-              </v-list>
-            </template>
-          </v-virtual-scroll>
-
-          <div v-else class="text-center text-medium-emphasis mt-10">
-            <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2" />
-            <div>{{ t('filterColumn.none') }}</div>
-          </div>
-        </v-tabs-window-item> -->
       </v-tabs-window>
     </template>
 

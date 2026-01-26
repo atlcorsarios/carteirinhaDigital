@@ -8,8 +8,10 @@ export interface IHeadersDataTable {
   align?: 'start' | 'end' | 'center'
   height?: string | number
   maxHeight?: string | number
+  minHeigth?: string | number
   width?: string | number
   maxWidth?: string | number
+  minWidth?: string | number
   sortable?: boolean
   excludeFromChart?: boolean
   chartAggregator?: 'sum' | 'count'

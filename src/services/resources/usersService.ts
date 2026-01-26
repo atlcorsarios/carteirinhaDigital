@@ -85,7 +85,7 @@ export const usersServices = {
     }
   },
 
-  async solicitarAcesso(newUser: IUser): Promise<IUser> {
+  async solicitarAcesso(newUser: Partial<IUser>): Promise<IUser> {
     try {
       const { data } = await http.post('/usuarios/registrar', newUser)
       return data

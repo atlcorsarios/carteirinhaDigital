@@ -16,6 +16,7 @@ export class ClassRecipes extends BaseClass<IRecipe> {
     return {
       idRecipe: 0,
       description: '',
+      preparation: '',
       ingredients: [ClassIngredientsInRecipe.defaultIngredientsInRecipe()],
       category: { ...ClassCategories.defaultCategory(), group: 'RECIPES' },
       active: true
@@ -34,6 +35,9 @@ export class ClassRecipes extends BaseClass<IRecipe> {
       },
       description: {
         maxWidth: 250
+      },
+      preparation: {
+
       },
       ingredients: {
         hidden: true
