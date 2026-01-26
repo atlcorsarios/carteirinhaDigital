@@ -47,5 +47,9 @@ export const recipesServices = {
     } catch(error) {
       throw error;
     }
+  },
+
+  async saveRecipe() {
+
   }
 }

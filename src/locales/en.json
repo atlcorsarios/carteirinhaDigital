@@ -184,6 +184,10 @@
       "description": {
         "headerTable": "Description",
         "label": "Recipe description"
+      }, 
+      "preparation": { 
+        "headerTable": "Preparation", 
+        "label": "Preparation method" 
       },
       "ingredients": {
         "headerTable": "Ingredients",

@@ -46,9 +46,16 @@
 </template>
 
 <script setup lang="ts">
+// Componentes
 import DialogSearchRecipes from '@/components/dialog/searchs/recipes/DialogSearchRecipes.vue';
+
+// Models
 import { type IRecipe } from '@/classes/models/ModelIProduct';
+
+// Classes
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
+
+// Vue
 import { ref, watch } from 'vue';
 
 const loading = ref<boolean>(false)

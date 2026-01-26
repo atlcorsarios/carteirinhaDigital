@@ -185,6 +185,10 @@
         "headerTable": "Descrição",
         "label": "Descrição da receita"
       },
+      "preparation": {
+        "headerTable": "Preparo",
+        "label": "Modo de preparo"
+      },
       "ingredients": {
         "headerTable": "Ingredientes",
         "label": "Ingredientes da receita",

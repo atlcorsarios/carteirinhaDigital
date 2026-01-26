@@ -23,60 +23,24 @@
       </v-col>
     </v-row>
     <v-row dense v-if="!createFast">
-      <v-col cols="12">
-        <v-select
-          v-model="recipe.ingredients"
-          item-title="ingredient.description"
-          item-value="ingredient.idIngredient"
-          :items="recipe.ingredients"
-          :label="t('forms.formRecipe.ingredients.label')"
-          :hint="t('forms.formRecipe.ingredients.hint')"
+      <InputCategoryWithSearch
+        v-model:category="recipe.category"
+        :label="t('forms.formRecipe.category.label')"
+        :hint="t('forms.formRecipe.category.hint')"
+      />
+
+      <InputIngredientsWithSearch
+        v-model:ingredients-in-recipe="recipe.ingredients"
+        v-model:selected-items="recipe.ingredients"
+      />
+
+      <v-col v-if="!createFast" cols="12">
+        <v-textarea
+          v-model="recipe.preparation"
+          :label="t('forms.formRecipe.preparation.label')"
           density="compact"
           variant="outlined"
-          chips
           clearable
-          multiple
-          return-object
-        >
-          <template #prepend-inner>
-            <v-icon-btn
-              icon="mdi-shaker"
-              icon-color="info"
-              variant="plain"
-              @click="handleSearchIngredients"
-            />
-          </template>
-
-          <template v-if="loadingIngredients" #append-inner>
-            <v-progress-circular
-              color="primary"
-              indeterminate
-            />
-          </template>
-        </v-select>
-      </v-col>
-
-      <v-col
-        v-if="recipe.ingredients.length > 0"
-        v-for="(item, index) in recipe.ingredients"
-        :key="item.ingredient?.idIngredient ?? index"
-        cols="12"
-      >
-        <v-text-field
-          v-model="item.amount"
-          :suffix="item.ingredient?.measurement ?? 'Sufix'"
-          :label="item.ingredient?.description ?? 'Test'"
-          type="number"
-          density="compact"
-          variant="outlined"
-        />
-      </v-col>
-
-      <v-col cols="12">
-        <InputCategoryWithSearch
-          v-model:category="recipe.category"
-          :label="t('forms.formRecipe.category.label')"
-          :hint="t('forms.formRecipe.category.hint')"
         />
       </v-col>
     </v-row>
@@ -85,16 +49,20 @@
 </template>
 
 <script setup lang="ts">
+// Componentes
+import InputIngredientsWithSearch from '../fixtures/InputIngredientsWithSearch.vue';
 import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue';
+
+// Models
 import { type IRecipe } from '@/classes/models/ModelIProduct';
+
+// Vue
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue'
 
 const rules = useRules();
 const { t } = useI18n();
-
-const loadingIngredients = ref<boolean>(false)
 
 withDefaults(defineProps<{
   createFast?: boolean
@@ -105,10 +73,6 @@ withDefaults(defineProps<{
 const formRef = ref<any>(null);
 const recipe = defineModel<IRecipe>('recipe', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
-
-function handleSearchIngredients() {
-
-}
 
 defineExpose({
   reset: () => formRef.value?.resetValidation(),

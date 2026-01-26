@@ -1,43 +1,41 @@
 <template>
-  <v-row dense>
-    <v-col cols="12" md="6">
-      <v-number-input
-        v-model="category.idCategory"
-        :label="label"
-        :hint="hint"
-        controlVariant="stacked"
-        density="compact"
-        variant="outlined"
-        clearable
-        inset
-      >
-        <template #prepend-inner>
-          <v-icon-btn
-            icon="mdi-tag-search"
-            icon-color="info"
-            variant="plain"
-            @click="handleSearchCategories"
-          />
-        </template>
+  <v-col cols="12" md="6">
+    <v-number-input
+      v-model="category.idCategory"
+      :label="label"
+      :hint="hint"
+      controlVariant="stacked"
+      density="compact"
+      variant="outlined"
+      clearable
+      inset
+    >
+      <template #prepend-inner>
+        <v-icon-btn
+          icon="mdi-tag-search"
+          icon-color="info"
+          variant="plain"
+          @click="handleSearchCategories"
+        />
+      </template>
 
-        <template v-if="loading" #append-inner>
-          <v-progress-circular
-            color="primary"
-            indeterminate
-          />
-        </template>
-      </v-number-input>
-    </v-col>
+      <template v-if="loading" #append-inner>
+        <v-progress-circular
+          color="primary"
+          indeterminate
+        />
+      </template>
+    </v-number-input>
+  </v-col>
 
-    <v-col cols="12" md="6">
-      <v-text-field
-        :model-value="category.description"
-        disabled
-        density="compact"
-        variant="outlined"
-      />
-    </v-col>
-  </v-row>
+  <v-col cols="12" md="6">
+    <v-text-field
+      :model-value="category.description"
+      disabled
+      density="compact"
+      variant="outlined"
+    />
+  </v-col>
 
   <DialogSearchCategories
     v-model:dialog-search-category="dialogSearchCategories"
