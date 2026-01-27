@@ -24,8 +24,8 @@
           <DataTable
             :id="tableId"
             :has-actions="false"
-            :select-itens="selectItems"
-            v-model:selected-itens="selectedItems"
+            :select-items="selectItems"
+            v-model:selected-itens="selectedItens"
             v-model:dataTable="gridConfig.modelTable"
             v-model:pagination="paginationModel"
             @selected-item="handleSelectItem"
@@ -36,8 +36,10 @@
     </template>
 
     <template v-slot:actions>
-      <v-spacer />
-      <slot name="action-btn" :open-create="() => classDialogCreateQuickly.toggleDialog()" />
+      <slot
+        name="action-btn"
+        :open-create="() => classDialogCreateQuickly.toggleDialog()"
+      />
     </template>
   </BaseDialog>
 
@@ -87,7 +89,7 @@ const props = defineProps<{
   selectItems?: boolean
 }>()
 
-const selectedItems = defineModel<T[]>('selectedItems', { default: () => [] })
+const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] })
 
 const emits = defineEmits(['select-item'])
 
@@ -114,7 +116,7 @@ const handleReset = async () => {
 }
 
 const handleSearch = () => {
-  
+
 }
 
 const gridManager = new ClassGridDataChart<T>({ modelTable: { model: { titleTable: props.title } } })
@@ -135,6 +137,16 @@ watchEffect(() => {
 const classDialogCreateQuickly = new ClassBaseDialog({ maxWidth: 500 })
 
 function handleSelectItem(item: T) {
+  if (props.selectItems) {
+    selectedItens.value.push(item)
+  }
+  const index = selectedItens.value.indexOf(item)
+  if (index > -1) {
+    selectedItens.value.splice(index, 1)
+  } else {
+    selectedItens.value.push(item)
+  }
+
   emits('select-item', item)
   props.dialogSearchModel.toggleDialog()
 }

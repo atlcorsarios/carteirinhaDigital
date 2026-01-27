@@ -121,7 +121,7 @@
 
           <div v-else class="text-center text-medium-emphasis mt-10">
             <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
-          <div>{{ t('components.queryFilter.none') }}</div> </div>
+          <div>{{ t('filterColumn.none') }}</div> </div>
         </v-tabs-window-item>
       </v-tabs-window>
     </template>

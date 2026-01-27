@@ -17,7 +17,7 @@ export class ClassRecipes extends BaseClass<IRecipe> {
       idRecipe: 0,
       description: '',
       preparation: '',
-      ingredients: [ClassIngredientsInRecipe.defaultIngredientsInRecipe()],
+      ingredients: [],
       category: { ...ClassCategories.defaultCategory(), group: 'RECIPES' },
       active: true
     }

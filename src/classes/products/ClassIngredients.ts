@@ -35,22 +35,22 @@ export class ClassIngredients extends BaseClass<IIngredient> {
       },
       description: {
         align: 'center',
-        width: 700,
-        maxWidth: 850,
+        width: 500,
+        maxWidth: 750,
         minWidth: 250,
         excludeFromChart: true
       },
       measurement: {
         align: 'center',
-        width: 100,
+        width: 150,
         maxWidth: 250,
-        minWidth: 50,
+        minWidth: 100,
       },
       stock: {
         align: 'center',
-        width: 100,
-        maxWidth: 250,
-        minWidth: 100,
+        width: 250,
+        maxWidth: 400,
+        minWidth: 150,
       },
       category: {
         hidden: true

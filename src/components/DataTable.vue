@@ -254,11 +254,14 @@ function toggleHeader(key: string) {
   }
 }
 
-const idSelectedItem = ref<any>(null)
-
 const clickOnTheLine = (_event: Event, { item }: any) => {
   const id = item.id || item
-  idSelectedItem.value = id
+  const index = selectedItens.value.indexOf(item)
+  if (index > -1) {
+    selectedItens.value.splice(index, 1)
+  } else {
+    selectedItens.value.push(item)
+  }
   emits('selected-item', item)
 }
 

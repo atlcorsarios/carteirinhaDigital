@@ -25,7 +25,7 @@
           variant="outlined"
         />
       </v-col>
-      <v-col v-if="!createFast" cols="12">
+      <v-col v-if="!createFast" cols="12" class="d-flex justify-center">
         <v-switch
           v-model="category.active"
           :label="t('forms.formCategory.active.label')"

@@ -49,9 +49,9 @@
       </v-col>
       <v-col cols="12" md="6">
         <v-switch
-          v-model="user.active"
+          v-model="user.receiveNotifications"
           :label="t('forms.formUser.receiveNotifications.label')"
-          :indeterminate="user.active === null || user.active === undefined"
+          :indeterminate="user.receiveNotifications === null || user.receiveNotifications === undefined"
           color="success"
           class="m-0 p-0"
         />

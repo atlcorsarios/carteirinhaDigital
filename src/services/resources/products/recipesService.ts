@@ -11,20 +11,20 @@ export const recipesServices = {
         items: [
           {
             idRecipe: 1,
-            description: 'First recipe',
-            preparation: '',
+            description: 'RECEITA',
+            preparation: 'PASSO 1, PASSO 2',
             ingredients: [
               {
                 idRecipe: 1,
-                amount: 1,
+                amount: 10,
                 ingredient: {
                   idIngredient: 1,
-                  description: '',
+                  description: 'INGREDIENTE',
                   measurement: 'KG',
                   stock: 4,
                   category: {
                     idCategory: 1,
-                    description: '',
+                    description: 'CATEGORIA DE INGREDIENTE',
                     group: 'INGREDIENTS',
                     active: true
                   }
@@ -33,7 +33,7 @@ export const recipesServices = {
             ],
             category: {
               idCategory: 1,
-              description: '',
+              description: 'CATEGORIA DE RECEITA',
               group: 'RECIPES',
               active: true
             },

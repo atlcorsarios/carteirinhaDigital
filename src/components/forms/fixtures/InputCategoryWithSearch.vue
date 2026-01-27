@@ -81,4 +81,5 @@ watch(() => category.value.idCategory, (newIdCategory) => {
     clearCategory()
   }
 })
+
 </script>

@@ -8,9 +8,19 @@
     :service-fetch="ingredientsServices.getAllIngredients"
     :dialog-search-model="dialogSearchModel"
     :select-items="true"
-    v-model:selected-items="selectedItems"
+    v-model:selectedItens="selectedItens"
   >
     <template #action-btn="{ openCreate }">
+      <BtnOpenDialog
+        v-tooltip="t('tooltips.forms.create')"
+        icon="mdi-check"
+        variant="text"
+        color="success"
+        @click="dialogSearchModel.toggleDialog()"
+      />
+
+      <v-spacer />
+
       <BtnOpenDialog
         v-tooltip="t('tooltips.forms.create')"
         icon="mdi-cookie-plus"
@@ -39,6 +49,7 @@ import { type IIngredient } from '@/classes/models/ModelIProduct'
 
 // Classes
 import { ClassIngredients } from '@/classes/products/ClassIngredients'
+import type { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
 import { ingredientsServices } from '@/services/resources/products/ingredientsService'
@@ -48,6 +59,9 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const dialogSearchModel = defineModel<any>('dialog-search-ingredient', { required: true })
-const selectedItems = defineModel<IIngredient[]>('items-selected', { required: true })
+const selectedItens = defineModel<IIngredient[]>('selectedItens', { required: true })
+const dialogSearchModel = defineModel<ClassBaseDialog<any>>('dialog-search-ingredient', {
+  required: true,
+})
+
 </script>

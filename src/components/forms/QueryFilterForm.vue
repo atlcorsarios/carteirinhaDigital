@@ -166,6 +166,7 @@ const filter = defineModel<IQueryFilter>('filter', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
 
 const getType = (fieldKey: string): FilterType | undefined => {
+  if (!fieldKey) return undefined
   return props.filterManager.getColumnType(fieldKey)?.type
 }
 
@@ -178,16 +179,25 @@ const getOperators = (fieldKey: string) => {
   return type ? OPERATORS[type] : []
 }
 
-const handleFieldChange = (newField: string) => {
-  const conditionDefault = getOperators(newField)
-  props.filterManager.fieldChanged({ field: newField, condition: conditionDefault[0].value })
+const handleFieldChange = (newField: string | null) => {
+  if (!newField) return
+
+  const operators = getOperators(newField)
+
+  if (operators && operators.length > 0) {
+    props.filterManager.fieldChanged({
+      field: newField,
+      condition: operators[0].value
+    })
+  }
 }
 
 defineExpose({
-  reset: () => formRef.value?.reset(),
+  reset: () => formRef.value?.resetValidation(),
   validate: async () => {
     const { valid } = await formRef.value?.validate()
     return valid
   },
 })
+
 </script>

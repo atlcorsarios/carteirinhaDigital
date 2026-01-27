@@ -37,6 +37,7 @@ import { type IRecipe } from '@/classes/models/ModelIProduct'
 
 // Classes
 import { ClassRecipes } from '@/classes/products/ClassRecipes'
+import type { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
 import { recipesServices } from '@/services/resources/products/recipesService'
@@ -45,7 +46,8 @@ import { recipesServices } from '@/services/resources/products/recipesService'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const dialogSearchModel = defineModel<any>('dialog-search-recipe', { required: true })
+
+const dialogSearchModel = defineModel<ClassBaseDialog>('dialog-search-recipe', { required: true })
 const emit = defineEmits<{
   (e: 'select-item', item: IRecipe): void
 }>()

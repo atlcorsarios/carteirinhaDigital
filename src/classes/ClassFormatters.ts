@@ -37,6 +37,12 @@ export class ClassFormatters {
     }).format(new Date(date))
   }
 
+  static formatTime(seconds: number): string {
+    const minutesMath = Math.floor(seconds / 60);
+    const secondsMath = seconds % 60;
+    return `${minutesMath}:${secondsMath.toString().padStart(2, '0')}`;
+  }
+
   static formatAmountIngredient(amount: number, measurement: string): string {
     return `${amount} ${measurement}`
   }

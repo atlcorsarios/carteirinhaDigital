@@ -437,7 +437,7 @@
     "stepEmail": {
       "instruction": "Ingrese su correo electrónico para recibir el código de verificación.",
       "labelEmail": "Correo electrónico",
-      "placeholderEmail": "ejemplo@email.com",
+      "placeholderEmail": "ejemplo{'@'}email.com",
       "btnSend": "Enviar Código"
     },
     "stepVerify": {
