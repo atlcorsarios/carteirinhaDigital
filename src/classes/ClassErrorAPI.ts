@@ -1,13 +1,33 @@
-import type { IErrorAPI } from "./models/ModelErrorAPI"
+import { ClassUsers } from "./ClassUsers";
+import type { IErrorAPI, ITraceError } from "./models/ModelErrorAPI"
+import { BaseClass } from "./subscriptions/BaseClass";
 
-export class ClassErrorAPI {
-  private errorAPI: IErrorAPI;
-
-  constructor(error?: IErrorAPI) {
-    this.errorAPI = error ?? {} as IErrorAPI;
+export class ClassErrorAPI extends BaseClass<IErrorAPI> {
+  constructor(data?: Partial<IErrorAPI>) {
+    super(data)
   }
 
-  get getErrorAPI(): IErrorAPI {
-    return this.errorAPI;
+  static defaultErrorTrace(): ITraceError {
+    return {
+      lineNumber: 0,
+      fileName: '',
+      className: '',
+      methodName: ''
+    }
+  }
+
+  static defaultError(): IErrorAPI {
+    return {
+      errorMessage: '',
+      errorDateTime: new Date(),
+      errorStatusCode: 0,
+      user: ClassUsers.defaultUser(),
+      trace: ClassErrorAPI.defaultErrorTrace()
+    };
+  }
+
+  protected getDefault(data: unknown = {}): IErrorAPI {
+    const item = data as Partial<IErrorAPI>
+    return this.createWithDefaults(item, ClassErrorAPI.defaultError())
   }
 }

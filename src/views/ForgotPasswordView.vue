@@ -19,11 +19,12 @@
                 :rules="[rules.required(), rules.email()]"
                 :label="t('forgotPassword.stepEmail.labelEmail')"
                 :placeholder="t('forgotPassword.stepEmail.placeholderEmail')"
-                prepend-inner-icon="mdi-email-outline"
-                variant="outlined"
-                density="comfortable"
-                class="mb-2"
                 :disabled="loading"
+                prepend-inner-icon="mdi-email-outline"
+                density="comfortable"
+                variant="outlined"
+                class="mb-2"
+                clearable
               />
 
               <v-btn
@@ -42,7 +43,7 @@
           <v-window-item :value="2">
             <div class="text-body-2 text-center mb-6">
               {{ t('forgotPassword.stepVerify.instruction') }}<br>
-              <strong>{{ forgotForm }}</strong>
+              <strong>{{ forgotForm.email }}</strong>
             </div>
 
             <v-sheet color="transparent" class="mb-6">
@@ -169,11 +170,14 @@
 
 <script setup lang="ts">
 import { useSnackbar } from '@/composables/useSnackbar';
-import { useI18n } from 'vue-i18n';
+import { ClassFormatters } from '@/classes/ClassFormatters';
 import { useRules } from 'vuetify/labs/rules';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { ref, computed, onUnmounted } from 'vue';
 
 const { t } = useI18n();
+const router = useRouter();
 const { notify } = useSnackbar();
 const rules = useRules();
 
@@ -199,11 +203,7 @@ const timeLeft = ref(0);
 const TIMER_DURATION = 120;
 let timerInterval: ReturnType<typeof setInterval> | null = null;
 
-const formattedTime = computed(() => {
-  const minutes = Math.floor(timeLeft.value / 60);
-  const seconds = timeLeft.value % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-});
+const formattedTime = computed(() => ClassFormatters.formatTime(timeLeft.value))
 
 function startTimer() {
   stopTimer();
@@ -276,6 +276,7 @@ async function handleAlterPassword() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       notify(t('forgotPassword.feedback.alterSuccess'), 'success');
+      router.push({ name: 'Login'})
     } catch (error) {
       notify(t('forgotPassword.feedback.alterError'), 'error');
     } finally {

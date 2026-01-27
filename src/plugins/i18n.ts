@@ -1,5 +1,5 @@
 import { StorageUtils } from '@/utils/StorageUtils'
-import { availableLocales } from '@/locales/AvailableLocales'
+import { availableLocales, FALLBACK_LOCALE } from '@/locales/definitionsLocales'
 import ptBrMessages from '../locales/pt.json'
 import enUsMessages from '../locales/en.json'
 import esEsMessages from '../locales/es.json'
@@ -12,12 +12,10 @@ function mergeMessages(vuetifyMessages: any, customMessages: any) {
     ...appMessages,
     $vuetify: {
       ...vuetifyMessages,
-      ...(customVuetify || {})
-    }
+      ...(customVuetify || {}),
+    },
   }
 }
-
-export const FALLBACK_LOCALE = 'pt-BR'
 
 const messages = {
   'pt-BR': mergeMessages(pt, ptBrMessages),
@@ -26,8 +24,8 @@ const messages = {
 }
 
 function initLocaleDefault(): string {
-  const savedLocale = StorageUtils.get<string>('user_locale')
-  const supportedLocales = availableLocales.map(l => l.value)
+  const savedLocale = StorageUtils.get<string>('user_locale', FALLBACK_LOCALE, 'local')
+  const supportedLocales = availableLocales.map((l) => l.value)
 
   if (savedLocale && supportedLocales.includes(savedLocale)) {
     return savedLocale

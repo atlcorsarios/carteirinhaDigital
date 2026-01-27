@@ -1,35 +1,31 @@
-import { StorageUtils } from "@/utils/StorageUtils";
-import type { ILogin } from "./models/ModelLogin";
-import { reactive } from "vue";
+import { StorageUtils } from '@/utils/StorageUtils'
+import type { ILogin } from './models/ModelLogin'
+import { BaseClass } from './subscriptions/BaseClass'
 
-export class ClassLogin {
-  private login: ILogin
-
+export class ClassLogin extends BaseClass<ILogin> {
   constructor(data?: Partial<ILogin>) {
-    this.login = this.getDefault(data);
+    super(data)
   }
 
-  get model() {
-    return this.login;
+  static defaultLogin(): ILogin {
+    const emailDefault = StorageUtils.get<string>('access_email', '@gmail.com', 'local')
+    return {
+      email: emailDefault || '',
+      password: '',
+    }
   }
 
-  private getDefault(data?: Partial<ILogin>): ILogin {
-    const emailDefault = StorageUtils.get<string>('access_email', '@gmail.com', 'local');
-
-    return reactive({
-      email: emailDefault! || data?.email || '',
-      password: data?.password || ''
-    })
+  protected getDefault(data: Partial<ILogin> = {}): ILogin {
+    return this.createWithDefaults(data, ClassLogin.defaultLogin())
   }
 
   reset() {
-    const defaults = this.getDefault();
-    Object.assign(this.login, defaults);
-    StorageUtils.set('access_email', '@gmail.com', 'local');
+    const defaults = this.getDefault()
+    Object.assign(this.model, defaults)
+    StorageUtils.set('access_email', '@gmail.com', 'local')
   }
 
   saveEmailPreference() {
-    StorageUtils.set('access_email', this.login.email, 'local');
+    StorageUtils.set('access_email', this.model.email, 'local')
   }
-
 }

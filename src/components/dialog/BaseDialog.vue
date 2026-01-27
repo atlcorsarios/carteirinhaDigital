@@ -3,11 +3,11 @@
     v-model="isDialogVisible"
     :max-width="dialog.maxWidth || 400"
     :max-height="dialog.maxHeight || 400"
-    :persistent="dialog.persistent" || false
+    :persistent="dialog.persistent || false"
   >
     <v-card>
-      <v-card-title class="d-flex justify-space-between align-baseline">
-        <div class="text-h6">
+      <v-card-title class="d-flex sticky-title bg-surface">
+        <div class="text-h6 w-100 me-auto">
           <slot name="title">TITLE</slot>
         </div>
 
@@ -47,10 +47,12 @@ const { t } = useI18n()
 const dialog = defineModel<IModelBaseDialog>('attributes', { required: true })
 const isDialogVisible = computed({
   get() {
-    return dialog.value.view
+    return dialog.value?.view ?? false
   },
   set(newValue: boolean) {
-    dialog.value.view = newValue
+    if (dialog.value) {
+      dialog.value.view = newValue
+    }
   },
 })
 

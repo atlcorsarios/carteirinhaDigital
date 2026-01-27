@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Boilerplate",
+    "title": "Avelito",
     "version": "Versión",
     "cardInfoLicence": "License information",
     "updateDate": "Actualizado el",
@@ -9,6 +9,9 @@
   "routes": {
     "home": {
       "title": "Inicio"
+    },
+    "about": {
+      "title": "Información del sistema"
     },
     "login": {
       "title": "Acceder"
@@ -22,8 +25,28 @@
     "dashboard": {
       "title": "Panel"
     },
-    "users": {
-      "title": "Usuarios"
+    "notifications": {
+      "title": "Notificaciones"
+    },
+    "products": {
+      "title": "Productos",
+      "children": {
+        "list": {
+          "title": "Lista de productos"
+        },
+        "categories": {
+          "title": "Categorías"
+        },
+        "recipes": {
+          "title": "Recetas"
+        },
+        "ingredients": {
+          "title": "Ingredientes"
+        },
+        "stock": {
+          "title": "Inventario"
+        }
+      }
     },
     "adm": {
       "title": "Administrador",
@@ -48,44 +71,209 @@
   },
   "forms": {
     "formSearch": {
-      "inputSearch": {
-        "placeholder": "Buscar"
+      "validation": {
+        "required": "¡Debe haber un valor o filtros aplicados para realizar la consulta!"
       },
-      "inputField": {
+      "field": {
         "label": "Campo"
       },
-      "inputCondition": {
+      "condition": {
         "label": "Condición"
+      },
+      "search": {
+        "label": "Buscar"
       }
     },
     "formUser": {
-      "id": "id",
-      "inputUsername": {
+      "idUser": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "username": {
+        "headerTable": "Nombre",
         "label": "Nombre de usuario",
         "hint": "Ingrese su nombre"
       },
-      "inputEmail": {
+      "email": {
+        "headerTable": "Correo electrónico",
         "label": "Correo electrónico",
         "hint": "Ingrese su correo electrónico"
       },
-      "inputRole": {
-        "label": "Permiso"
+      "role": {
+        "headerTable": "Permiso",
+        "label": "Permiso",
+        "types": {
+          "admin": "Administrador",
+          "user": "Usuario normal"
+        }
       },
-      "inputPhoneNumber": {
+      "phoneNumber": {
+        "headerTable": "Teléfono",
         "label": "Número de teléfono"
       },
-      "inputReceiveNotifications": {
+      "receiveNotifications": {
+        "headerTable": "Notificar",
         "label": "¿Recibe notificaciones?"
       },
-      "inputUserActive": {
+      "active": {
+        "headerTable": "Ativo",
         "label": "¿Usuario activo?"
       }
     },
+    "formProduct": {
+      "idProduct": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Descripción",
+        "label": "Descripción del producto"
+      },
+      "image": {
+        "headerTable": "Portada",
+        "label": "Imagen del producto"
+      },
+      "price": {
+        "headerTable": "Precio",
+        "label": "Precio de venta",
+        "hint": "Convertido a: "
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "¿Producto activo?"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría del producto",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
+      },
+      "recipe": {
+        "headerTable": "Receta",
+        "label": "Receta del producto",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
+      }
+    },
+    "formCategory": {
+      "idCategory": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Descripción",
+        "label": "Descripción de la categoría"
+      },
+      "group": {
+        "headerTable": "Grupo",
+        "label": "Grupo de categorías",
+        "types": {
+          "products": "Productos",
+          "recipes": "Recetas",
+          "ingredients": "Ingredientes"
+        }
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "¿Categoría activa?"
+      }
+    },
+    "formRecipe": {
+      "idRecipe": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Descripción",
+        "label": "Descripción de la receta"
+      },
+      "preparation": {
+        "headerTable": "Preparación",
+        "label": "Método de preparación"
+      },
+      "ingredients": {
+        "headerTable": "Ingredientes",
+        "label": "Ingredientes de la receta",
+        "hint": "Consulta y selecciona los ingredientes"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría de la receta",
+        "hint": "Haga clic en el icono de la izquierda para verlo"
+      },
+      "active": {
+        "headerTable": "Activo",
+        "label": "Receta activa?"
+      }
+    },
+    "formIngredient": {
+      "idIngredient": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "description": {
+        "headerTable": "Ingrediente",
+        "label": "Descripción del ingrediente"
+      },
+      "measurement": {
+        "headerTable": "Medida",
+        "label": "Unidad de medida"
+      },
+      "stock": {
+        "headerTable": "En stock",
+        "label": "Cantidad inicial de stock",
+        "hint": "La cantidad inicial puede empezar desde cero y luego añadirse al stock"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría del ingrediente",
+        "hint": "Haga clic en el icono de la izquierda para ver"
+      }
+    },
+    "formIngredientsInRecipe": {
+      "idRecipe": {
+        "headerTable": "Id Receta",
+        "label": "Id Receta"
+      },
+      "amount": {
+        "headerTable": "Cantidad",
+        "label": "Cantidad de ingrediente"
+      },
+      "ingredients": {
+        "headerTable": "Ingredientes",
+        "label": "Ingredientes de la receta",
+        "hint": "Seleccione los ingredientes presentes en la receta"
+      }
+    },
+    "formNotifications": {
+      "seen" : {
+        "headerTable": "Visto",
+        "label": "Notificación vista"
+      },
+      "idNotification": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "title": {
+        "headerTable": "Título",
+        "label": "Título de la notificacióne"
+      },
+      "date": {
+        "headerTable": "Fecha",
+        "label": "Fecha de la notificacióne"
+      },
+      "sender": {
+        "headerTable": "Remitente",
+        "label": "Remitente"
+      },
+      "origin": {
+        "headerTable": "Origen",
+        "label": "Origen de la notificacióne"
+      }
+    },
     "formLogin": {
-      "inputEmail": {
+      "email": {
         "label": "Correo electrónico"
       },
-      "inputPassword": {
+      "password": {
         "label": "Contraseña"
       }
     }
@@ -99,7 +287,8 @@
       "licence": "Licencia",
       "language": "Idioma",
       "theme": "Cambiar tema",
-      "info": "Información del sistema"
+      "info": "Información del sistema",
+      "back": "Para volver"
     },
     "forms": {
       "close": "Cerrar",
@@ -110,7 +299,8 @@
       "edit": "Editar",
       "delete": "Eliminar",
       "submit": "Confirmar",
-      "forgotPassword": "Olvidé mi contraseña"
+      "forgotPassword": "Olvidé mi contraseña",
+      "attach": "Adjuntar"
     },
     "components": {
       "dataTable": {
@@ -133,12 +323,33 @@
     "until": "Hasta",
     "welcome": "Bien-vindo(a)",
     "errors": {
-      "reqGenerics": "¡Se produjo un error en la solicitud!"
+      "reqGenerics": "¡Se produjo un error en la solicitud!",
+      "accessDenied": "No tienes permiso para acceder a esta página",
+      "requiredAuth": "¡Necesitas estar autenticado para acceder. Por favor, inicia sesión!",
+      "searchQuote": "Error al recuperar la cotización para: "
     },
     "forms": {
+      "saveSuccess": "Guardado correctamente",
+      "saveError": "Error al guardar",
       "formUsers": {
         "createUser": "Crear usuario",
         "editingUser": "Editar usuario"
+      },
+      "formProduct": {
+        "createProduct": "Crear producto",
+        "editingProduct": "Editar producto"
+      },
+      "formCategory": {
+        "createCategory": "Crear categoría",
+        "editingCategory": "Editar categoría"
+      },
+      "formRecipe": {
+        "createRecipe": "Crear receta",
+        "editingRecipe": "Editar receta"
+      },
+      "formIngredient": {
+        "createIngredient": "Crear ingrediente",
+        "editingIngredient": "Editar ingrediente"
       }
     },
     "components": {
@@ -149,24 +360,57 @@
       "queryFilter": {
         "title": "Filtrar recursos por:",
         "alertDuplicate": "¡Este filtro ya ha sido añadido!"
+      },
+      "inputUploadImage": {
+        "empty": "Arrastre o haga clic para seleccionar",
+        "inLoading": "Processando...",
+        "isCompressing": "Optimizando imagen..."
       }
     }
   },
   "dataTable": {
     "users": {
-      "title": "Informe de usuarios",
-      "headers": {
-        "id": "Id",
-        "username": "Nombre de usuario",
-        "email": "Correo electrónico",
-        "role": "Permiso",
-        "phoneNumber": "Número de teléfono",
-        "receiveNotifications": "Recibe notificaciones",
-        "active": "Activo"
-      }
+      "title": "Lista de usuarios"
+    },
+    "products": {
+      "title": "Lista de productos"
+    },
+    "categories": {
+      "title": "Lista de categorías"
+    },
+    "recipes": {
+      "title": "Lista de recetas"
+    },
+    "ingredients": {
+      "title": "Lista de ingredientes"
+    },
+    "stock": {
+      "title": "Stock de productos"
+    },
+    "notifications": {
+      "title": "Lista de notificaciones"
     },
     "headersDefault": {
       "actions": "Acciones"
+    }
+  },
+  "chartPie": {
+    "title": "Distribución por",
+    "noData": "No hay datos para mostrar",
+    "chartAggregator": {
+      "sum": "Total Acumulado",
+      "count": "Total de Registros"
+    }
+  },
+  "dialogSearch": {
+    "searchCategory": {
+      "title": "Categorías"
+    },
+    "searchRecipe": {
+      "title": "Recetas"
+    },
+    "searchIngredient": {
+      "title": "Ingredientes"
     }
   },
   "filterColumn": {
@@ -193,7 +437,7 @@
     "stepEmail": {
       "instruction": "Ingrese su correo electrónico para recibir el código de verificación.",
       "labelEmail": "Correo electrónico",
-      "placeholderEmail": "ejemplo@email.com",
+      "placeholderEmail": "ejemplo{'@'}email.com",
       "btnSend": "Enviar Código"
     },
     "stepVerify": {
