@@ -184,10 +184,6 @@ import { ref, computed, watchEffect, watch } from 'vue'
 
 const { t } = useI18n()
 
-const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true })
-const pagination = defineModel<TPagination>('pagination', { required: true })
-const selectedItens = defineModel<any[]>('selectedItens', { required: false, default: [{}] })
-
 const props = withDefaults(
   defineProps<{
     id?: string
@@ -200,6 +196,10 @@ const props = withDefaults(
     selectItems: false,
   },
 )
+
+const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true })
+const pagination = defineModel<TPagination>('pagination', { required: true })
+const selectedItens = defineModel<any[]>('selectedItens', { required: false, default: [{}] })
 
 const emits = defineEmits<{
   (e: 'selected-item', item: any): void

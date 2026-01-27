@@ -1,5 +1,12 @@
 <template>
   {{ product }}
+  <v-card>
+    <v-card-title
+      
+    >
+
+    </v-card-title>
+  </v-card>
 </template>
 
 <script setup lang="ts">

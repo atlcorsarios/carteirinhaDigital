@@ -2,6 +2,7 @@
   <v-container fluid class="fill-height">
     <GridDataChart
       :hidden-chart="gridConfig.modelTable.model.hiddenChart"
+      :selected-item="selectedItem"
       @toggle-chart="toggleChartState"
     >
       <template #dataTable>
@@ -29,8 +30,19 @@
         />
       </template>
 
-      <template v-if="selectedItem" #moreInfo>
-        <slot name="moreInfo" :item="selectedItem" />
+      <template v-if="selectedItem && hasMoreInfo" #moreInfo>
+        <v-icon-btn
+          icon="mdi-close"
+          v-tooltip="t('tooltips.forms.close')"
+          variant="text"
+          color="info"
+          @click="clearMoreInfo"
+        />
+
+        <slot
+          name="moreInfo"
+          :item="selectedItem"
+        />
       </template>
     </GridDataChart>
   </v-container>
@@ -130,8 +142,9 @@ const props = defineProps<{
   }
   serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
   serviceSave?: (item: T) => Promise<any>
-  selectItems?: boolean
   hasActions?: boolean
+  hasMoreInfo?: boolean
+  selectItems?: boolean
 }>()
 
 const selectedItens = defineModel<any[]>('selected-itens', { required: false })
@@ -253,5 +266,9 @@ function getItemIdentifier(item: any) {
   const keys = Object.keys(item)
   const idKey = keys.find((k) => k.startsWith('id'))
   return idKey ? item[idKey] : ''
+}
+
+function clearMoreInfo() {
+  selectedItem.value = null
 }
 </script>

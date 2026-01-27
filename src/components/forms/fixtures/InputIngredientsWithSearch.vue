@@ -1,19 +1,20 @@
 <template>
   <v-row dense>
-    <v-col cols="12" md="6">
+    <v-col cols="12">
       <v-select
-        v-model="ingredients"
+        v-model="selectedItems"
         item-title="description"
         item-value="idIngredient"
         :items="selectedItems"
-        :label="t('forms.formIngredient.ingredients.label')"
-        :hint="t('forms.formIngredient.ingredients.hint')"
+        :label="t('forms.formIngredientsInRecipe.ingredients.label')"
+        :hint="t('forms.formIngredientsInRecipe.ingredients.hint')"
         density="compact"
         variant="outlined"
         chips
-        clearable
         multiple
         return-object
+        clearable
+        @click:clear="ingredients = []"
       >
         <template #prepend-inner>
           <v-icon-btn
@@ -33,10 +34,11 @@
       cols="12"
     >
       <v-text-field
-        v-model="item.amount"
-        :suffix="item.ingredient?.measurement ?? 'Sufix'"
-        :label="item.ingredient?.description ?? 'Test'"
+        v-model.number="item.amount"
+        :suffix="item.ingredient?.measurement"
+        :label="item.ingredient?.description"
         type="number"
+        min="0"
         density="compact"
         variant="outlined"
       />
@@ -44,7 +46,7 @@
   </v-row>
 
   <DialogSearchIngredients
-    :dialog-search-ingredient="dialogSearchIngredients.model"
+    v-model:dialog-search-ingredient="dialogSearchIngredients"
     v-model:items-selected="selectedItems"
   />
 </template>
@@ -57,14 +59,42 @@ import DialogSearchIngredients from '@/components/dialog/searchs/ingredients/Dia
 // Models
 import { type IIngredient, type IIngredientsInRecipe } from '@/classes/models/ModelIProduct';
 
+// Classes
+import { ClassIngredientsInRecipe } from '@/classes/products/ClassIngredientsInRecipe';
+
 // Vue
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const { t } = useI18n()
 
 const ingredients = defineModel<IIngredientsInRecipe[]>('ingredients-in-recipe', { required: true })
 const selectedItems = ref<IIngredient[]>([])
+
+watch(selectedItems, (newSelected) => {
+  const updatedIngredients = newSelected.map(ing => {
+    const existing = ingredients.value.find(
+      item => (item.ingredient?.idIngredient || item.ingredient.idIngredient) === ing.idIngredient
+    );
+
+    if (existing) return existing;
+
+    const newIngredientInRecipe = ClassIngredientsInRecipe.defaultIngredientsInRecipe();
+    newIngredientInRecipe.ingredient = ing;
+    newIngredientInRecipe.ingredient.idIngredient = ing.idIngredient;
+    return newIngredientInRecipe;
+  });
+
+  ingredients.value = updatedIngredients;
+}, { deep: true });
+
+watch(ingredients, (newIngredients) => {
+  if (newIngredients && selectedItems.value.length === 0 && newIngredients.length > 0) {
+    selectedItems.value = newIngredients
+      .filter(i => i.ingredient)
+      .map(i => i.ingredient as IIngredient);
+  }
+}, { immediate: true });
 
 const dialogSearchIngredients = new ClassBaseDialog({
   maxWidth: 600
@@ -73,4 +103,5 @@ const dialogSearchIngredients = new ClassBaseDialog({
 function handleSearchIngredients() {
   dialogSearchIngredients.toggleDialog()
 }
+
 </script>

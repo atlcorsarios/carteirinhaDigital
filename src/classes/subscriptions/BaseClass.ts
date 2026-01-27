@@ -48,11 +48,13 @@ export abstract class BaseClass<T extends object> {
       this._model.length = 0
       this._model.push(...defaults)
     } else {
-      Object.keys(this._model).forEach((key) => {
-        // @ts-ignore
-        delete this._model[key]
-      })
       Object.assign(this._model, defaults)
+      Object.keys(this._model).forEach(key => {
+        if (!(key in defaults)) {
+          // @ts-ignore
+          this._model[key] = undefined
+        }
+      })
     }
   }
 

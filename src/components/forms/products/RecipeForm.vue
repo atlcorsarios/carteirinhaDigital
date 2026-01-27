@@ -1,7 +1,7 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense align="center">
-      <v-col cols="12" :md="createFast ? 12 : 6">
+      <v-col cols="12">
         <v-text-field
           v-model="recipe.description"
           :rules="[rules.required(), rules.maxLength(100)]"
@@ -12,7 +12,7 @@
           clearable
         />
       </v-col>
-      <v-col v-if="!createFast" cols="12">
+      <v-col v-if="!createFast" cols="12" class="d-flex justify-center">
         <v-switch
           v-model="recipe.active"
           :label="t('forms.formRecipe.active.label')"
@@ -31,7 +31,6 @@
 
       <InputIngredientsWithSearch
         v-model:ingredients-in-recipe="recipe.ingredients"
-        v-model:selected-items="recipe.ingredients"
       />
 
       <v-col v-if="!createFast" cols="12">
@@ -81,5 +80,4 @@ defineExpose({
     return valid;
   }
 });
-
 </script>

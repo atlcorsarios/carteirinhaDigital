@@ -1,7 +1,7 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense align="center">
-      <v-col cols="12" :md="createFast ? 12 : 6">
+      <v-col cols="12">
         <v-text-field
           v-model="ingredient.description"
           :rules="[rules.required(), rules.maxLength(100)]"
@@ -13,7 +13,7 @@
         />
       </v-col>
 
-      <v-col v-if="!createFast" cols="12" md="6">
+      <v-col v-if="!createFast" cols="3" md="4">
         <v-text-field
           v-model="ingredient.measurement"
           :rules="[rules.required(), rules.maxLength(30)]"
@@ -24,9 +24,8 @@
           clearable
         />
       </v-col>
-    </v-row>
-    <v-row dense v-if="!createFast">
-      <v-col cols="12" md="6">
+
+      <v-col v-if="!createFast" cols="9" md="8">
         <v-number-input
           v-model="ingredient.stock"
           :label="t('forms.formIngredient.stock.label')"
@@ -38,6 +37,8 @@
           inset
         />
       </v-col>
+    </v-row>
+    <v-row dense v-if="!createFast">
 
       <InputCategoryWithSearch
         v-model:category="ingredient.category"

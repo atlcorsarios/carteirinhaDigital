@@ -23,7 +23,11 @@
       </v-col>
     </Transition>
   </v-row>
-  <div class="w-100 mt-5">
+  <div
+    v-show="!!selectedItem"
+    class="w-100 mt-5 scroll-offset"
+    ref="refMoreInfo"
+  >
     <slot name="moreInfo" />
   </div>
 </template>
@@ -32,7 +36,8 @@
 import { nextTick, ref, watch } from 'vue';
 
 const props = defineProps<{
-  hiddenChart: boolean
+  hiddenChart: boolean,
+  selectedItem?: any
 }>();
 
 const emit = defineEmits<{
@@ -46,21 +51,34 @@ defineSlots<{
 }>();
 
 const refCharts = ref<any>(null);
+const refMoreInfo = ref<any>(null);
 
 watch(() => props.hiddenChart, (isHidden) => {
   if (!isHidden) {
     nextTick(() => {
-      const el = refCharts.value?.$el || refCharts.value;
-      if (el) {
-        el.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'nearest'
-        });
-      }
+      scrollIntoView(refCharts.value, 'nearest');
     });
   }
 });
+
+watch(() => props.selectedItem, (newItem) => {
+  if (newItem) {
+    nextTick(() => {
+      scrollIntoView(refMoreInfo.value, 'nearest');
+    });
+  }
+});
+
+function scrollIntoView(target: any, optionScroll: string) {
+  const el = target?.$el || target;
+  if (el) {
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: optionScroll,
+      inline: optionScroll
+    });
+  }
+}
 </script>
 
 <style scoped>

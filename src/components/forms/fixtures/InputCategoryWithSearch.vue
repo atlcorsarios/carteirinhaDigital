@@ -48,6 +48,7 @@ import DialogSearchCategories from '@/components/dialog/searchs/categories/Dialo
 import { type ICategory } from '@/classes/models/ModelIProduct';
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
 import { ref, watch } from 'vue';
+import { ClassCategories } from '@/classes/products/ClassCategories';
 
 const loading = ref<boolean>(false)
 
@@ -71,9 +72,7 @@ function onCategorySelected(selectedItem: ICategory) {
 
 function clearCategory() {
   category.value = {
-    ...category.value,
-    idCategory: 0,
-    description: ''
+    ...ClassCategories.defaultCategory()
   }
 }
 

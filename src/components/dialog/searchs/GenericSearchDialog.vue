@@ -72,6 +72,10 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, watchEffect, nextTick } from 'vue'
 
+const { t } = useI18n()
+const route = useRoute()
+const { notify } = useSnackbar()
+
 const props = defineProps<{
   title: string
   storageContext: string
@@ -83,11 +87,8 @@ const props = defineProps<{
   selectItems?: boolean
 }>()
 
-const { t } = useI18n()
-const route = useRoute()
-const { notify } = useSnackbar()
-
 const selectedItems = defineModel<T[]>('selectedItems', { default: () => [] })
+
 const emits = defineEmits(['select-item'])
 
 const refSearchForm = ref<any>(null)
@@ -113,7 +114,7 @@ const handleReset = async () => {
 }
 
 const handleSearch = () => {
-
+  
 }
 
 const gridManager = new ClassGridDataChart<T>({ modelTable: { model: { titleTable: props.title } } })

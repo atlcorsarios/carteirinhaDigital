@@ -228,6 +228,21 @@
         "hint": "Click the icon on the left to view"
       }
     },
+    "formIngredientsInRecipe": {
+      "idRecipe": {
+        "headerTable": "Id Recipe",
+        "label": "Id Recipe"
+      },
+      "amount": {
+        "headerTable": "Quantity",
+        "label": "Quantity of ingredient"
+      },
+      "ingredients": {
+        "headerTable": "Ingredients",
+        "label": "Recipe Ingredients",
+        "hint": "Select the ingredients present in the recipe"
+      }
+    },
     "formNotifications": {
       "seen" : {
         "headerTable": "Viewed",

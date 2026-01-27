@@ -47,10 +47,12 @@ const { t } = useI18n()
 const dialog = defineModel<IModelBaseDialog>('attributes', { required: true })
 const isDialogVisible = computed({
   get() {
-    return dialog.value.view
+    return dialog.value?.view ?? false
   },
   set(newValue: boolean) {
-    dialog.value.view = newValue
+    if (dialog.value) {
+      dialog.value.view = newValue
+    }
   },
 })
 

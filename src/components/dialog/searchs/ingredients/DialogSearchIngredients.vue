@@ -7,8 +7,8 @@
     :default-filter="ClassIngredients.defaultFilterConfig"
     :service-fetch="ingredientsServices.getAllIngredients"
     :dialog-search-model="dialogSearchModel"
-    v-model:selected-items="selectedItems"
     :select-items="true"
+    v-model:selected-items="selectedItems"
   >
     <template #action-btn="{ openCreate }">
       <BtnOpenDialog
@@ -50,5 +50,4 @@ const { t } = useI18n()
 
 const dialogSearchModel = defineModel<any>('dialog-search-ingredient', { required: true })
 const selectedItems = defineModel<IIngredient[]>('items-selected', { required: true })
-
 </script>

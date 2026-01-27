@@ -55,6 +55,7 @@ import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
 
 // Vue
 import { ref, watch } from 'vue';
+import { ClassRecipes } from '@/classes/products/ClassRecipes';
 
 const loading = ref<boolean>(false)
 
@@ -78,9 +79,7 @@ function onRecipeSelected(selectedItem: IRecipe) {
 
 function clearRecipe() {
   recipe.value = {
-    ...recipe.value,
-    idRecipe: 0,
-    description: ''
+    ...ClassRecipes.defaultRecipe()
   }
 }
 

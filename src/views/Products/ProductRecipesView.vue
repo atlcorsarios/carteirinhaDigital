@@ -16,6 +16,7 @@
   >
     <template #form="{ model, updateValid }">
       <RecipeForm
+        ref="recipeFormRef"
         :recipe="model"
         @update:valid="updateValid"
       />

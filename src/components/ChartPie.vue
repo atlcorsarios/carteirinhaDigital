@@ -54,7 +54,7 @@
           </template>
 
           <template v-slot:legend="{ items, toggle, isActive }">
-            <v-list class="py-0 mb-n5 mb-md-0 bg-transparent" density="compact" width="300">
+            <v-list class="py-0 mb-n5 mb-md-0 bg-transparent" density="compact" :width="mdAndUp ? 300 : '100%'">
               <v-list-item
                 v-for="item in items"
                 :key="item.key"

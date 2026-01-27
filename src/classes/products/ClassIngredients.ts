@@ -25,7 +25,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
     return this.createWithDefaults(item, ClassIngredients.defaultIngredient())
   }
 
-  static get filedConfig(): TEntityConfig<IIngredient> {
+  static get fieldConfig(): TEntityConfig<IIngredient> {
     return {
       idIngredient: {
         width: 50,
@@ -50,7 +50,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
         align: 'center',
         width: 100,
         maxWidth: 250,
-        minWidth: 50,
+        minWidth: 100,
       },
       category: {
         hidden: true
@@ -63,7 +63,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
     return BaseClass.generateHeadersFromModel(
       defaultModel,
       'forms.formIngredient',
-      ClassCategories.fieldConfig
+      ClassIngredients.fieldConfig
     )
   }
 
@@ -72,7 +72,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
     const autoFilters = BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formIngredient',
-      ClassCategories.fieldConfig
+      ClassIngredients.fieldConfig
     )
 
     autoFilters.push({

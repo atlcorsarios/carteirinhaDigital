@@ -37,6 +37,10 @@ export class ClassFormatters {
     }).format(new Date(date))
   }
 
+  static formatAmountIngredient(amount: number, measurement: string): string {
+    return `${amount} ${measurement}`
+  }
+
   static formatRolesTranslate(role: TRole): string {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
