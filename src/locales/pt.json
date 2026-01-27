@@ -291,11 +291,11 @@
       "searchQuote": "Erro ao buscar cotação para: "
     },
     "forms": {
+      "saveSuccess": "Salvo com sucesso",
+      "saveError": "Erro ao salvar",
       "formUsers": {
         "createUser": "Criar usuário",
-        "editingUser": "Editar usuário",
-        "success": "Usuário salvo com sucesso",
-        "error": "Erro ao salvar usuário"
+        "editingUser": "Editar usuário"
       },
       "formProduct": {
         "createProduct": "Criar produto",

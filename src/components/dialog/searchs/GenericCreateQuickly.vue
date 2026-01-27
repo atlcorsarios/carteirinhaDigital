@@ -44,17 +44,24 @@
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useSnackbar } from '@/composables/useSnackbar'
+// Componentes
+import BaseDialog from '../BaseDialog.vue'
+
+// Classes
 import type { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+
+// Composables
+import { useSnackbar } from '@/composables/useSnackbar'
+
+// Vue
+import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const props = defineProps<{
   title: string
   icon: string
   saveIcon?: string
   dialogModel: ClassBaseDialog<any>
-  // Prop para o serviço de API
   serviceSave?: (item: T) => Promise<any>
   classManager: {
     model: T
@@ -80,17 +87,14 @@ async function handleSave() {
   try {
     let savedItem = { ...props.classManager.model }
 
-    // Se um serviço foi passado, realiza a chamada de API
     if (props.serviceSave) {
       const response = await props.serviceSave(props.classManager.model)
-      // Assume-se que a API retorna o objeto criado (com ID)
       if (response) savedItem = response
     }
 
     notify(t('messages.forms.saveSuccess'), 'success')
     emits('created-fast-item', savedItem)
 
-    // Fecha o dialog e limpa o form
     props.dialogModel.toggleDialog()
     handleReset()
   } catch (error) {
@@ -101,4 +105,3 @@ async function handleSave() {
   }
 }
 </script>
-

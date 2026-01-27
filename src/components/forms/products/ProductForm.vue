@@ -44,20 +44,18 @@
       </v-col>
     </v-row>
     <v-row dense>
-      <v-col cols="12" md="6">
-        <InputCategoryWithSearch
-          v-model:category="product.category"
-          :label="t('forms.formProduct.category.label')"
-          :hint="t('forms.formProduct.category.hint')"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
-        <InputRecipeWithSearch
-          v-model:recipe="product.recipe"
-          :label="t('forms.formProduct.recipe.label')"
-          :hint="t('forms.formProduct.recipe.hint')"
-        />
-      </v-col>
+      <InputCategoryWithSearch
+        v-model:category="product.category"
+        :label="t('forms.formProduct.category.label')"
+        :hint="t('forms.formProduct.category.hint')"
+      />
+
+      <InputRecipeWithSearch
+        v-model:recipe="product.recipe"
+        :label="t('forms.formProduct.recipe.label')"
+        :hint="t('forms.formProduct.recipe.hint')"
+      />
+
       <v-col cols="12" class="d-flex flex-column">
         <InputUploadImage
           v-model="product.imageFile"

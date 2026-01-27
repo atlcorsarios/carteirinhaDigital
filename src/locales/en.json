@@ -291,11 +291,11 @@
       "searchQuote": "Error retrieving quote for: "
     },
     "forms": {
+      "saveSuccess": "Saved successfully",
+      "saveEror": "Error saving",
       "formUsers": {
         "createUser": "Create user",
-        "editingUser": "Edit user",
-        "success": "User saved successfully",
-        "error": "Error saving user"
+        "editingUser": "Edit user"
       },
       "formProduct": {
         "createProduct": "Create product",

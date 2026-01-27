@@ -113,8 +113,7 @@ const handleReset = async () => {
 }
 
 const handleSearch = () => {
-  loadingSearchForm.value = loading.value
-  setTimeout(() => (loadingSearchForm.value = false), 1000)
+
 }
 
 const gridManager = new ClassGridDataChart<T>({ modelTable: { model: { titleTable: props.title } } })
@@ -129,6 +128,7 @@ const paginationModel = computed({
 watchEffect(() => {
   gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.headersTable = props.headers
+  gridConfig.modelTable.model.loadingDataTable = loading.value
 })
 
 const classDialogCreateQuickly = new ClassBaseDialog({ maxWidth: 500 })

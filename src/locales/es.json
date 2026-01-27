@@ -291,11 +291,11 @@
       "searchQuote": "Error al recuperar la cotización para: "
     },
     "forms": {
+      "saveSuccess": "Guardado correctamente",
+      "saveError": "Error al guardar",
       "formUsers": {
         "createUser": "Crear usuario",
-        "editingUser": "Editar usuario",
-        "success": "Usuario guardado correctamente",
-        "error": "Error al guardar el usuario"
+        "editingUser": "Editar usuario"
       },
       "formProduct": {
         "createProduct": "Crear producto",

@@ -37,7 +37,7 @@ export class ClassRecipes extends BaseClass<IRecipe> {
         maxWidth: 250
       },
       preparation: {
-
+        hidden: true
       },
       ingredients: {
         hidden: true
