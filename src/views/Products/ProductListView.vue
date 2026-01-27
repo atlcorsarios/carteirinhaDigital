@@ -4,7 +4,7 @@
     :id-field="'idProduct'"
     :title="t('dataTable.products.title')"
     :hasActions="true"
-    :has-more-info="true"
+    :hasMoreDetails="true"
     :text-create="t('messages.forms.formProduct.createProduct')"
     :text-edit="t('messages.forms.formProduct.editingProduct')"
     :icon-create="'mdi-package-variant-closed-plus'"
@@ -16,16 +16,11 @@
     :service-save="productsServices.saveProduct"
   >
     <template #form="{ model, updateValid }">
-      <ProductForm
-        :product="model"
-        @update:valid="updateValid"
-      />
+      <ProductForm :product="model" @update:valid="updateValid" />
     </template>
 
-    <template #moreInfo="{ item }">
-      <ProductsMoreInfo
-        :product="item"
-      />
+    <template #moreDetails="{ item }">
+      <ProductsMoreDetails :product="item" />
     </template>
   </GenericView>
 </template>
@@ -34,7 +29,7 @@
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
 import ProductForm from '@/components/forms/products/ProductForm.vue'
-import ProductsMoreInfo from './ProductsMoreInfo.vue'
+import ProductsMoreDetails from './ProductsMoreDetails.vue'
 
 // Models
 import { type IProduct } from '@/classes/models/ModelIProduct'
@@ -64,5 +59,4 @@ const productModelManager = {
     classProduct.updateModel(item)
   },
 }
-
 </script>

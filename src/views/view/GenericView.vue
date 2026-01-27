@@ -30,19 +30,16 @@
         />
       </template>
 
-      <template v-if="selectedItem && hasMoreInfo" #moreInfo>
+      <template v-if="selectedItem && hasMoreDetails" #moreDetails>
         <v-icon-btn
           icon="mdi-close"
           v-tooltip="t('tooltips.forms.close')"
           variant="text"
           color="info"
-          @click="clearMoreInfo"
+          @click="hiddenMoreDetails"
         />
 
-        <slot
-          name="moreInfo"
-          :item="selectedItem"
-        />
+        <slot name="moreDetails" :item="selectedItem" />
       </template>
     </GridDataChart>
   </v-container>
@@ -143,7 +140,7 @@ const props = defineProps<{
   serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
   serviceSave?: (item: T) => Promise<any>
   hasActions?: boolean
-  hasMoreInfo?: boolean
+  hasMoreDetails?: boolean
   selectItems?: boolean
 }>()
 
@@ -220,6 +217,7 @@ const selectedItem = ref<T | null>(null)
 
 function handleSelection(item: any) {
   selectedItem.value = item
+  hiddenMoreDetails()
 }
 
 function handleManageRecord(payload: { editingMode: boolean; item?: T }) {
@@ -268,7 +266,7 @@ function getItemIdentifier(item: any) {
   return idKey ? item[idKey] : ''
 }
 
-function clearMoreInfo() {
+function hiddenMoreDetails() {
   selectedItem.value = null
 }
 </script>
