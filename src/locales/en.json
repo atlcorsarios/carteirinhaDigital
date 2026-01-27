@@ -229,7 +229,30 @@
       }
     },
     "formNotifications": {
-      
+      "seen" : {
+        "headerTable": "Viewed",
+        "label": "Notification viewed"
+      },
+      "idNotification": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "title": {
+        "headerTable": "Title",
+        "label": "Notification title"
+      },
+      "date": {
+        "headerTable": "Date",
+        "label": "Notification date"
+      },
+      "sender": {
+        "headerTable": "Sender",
+        "label": "Sender"
+      },
+      "origin": {
+        "headerTable": "Origin",
+        "label": "Notification origin"
+      }      
     },
     "formLogin": {
       "email": {
@@ -308,6 +331,10 @@
       "formRecipe": {
         "createRecipe": "Create Recipe",
         "editingRecipe": "Edit Recipe"
+      },
+      "formIngredient": {
+        "createIngredient": "Create ingredient",
+        "editingIngredient": "Edit ingredient"
       }
     },
     "components": {

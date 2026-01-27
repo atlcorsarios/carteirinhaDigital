@@ -46,24 +46,23 @@
 
 <script setup lang="ts">
 import type { ILogin } from '@/classes/models/ModelLogin'
-import { useRules } from 'vuetify/labs/rules';
-import { useI18n } from 'vue-i18n';
+import { useRules } from 'vuetify/labs/rules'
+import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const showPassword = ref(false);
-const rules = useRules();
-const { t } = useI18n();
+const showPassword = ref(false)
+const rules = useRules()
+const { t } = useI18n()
 
-const formRef = ref<any>(null);
-const loginForm = defineModel<ILogin>('login', { required: true });
-const formIsValid = defineModel<boolean>('valid', { default: false });
+const formRef = ref<any>(null)
+const loginForm = defineModel<ILogin>('login', { required: true })
+const formIsValid = defineModel<boolean>('valid', { default: false })
 
 defineExpose({
-  reset: () => formRef.value?.resetValidation(),
+  reset: () => formRef.value?.reset(),
   validate: async () => {
-    const { valid } = await formRef.value?.validate();
-    return valid;
-  }
-});
-
+    const { valid } = await formRef.value?.validate()
+    return valid
+  },
+})
 </script>

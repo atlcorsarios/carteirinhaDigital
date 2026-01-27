@@ -23,5 +23,9 @@ export const categoriesServices = {
     } catch(error) {
       throw error;
     }
+  },
+
+  async saveCategory () {
+
   }
 }

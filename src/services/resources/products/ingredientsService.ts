@@ -29,5 +29,9 @@ export const ingredientsServices = {
     } catch(error) {
       throw error;
     }
+  },
+
+  async saveIngredient() {
+    
   }
 }

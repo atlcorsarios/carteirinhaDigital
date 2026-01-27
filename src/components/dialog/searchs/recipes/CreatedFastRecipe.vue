@@ -8,9 +8,9 @@
     :service-save="recipesServices.saveRecipe"
     @created-fast-item="(item) => $emit('created-fast-item', item)"
   >
-    <template #form="{ model, updateValid, refForm }">
+    <template #form="{ model, updateValid, setRef }">
       <RecipeForm
-        :ref="refForm"
+        :ref="setRef"
         :recipe="model"
         @update:recipe="(val) => Object.assign(model, val)"
         @update:valid="updateValid"
@@ -33,17 +33,15 @@ import { recipesServices } from '@/services/resources/products/recipesService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
-import { reactive } from 'vue'
 
 const { t } = useI18n()
 
 const dialogModel = defineModel<any>('dialog-create-quickly', { required: true })
 defineEmits(['created-fast-item'])
 
-const classRecipe = reactive(new ClassRecipes())
+const classRecipe = new ClassRecipes()
 const recipeManager = {
   model: classRecipe.model,
   reset: () => classRecipe.reset()
 }
-
 </script>

@@ -39,10 +39,12 @@ export class ClassNotifications extends BaseClass<INotification> {
     return {
       seen: {
         align: 'center',
+        width: 50,
+        minWidth: 50,
+        excludeFromFilter: true,
+        excludeFromChart: true,
         chartFormatter: ClassFormatters.formatBoolean,
         value: (item) => ClassFormatters.formatBoolean(item.seen),
-        excludeFromFilter: true,
-        width: 50,
         cellClass: (value: boolean) => {
           if (value === true) return 'text-success font-weight-bold'
           else return 'text-error font-weight-bold'
@@ -50,10 +52,15 @@ export class ClassNotifications extends BaseClass<INotification> {
       },
       idNotification: {
         width: 50,
+        maxWidth: 100,
+        minWidth: 50,
         excludeFromFilter: true,
+        excludeFromChart: true
       },
       title: {
-        maxWidth: 250,
+        width: 250,
+        maxWidth: 400,
+        minWidth: 150
       },
       description: {
         hidden: true
@@ -62,16 +69,25 @@ export class ClassNotifications extends BaseClass<INotification> {
         hidden: true
       },
       date: {
-        maxWidth: 100
+        align: 'center',
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        chartFormatter: ClassFormatters.formatDateTime,
+        value: (item: INotification) => ClassFormatters.formatDateTime(item.date)
       },
       sender: {
-        maxWidth: 100,
+        width: 150,
+        maxWidth: 300,
+        minWidth: 100
       },
       recipients: {
         hidden: true
       },
       origin: {
-        maxWidth: 100
+        width: 100,
+        maxWidth: 300,
+        minWidth: 100
       }
     }
   }

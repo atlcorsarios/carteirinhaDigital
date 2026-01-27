@@ -11,8 +11,8 @@ export const notificationsServices = {
         items: [
           {
             idNotification: 1,
-            title: '',
-            description: '',
+            title: 'First notification',
+            description: 'Test',
             message: '',
             date: new Date(),
             seen: false,
@@ -20,7 +20,17 @@ export const notificationsServices = {
             recipients: [''],
             origin: ''
           },
-
+          {
+            idNotification: 2,
+            title: 'Notification n° 2',
+            description: 'Test 2',
+            message: '',
+            date: new Date(),
+            seen: true,
+            sender: 'AVELITO',
+            recipients: [''],
+            origin: 'Ecommerce'
+          },
         ]
       };
 

@@ -14,7 +14,7 @@
         name="form"
         :model="classManager.model"
         :update-valid="(val: boolean) => isFormValid = val"
-        :ref-form="refForm"
+        :set-ref="setRefForm"
       />
     </template>
 
@@ -77,9 +77,16 @@ const isFormValid = ref(false)
 const loading = ref(false)
 const refForm = ref<any>(null)
 
+const setRefForm = (el: any) => {
+  if (el) refForm.value = el
+}
+
 function handleReset() {
-  if (refForm.value?.reset) refForm.value.reset()
   props.classManager.reset()
+  if (refForm.value?.reset) {
+    refForm.value.reset()
+  }
+  isFormValid.value = false
 }
 
 async function handleSave() {

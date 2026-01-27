@@ -229,7 +229,30 @@
       }
     },
     "formNotifications": {
-
+      "seen" : {
+        "headerTable": "Visualizado",
+        "label": "Notificação visualizada"
+      },
+      "idNotification": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "title": {
+        "headerTable": "Título",
+        "label": "Título da notificação"
+      },
+      "date": {
+        "headerTable": "Data",
+        "label": "Data da notificação"
+      },
+      "sender": {
+        "headerTable": "Remetente",
+        "label": "Remetente"
+      },
+      "origin": {
+        "headerTable": "Origem",
+        "label": "Origem da notificação"
+      }
     },
     "formLogin": {
       "email": {
@@ -308,6 +331,10 @@
       "formRecipe": {
         "createRecipe": "Criar Receita",
         "editingRecipe": "Editar receita"
+      },
+      "formIngredient": {
+        "createIngredient": "Criar ingrediente",
+        "editingIngredient": "Editar ingrediente"
       }
     },
     "components": {

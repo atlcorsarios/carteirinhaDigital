@@ -11,6 +11,32 @@ export class ClassFormatters {
     return value ? t(filterLabelKey ?? 'messages.yes') : t(filterLabelKey ?? 'messages.no')
   }
 
+  static formatDate(date: Date | string | number | undefined | null): string {
+    if (!date) return ''
+
+    const d = new Date(date)
+    if (isNaN(d.getTime())) return ''
+    const locale = i18n.global.locale.value || 'pt'
+
+    return new Intl.DateTimeFormat(locale, {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(d)
+  }
+
+  static formatDateTime(date: Date | string): string {
+    if (!date) return ''
+    const locale = i18n.global.locale.value || 'pt'
+    return new Intl.DateTimeFormat(locale, {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(date))
+  }
+
   static formatRolesTranslate(role: TRole): string {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)

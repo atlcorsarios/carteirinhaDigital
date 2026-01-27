@@ -3,6 +3,7 @@
     :headers="ClassUsers.headers"
     :id-field="'idUser'"
     :title="t('dataTable.users.title')"
+    :hasActions="true"
     :text-create="t('messages.forms.formUsers.createUser')"
     :text-edit="t('messages.forms.formUsers.editingUser')"
     :icon-create="'mdi-account-plus'"
@@ -10,13 +11,14 @@
     :icon-save="'mdi-account-check'"
     :dialog-model-manager="dialogUser"
     :class-model-manager="userModelManager"
-    :success-message="'messages.forms.formUsers.success'"
-    :error-message="'messages.forms.formUsers.error'"
     :service-fetch="usersServices.getAllUsers"
     :service-save="usersServices.saveUser"
   >
     <template #form="{ model, updateValid }">
-      <UserForm :user="model" @update:valid="updateValid" />
+      <UserForm
+        :user="model"
+        @update:valid="updateValid"
+      />
     </template>
   </GenericView>
 </template>

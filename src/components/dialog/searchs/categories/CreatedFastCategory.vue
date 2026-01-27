@@ -1,75 +1,47 @@
 <template>
-  <BaseDialog v-model:attributes="classDialogCreateCategory.model">
-    <template v-slot:title>
-      <v-icon
-        icon="mdi-tag-plus"
-        size="small"
-        class="mr-2"
-      />
-      {{ t('messages.forms.formCategory.createCategory') }}
-    </template>
-
-    <template v-slot:default>
+  <GenericCreateQuickly
+    :title="t('messages.forms.formCategory.createCategory')"
+    :icon="'mdi-tag-plus'"
+    :save-icon="'mdi-tag-check'"
+    :dialog-model="dialogModel"
+    :class-manager="categoryManager"
+    :service-save="categoriesServices.saveCategory"
+    @created-fast-item="(item) => $emit('created-fast-item', item)"
+  >
+    <template #form="{ model, updateValid, setRef }">
       <CategoryForm
-        ref="refFormCategory"
-        v-model:category="classCategory.model"
-        v-model:valid="isFormValid"
+        :ref="setRef"
+        :category="model"
+        @update:category="(val) => Object.assign(model, val)"
+        @update:valid="updateValid"
         :create-fast="true"
       />
     </template>
-
-    <template v-slot:actions>
-      <v-icon-btn
-        icon="mdi-refresh"
-        v-tooltip="t('tooltips.forms.reset')"
-        variant="text"
-        color="amber"
-        @click="resetFormCategory"
-      />
-
-      <v-spacer />
-
-      <v-icon-btn
-        icon="mdi-tag-check"
-        v-tooltip="t('tooltips.forms.save')"
-        variant="text"
-        color="success"
-        :disabled="!isFormValid"
-        @click="handleCreateFastItem"
-      />
-    </template>
-  </BaseDialog>
+  </GenericCreateQuickly>
 </template>
 
 <script setup lang="ts">
-import BaseDialog from '../../BaseDialog.vue';
-import CategoryForm from '@/components/forms/products/CategoryForm.vue';
-import { type ICategory } from '@/classes/models/ModelIProduct';
-import { ClassCategories } from '@/classes/products/ClassCategories';
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+// Componentes
+import GenericCreateQuickly from '../GenericCreateQuickly.vue'
+import CategoryForm from '@/components/forms/products/CategoryForm.vue'
+
+// Classes
+import { ClassCategories } from '@/classes/products/ClassCategories'
+
+// Services
+import { categoriesServices } from '@/services/resources/products/categoriesService'
+
+// Vue
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const classDialogCreateCategory = defineModel<any>('dialog-create-quickly', { required: true })
+const dialogModel = defineModel<any>('dialog-create-quickly', { required: true })
+defineEmits(['created-fast-item'])
 
 const classCategory = new ClassCategories()
-const refFormCategory = ref<InstanceType<typeof CategoryForm> | null>(null)
-const isFormValid = ref<boolean>(false)
-
-const emits = defineEmits<{
-  (e: 'created-fast-item', item: ICategory): void
-}>()
-
-function resetFormCategory() {
-  refFormCategory.value?.reset()
-  classCategory.reset()
-}
-
-function handleCreateFastItem() {
-  // simular a criação com método post, depois vai enviar com id
-  const idCategoryCreated = 1
-  emits('created-fast-item', { ...classCategory.model, idCategory: idCategoryCreated })
-  classDialogCreateCategory.value.toggleDialog()
+const categoryManager = {
+  model: classCategory.model,
+  reset: () => classCategory.reset()
 }
 </script>

@@ -34,7 +34,10 @@ export class ClassCategories extends BaseClass<ICategory> {
       },
       description: {
         align: 'center',
-        maxWidth: 'auto'
+        width: 200,
+        maxWidth: 500,
+        minWidth: 100,
+        excludeFromChart: true
       },
       group: {
         align: 'center',

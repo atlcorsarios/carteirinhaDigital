@@ -39,43 +39,44 @@
         />
       </v-col>
 
-      <v-col cols="12" md="6">
-        <InputCategoryWithSearch
-          v-model:category="ingredient.category"
-          :label="t('forms.formRecipe.category.label')"
-          :hint="t('forms.formRecipe.category.hint')"
-        />
-      </v-col>
+      <InputCategoryWithSearch
+        v-model:category="ingredient.category"
+        :label="t('forms.formRecipe.category.label')"
+        :hint="t('forms.formRecipe.category.hint')"
+      />
     </v-row>
     <slot name="actions" />
   </v-form>
 </template>
 
 <script setup lang="ts">
-import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue';
-import { type IIngredient } from '@/classes/models/ModelIProduct';
-import { useRules } from 'vuetify/labs/rules';
-import { useI18n } from 'vue-i18n';
+import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
+import { type IIngredient } from '@/classes/models/ModelIProduct'
+import { useRules } from 'vuetify/labs/rules'
+import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const rules = useRules();
-const { t } = useI18n();
+const rules = useRules()
+const { t } = useI18n()
 
-withDefaults(defineProps<{
-  createFast?: boolean
-}>(), {
-  createFast: false
-})
+withDefaults(
+  defineProps<{
+    createFast?: boolean
+  }>(),
+  {
+    createFast: false,
+  },
+)
 
-const formRef = ref<any>(null);
-const ingredient = defineModel<IIngredient>('ingredient', { required: true });
-const formIsValid = defineModel<boolean>('valid', { default: false });
+const formRef = ref<any>(null)
+const ingredient = defineModel<IIngredient>('ingredient', { required: true })
+const formIsValid = defineModel<boolean>('valid', { default: false })
 
 defineExpose({
-  reset: () => formRef.value?.resetValidation(),
+  reset: () => formRef.value?.reset(),
   validate: async () => {
-    const { valid } = await formRef.value?.validate();
-    return valid;
-  }
-});
+    const { valid } = await formRef.value?.validate()
+    return valid
+  },
+})
 </script>

@@ -57,10 +57,7 @@
       />
 
       <v-col cols="12" class="d-flex flex-column">
-        <InputUploadImage
-          v-model="product.imageFile"
-          :label="t('forms.formProduct.image.label')"
-        />
+        <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
         <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
           <v-img :src="product.image" aspect-ratio="16/9" cover class="rounded-lg mt-5" />
           <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
@@ -71,12 +68,21 @@
 </template>
 
 <script setup lang="ts">
+// Componentes
 import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
 import InputRecipeWithSearch from '../fixtures/InputRecipeWithSearch.vue'
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
+
+// Models
 import { type IProduct } from '@/classes/models/ModelIProduct'
+
+// Stores
 import { useQuotationStore } from '@/stores/quotationStore'
+
+// Locales
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
+
+// Vue
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
@@ -132,11 +138,10 @@ const currencyPlaceholder = computed(() => {
 })
 
 defineExpose({
-  reset: () => formRef.value?.resetValidation(),
+  reset: () => formRef.value?.reset(),
   validate: async () => {
     const { valid } = await formRef.value?.validate()
     return valid
   },
 })
-
 </script>

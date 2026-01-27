@@ -8,6 +8,7 @@
         <DataTable
           :id="tableId"
           :selectItems="selectItems"
+          :hasActions="hasActions"
           v-model:selected-itens="selectedItens"
           v-model:dataTable="gridConfig.modelTable"
           v-model:pagination="paginationModel"
@@ -127,15 +128,13 @@ const props = defineProps<{
     reset: () => void
     updateModel: (item: T) => void
   }
-  successMessage: string
-  errorMessage: string
   serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
   serviceSave?: (item: T) => Promise<any>
   selectItems?: boolean
+  hasActions?: boolean
 }>()
 
 const selectedItens = defineModel<any[]>('selected-itens', { required: false })
-
 const emit = defineEmits(['saved', 'error'])
 
 const route = useRoute()
@@ -239,11 +238,11 @@ async function submit() {
     if (props.serviceSave) {
       await props.serviceSave(props.classModelManager.model)
     }
-    notify(props.successMessage, 'success')
+    notify('messages.forms.saveSuccess', 'success')
     emit('saved', props.classModelManager.model)
     props.dialogModelManager.toggleDialog()
   } catch (error) {
-    notify(props.errorMessage, 'error')
+    notify('messages.forms.saveError', 'error')
     emit('error', error)
   }
 }

@@ -47,7 +47,10 @@
       </v-col>
 
       <v-col cols="12" class="mb-3">
-        <div v-if="getType(filter.field) === 'date' && filter.condition === 'between'" class="d-flex gap-2">
+        <div
+          v-if="getType(filter.field) === 'date' && filter.condition === 'between'"
+          class="d-flex gap-2"
+        >
           <v-text-field
             v-model="filter.startDate"
             :rules="[rules.required()]"
@@ -83,7 +86,10 @@
           v-else-if="getType(filter.field) === 'boolean'"
           v-model="filter.value"
           :rules="[rules.required()]"
-          :items="[{title: t('messages.yes'), value: 'true'}, {title: t('messages.no'), value: 'false'}]"
+          :items="[
+            { title: t('messages.yes'), value: 'true' },
+            { title: t('messages.no'), value: 'false' },
+          ]"
           density="compact"
           variant="outlined"
           hide-details
@@ -100,7 +106,10 @@
           hide-details
         />
 
-        <div v-else-if="getType(filter.field) === 'number' && filter.condition === 'between'" class="d-flex gap-2">
+        <div
+          v-else-if="getType(filter.field) === 'number' && filter.condition === 'between'"
+          class="d-flex gap-2"
+        >
           <v-text-field
             v-model="filter.value"
             :rules="[rules.required()]"
@@ -138,47 +147,47 @@
 </template>
 
 <script setup lang="ts">
-import type { ClassQueryFilter } from '@/classes/ClassQueryFilter';
-import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter';
+import type { ClassQueryFilter } from '@/classes/ClassQueryFilter'
+import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import { OPERATORS, type FilterType } from '@/classes/models/ModelFilterColumns'
 import { useRules } from 'vuetify/labs/rules'
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const props = defineProps<{
   filterManager: ClassQueryFilter
-}>();
+}>()
 
-const rules = useRules();
-const { t } = useI18n();
+const rules = useRules()
+const { t } = useI18n()
 
-const formRef = ref<any>(null);
-const filter = defineModel<IQueryFilter>('filter', { required: true });
-const formIsValid = defineModel<boolean>('valid', { default: false });
+const formRef = ref<any>(null)
+const filter = defineModel<IQueryFilter>('filter', { required: true })
+const formIsValid = defineModel<boolean>('valid', { default: false })
 
 const getType = (fieldKey: string): FilterType | undefined => {
-  return props.filterManager.getColumnType(fieldKey)?.type;
-};
+  return props.filterManager.getColumnType(fieldKey)?.type
+}
 
 const getOptions = (fieldKey: string) => {
-  return props.filterManager.getColumnType(fieldKey)?.options || [];
-};
+  return props.filterManager.getColumnType(fieldKey)?.options || []
+}
 
 const getOperators = (fieldKey: string) => {
-  const type = getType(fieldKey);
-  return type ? OPERATORS[type] : [];
-};
+  const type = getType(fieldKey)
+  return type ? OPERATORS[type] : []
+}
 
 const handleFieldChange = (newField: string) => {
   const conditionDefault = getOperators(newField)
-  props.filterManager.fieldChanged({ field: newField, condition: conditionDefault[0].value });
-};
+  props.filterManager.fieldChanged({ field: newField, condition: conditionDefault[0].value })
+}
 
 defineExpose({
-  reset: () => formRef.value?.resetValidation(),
+  reset: () => formRef.value?.reset(),
   validate: async () => {
-    const { valid } = await formRef.value?.validate();
-    return valid;
-  }
-});
+    const { valid } = await formRef.value?.validate()
+    return valid
+  },
+})
 </script>

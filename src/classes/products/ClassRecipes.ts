@@ -31,10 +31,16 @@ export class ClassRecipes extends BaseClass<IRecipe> {
   static get fieldConfig(): TEntityConfig<IRecipe> {
     return {
       idRecipe: {
-        width: 50
+        width: 50,
+        maxWidth: 100,
+        minWidth: 50,
+        excludeFromChart: true
       },
       description: {
-        maxWidth: 250
+        width: 500,
+        maxWidth: 750,
+        minWidth: 100,
+        excludeFromChart: true
       },
       preparation: {
         hidden: true
@@ -49,7 +55,9 @@ export class ClassRecipes extends BaseClass<IRecipe> {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
         value: (item) => ClassFormatters.formatBoolean(item.active),
-        width: 50,
+        width: 250,
+        maxWidth: 300,
+        minWidth: 50
       },
     }
   }

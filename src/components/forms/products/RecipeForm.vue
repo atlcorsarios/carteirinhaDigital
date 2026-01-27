@@ -75,7 +75,7 @@ const recipe = defineModel<IRecipe>('recipe', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
 
 defineExpose({
-  reset: () => formRef.value?.resetValidation(),
+  reset: () => formRef.value?.reset(),
   validate: async () => {
     const { valid } = await formRef.value?.validate();
     return valid;
