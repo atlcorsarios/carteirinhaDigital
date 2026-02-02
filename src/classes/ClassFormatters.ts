@@ -59,6 +59,10 @@ export class ClassFormatters {
     return t(GROUP_TRANSLATIONS[group])
   }
 
+  static formatI18n(i18nKey: string = '', attribute?: string): string {
+    return attribute ? i18n.global.t(`${i18nKey}.${attribute}`) : '';
+  }
+
   static formatPriceDynamic(valueInBase: number): string {
     if (valueInBase === undefined || valueInBase === null) return '-'
 

@@ -164,6 +164,7 @@ async function handleOpenFilter() {
 async function handleAddFilter() {
   const validFilter = classFormQuery.addFilter()
   if (validFilter) {
+    notify('messages.components.queryFilter.addSuccess', 'info')
     classFormQuery.resetStaging()
     await nextTick()
     refSearchForm.value?.reset()

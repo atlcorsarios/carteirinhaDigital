@@ -27,6 +27,7 @@ export interface IIngredient {
   idIngredient?: number
   description: string
   measurement: string
+  price?: number
   stock: number
   category: ICategory
 }

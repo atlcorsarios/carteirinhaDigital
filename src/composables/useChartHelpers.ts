@@ -12,7 +12,7 @@ export function useChartHelpers(
   const grouped: Record<string, number> = {};
 
   items.forEach(item => {
-    const originalValue = item[groupingField];
+    const originalValue = groupingField.split('.').reduce((obj, key) => obj?.[key], item);
     const key = String(originalValue);
     let value = chartAggregation === 'sum' ? (Number(originalValue) || 0) : 1;
     grouped[key] = (grouped[key] || 0) + value;

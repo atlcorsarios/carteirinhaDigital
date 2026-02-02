@@ -82,7 +82,7 @@
           hide-details
         />
 
-        <v-select
+        <v-add
           v-else-if="getType(filter.field) === 'boolean'"
           v-model="filter.value"
           :rules="[rules.required()]"
@@ -101,6 +101,8 @@
           :rules="[rules.required()]"
           :label="t('filterColumn.operators.select')"
           :items="getOptions(filter.field)"
+          item-title="label"
+          item-value="value"
           density="compact"
           variant="outlined"
           hide-details

@@ -13,7 +13,15 @@
         />
       </v-col>
 
-      <v-col v-if="!createFast" cols="3" md="4">
+      <v-col cols="12" md="4">
+        <InputPrice
+          v-model="ingredient.price"
+          :label="'forms.formIngredient.price.label'"
+          :rules="[rules.required()]"
+        />
+      </v-col>
+
+      <v-col v-if="!createFast" cols="6" md="4">
         <v-text-field
           v-model="ingredient.measurement"
           :rules="[rules.required(), rules.maxLength(30)]"
@@ -25,7 +33,7 @@
         />
       </v-col>
 
-      <v-col v-if="!createFast" cols="9" md="8">
+      <v-col v-if="!createFast" cols="6" md="4">
         <v-number-input
           v-model="ingredient.stock"
           :label="t('forms.formIngredient.stock.label')"
@@ -52,6 +60,7 @@
 
 <script setup lang="ts">
 import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
+import InputPrice from '../fixtures/InputPrice.vue'
 import { type IIngredient } from '@/classes/models/ModelIProduct'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'

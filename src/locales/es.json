@@ -217,6 +217,11 @@
         "headerTable": "Medida",
         "label": "Unidad de medida"
       },
+      "price": {
+        "headerTable": "Precio",
+        "label": "Precio del ingrediente",
+        "hint": "Convertido a: "
+      },
       "stock": {
         "headerTable": "En stock",
         "label": "Cantidad inicial de stock",
@@ -241,6 +246,43 @@
         "headerTable": "Ingredientes",
         "label": "Ingredientes de la receta",
         "hint": "Seleccione los ingredientes presentes en la receta"
+      }
+    },
+    "formStock": {
+      "idStock": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "category": {
+        "headerTable": "Categoría",
+        "label": "Categoría del ítem"
+      },
+      "description": {
+        "headerTable": "Descripción",
+        "label": "Descripción del ítem"
+      },
+      "measurement": {
+        "headerTable": "Medida",
+        "label": "Unidad de medida"
+      },
+      "amount": {
+        "headerTable": "Cantidad",
+        "label": "Cantidad del ítem"
+      },
+      "item": {
+        "label": "Ítem para operación"
+      },
+      "operation": {
+        "label": "Operación",
+        "types": {
+          "entry": "ENTRADA",
+          "exit": "SALIDA"
+        }
+      },
+      "price": {
+        "headerTable": "Precio",
+        "label": "Precio de compra",
+        "hint": "Convertido a: "
       }
     },
     "formNotifications": {
@@ -350,6 +392,10 @@
       "formIngredient": {
         "createIngredient": "Crear ingrediente",
         "editingIngredient": "Editar ingrediente"
+      },
+      "formStock": {
+        "addInventory": "Añadir al inventario",
+        "updateInventory": "Actualizar inventario"
       }
     },
     "components": {
@@ -359,6 +405,7 @@
       },
       "queryFilter": {
         "title": "Filtrar recursos por:",
+        "addSuccess": "¡Filtro añadido!",
         "alertDuplicate": "¡Este filtro ya ha sido añadido!"
       },
       "inputUploadImage": {
