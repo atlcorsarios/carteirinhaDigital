@@ -31,15 +31,7 @@
       </template>
 
       <template v-if="selectedItem && hasMoreDetails" #moreDetails>
-        <v-icon-btn
-          icon="mdi-close"
-          v-tooltip="t('tooltips.forms.close')"
-          variant="text"
-          color="info"
-          @click="hiddenMoreDetails"
-        />
-
-        <slot name="moreDetails" :item="selectedItem" />
+        <slot name="moreDetails" :item="selectedItem" :close="hiddenMoreDetails" />
       </template>
     </GridDataChart>
   </v-container>
@@ -216,8 +208,8 @@ const refForm = ref<any>(null)
 const selectedItem = ref<T | null>(null)
 
 function handleSelection(item: any) {
-  selectedItem.value = item
   hiddenMoreDetails()
+  selectedItem.value = item
 }
 
 function handleManageRecord(payload: { editingMode: boolean; item?: T }) {
@@ -269,4 +261,5 @@ function getItemIdentifier(item: any) {
 function hiddenMoreDetails() {
   selectedItem.value = null
 }
+
 </script>
