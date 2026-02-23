@@ -1,15 +1,23 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid">
     <v-row dense align="center">
-      <v-col cols="12">
-        <v-text-field
-          v-model="stockControl.item.description"
-          :label="t('forms.formStock.item.label')"
-          density="compact"
-          variant="outlined"
-          readonly
-        />
+      <v-col cols="12" class="pb-0">
+        <v-radio-group v-model="itemType" inline hide-details color="primary">
+          <v-radio :label="t('forms.formStock.item.types.ingredient')" value="INGREDIENT" />
+          <v-radio :label="t('forms.formStock.item.types.product')" value="PRODUCT" />
+        </v-radio-group>
       </v-col>
+
+      <InputIngredientWithSearch
+        v-if="itemType === 'INGREDIENT'"
+        v-model:ingredient="stockControl.item"
+        @update:ingredient="updateMeasurement"
+      />
+      <InputProductWithSearch
+        v-else
+        v-model:product="stockControl.item"
+        @update:product="updateMeasurement"
+      />
 
       <v-col cols="12" md="6">
         <v-select
@@ -54,8 +62,8 @@
         <InputPrice
           v-model="stockControl.price"
           :rules="[rules.required()]"
-          :label="t('forms.formStock.price.label')"
-          :hint="t('forms.formStock.price.hint')"
+          :label="'forms.formStock.price.label'"
+          :hint="'forms.formStock.price.hint'"
         />
       </v-col>
     </v-row>
@@ -65,6 +73,7 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
 // Componentes
 import InputPrice from '../fixtures/InputPrice.vue';
+import InputIngredientWithSearch from '../fixtures/InputIngredientWithSearch.vue';
 
 // Model
 import { operations, type IStockControl } from '@/classes/models/ModelIStock';
@@ -73,6 +82,7 @@ import { operations, type IStockControl } from '@/classes/models/ModelIStock';
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
 import { computed, ref } from 'vue';
+import InputProductWithSearch from '../fixtures/InputProductWithSearch.vue';
 
 const rules = useRules()
 const { t } = useI18n()
@@ -80,6 +90,7 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const stockControl = defineModel<IStockControl<T>>('stock', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+const itemType = ref<'INGREDIENT' | 'PRODUCT'>('INGREDIENT')
 
 const optionsOperations = computed(() => {
   return operations.map((group) => ({
@@ -87,6 +98,12 @@ const optionsOperations = computed(() => {
     value: group
   }))
 })
+
+function updateMeasurement(selectedItem: any) {
+  if (selectedItem) {
+    stockControl.value.measurement = selectedItem.measurement || '';
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),

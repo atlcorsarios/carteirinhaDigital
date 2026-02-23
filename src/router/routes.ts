@@ -137,8 +137,8 @@ export const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'stocks',
-        name: 'ProductStocks',
-        component: () => import('@/views/Products/ProductStocksView.vue'),
+        name: 'Stocks',
+        component: () => import('@/views/Products/StocksView.vue'),
         meta: {
           title: 'routes.products.children.stock.title',
           icon: 'mdi-warehouse',

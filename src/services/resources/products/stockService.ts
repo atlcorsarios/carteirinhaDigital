@@ -2,7 +2,7 @@ import type { IHeaderPaginatorModel } from "@/classes/models/ModelHeaderPaginato
 import type { IStock } from "@/classes/models/ModelIStock";
 
 export const stockServices = {
-  async getAllStock(offset: number, limit: number): Promise<IHeaderPaginatorModel<IStock>> {
+  async getAllStock(offset: number, limit: number, typeItem: 'INGREDIENT' | 'PRODUCT' = 'INGREDIENT'): Promise<IHeaderPaginatorModel<IStock>> {
     try {
       const mockData: IHeaderPaginatorModel<IStock> = {
         limit: limit,

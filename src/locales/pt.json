@@ -270,7 +270,11 @@
         "label": "Quantidade do item"
       },
       "item": {
-        "label": "Item para operação"
+        "label": "Item para operação",
+        "types": {
+          "ingredient": "Ingrediente",
+          "product": "Produto"
+        }
       },
       "operation": {
         "label": "Operação",
@@ -458,6 +462,9 @@
     },
     "searchIngredient": {
       "title": "Ingredientes"
+    },
+    "searchProduct": {
+      "title": "Produtos"
     }
   },
   "filterColumn": {

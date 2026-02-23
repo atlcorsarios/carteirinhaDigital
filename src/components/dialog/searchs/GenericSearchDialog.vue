@@ -25,6 +25,7 @@
             :id="tableId"
             :has-actions="false"
             :select-items="selectItems"
+            :multiple-select="isMultiple"
             v-model:selected-itens="selectedItens"
             v-model:dataTable="gridConfig.modelTable"
             v-model:pagination="paginationModel"
@@ -87,6 +88,7 @@ const props = defineProps<{
   serviceFetch: any
   dialogSearchModel: ClassBaseDialog
   selectItems?: boolean
+  isMultiple?: boolean
 }>()
 
 const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] })

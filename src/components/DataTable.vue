@@ -73,6 +73,7 @@
     <v-card-text class="pa-0">
       <v-data-table-virtual
         v-model="selectedItens"
+        :strategy="multipleSelect ? 'multiple' : 'single'"
         :return-object="selectItems"
         :show-select="selectItems"
         :id="id"
@@ -174,7 +175,7 @@
   </v-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Record<string, any>">
 import BtnOpenDialog from './dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
 import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
@@ -189,22 +190,24 @@ const props = withDefaults(
     id?: string
     hasActions?: boolean
     selectItems?: boolean
+    multipleSelect?: boolean
   }>(),
   {
     id: 'id',
     hasActions: true,
     selectItems: false,
+    multipleSelect: true,
   },
 )
 
-const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true })
+const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true })
 const pagination = defineModel<TPagination>('pagination', { required: true })
-const selectedItens = defineModel<any[]>('selectedItens', { required: false, default: [{}] })
+const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] })
 
 const emits = defineEmits<{
-  (e: 'selected-item', item: any): void
+  (e: 'selected-item', item: T): void
   (e: 'toggle-chart'): void
-  (e: 'manage-record', payload: { editingMode: boolean; item?: any }): void
+  (e: 'manage-record', payload: { editingMode: boolean; item?: T }): void
   (e: 'load-more'): void
 }>()
 
@@ -232,19 +235,25 @@ const selectedHeadersKeys = ref<string[]>([])
 
 watchEffect(() => {
   if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
-    selectedHeadersKeys.value = allHeaders.value.map((h) => h.key)
+    selectedHeadersKeys.value = allHeaders.value
+      .map((h) => h.key)
+      .filter((key): key is string => key !== undefined)
   }
 })
 
 const headers = computed(() => {
-  return allHeaders.value.filter((h) => selectedHeadersKeys.value.includes(h.key))
+  return allHeaders.value.filter((h) => {
+    if (!h.key) return false
+    return selectedHeadersKeys.value.includes(h.key)
+  })
 })
 
 const headersForSlots = computed(() => {
   return headers.value.filter((h) => h.key !== 'actions')
 })
 
-function toggleHeader(key: string) {
+function toggleHeader(key?: string) {
+  if (!key) return
   const index = selectedHeadersKeys.value.indexOf(key)
 
   if (index === -1) {
@@ -254,9 +263,9 @@ function toggleHeader(key: string) {
   }
 }
 
-const clickOnTheLine = (_event: Event, { item }: any) => {
+const clickOnTheLine = (_event: Event, { item }: T) => {
   const id = item.id || item
-  const index = selectedItens.value.indexOf(item)
+  const index = selectedItens.value.indexOf(id)
   if (index > -1) {
     selectedItens.value.splice(index, 1)
   } else {
@@ -265,7 +274,7 @@ const clickOnTheLine = (_event: Event, { item }: any) => {
   emits('selected-item', item)
 }
 
-const rowProps = (data: { item: any }) => {
+const rowProps = (data: { item: T }) => {
   const item = data.item
   const isInactive = 'active' in item && item.active === false
   const isViewed = 'seen' in item && item.seen === true
@@ -279,7 +288,7 @@ const rowProps = (data: { item: any }) => {
   }
 }
 
-function getRawValue(item: any, key: string) {
+function getRawValue(item: T, key?: string) {
   if (!key || !item) return null
   return key.split('.').reduce((obj, k) => (obj || {})[k], item)
 }
@@ -292,7 +301,7 @@ function newRegistration() {
   emits('manage-record', { editingMode: false })
 }
 
-function editRegistration(item: any) {
+function editRegistration(item: T) {
   emits('manage-record', { editingMode: true, item: item })
 }
 
