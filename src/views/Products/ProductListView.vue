@@ -1,5 +1,6 @@
 <template>
   <GenericView
+    ref="genericView"
     :headers="ClassProducts.headers"
     :id-field="'idProduct'"
     :title="t('dataTable.products.title')"
@@ -19,8 +20,8 @@
       <ProductForm :product="model" @update:valid="updateValid" />
     </template>
 
-    <template #moreDetails="{ item }">
-      <ProductsMoreDetails :product="item" />
+    <template #moreDetails="{ item, close }">
+      <MoreProductDetails :product="item" @close="close" />
     </template>
   </GenericView>
 </template>
@@ -29,7 +30,7 @@
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
 import ProductForm from '@/components/forms/products/ProductForm.vue'
-import ProductsMoreDetails from './ProductsMoreDetails.vue'
+import MoreProductDetails from '@/components/MoreProductDetails.vue'
 
 // Models
 import { type IProduct } from '@/classes/models/ModelIProduct'
