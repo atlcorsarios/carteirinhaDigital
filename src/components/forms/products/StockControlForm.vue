@@ -54,6 +54,8 @@
         <InputPrice
           v-model="stockControl.price"
           :rules="[rules.required()]"
+          :label="t('forms.formStock.price.label')"
+          :hint="t('forms.formStock.price.hint')"
         />
       </v-col>
     </v-row>

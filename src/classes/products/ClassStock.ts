@@ -60,15 +60,18 @@ export class ClassStock extends BaseClass<IStock> {
       },
       measurement: {
         align: 'center',
-        width: 150,
-        maxWidth: 200,
-        minWidth: 100
+        width: 250,
+        maxWidth: 300,
+        minWidth: 200
       },
       amount: {
         align: 'end',
         width: 150,
         maxWidth: 200,
         minWidth: 100
+      },
+      actions: {
+        hidden: true
       }
     }
   }

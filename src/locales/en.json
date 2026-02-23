@@ -280,8 +280,8 @@
         }
       },
       "price": {
-        "headerTable": "Price",
-        "label": "Purchase price",
+        "headerTable": "Cost",
+        "label": "Cost",
         "hint": "Converted to: "
       }
     },

@@ -52,10 +52,10 @@ import { type IRecipe } from '@/classes/models/ModelIProduct';
 
 // Classes
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
+import { ClassRecipes } from '@/classes/products/ClassRecipes';
 
 // Vue
 import { ref, watch } from 'vue';
-import { ClassRecipes } from '@/classes/products/ClassRecipes';
 
 const loading = ref<boolean>(false)
 
