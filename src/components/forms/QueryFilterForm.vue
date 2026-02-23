@@ -82,7 +82,7 @@
           hide-details
         />
 
-        <v-add
+        <v-select
           v-else-if="getType(filter.field) === 'boolean'"
           v-model="filter.value"
           :rules="[rules.required()]"

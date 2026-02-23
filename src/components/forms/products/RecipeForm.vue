@@ -39,7 +39,10 @@
           :label="t('forms.formRecipe.preparation.label')"
           density="compact"
           variant="outlined"
+          auto-grow
           clearable
+          @focus="handleFocus"
+          @keydown.enter.prevent="handleEnter"
         />
       </v-col>
     </v-row>
@@ -58,7 +61,7 @@ import { type IRecipe } from '@/classes/models/ModelIProduct';
 // Vue
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const rules = useRules();
 const { t } = useI18n();
@@ -72,6 +75,31 @@ withDefaults(defineProps<{
 const formRef = ref<any>(null);
 const recipe = defineModel<IRecipe>('recipe', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
+
+function handleFocus() {
+  if (!recipe.value.preparation) {
+    recipe.value.preparation = '1. '
+  }
+}
+
+async function handleEnter(event: Event) {
+  const textarea = event.target as HTMLTextAreaElement
+  const start = textarea.selectionStart
+
+  const currentText = recipe.value.preparation || ''
+
+  const textBefore = currentText.substring(0, start)
+  const textAfter = currentText.substring(start)
+
+  const linesBeforeCursor = textBefore.split('\n')
+  const nextStepNumber = linesBeforeCursor.length + 1
+  const insertText = `\n${nextStepNumber}. `
+
+  recipe.value.preparation = textBefore + insertText + textAfter
+
+  await nextTick()
+  textarea.selectionStart = textarea.selectionEnd = start + insertText.length
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),
