@@ -10,7 +10,7 @@ export class ClassLogin extends BaseClass<ILogin> {
   static defaultLogin(): ILogin {
     const emailDefault = StorageUtils.get<string>('access_email', '@gmail.com', 'local')
     return {
-      email: emailDefault || '',
+      email: emailDefault || '@gmail.com',
       password: '',
     }
   }
