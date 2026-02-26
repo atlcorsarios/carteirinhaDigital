@@ -14,11 +14,12 @@
     :service-fetch="stockServices.getAllStock"
     :service-save="stockServices.saveStock"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <StockControlForm
-        ref="stockFormRef"
+        :ref="refForm"
         :stock="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
   </GenericView>
@@ -54,6 +55,7 @@ const modelStockControle = ref<IStockControl<T>>({
   measurement: classStock.model.measurement,
   price: undefined
 })
+
 const dialogStock = new ClassBaseDialog<IStock>({
   persistent: true,
   maxWidth: 800,

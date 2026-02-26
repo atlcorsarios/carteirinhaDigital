@@ -12,7 +12,7 @@
     >
       <template #prepend-inner>
         <v-icon-btn
-          icon="mdi-tag-search"
+          icon="mdi-shaker"
           icon-color="info"
           variant="plain"
           @click="handleSearchIngredients"
@@ -42,19 +42,20 @@
 </template>
 
 <script setup lang="ts">
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
-import { ref, watch } from 'vue'
-import { ClassIngredients } from '@/classes/products/ClassIngredients'
 import DialogSearchIngredients from '@/components/dialog/searchs/ingredients/DialogSearchIngredients.vue'
+import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import { ClassIngredients } from '@/classes/products/ClassIngredients'
+import { nextTick, ref, watch } from 'vue'
 
 const loading = ref<boolean>(false)
 
+const ingredient = defineModel<any>('ingredient', { required: true })
+const emit = defineEmits(['update:ingredient'])
 const props = defineProps<{
   label?: string
   hint?: string
 }>()
 
-const ingredient = defineModel<any>('ingredient', { required: true })
 const tempArray = ref<any[]>([])
 const dialogSearchIngredients = new ClassBaseDialog({
   maxWidth: 600,
@@ -70,23 +71,23 @@ function clearIngredient() {
   }
 }
 
-const emit = defineEmits(['update:modelValue'])
-
-watch(tempArray, (newVal) => {
+watch(tempArray, async (newVal) => {
   if (newVal && newVal.length > 0) {
-    ingredient.value = newVal[0]
-    emit('update:modelValue', ingredient.value)
-    dialogSearchIngredients.toggleDialog()
-  }
-})
+    if (!ingredient.value) {
+      ingredient.value = {}
+    }
 
-watch(
-  () => ingredient.value.idIngredient,
-  (newIdIngredient) => {
+    Object.assign(ingredient.value, newVal[0])
+    emit('update:ingredient', ingredient.value)
+    await nextTick()
+    tempArray.value = []
+  }
+}, { deep: true })
+
+watch(() => ingredient.value?.idIngredient, (newIdIngredient) => {
     if (!newIdIngredient) {
       clearIngredient()
     }
   },
 )
-
 </script>

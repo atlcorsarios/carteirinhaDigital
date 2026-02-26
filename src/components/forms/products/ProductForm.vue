@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12" md="5">
         <v-text-field
@@ -52,6 +52,7 @@
         </div>
       </v-col>
     </v-row>
+    <button type="submit" class="d-none"></button>
   </v-form>
 </template>
 
@@ -76,6 +77,14 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const product = defineModel<IProduct>('product', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+const emit = defineEmits(['submit']);
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),
@@ -84,4 +93,5 @@ defineExpose({
     return valid
   },
 })
+
 </script>

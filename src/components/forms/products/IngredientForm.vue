@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12">
         <v-text-field
@@ -13,7 +13,7 @@
         />
       </v-col>
 
-      <v-col cols="12" md="4">
+      <v-col cols="12" :md="createFast ? '12' : '4'">
         <InputPrice
           v-model="ingredient.price"
           :label="'forms.formIngredient.price.label'"
@@ -54,6 +54,7 @@
         :hint="t('forms.formRecipe.category.hint')"
       />
     </v-row>
+    <button type="submit" class="d-none"></button>
     <slot name="actions" />
   </v-form>
 </template>
@@ -81,6 +82,14 @@ withDefaults(
 const formRef = ref<any>(null)
 const ingredient = defineModel<IIngredient>('ingredient', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+const emit = defineEmits(['submit']);
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),

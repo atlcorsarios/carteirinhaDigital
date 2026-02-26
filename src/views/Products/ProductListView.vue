@@ -16,8 +16,13 @@
     :service-fetch="productsServices.getAllProducts"
     :service-save="productsServices.saveProduct"
   >
-    <template #form="{ model, updateValid }">
-      <ProductForm :product="model" @update:valid="updateValid" />
+    <template #form="{ model, updateValid, refForm, submitForm }">
+      <ProductForm
+        :ref="refForm"
+        :product="model"
+        @update:valid="updateValid"
+        @submit="submitForm"
+      />
     </template>
 
     <template #moreDetails="{ item, close }">
@@ -60,4 +65,5 @@ const productModelManager = {
     classProduct.updateModel(item)
   },
 }
+
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12">
+  <v-col cols="12" md="6">
     <v-number-input
       v-model="product.idProduct"
       :label="label"
@@ -12,7 +12,7 @@
     >
       <template #prepend-inner>
         <v-icon-btn
-          icon="mdi-tag-search"
+          icon="mdi-package-variant-closed"
           icon-color="info"
           variant="plain"
           @click="handleSearchProduct"
@@ -25,7 +25,7 @@
     </v-number-input>
   </v-col>
 
-  <v-col cols="12">
+  <v-col cols="12" md="6">
     <v-text-field
       :model-value="product.description"
       disabled

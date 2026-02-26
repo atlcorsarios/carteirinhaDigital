@@ -4,7 +4,7 @@
       <v-card-title class="d-flex justify-center pt-5 pb-5">
         {{ t('routes.login.title') }}
       </v-card-title>
-      <v-form ref="formRef" v-model="formIsValid">
+      <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
         <v-row dense class="d-flex justify-center">
           <v-col cols="11">
             <v-text-field
@@ -57,6 +57,15 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const loginForm = defineModel<ILogin>('login', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+
+const emit = defineEmits(['submit']);
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),

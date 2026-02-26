@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12">
         <v-text-field
@@ -46,6 +46,7 @@
         />
       </v-col>
     </v-row>
+    <button type="submit" class="d-none"></button>
     <slot name="actions" />
   </v-form>
 </template>
@@ -99,6 +100,15 @@ async function handleEnter(event: Event) {
 
   await nextTick()
   textarea.selectionStart = textarea.selectionEnd = start + insertText.length
+}
+
+const emit = defineEmits(['submit']);
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
 }
 
 defineExpose({

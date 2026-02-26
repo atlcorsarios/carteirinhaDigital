@@ -58,10 +58,11 @@
     <template v-slot:default>
       <slot
         name="form"
-        :ref-form="refForm"
+        :ref-form="(el: any) => refForm = el"
         :model="classModelManager.model"
         :is-valid="isFormValid"
         :update-valid="(val: boolean) => (isFormValid = val)"
+        :submit-form="handleSubmit"
       />
     </template>
 
@@ -82,7 +83,7 @@
         variant="text"
         color="success"
         :disabled="!isFormValid"
-        @click="submit"
+        @click="handleSubmit"
       />
     </template>
   </BaseDialog>
@@ -114,6 +115,8 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ref, watchEffect, computed } from 'vue'
 
+const selectedItens = defineModel<any[]>('selected-itens', { required: false })
+const emit = defineEmits(['saved', 'error'])
 const props = defineProps<{
   headers: any[]
   idField: string
@@ -135,9 +138,6 @@ const props = defineProps<{
   hasMoreDetails?: boolean
   selectItems?: boolean
 }>()
-
-const selectedItens = defineModel<any[]>('selected-itens', { required: false })
-const emit = defineEmits(['saved', 'error'])
 
 const route = useRoute()
 const { notify } = useSnackbar()
@@ -236,7 +236,9 @@ function resetForm() {
   }
 }
 
-async function submit() {
+async function handleSubmit() {
+  if (!isFormValid.value) return
+
   try {
     if (props.serviceSave) {
       await props.serviceSave(props.classModelManager.model)

@@ -69,7 +69,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/products',
     name: 'Products',
-    component: () => import('@/views/Products/ProductsView.vue'),
+    component: () => import('@/views/products/ProductsView.vue'),
     redirect: { name: 'ProductsList' },
     meta: {
       title: 'routes.products.title',
@@ -84,7 +84,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'list',
         name: 'ProductsList',
-        component: () => import('@/views/Products/ProductListView.vue'),
+        component: () => import('@/views/products/ProductListView.vue'),
         meta: {
           title: 'routes.products.children.list.title',
           icon: 'mdi-format-list-bulleted',
@@ -98,7 +98,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'categories',
         name: 'ProductCategories',
-        component: () => import('@/views/Products/ProductCategoriesView.vue'),
+        component: () => import('@/views/products/ProductCategoriesView.vue'),
         meta: {
           title: 'routes.products.children.categories.title',
           icon: 'mdi-tag-text-outline',
@@ -112,7 +112,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'recipes',
         name: 'ProductRecipes',
-        component: () => import('@/views/Products/ProductRecipesView.vue'),
+        component: () => import('@/views/products/ProductRecipesView.vue'),
         meta: {
           title: 'routes.products.children.recipes.title',
           icon: 'mdi-silverware-variant',
@@ -127,7 +127,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'ingredients',
         name: 'ProductIngredients',
-        component: () => import('@/views/Products/ProductIngredientsView.vue'),
+        component: () => import('@/views/products/ProductIngredientsView.vue'),
         meta: {
           title: 'routes.products.children.ingredients.title',
           icon: 'mdi-shaker',
@@ -138,7 +138,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'stocks',
         name: 'Stocks',
-        component: () => import('@/views/Products/StocksView.vue'),
+        component: () => import('@/views/products/StocksView.vue'),
         meta: {
           title: 'routes.products.children.stock.title',
           icon: 'mdi-warehouse',

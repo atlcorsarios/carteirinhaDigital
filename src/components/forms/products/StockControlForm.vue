@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12" class="pb-0">
         <v-radio-group v-model="itemType" inline hide-details color="primary">
@@ -11,12 +11,12 @@
       <InputIngredientWithSearch
         v-if="itemType === 'INGREDIENT'"
         v-model:ingredient="stockControl.item"
-        @update:ingredient="updateMeasurement"
+        @update:ingredient="updateDataChildrens"
       />
       <InputProductWithSearch
         v-else
         v-model:product="stockControl.item"
-        @update:product="updateMeasurement"
+        @update:product="updateDataChildrens"
       />
 
       <v-col cols="12" md="6">
@@ -67,6 +67,7 @@
         />
       </v-col>
     </v-row>
+    <button type="submit" class="d-none"></button>
   </v-form>
 </template>
 
@@ -81,7 +82,7 @@ import { operations, type IStockControl } from '@/classes/models/ModelIStock';
 // Vue
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import InputProductWithSearch from '../fixtures/InputProductWithSearch.vue';
 
 const rules = useRules()
@@ -92,6 +93,8 @@ const stockControl = defineModel<IStockControl<T>>('stock', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
 const itemType = ref<'INGREDIENT' | 'PRODUCT'>('INGREDIENT')
 
+const emit = defineEmits(['submit']);
+
 const optionsOperations = computed(() => {
   return operations.map((group) => ({
     title: t(`forms.formStock.operation.types.${group.toLocaleLowerCase()}`),
@@ -99,9 +102,26 @@ const optionsOperations = computed(() => {
   }))
 })
 
-function updateMeasurement(selectedItem: any) {
+watch(() => itemType.value, (newType) => {
+    if (newType) {
+      stockControl.value.item = {} as T;
+      stockControl.value.measurement = '';
+      stockControl.value.price = undefined;
+    }
+  },
+)
+
+function updateDataChildrens(selectedItem: any) {
   if (selectedItem) {
-    stockControl.value.measurement = selectedItem.measurement || '';
+    stockControl.value.measurement = selectedItem.measurement || 'UN';
+    stockControl.value.price = selectedItem.price || 0.0;
+  }
+}
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
   }
 }
 
@@ -112,5 +132,4 @@ defineExpose({
     return valid
   },
 })
-
 </script>

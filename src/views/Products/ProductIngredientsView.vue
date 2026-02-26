@@ -14,10 +14,12 @@
     :service-fetch="ingredientsServices.getAllIngredients"
     :service-save="ingredientsServices.saveIngredient"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <IngredientForm
+        :ref="refForm"
         :ingredient="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
   </GenericView>

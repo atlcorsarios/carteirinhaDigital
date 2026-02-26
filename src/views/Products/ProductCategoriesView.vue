@@ -14,10 +14,12 @@
     :service-fetch="categoriesServices.getAllCategories"
     :service-save="categoriesServices.saveCategory"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <CategoryForm
+        :ref="refForm"
         :category="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
   </GenericView>

@@ -14,11 +14,12 @@
     :service-fetch="recipesServices.getAllRecipes"
     :service-save="recipesServices.saveRecipe"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <RecipeForm
-        ref="recipeFormRef"
+        :ref="refForm"
         :recipe="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
   </GenericView>

@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12" :md="createFast ? 12 : 6">
         <v-text-field
@@ -35,6 +35,7 @@
         />
       </v-col>
     </v-row>
+    <button type="submit" class="d-none"></button>
     <slot name="actions" />
   </v-form>
 </template>
@@ -58,12 +59,21 @@ const formRef = ref<any>(null);
 const category = defineModel<ICategory>('category', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
 
+const emit = defineEmits(['submit']);
+
 const groupOptions = computed(() => {
   return validCategoriesGroups.map((group) => ({
     title: t(GROUP_TRANSLATIONS[group]),
     value: group
   }));
 });
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.reset(),
