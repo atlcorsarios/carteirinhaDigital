@@ -1,10 +1,6 @@
 import type { TDefinitionsForQueryFilter } from './models/modelComponents/ModelQueryFilter'
-import { ClassNotifications } from './ClassNotifications'
-import { ClassProducts } from './products/ClassProducts'
+import { ClassProducts } from './ClassProducts'
 import { ClassUsers } from './ClassUsers'
-import { ClassCategories } from './products/ClassCategories'
-import { ClassRecipes } from './products/ClassRecipes'
-import { ClassStock } from './products/ClassStock'
 
 export class ClassDefinitions {
   static get queryFilterUsers(): TDefinitionsForQueryFilter {
@@ -18,34 +14,6 @@ export class ClassDefinitions {
     return {
       filters: ClassProducts.filters,
       defaultFilter: ClassProducts.defaultFilterConfig,
-    }
-  }
-
-  static get queryFilterCategories(): TDefinitionsForQueryFilter {
-    return {
-      filters: ClassCategories.filters,
-      defaultFilter: ClassCategories.defaultFilterConfig
-    }
-  }
-
-  static get queryFilterRecipes(): TDefinitionsForQueryFilter {
-    return {
-      filters: ClassRecipes.filters,
-      defaultFilter: ClassRecipes.defaultFilterConfig
-    }
-  }
-
-  static get queryFilterStock(): TDefinitionsForQueryFilter {
-    return {
-      filters: ClassStock.filters,
-      defaultFilter: ClassStock.defaultFilterConfig
-    }
-  }
-
-  static get queryFilterNotifications(): TDefinitionsForQueryFilter {
-    return {
-      filters: ClassNotifications.filters,
-      defaultFilter: ClassNotifications.defaultFilterConfig,
     }
   }
 }

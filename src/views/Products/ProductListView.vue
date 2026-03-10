@@ -41,7 +41,7 @@ import MoreProductDetails from '@/components/MoreProductDetails.vue'
 import { type IProduct } from '@/classes/models/ModelIProduct'
 
 // Classes
-import { ClassProducts } from '@/classes/products/ClassProducts'
+import { ClassProducts } from '@/classes/ClassProducts'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services

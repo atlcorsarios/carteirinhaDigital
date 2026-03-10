@@ -19,7 +19,7 @@ import GenericSearchDialog from './GenericSearchDialog.vue'
 import type { IProduct } from '@/classes/models/ModelIProduct'
 
 // Classes
-import { ClassProducts } from '@/classes/products/ClassProducts'
+import { ClassProducts } from '@/classes/ClassProducts'
 import type { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services

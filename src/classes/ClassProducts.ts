@@ -1,11 +1,9 @@
-import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
-import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IProduct } from '../models/ModelIProduct'
-import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
-import { ClassCategories } from './ClassCategories'
-import { ClassRecipes } from './ClassRecipes'
-import { BaseClass } from '../subscriptions/BaseClass'
-import { ClassFormatters } from '../ClassFormatters'
+import { BaseClass } from "./subscriptions/BaseClass"
+import type { IProduct } from "./models/ModelIProduct"
+import type { IHeadersDataTable, TEntityConfig } from "./models/modelComponents/ModelHeaderTable"
+import { ClassFormatters } from "./ClassFormatters"
+import type { IFilterColumn } from "./models/ModelFilterColumns"
+import type { IQueryFilter } from "./models/modelComponents/ModelQueryFilter"
 
 export class ClassProducts extends BaseClass<IProduct> {
   constructor(data?: Partial<IProduct>) {
@@ -20,8 +18,6 @@ export class ClassProducts extends BaseClass<IProduct> {
       imageFile: null,
       price: undefined,
       active: true,
-      category: ClassCategories.defaultCategory(),
-      recipe: ClassRecipes.defaultRecipe(),
     }
   }
 
@@ -67,12 +63,6 @@ export class ClassProducts extends BaseClass<IProduct> {
         maxWidth: 350,
         minWidth: 50,
       },
-      category: {
-        hidden: true,
-      },
-      recipe: {
-        hidden: true,
-      },
     }
   }
 
@@ -92,18 +82,6 @@ export class ClassProducts extends BaseClass<IProduct> {
       'forms.formProduct',
       ClassProducts.fieldConfig,
     )
-
-    autoFilters.push({
-      key: 'category.description',
-      label: 'forms.formProduct.category.headerTable',
-      type: 'text',
-    })
-
-    autoFilters.push({
-      key: 'recipe.description',
-      label: 'forms.formProduct.recipe.headerTable',
-      type: 'text',
-    })
 
     return autoFilters;
   }

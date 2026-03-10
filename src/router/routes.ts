@@ -15,17 +15,13 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/notifications',
-    name: 'Notifications',
+    path: '/carteirinha',
+    name: 'Carteirinha',
     component: () => import('@/views/NotificationsView.vue'),
     meta: {
-      title: 'routes.notifications.title',
+      title: 'routes.carteirinha.title',
       icon: 'mdi-bell',
       hotkey: 'cmd+shift+m',
-      requiresAuth: true,
-      hasFilters: true,
-      filterConfig: ClassDefinitions.queryFilterNotifications.filters,
-      defaultFilterConfig: ClassDefinitions.queryFilterNotifications.defaultFilter
     },
   },
   {
@@ -85,18 +81,6 @@ export const routes: Array<RouteRecordRaw> = [
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterUsers.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
-        },
-      },
-      {
-        path: 'config',
-        name: 'AdminConfig',
-        component: () => import('@/views/DashboardView.vue'),
-        meta: {
-          title: 'routes.adm.children.settings.title',
-          icon: 'mdi-cog',
-          hotkey: 'cmd+alt+c',
-          requiresAuth: true,
-          authorize: ['ADMIN'],
         },
       },
     ],

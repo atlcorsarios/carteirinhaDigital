@@ -2,7 +2,6 @@ import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { i18n } from '@/plugins/i18n'
 import { ROLE_TRANSLATIONS, type TRole } from './models/ModelUser'
-import { GROUP_TRANSLATIONS, type TCategoryGroups } from './models/ModelIProduct'
 
 export class ClassFormatters {
   static formatBoolean(value: boolean, filterLabelKey?: string): string {
@@ -51,12 +50,6 @@ export class ClassFormatters {
     // @ts-ignore
     const t = (key: string) => i18n.global.t(key)
     return t(ROLE_TRANSLATIONS[role])
-  }
-
-  static formatGroupsTranslate(group: TCategoryGroups): string {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-    return t(GROUP_TRANSLATIONS[group])
   }
 
   static formatI18n(i18nKey: string = '', attribute?: string): string {
