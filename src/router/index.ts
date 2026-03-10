@@ -18,13 +18,55 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/system-info',
-    name: 'SystemInfo',
-    component: () => import('@/views/SystemInfoView.vue'),
+    path: '/carteirinha',
+    name: 'Carteirinha',
+    component: () => import('@/views/CarteirinhaView.vue'),
     meta: {
-      title: 'routes.home.title',
-      hidden: true
+      title: 'routes.carteirinha.title',
+      icon: 'mdi-card-account-details',
+      hotkey: 'cmd+shift+c',
     },
+  },
+  {
+    path: '/parceiros',
+    name: 'Parceiros',
+    component: () => import('@/views/ParceirosView.vue'),
+    meta: {
+      title: 'routes.parceiros.title',
+      icon: 'mdi-account-group',
+      hotkey: 'cmd+shift+u',
+      hasFilters: true,
+      filterConfig: ClassDefinitions.filterColumnsUsers
+    },
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/AdminView.vue'),
+    redirect: { name: 'AdminUsers' },
+    meta: {
+      title: 'routes.adm.title',
+      icon: 'mdi-shield-crown',
+      hotkey: 'cmd+shift+a',
+      requiresAuth: true,
+      authorize: ['admin'],
+    },
+    children: [
+      {
+        path: '/users',
+        name: 'Users',
+        component: () => import('@/views/UsersView.vue'),
+        meta: {
+          title: 'routes.users.title',
+          icon: 'mdi-account-group',
+          hotkey: 'cmd+shift+u',
+          hasFilters: true,
+          filterConfig: ClassDefinitions.filterColumnsUsers,
+          requiresAuth: true,
+          authorize: ['admin'],
+        },
+      },
+    ],
   },
   {
     path: '/login',
@@ -43,66 +85,6 @@ const routes: Array<RouteRecordRaw> = [
       title: 'routes.forgotPassword.title',
       hidden: true
     },
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/views/DashboardView.vue'),
-    meta: {
-      title: 'routes.dashboard.title',
-      icon: 'mdi-view-dashboard',
-      hotkey: 'cmd+shift+d',
-    },
-  },
-  {
-    path: '/users',
-    name: 'Users',
-    component: () => import('@/views/UsersView.vue'),
-    meta: {
-      title: 'routes.users.title',
-      icon: 'mdi-account-group',
-      hotkey: 'cmd+shift+u',
-      hasFilters: true,
-      filterConfig: ClassDefinitions.filterColumnsUsers
-    },
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('@/views/DashboardView.vue'),
-    redirect: { name: 'AdminUsers' },
-    meta: {
-      title: 'routes.adm.title',
-      icon: 'mdi-shield-crown',
-      hotkey: 'cmd+shift+a',
-      requiresAuth: true,
-      authorize: ['admin'],
-    },
-    children: [
-      {
-        path: 'users',
-        name: 'AdminUsers',
-        component: () => import('@/views/DashboardView.vue'),
-        meta: {
-          title: 'routes.adm.children.users.title',
-          icon: 'mdi-account-group',
-          hotkey: 'cmd+shift+u',
-          requiresAuth: true,
-          authorize: ['admin'],
-        },
-      },
-      {
-        path: 'config',
-        name: 'AdminConfig',
-        component: () => import('@/views/DashboardView.vue'),
-        meta: {
-          title: 'routes.adm.children.settings.title',
-          icon: 'mdi-cog',
-          hotkey: 'cmd+shift+c',
-          requiresAuth: true,
-        },
-      },
-    ],
   },
   {
     path: '/forbidden',
