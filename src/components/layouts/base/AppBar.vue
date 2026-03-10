@@ -6,76 +6,54 @@
     <template v-if="mdAndUp">
       <v-spacer />
       <div style="width: 100%; max-width: 480px">
-        <AppBarSearchForm :loading="loading" @search="handleSearch" />
+        <SearchForm
+          ref="refSearchForm"
+          v-model:manager="classFormQuery"
+          v-model:dialogAttributes="classDialogQueryFilter.model"
+          v-model:tab="activeTab"
+          :loading="loading"
+          :has-filters="hasFilters"
+          :title-dialog-filter="titleDialogFilter"
+          @submit="handleSearch"
+          @reset="handleReset"
+          @add-filter="handleAddFilter"
+          @open-filter="handleOpenFilter"
+        />
       </div>
       <v-spacer />
     </template>
 
-    <template v-slot:extension v-if="smAndDown">
+    <template v-slot:extension v-if="!mdAndUp">
       <div class="px-4 pb-2 w-100">
-        <AppBarSearchForm :loading="loading" @search="handleSearch" />
+        <SearchForm
+          ref="refSearchForm"
+          v-model:manager="classFormQuery"
+          v-model:dialogAttributes="classDialogQueryFilter.model"
+          v-model:tab="activeTab"
+          :loading="loading"
+          :has-filters="hasFilters"
+          :title-dialog-filter="titleDialogFilter"
+          @submit="handleSearch"
+          @reset="handleReset"
+          @add-filter="handleAddFilter"
+          @open-filter="handleOpenFilter"
+        />
       </div>
     </template>
 
     <template v-slot:append>
-      <v-badge location="bottom left" color="warning" dot class="ms-2">
-        <v-icon-btn icon="mdi-bell" v-tooltip="t('tooltips.appBar.notifications')" variant="flat" />
-      </v-badge>
-
-      <v-divider
-        vertical
-        class="mx-2 my-auto"
-        style="height: 24px"
-        :thickness="2"
-      />
-
-      <BtnOpenDialog
-        icon="mdi-license"
-        v-tooltip="t('tooltips.appBar.licence')"
-        :rotate="false"
-        @click="toggleDialogLicence"
-      />
-
-      <v-divider
-        vertical
-        class="mx-2 my-auto"
-        style="height: 24px"
-        :thickness="2"
-      />
-
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-icon-btn icon="mdi-translate" v-bind="props" v-tooltip="t('tooltips.appBar.language')" />
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in availableLocales"
-            :key="index"
-            :value="item.value"
-            @click="changeLocale(item.value)"
-            :active="locale === item.value"
-            color="primary"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-divider
-        vertical
-        class="mx-2 my-auto"
-        style="height: 24px"
-        :thickness="2"
-      />
-
-      <BtnOpenDialog
-        :color="isDark ? 'yellow-lighten-3' : 'primary'"
-        :icon="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'"
-        v-tooltip="t('tooltips.appBar.theme')"
-        :rotate="true"
-        class="me-3"
-        @click="toggleTheme"
-      />
+      <div v-if="mdAndUp" class="d-flex flex-row align-center">
+        <OptionsAppBar
+          :has-notifications="hasUnreadNotifications"
+          @open-dialog-licence="toggleDialogLicence"
+        />
+      </div>
+      <div v-else>
+        <MobileOptionsAppBar
+          :has-notifications="hasUnreadNotifications"
+          @open-dialog-licence="toggleDialogLicence"
+        />
+      </div>
     </template>
   </v-app-bar>
 
@@ -96,10 +74,7 @@
           </template>
         </v-list-item>
 
-        <v-list-item
-          :title="t('app.software')"
-          :subtitle="t('app.title')"
-        >
+        <v-list-item :title="t('app.software')" :subtitle="t('app.title')">
           <template v-slot:prepend>
             <v-icon size="x-large" color="warning" class="mr-3">mdi-license</v-icon>
           </template>
@@ -111,34 +86,127 @@
 
 <script setup lang="ts">
 import pkg from '../../../../package.json'
-import { availableLocales } from '@/locales/AvailableLocales'
-import AppBarSearchForm from '@/components/forms/AppBarSearchForm.vue'
-import BaseDialog from '@/components/dialog/BaseDialog.vue'
-import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
-import { useThemeSwitch } from '@/composables/useThemeSwitch'
-import { formattedDate } from '@/utils/formattedDate'
-import { StorageUtils } from '@/utils/StorageUtils'
-import { useI18n } from 'vue-i18n'
-import { useDisplay } from 'vuetify'
-import { ref, computed } from 'vue'
 
-const { smAndDown, mdAndUp } = useDisplay()
-const { theme, toggleTheme } = useThemeSwitch()
-const isDark = computed(() => theme.global.current.value.dark)
+// Componentes
+import OptionsAppBar from './OptionsAppBar.vue'
+import MobileOptionsAppBar from './MobileOptionsAppBar.vue'
+import SearchForm from '@/components/forms/SearchForm.vue'
+import BaseDialog from '@/components/dialog/BaseDialog.vue'
+
+// Classes
+import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
+
+// Utils
+import { formattedDate } from '@/utils/formattedDate'
+
+// Stores
+import { useNotificationsStore } from '@/stores/notificationsStore'
+
+// Composables
+import { useSnackbar } from '@/composables/useSnackbar'
+
+// Vue
+import { useDisplay, useHotkey } from 'vuetify'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+
+const { mdAndUp } = useDisplay()
 const { t, locale } = useI18n()
 
+const route = useRoute()
+const { notify } = useSnackbar()
+
+const loading = ref(false)
 const systemVersion = pkg.version
 const formattedVersionDate = computed(() => {
-  return formattedDate(new Date(__APP_BUILD_DATE__), locale.value);
+  return formattedDate(new Date(__APP_BUILD_DATE__), locale.value)
+})
+
+const notificationsStore = useNotificationsStore()
+const hasUnreadNotifications = ref(false)
+
+onMounted(async () => {
+  notificationsStore.fetchNotifications()
+  hasUnreadNotifications.value = await notificationsStore.hasUnread()
 })
 
 const emits = defineEmits(['toggle-drawer'])
 
-const loading = ref(false)
+const classFormQuery = new ClassQueryFilter()
+const classDialogQueryFilter = new ClassBaseDialog({
+  view: false,
+  maxHeight: 500,
+  maxWidth: 600,
+})
 
-function handleSearch(term: string) {
+const refSearchForm = ref<InstanceType<typeof SearchForm> | null>(null)
+const activeTab = ref('form')
+
+const hasFilters = computed(() => !!route.meta?.hasFilters)
+
+const titleDialogFilter = computed(() => {
+  const titleKey = route.meta?.title as string | undefined
+  return titleKey ? t(titleKey) : ''
+})
+
+useHotkey('ctrl+k', () => {
+  refSearchForm.value?.focusInput()
+})
+
+async function handleOpenFilter() {
+  classFormQuery.resetStaging()
+  await nextTick()
+  classDialogQueryFilter.toggleDialog()
+}
+
+async function handleAddFilter() {
+  const validFilter = classFormQuery.addFilter()
+  if (validFilter) {
+    notify('messages.components.queryFilter.addSuccess', 'info')
+    classFormQuery.resetStaging()
+    await nextTick()
+    refSearchForm.value?.reset()
+  } else {
+    const errorMessage = t('messages.components.queryFilter.alertDuplicate')
+    notify(errorMessage, 'warning')
+  }
+}
+
+async function handleReset() {
+  classFormQuery.resetStaging()
+  if (activeTab.value === 'form') {
+    await nextTick()
+    refSearchForm.value?.reset()
+  } else {
+    classFormQuery.reset()
+    activeTab.value = 'form'
+  }
+}
+
+function handleSearch() {
+  const stagingValue = classFormQuery.stagingModel.value
+  const hasTextQuery = stagingValue && stagingValue.trim() !== ''
+  const hasFilterList = classFormQuery.model.length > 0
+
+  if (!hasTextQuery && !hasFilterList) {
+    return
+  }
+
   loading.value = true
+
+  if (classDialogQueryFilter.model.view) {
+    classDialogQueryFilter.toggleDialog()
+  }
+
+  const filtrosParaEnviar = [...classFormQuery.model]
+  if (hasTextQuery) {
+    filtrosParaEnviar.push(classFormQuery.stagingModel)
+  }
+
+  console.log('Buscando com:', filtrosParaEnviar)
+
   setTimeout(() => (loading.value = false), 2000)
 }
 
@@ -151,12 +219,6 @@ const classDialogLicence = new ClassBaseDialog({
 function toggleDialogLicence() {
   classDialogLicence.toggleDialog()
 }
-
-function changeLocale(lang: string) {
-  locale.value = lang;
-  StorageUtils.set('user_locale', lang, 'local');
-}
-
 </script>
 
 <style scoped>

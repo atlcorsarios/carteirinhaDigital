@@ -1,109 +1,107 @@
-import type { IHeadersDataTable } from "./models/modelComponents/ModelHeaderTable";
-import type { IUser } from "@/classes/models/ModelUser";
-import { reactive } from "vue";
-import { i18n } from '@/plugins/i18n';
+import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
+import type { IFilterColumn } from './models/ModelFilterColumns'
+import type { IUser } from '@/classes/models/ModelUser'
+import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
+import { BaseClass } from './subscriptions/BaseClass'
+import { ClassFormatters } from './ClassFormatters'
 
-export class ClassUsers {
-  private user: IUser
-
+export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
-    this.user = this.getDefault(data);
+    super(data)
   }
 
-  get model(): IUser {
-    return this.user
+  static defaultUser(): IUser {
+    return {
+      idUser: 0,
+      username: '',
+      email: '@gmail.com',
+      image: '',
+      role: 'USER',
+      phoneNumber: '',
+      receiveNotifications: false,
+      active: true,
+    }
   }
 
-  private getDefault(data?: Partial<IUser>): IUser {
-    return reactive({
-      idUser: data?.idUser,
-      username: data?.username || '',
-      email: data?.email || '',
-      role: data?.role || '',
-      phoneNumber: data?.phoneNumber || '',
-      receiveNotifications: data?.receiveNotifications || false,
-      active: data?.active || true
-    }) as IUser;
+  protected getDefault(data: Partial<IUser> = {}): IUser {
+    return this.createWithDefaults(data, ClassUsers.defaultUser())
   }
 
-  updateModel(data: IUser) {
-    Object.assign(this.user, data);
-  }
-
-  reset() {
-    const defaults = this.getDefault();
-
-    Object.keys(this.user).forEach(key => {
-      // @ts-ignore
-      delete this.user[key];
-    });
-
-    Object.assign(this.user, defaults);
-  }
-
-  static formatBoolean(value?: boolean): string {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-
-    return value ? t('messages.yes') : t('messages.no')
-  }
-
-  static getHeaders(): IHeadersDataTable[] {
-    // @ts-ignore
-    const t = (key: string) => i18n.global.t(key)
-
-    return [
-      {
-        title: t('dataTable.users.headers.id'),
-        align: 'start',
-        key: 'idUser',
-        width: 50
+  static get fieldConfig(): TEntityConfig<IUser> {
+    return {
+      idUser: {
+        width: 50,
+        excludeFromFilter: true,
+        excludeFromChart: true
       },
-      {
-        title: t('dataTable.users.headers.username'),
-        align: 'start',
-        key: 'username',
-        width: 250
+      username: {
+        maxWidth: 250,
+        excludeFromChart: true
       },
-      {
-        title: t('dataTable.users.headers.email'),
-        align: 'start',
-        key: 'email',
-        width: 200
+      email: {
+        maxWidth: 200,
+        excludeFromChart: true
       },
-      {
-        title: t('dataTable.users.headers.role'),
-        align: 'start',
-        key: 'role',
-        width: 'auto',
-        maxWidth: 100
+      image: {
+        hidden: true
       },
-      {
-        title: t('dataTable.users.headers.phoneNumber'),
+      role: {
+        chartFormatter: ClassFormatters.formatRolesTranslate,
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.role),
+        maxWidth: 100,
+        filterType: 'select',
+        selectOptions: [
+          { title: 'Admin', value: 'ADMIN' },
+          { title: 'User', value: 'USER' },
+        ],
+      },
+      phoneNumber: {
         align: 'end',
-        key: 'phoneNumber',
-        width: 'auto',
-        maxWidth: 200
+        maxWidth: 200,
+        excludeFromChart: true
       },
-      {
-        title: t('dataTable.users.headers.receiveNotifications'),
-        key: 'receiveNotifications',
+      receiveNotifications: {
         align: 'center',
-        value: (item: IUser) => ClassUsers.formatBoolean(item.receiveNotifications),
-        chartFormatter: ClassUsers.formatBoolean
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.receiveNotifications),
+        excludeFromFilter: true,
+        width: 50,
+        cellClass: (value: boolean) => {
+          if (value === true) return 'text-success font-weight-bold'
+          else return 'text-error font-weight-bold'
+        }
       },
-      {
-        title: t('dataTable.users.headers.active'),
-        key: 'active',
+      active: {
         align: 'center',
-        value: (item: IUser) => ClassUsers.formatBoolean(item.active),
-        chartFormatter: ClassUsers.formatBoolean
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.active),
+        width: 50,
       },
-      {
-        title: t('dataTable.headersDefault.actions'),
-        key: 'actions',
-        align: 'center'
-      },
-    ];
+    }
+  }
+
+  static get headers(): IHeadersDataTable[] {
+    const defaultModel = new ClassUsers().getDefault()
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formUser',
+      ClassUsers.fieldConfig,
+    )
+  }
+
+  static get filters(): IFilterColumn[] {
+    const defaultModel = new ClassUsers().getDefault()
+    return BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formUser',
+      ClassUsers.fieldConfig,
+    )
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'username',
+      condition: 'contains'
+    }
   }
 }

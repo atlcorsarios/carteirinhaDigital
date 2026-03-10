@@ -1,41 +1,39 @@
-import { reactive } from "vue";
-import type { IModelBaseDialog } from "./models/modelComponents/ModelBaseDialog"
+import type { IModelBaseDialog } from './models/modelComponents/ModelBaseDialog'
+import { BaseClass } from './subscriptions/BaseClass'
 
-export class ClassBaseDialog<T = any> {
-  private modelBaseDialog: IModelBaseDialog<T>
-
+export class ClassBaseDialog<T = any> extends BaseClass<IModelBaseDialog<T>> {
   constructor(data?: Partial<IModelBaseDialog<T>>) {
-    this.modelBaseDialog = this.getDefault(data)
+    super(data)
   }
 
-  get model() {
-    return this.modelBaseDialog;
+  static defaultDialog<T>(): IModelBaseDialog<T> {
+    return {
+      view: false,
+      persistent: false,
+      maxWidth: 400,
+      maxHeight: 400,
+      formEditingMode: false,
+      itemEdition: null,
+    }
   }
 
-  private getDefault(data?: Partial<IModelBaseDialog<T>>) {
-    return reactive({
-      view: data?.view ?? false,
-      persistente: data?.persistent ?? false,
-      maxWidth: data?.maxWidth || 400,
-      maxHeight: data?.maxHeight || 400,
-      formModoEdicao: data?.formEditingMode ?? false,
-      itemEdicao: null
-    }) as IModelBaseDialog<T>;
+  protected getDefault(data: Partial<IModelBaseDialog<T>> = {}): IModelBaseDialog<T> {
+    return this.createWithDefaults(data, ClassBaseDialog.defaultDialog<T>())
   }
 
-  abrirNovo() {
-    this.modelBaseDialog.formEditingMode = false;
-    this.modelBaseDialog.itemEdition = null;
-    this.modelBaseDialog.view = true;
+  openNew(data?: Partial<T>) {
+    this.model.formEditingMode = false
+    this.model.itemEdition = (data as T) || null
+    this.model.view = true
   }
 
-  abrirEdicao(item: T) {
-    this.modelBaseDialog.formEditingMode = true;
-    this.modelBaseDialog.itemEdition = { ...item };
-    this.modelBaseDialog.view = true;
+  openEditingMode(item: T) {
+    this.model.formEditingMode = true
+    this.model.itemEdition = { ...item }
+    this.model.view = true
   }
 
   toggleDialog() {
-    this.modelBaseDialog.view = !this.modelBaseDialog.view
+    this.model.view = !this.model.view
   }
 }

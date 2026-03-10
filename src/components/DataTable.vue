@@ -14,11 +14,20 @@
           </template>
 
           <v-card min-width="250" max-height="400" class="overflow-y-auto">
-            <v-list density="compact" select-strategy="classic" v-model:selected="selectedHeadersKeys">
+            <v-list
+              density="compact"
+              select-strategy="classic"
+              v-model:selected="selectedHeadersKeys"
+            >
               <v-list-item v-for="header in allHeaders" :key="header.key" :value="header.key">
                 <template v-slot:prepend="{ isActive }">
                   <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" density="compact" hide-details />
+                    <v-checkbox-btn
+                      :model-value="isActive"
+                      density="compact"
+                      hide-details
+                      @click.stop="toggleHeader(header.key)"
+                    />
                   </v-list-item-action>
                 </template>
                 <v-list-item-title class="text-caption">
@@ -29,40 +38,32 @@
           </v-card>
         </v-menu>
 
-        <v-divider
-          vertical
-          class="mx-2 my-auto"
-          style="height: 24px"
-          :thickness="3"
-        />
+        <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
 
         <div class="text-h6 font-weight-bold text-high-emphasis text-truncate">
           {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
         </div>
 
-        <slot name="toolbar-actions">
+        <slot name="actions">
           <v-spacer />
 
-          <BtnOpenDialog
-            icon="mdi-plus-circle"
-            v-tooltip="t('tooltips.forms.create')"
-            :rotate="true"
-            @click="novoRegistro"
-          />
+          <template v-if="hasActions">
+            <BtnOpenDialog
+              icon="mdi-plus-circle"
+              v-tooltip="t('tooltips.forms.create')"
+              :rotate="true"
+              @click="newRegistration"
+            />
 
-          <v-divider
-            vertical
-            class="mx-2 my-auto"
-            style="height: 24px"
-            :thickness="3"
-          />
+            <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
 
-          <BtnOpenDialog
-            icon="mdi-chart-donut-variant"
-            v-tooltip="t('tooltips.components.dataTable.graph')"
-            :rotate="true"
-            @click="toggleChart"
-          />
+            <BtnOpenDialog
+              icon="mdi-chart-donut-variant"
+              v-tooltip="t('tooltips.components.dataTable.graph')"
+              :rotate="true"
+              @click="toggleChart"
+            />
+          </template>
         </slot>
       </div>
     </v-card-title>
@@ -71,32 +72,60 @@
 
     <v-card-text class="pa-0">
       <v-data-table-virtual
-        v-if="dataTable.model.itemsTable && dataTable.model.itemsTable.length > 0"
-        :headers="filteredHeaders"
+        v-model="selectedItens"
+        :strategy="multipleSelect ? 'multiple' : 'single'"
+        :return-object="selectItems"
+        :show-select="selectItems"
+        :id="id"
+        :headers="headers"
         :items="dataTable.model.itemsTable"
         :height="dataTable.model.heightTable || 'auto'"
         :max-height="dataTable.model.maxHeightTable || 500"
         :loading="dataTable.model.loadingDataTable"
+        :mobile-breakpoint="0"
+        :row-props="rowProps"
         fixed-header
         density="compact"
+        striped="even"
         hover
-        :row-props="propsDaLinha"
-        @click:row="aoClicarNaLinha"
-        :mobile-breakpoint="0"
+        @click:row="clickOnTheLine"
       >
-        <template v-slot:loading>
-          <v-skeleton-loader type="table-row@6"></v-skeleton-loader>
+        <template
+          v-for="header in headersForSlots"
+          :key="header.key"
+          v-slot:[`item.${header.key}`]="{ item, value }"
+        >
+          <div
+            class="d-flex align-center h-100 w-100"
+            :class="[
+              header.cellClass ? header.cellClass(getRawValue(item, header.key), item) : '',
+              `justify-${header.align || 'start'}`,
+            ]"
+          >
+            <v-chip
+              v-if="header.dataType === 'boolean'"
+              :color="getRawValue(item, header.key) ? 'success' : 'error'"
+              variant="outlined"
+              size="small"
+              class="font-weight-bold"
+            >
+              {{ header.value ? header.value(item) : value ? t('messages.yes') : t('messages.no') }}
+            </v-chip>
+
+            <span v-else :class="{ 'text-truncate': !!header.maxWidth }">
+              {{ header.value ? header.value(item) : value }}
+            </span>
+          </div>
         </template>
 
-        <template #item.actions="{ item }">
+        <template v-if="hasActions" #item.actions="{ item }">
           <div class="d-flex justify-center gap-2">
-
             <v-icon-btn
               icon="mdi-pencil"
               v-tooltip="t('tooltips.forms.edit')"
               variant="plain"
               color="primary"
-              @click="editarRegistro(item)"
+              @click="editRegistration(item)"
             />
 
             <v-icon-btn
@@ -107,79 +136,229 @@
             />
           </div>
         </template>
-      </v-data-table-virtual>
 
-      <div v-else class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis">
-        <v-icon icon="mdi-database-off" size="48" class="mb-2"></v-icon>
-        <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
-      </div>
+        <template v-slot:loading>
+          <v-skeleton-loader type="table-row@5" />
+        </template>
+
+        <template v-slot:no-data>
+          <div
+            v-if="!dataTable.model.loadingDataTable"
+            class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis"
+          >
+            <v-icon icon="mdi-database-off" size="48" class="mb-2" />
+            <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
+          </div>
+        </template>
+
+        <template v-slot:bottom>
+          <v-divider v-intersect="onIntersect" />
+          <div class="d-flex align-center justify-space-between pa-2 text-caption">
+            <div class="d-flex align-center" style="width: 150px">
+              <v-select
+                v-model="pagination.limit"
+                @update:model-value="updateLimit"
+                :items="[10, 20, 50, 100]"
+                variant="outlined"
+                density="compact"
+                hide-details
+                class="text-caption"
+              />
+            </div>
+            <div class="text-no-wrap ml-4">
+              {{ dataTable.model.itemsTable.length }} / {{ pagination.total }}
+            </div>
+          </div>
+        </template>
+      </v-data-table-virtual>
     </v-card-text>
   </v-card>
 </template>
 
-<script setup lang="ts">
-import type { IModelValueDataTable } from "@/classes/models/modelComponents/ModelGridDataChart";
-import BtnOpenDialog from "./dialog/BtnOpenDialog.vue";
-import { ref, computed, watchEffect } from "vue";
-import { useI18n } from "vue-i18n";
+<script setup lang="ts" generic="T extends Record<string, any>">
+import BtnOpenDialog from './dialog/BtnOpenDialog.vue'
+import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
+import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
+import { StorageUtils } from '@/utils/StorageUtils'
+import { useI18n } from 'vue-i18n'
+import { ref, computed, watchEffect, watch } from 'vue'
 
 const { t } = useI18n()
-const dataTable = defineModel<IModelValueDataTable<any>>('dataTable', { required: true });
+
+const props = withDefaults(
+  defineProps<{
+    id?: string
+    hasActions?: boolean
+    selectItems?: boolean
+    multipleSelect?: boolean
+  }>(),
+  {
+    id: 'id',
+    hasActions: true,
+    selectItems: false,
+    multipleSelect: true,
+  },
+)
+
+const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true })
+const pagination = defineModel<TPagination>('pagination', { required: true })
+const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] })
 
 const emits = defineEmits<{
-  (e: 'item-selecionado', item: any[]): void;
-  (e: 'toggle-chart'): void;
-  (e: 'gerenciar-registro', payload: { modoEdicao: boolean, item?: any }): void;
-}>();
+  (e: 'selected-item', item: T): void
+  (e: 'toggle-chart'): void
+  (e: 'manage-record', payload: { editingMode: boolean; item?: T }): void
+  (e: 'load-more'): void
+}>()
 
 const allHeaders = computed(() => {
-  return dataTable.value.model.headersTable.map((header) => ({
+  const headersAuto = dataTable.value.model.headersTable.map((header) => ({
     ...header,
     title: header.title,
     align: header.align || 'start',
     key: header.key,
-    sortable: header.sortable ?? true
-  }));
-});
+    sortable: header.sortable ?? true,
+  }))
 
-const selectedHeadersKeys = ref<string[]>([]);
+  const headers = headersAuto.filter((header) => {
+    if (!props.hasActions) {
+      return header.key != 'actions'
+    } else {
+      return header
+    }
+  })
+
+  return headers
+})
+
+const selectedHeadersKeys = ref<string[]>([])
 
 watchEffect(() => {
   if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
-    selectedHeadersKeys.value = allHeaders.value.map(h => h.key);
+    selectedHeadersKeys.value = allHeaders.value
+      .map((h) => h.key)
+      .filter((key): key is string => key !== undefined)
   }
-});
+})
 
-const filteredHeaders = computed(() => {
-  return allHeaders.value.filter(h => selectedHeadersKeys.value.includes(h.key));
-});
+const headers = computed(() => {
+  return allHeaders.value.filter((h) => {
+    if (!h.key) return false
+    return selectedHeadersKeys.value.includes(h.key)
+  })
+})
 
-const itemSelecionadoId = ref<any>(null);
+const headersForSlots = computed(() => {
+  return headers.value.filter((h) => h.key !== 'actions')
+})
 
-const aoClicarNaLinha = (_event: Event, { item }: any) => {
-  const id = item.id || item;
+function toggleHeader(key?: string) {
+  if (!key) return
+  const index = selectedHeadersKeys.value.indexOf(key)
 
-  itemSelecionadoId.value = id;
-  emits('item-selecionado', item);
+  if (index === -1) {
+    selectedHeadersKeys.value.push(key)
+  } else {
+    selectedHeadersKeys.value.splice(index, 1)
+  }
 }
 
-const propsDaLinha = ({ item }: any) => {
-  const id = item.id || item;
-  if (id && id === itemSelecionadoId.value) {
-    return { class: 'bg-primary-lighten-4 cursor-pointer font-weight-medium' };
+const clickOnTheLine = (_event: Event, { item }: T) => {
+  const id = item.id || item
+  const index = selectedItens.value.indexOf(id)
+  if (index > -1) {
+    selectedItens.value.splice(index, 1)
+  } else {
+    selectedItens.value.push(item)
   }
-  return { class: 'cursor-pointer' };
-};
+  emits('selected-item', item)
+}
+
+const rowProps = (data: { item: T }) => {
+  const item = data.item
+  const isInactive = 'active' in item && item.active === false
+  const isViewed = 'seen' in item && item.seen === true
+
+  return {
+    class: {
+      'row-inactive': isInactive,
+      'row-viewed': isViewed,
+      'cursor-pointer': true,
+    },
+  }
+}
+
+function getRawValue(item: T, key?: string) {
+  if (!key || !item) return null
+  return key.split('.').reduce((obj, k) => (obj || {})[k], item)
+}
 
 function toggleChart() {
-  emits('toggle-chart');
+  emits('toggle-chart')
 }
 
-function novoRegistro() {
-  emits('gerenciar-registro', { modoEdicao: false });
+function newRegistration() {
+  emits('manage-record', { editingMode: false })
 }
 
-function editarRegistro(item: any) {
-  emits('gerenciar-registro', { modoEdicao: true, item: item });
+function editRegistration(item: T) {
+  emits('manage-record', { editingMode: true, item: item })
 }
+
+function onIntersect(isIntersecting: boolean) {
+  if (isIntersecting && !pagination.value.isFinished) {
+    emits('load-more')
+  }
+}
+
+function updateLimit(newLimit: number) {
+  pagination.value = {
+    ...pagination.value,
+    limit: newLimit,
+  }
+}
+
+watch(
+  () => pagination.value.limit,
+  (newLimit) => {
+    if (newLimit) {
+      StorageUtils.set('limit_preference', pagination.value.limit, 'local')
+    }
+  },
+)
 </script>
+
+<style scoped>
+:deep(.v-field__input) {
+  font-size: 0.875rem;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: 32px;
+}
+
+:deep(.row-inactive) {
+  opacity: 0.3;
+  background-color: rgb(var(--v-theme-surface-variant), 0.1);
+  transition: opacity 0.2s;
+}
+
+:deep(.row-inactive:hover) {
+  opacity: 0.85;
+}
+
+:deep(.row-viewed) {
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border: 1px solid rgb(var(--v-theme-success), 0.4);
+  border-radius: 12px;
+  outline: 1px solid rgb(var(--v-theme-success), 0.4);
+  outline-offset: -1px;
+  border-collapse: separate;
+}
+
+:deep(.row-viewed:hover) {
+  opacity: 1;
+  outline-color: rgba(76, 175, 80, 0.9);
+}
+</style>
