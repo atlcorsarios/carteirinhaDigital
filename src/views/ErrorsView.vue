@@ -1,55 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-
-const props = defineProps<{
-  type?: '403' | '404' | '500';
-}>();
-
-const router = useRouter();
-const route = useRoute();
-
-const errorType = computed(() => props.type || (route.name === 'AcessoNegado' ? '403' : '404'));
-
-const errorContent = computed(() => {
-  switch (errorType.value) {
-    case '403':
-      return {
-        code: '403',
-        title: 'Acesso Negado',
-        message: 'Você não tem permissão para acessar esta área. Se acredita que isso é um erro, contate o administrador.',
-        icon: 'mdi-shield-lock-outline',
-        color: 'error'
-      };
-    case '500':
-      return {
-        code: '500',
-        title: 'Erro Interno',
-        message: 'Algo deu errado nos nossos servidores. Tente novamente mais tarde.',
-        icon: 'mdi-server-network-off',
-        color: 'warning'
-      };
-    case '404':
-    default:
-      return {
-        code: '404',
-        title: 'Página não encontrada',
-        message: 'Não encontramos a página que você está procurando.',
-        icon: 'mdi-map-marker-question-outline',
-        color: 'info'
-      };
-  }
-});
-
-function goHome() {
-  router.push('/');
-}
-
-function goBack() {
-  router.go(-1);
-}
-</script>
-
 <template>
   <v-container class="fill-height d-flex align-center justify-center text-center">
     <v-sheet
@@ -100,6 +48,58 @@ function goBack() {
     </v-sheet>
   </v-container>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
+const props = defineProps<{
+  type?: '403' | '404' | '500';
+}>();
+
+const router = useRouter();
+const route = useRoute();
+
+const errorType = computed(() => props.type || (route.name === 'Forbidden' ? '403' : '404'));
+
+const errorContent = computed(() => {
+  switch (errorType.value) {
+    case '403':
+      return {
+        code: '403',
+        title: 'Acesso Negado',
+        message: 'Você não tem permissão para acessar esta área. Se acredita que isso é um erro, contate o administrador.',
+        icon: 'mdi-shield-lock-outline',
+        color: 'error'
+      };
+    case '500':
+      return {
+        code: '500',
+        title: 'Erro Interno',
+        message: 'Algo deu errado nos nossos servidores. Tente novamente mais tarde.',
+        icon: 'mdi-server-network-off',
+        color: 'warning'
+      };
+    case '404':
+    default:
+      return {
+        code: '404',
+        title: 'Página não encontrada',
+        message: 'Não encontramos a página que você está procurando.',
+        icon: 'mdi-map-marker-question-outline',
+        color: 'info'
+      };
+  }
+});
+
+function goHome() {
+  router.push('/');
+}
+
+function goBack() {
+  router.go(-1);
+}
+</script>
 
 <style scoped>
 .animate-bounce {

@@ -1,13 +1,5 @@
 <template>
-  <v-fab
-    key="absolute"
-    absolute
-    app
-    :color="open ? '' : 'primary'"
-    location="top left"
-    size="large"
-    icon
-  >
+  <v-fab app absolute key="absolute" :color="open ? '' : 'primary'" location="top left" icon>
     <v-icon>{{ open ? 'mdi-close' : 'mdi-cog' }}</v-icon>
     <v-speed-dial
       v-model="open"
@@ -52,11 +44,20 @@
 
       <div key="3">
         <BtnOpenDialog
-          color="primary"
+          color="warning"
           icon="mdi-information"
           v-tooltip="t('tooltips.appBar.info')"
           :rotate="true"
           @click="redirectToInfoSystem"
+        />
+      </div>
+
+      <div key="4">
+        <v-icon-btn
+          color="success"
+          icon="mdi-arrow-left-bottom"
+          v-tooltip="t('tooltips.appBar.back')"
+          @click="goBack"
         />
       </div>
     </v-speed-dial>
@@ -64,12 +65,12 @@
 </template>
 
 <script setup lang="ts">
-import { availableLocales } from '@/locales/AvailableLocales'
-import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue';
-import { useThemeSwitch } from '@/composables/useThemeSwitch';
-import { StorageUtils } from '@/utils/StorageUtils';
-import router from '@/router';
-import { useI18n } from 'vue-i18n';
+import { availableLocales } from '@/locales/definitionsLocales'
+import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
+import { useThemeSwitch } from '@/composables/useThemeSwitch'
+import { StorageUtils } from '@/utils/StorageUtils'
+import router from '@/router'
+import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
 const { theme, toggleTheme } = useThemeSwitch()
@@ -80,12 +81,16 @@ const isDark = computed(() => theme.global.current.value.dark)
 
 function changeLocale(lang: string) {
   locale.value = lang
-  StorageUtils.set('user_locale', lang, 'local');
+  StorageUtils.set('user_locale', lang, 'local')
 }
 
 function redirectToInfoSystem() {
   router.push({
-    name: 'SystemInfo'
-  });
+    name: 'SystemInfo',
+  })
+}
+
+function goBack() {
+  router.go(-1)
 }
 </script>

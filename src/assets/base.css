@@ -126,6 +126,12 @@ body {
   transform: translateX(0);
 }
 
+.sticky-title {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .sticky-actions {
   position: sticky;
   bottom: 0;

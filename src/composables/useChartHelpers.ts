@@ -1,38 +1,34 @@
 import type { ValueDataChart } from "@/classes/models/modelComponents/ModelGridDataChart";
-import { stringToColor } from "@/utils/generateColors";
 
 export function useChartHelpers(
   items: any[],
-  campoAgrupamento: string,
-  chartAgregacao: 'sum' | 'count' = 'count'
+  groupingField: string,
+  chartAggregation: 'sum' | 'count' = 'count',
+  stringToColor: (str: string) => string,
+  formatter?: (val: any) => string
 ): ValueDataChart[] {
-  if (!items || items.length === 0) {
-    return [];
-  }
+  if (!items || items.length === 0) return [];
 
-  const agrupado: Record<string, number> = {};
+  const grouped: Record<string, number> = {};
 
   items.forEach(item => {
-    const chave = String(item[campoAgrupamento]);
-
-    let valorInicial = 1;
-
-    if (chartAgregacao === 'sum') {
-        valorInicial = Number(item[campoAgrupamento]) || 0;
-    }
-
-    if (!agrupado[chave]) {
-      agrupado[chave] = 0;
-    }
-
-    agrupado[chave] += valorInicial;
+    const originalValue = groupingField.split('.').reduce((obj, key) => obj?.[key], item);
+    const key = String(originalValue);
+    let value = chartAggregation === 'sum' ? (Number(originalValue) || 0) : 1;
+    grouped[key] = (grouped[key] || 0) + value;
   });
 
-  return Object.keys(agrupado).map((key, index) => ({
-    key: key,
-    id: index,
-    title: key,
-    value: agrupado[key],
-    color: stringToColor(key)
-  }));
+  return Object.keys(grouped).map((key, index) => {
+    let valueToFormat: any = key;
+    if (key === 'true') valueToFormat = true;
+    if (key === 'false') valueToFormat = false;
+
+    return {
+      key: key,
+      id: index,
+      title: formatter ? formatter(valueToFormat) : key,
+      value: grouped[key],
+      color: stringToColor(key)
+    };
+  });
 }

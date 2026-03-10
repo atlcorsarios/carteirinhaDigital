@@ -1,5 +1,13 @@
 export interface IHeaderPaginatorModel<T> {
   limit: number
   offset: number
-  items?: Array<T>
+  total?: number
+  items: Array<T>
+}
+
+export type TPagination = {
+  limit: number,
+  offset: number,
+  total: number,
+  isFinished: boolean
 }

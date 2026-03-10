@@ -2,12 +2,8 @@ import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
+import * as labsComponents from 'vuetify/labs/components'
 import * as directives from 'vuetify/directives'
-import { VDateInput } from 'vuetify/labs/VDateInput'
-import { VHotkey } from 'vuetify/labs/VHotkey'
-import { VIconBtn } from 'vuetify/labs/VIconBtn'
-import { VPie } from 'vuetify/labs/VPie'
-import { VMaskInput } from 'vuetify/labs/VMaskInput'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
 import { useI18n } from 'vue-i18n'
@@ -33,11 +29,7 @@ export default createVuetify({
   },
   components: {
     ...components,
-    VDateInput,
-    VHotkey,
-    VIconBtn,
-    VPie,
-    VMaskInput
+    ...labsComponents
   },
   directives,
   icons: {

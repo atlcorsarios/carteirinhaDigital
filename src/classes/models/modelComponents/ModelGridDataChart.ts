@@ -8,11 +8,6 @@ export type ValueDataChart = {
   pattern?: string
 }
 
-export interface IModelValueDataChart {
-  optionsFilterSelectData: string[]
-  model: ValueDataChart[]
-}
-
 export interface IPropsDataTable<T> {
   hiddenChart: boolean
   titleTable?: string
@@ -23,6 +18,12 @@ export interface IPropsDataTable<T> {
   headersTable: IHeadersDataTable[]
   itemsTable: Array<T>
   loadingDataTable?: boolean
+  
+}
+
+export interface IModelValueDataChart {
+  optionsFilterSelectData: string[]
+  model: ValueDataChart[]
 }
 
 export interface IModelValueDataTable<T> {

@@ -64,21 +64,23 @@
 </template>
 
 <script setup lang="ts">
-import InputUpperCase from '@/components/InputUpperCase.vue'; // Componente visual do input upper case
-import { usersServices } from '@/services/usersService'
+import { useSnackbar } from '@/composables/useSnackbar'
+import { usersServices } from '@/services/resources/usersService'
 import { useSnackbarStore } from '@/stores/SnackbarStore'
 import { rules } from '@/utils/rules'
 import { ref } from 'vue'
+
+const { notify } = useSnackbar()
 
 const formRef = ref()
 const formIsValid = ref(false)
 const showPassword1 = ref(false)
 const showPassword2 = ref(false)
-const emailDefalt = window.env?.VITE_DOMAIN_EMAIL || import.meta.env.VITE_DOMAIN_EMAIL;
+
 const newUser = ref(
   {
     nome: '',
-    email: emailDefalt,
+    email: '',
     senha: '',
     confirmarSenha: ''
   }
@@ -93,12 +95,12 @@ async function solicitarAcesso() {
     useSnackbarStore().showSnackbar('Conta registrada, aguarde a liberação de um administrador', 'success')
     newUser.value = {
       nome: '',
-      email: emailDefalt,
+      email: '',
       senha: '',
       confirmarSenha: ''
     }
   } catch (error) {
-    useSnackbarStore().showSnackbar(error, 'red')
+    notify(`${error}`, 'error')
     throw error
   } finally {
     loading.value = false

@@ -9,94 +9,26 @@
       <v-card-text>
         <v-window v-model="step">
           <v-window-item :value="1">
-            <div class="text-body-1 text-medium-emphasis text-center mb-6">
-              {{ t('forgotPassword.stepEmail.instruction') }}
-            </div>
-
-            <v-form ref="formRef" @submit.prevent="handleSendCode">
-              <v-text-field
-                v-model="forgotForm.email"
-                :rules="[rules.required(), rules.email()]"
-                :label="t('forgotPassword.stepEmail.labelEmail')"
-                :placeholder="t('forgotPassword.stepEmail.placeholderEmail')"
-                prepend-inner-icon="mdi-email-outline"
-                variant="outlined"
-                density="comfortable"
-                class="mb-2"
-                :disabled="loading"
-              />
-
-              <v-btn
-                block
-                color="primary"
-                size="large"
-                type="submit"
-                :loading="loading"
-                class="mt-4"
-              >
-                {{ t('forgotPassword.stepEmail.btnSend') }}
-              </v-btn>
-            </v-form>
+            <SendOtpCode
+              v-model:email="forgotForm.email"
+              :loading="loading"
+              @success="handleSendCode"
+            />
           </v-window-item>
 
           <v-window-item :value="2">
-            <div class="text-body-2 text-center mb-6">
-              {{ t('forgotPassword.stepVerify.instruction') }}<br>
-              <strong>{{ forgotForm }}</strong>
-            </div>
-
-            <v-sheet color="transparent" class="mb-6">
-              <v-otp-input
-                v-model="otp"
-                type="number"
-                length="6"
-                variant="outlined"
-                color="primary"
-                :disabled="loading"
-                @finish="handleVerifyCode"
-              ></v-otp-input>
-            </v-sheet>
-
-            <div class="text-center text-caption mb-6">
-              <div v-if="timeLeft > 0">
-                {{ t('forgotPassword.stepVerify.expiresIn') }}
-                <span class="font-weight-bold text-error">{{ formattedTime }}</span>
-              </div>
-              <div v-else class="d-flex flex-column align-center gap-2">
-                <span class="text-grey">{{ t('forgotPassword.stepVerify.expired') }}</span>
-                <v-btn
-                  variant="text"
-                  color="secondary"
-                  size="small"
-                  :loading="loading"
-                  @click="resendCode"
-                >
-                  {{ t('forgotPassword.stepVerify.btnResend') }}
-                </v-btn>
-              </div>
-            </div>
-
-            <v-btn
-              block
-              color="primary"
-              size="large"
-              @click="handleVerifyCode"
-              :disabled="otp.length < 6"
+            <VerifyOtpCode
+              :email="forgotForm.email"
               :loading="loading"
-            >
-              {{ t('forgotPassword.stepVerify.btnVerify') }}
-            </v-btn>
-
-            <v-btn
-              variant="text"
-              block
-              class="mt-2"
-              size="small"
-              @click="changeEmail"
-              :disabled="loading"
-            >
-              {{ t('forgotPassword.stepVerify.btnChangeEmail') }}
-            </v-btn>
+              :time-left="timeLeft"
+              :formatted-time="formattedTime"
+              :allow-exchange="true"
+              v-model:otp="otpCode"
+              @to-step="changeStep"
+              @resend-code="handleSendCode"
+              @stop-timer="stopTimer"
+              @success="changeStep(3)"
+            />
           </v-window-item>
 
           <v-window-item :value="3">
@@ -168,12 +100,17 @@
 </template>
 
 <script setup lang="ts">
+import SendOtpCode from '@/components/forms/otp/SendOtpCode.vue';
+import VerifyOtpCode from '@/components/forms/otp/VerifyOtpCode.vue';
 import { useSnackbar } from '@/composables/useSnackbar';
-import { useI18n } from 'vue-i18n';
+import { ClassFormatters } from '@/classes/ClassFormatters';
 import { useRules } from 'vuetify/labs/rules';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { ref, computed, onUnmounted } from 'vue';
 
 const { t } = useI18n();
+const router = useRouter();
 const { notify } = useSnackbar();
 const rules = useRules();
 
@@ -199,11 +136,7 @@ const timeLeft = ref(0);
 const TIMER_DURATION = 120;
 let timerInterval: ReturnType<typeof setInterval> | null = null;
 
-const formattedTime = computed(() => {
-  const minutes = Math.floor(timeLeft.value / 60);
-  const seconds = timeLeft.value % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-});
+const formattedTime = computed(() => ClassFormatters.formatTime(timeLeft.value))
 
 function startTimer() {
   stopTimer();
@@ -276,6 +209,7 @@ async function handleAlterPassword() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       notify(t('forgotPassword.feedback.alterSuccess'), 'success');
+      router.push({ name: 'Login'})
     } catch (error) {
       notify(t('forgotPassword.feedback.alterError'), 'error');
     } finally {

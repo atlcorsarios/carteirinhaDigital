@@ -1,12 +1,12 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12" class="mb-3">
         <v-select
           v-model="filter.field"
           :rules="[rules.required()]"
           @update:model-value="handleFieldChange"
-          :label="t('forms.formSearch.inputField.label')"
+          :label="t('forms.formSearch.field.label')"
           :items="filterManager.filters"
           item-value="key"
           hide-details="auto"
@@ -27,7 +27,7 @@
         <v-select
           v-model="filter.condition"
           :rules="[rules.required()]"
-          :label="t('forms.formSearch.inputCondition.label')"
+          :label="t('forms.formSearch.condition.label')"
           :items="getOperators(filter.field)"
           item-title="title"
           item-value="value"
@@ -47,15 +47,18 @@
       </v-col>
 
       <v-col cols="12" class="mb-3">
-        <div v-if="getType(filter.field) === 'date' && filter.condition === 'between'" class="d-flex gap-2">
+        <div
+          v-if="getType(filter.field) === 'date' && filter.condition === 'between'"
+          class="d-flex gap-2"
+        >
           <v-text-field
             v-model="filter.startDate"
             :rules="[rules.required()]"
             type="date"
             :label="t('messages.from')"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
           <v-spacer />
           <v-text-field
@@ -64,8 +67,8 @@
             type="date"
             :label="t('messages.until')"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
         </div>
 
@@ -75,18 +78,21 @@
           :rules="[rules.required()]"
           type="date"
           density="compact"
-          hide-details
           variant="outlined"
+          hide-details
         />
 
         <v-select
           v-else-if="getType(filter.field) === 'boolean'"
           v-model="filter.value"
           :rules="[rules.required()]"
-          :items="[{title: t('messages.yes'), value: 'true'}, {title: t('messages.no'), value: 'false'}]"
+          :items="[
+            { title: t('messages.yes'), value: 'true' },
+            { title: t('messages.no'), value: 'false' },
+          ]"
           density="compact"
-          hide-details
           variant="outlined"
+          hide-details
         />
 
         <v-select
@@ -95,19 +101,25 @@
           :rules="[rules.required()]"
           :label="t('filterColumn.operators.select')"
           :items="getOptions(filter.field)"
-          density="compact" hide-details
+          item-title="label"
+          item-value="value"
+          density="compact"
           variant="outlined"
+          hide-details
         />
 
-        <div v-else-if="getType(filter.field) === 'number' && filter.condition === 'between'" class="d-flex gap-2">
+        <div
+          v-else-if="getType(filter.field) === 'number' && filter.condition === 'between'"
+          class="d-flex gap-2"
+        >
           <v-text-field
             v-model="filter.value"
             :rules="[rules.required()]"
             type="number"
             label="Min"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
           <v-text-field
             v-model="filter.endDate"
@@ -115,8 +127,8 @@
             type="number"
             label="Max"
             density="compact"
-            hide-details
             variant="outlined"
+            hide-details
           />
         </div>
 
@@ -137,45 +149,65 @@
 </template>
 
 <script setup lang="ts">
-import type { ClassQueryFilter } from '@/classes/ClassQueryFilter';
-import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter';
-import { OPERATORS, type FilterType } from '@/classes/ClassDefinitions';
+import type { ClassQueryFilter } from '@/classes/ClassQueryFilter'
+import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
+import { OPERATORS, type FilterType } from '@/classes/models/ModelFilterColumns'
 import { useRules } from 'vuetify/labs/rules'
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const props = defineProps<{
   filterManager: ClassQueryFilter
-}>();
+}>()
 
-const rules = useRules();
-const { t } = useI18n();
-const formRef = ref<any>(null);
-const filter = defineModel<IQueryFilter>('filter', { required: true });
-const formIsValid = defineModel<boolean>('valid', { default: false });
+const rules = useRules()
+const { t } = useI18n()
+
+const formRef = ref<any>(null)
+const filter = defineModel<IQueryFilter>('filter', { required: true })
+const formIsValid = defineModel<boolean>('valid', { default: false })
+const emit = defineEmits(['submit']);
 
 const getType = (fieldKey: string): FilterType | undefined => {
-  return props.filterManager.getColumnType(fieldKey)?.type;
-};
+  if (!fieldKey) return undefined
+  return props.filterManager.getColumnType(fieldKey)?.type
+}
 
 const getOptions = (fieldKey: string) => {
-  return props.filterManager.getColumnType(fieldKey)?.options || [];
-};
+  return props.filterManager.getColumnType(fieldKey)?.options || []
+}
 
 const getOperators = (fieldKey: string) => {
-  const type = getType(fieldKey);
-  return type ? OPERATORS[type] : [];
-};
+  const type = getType(fieldKey)
+  return type ? OPERATORS[type] : []
+}
 
-const handleFieldChange = (newField: string) => {
-  props.filterManager.fieldChanged(newField);
-};
+const handleFieldChange = (newField: string | null) => {
+  if (!newField) return
+
+  const operators = getOperators(newField)
+
+  if (operators && operators.length > 0) {
+    props.filterManager.fieldChanged({
+      field: newField,
+      condition: operators[0].value
+    })
+  }
+}
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => formRef.value?.resetValidation(),
   validate: async () => {
-    const { valid } = await formRef.value?.validate();
-    return valid;
-  }
-});
+    const { valid } = await formRef.value?.validate()
+    return valid
+  },
+})
+
 </script>
