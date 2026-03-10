@@ -1,73 +1,35 @@
 {
   "app": {
-    "title": "Avelito",
+    "title": "Corsários",
     "version": "Versión",
     "cardInfoLicence": "License information",
     "updateDate": "Actualizado el",
     "software": "Software"
   },
   "routes": {
-    "home": {
-      "title": "Inicio"
-    },
-    "about": {
-      "title": "Información del sistema"
-    },
-    "login": {
-      "title": "Acceder"
-    },
-    "logout": {
-      "title": "Cerrar sesión"
-    },
-    "forgotPassword": {
-      "title": "Recuperar contraseña"
-    },
-    "dashboard": {
-      "title": "Panel"
-    },
-    "notifications": {
-      "title": "Notificaciones"
-    },
+    "home": "Inicio",
+    "carteirinha": "Tarjeta",
+    "socios": "Socios",
+    "plano": "Plan de suscripción",
+    "login": "Acceder",
+    "logout": "Cerrar sesión",
+    "forgotPassword": "Recuperar contraseña",
+    "notifications": "Notificaciones",
     "products": {
       "title": "Productos",
       "children": {
-        "list": {
-          "title": "Lista de productos"
-        },
-        "categories": {
-          "title": "Categorías"
-        },
-        "recipes": {
-          "title": "Recetas"
-        },
-        "ingredients": {
-          "title": "Ingredientes"
-        },
-        "stock": {
-          "title": "Inventario"
-        }
+        "list": "Lista de productos"
       }
     },
     "adm": {
       "title": "Administrador",
       "children": {
-        "users": {
-          "title": "Gestión de usuarios"
-        },
-        "settings": {
-          "title": "Configuraciones"
-        }
+        "users": "Gestión de usuarios"
       }
     },
-    "forbidden": {
-      "title": "Acceso denegado"
-    },
-    "serverError": {
-      "title": "Error del sistema"
-    },
-    "notFound": {
-      "title": "Recurso no encontrado"
-    }
+    "forbidden": "Acceso denegado",
+    "serverError": "Error del sistema",
+    "notFound": "Recurso no encontrado"
   },
   "forms": {
     "formSearch": {

@@ -7,7 +7,7 @@
 
     <v-main class="main-scroll position-relative">
       <div v-if="isLayoutVisible" class="app-watermark">
-        <img src="/WatermarkAvelito.jpg" />
+        <img src="/Watermark.jpg" />
       </div>
 
       <Breadcrumbs v-if="isLayoutVisible" />

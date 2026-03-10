@@ -9,7 +9,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     component: HomeView,
     meta: {
-      title: 'routes.home.title',
+      title: 'routes.home',
       icon: 'mdi-home',
       hotkey: 'cmd+h',
     },
@@ -19,9 +19,29 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Carteirinha',
     component: () => import('@/views/NotificationsView.vue'),
     meta: {
-      title: 'routes.carteirinha.title',
-      icon: 'mdi-bell',
-      hotkey: 'cmd+shift+m',
+      title: 'routes.carteirinha',
+      icon: 'mdi-card-account-details',
+      hotkey: 'cmd+shift+c',
+    },
+  },
+  {
+    path: '/parceiros',
+    name: 'Parceiros',
+    component: () => import('@/views/ParceirosView.vue'),
+    meta: {
+      title: 'routes.parceiros',
+      icon: 'mdi-handshake-outline',
+      hotkey: 'cmd+shift+d',
+    },
+  },
+  {
+    path: '/plano',
+    name: 'Plano',
+    component: () => import('@/views/PlanoView.vue'),
+    meta: {
+      title: 'routes.plano',
+      icon: 'mdi-medal',
+      hotkey: 'cmd+shift+g',
     },
   },
   {
@@ -44,7 +64,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'ProductsList',
         component: () => import('@/views/products/ProductListView.vue'),
         meta: {
-          title: 'routes.products.children.list.title',
+          title: 'routes.products.children.list',
           icon: 'mdi-format-list-bulleted',
           hotkey: 'cmd+alt+p',
           requiresAuth: true,
@@ -73,7 +93,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'AdminUsers',
         component: () => import('@/views/admin/UsersView.vue'),
         meta: {
-          title: 'routes.adm.children.users.title',
+          title: 'routes.adm.children.users',
           icon: 'mdi-account-group',
           hotkey: 'cmd+alt+u',
           requiresAuth: true,
@@ -90,7 +110,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: () => import('@/views/LoginView.vue'),
     meta: {
-      title: 'routes.login.title',
+      title: 'routes.login',
       hidden: true,
     },
   },
@@ -99,7 +119,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'ForgotPassword',
     component: () => import('@/views/ForgotPasswordView.vue'),
     meta: {
-      title: 'routes.forgotPassword.title',
+      title: 'routes.forgotPassword',
       hidden: true,
     },
   },
@@ -110,7 +130,7 @@ export const routes: Array<RouteRecordRaw> = [
     props: { type: '403' },
     meta: {
       hidden: true,
-      title: 'routes.forbidden.title',
+      title: 'routes.forbidden',
     },
   },
   {
@@ -120,7 +140,7 @@ export const routes: Array<RouteRecordRaw> = [
     props: { type: '500' },
     meta: {
       hidden: true,
-      title: 'routes.serverError.title',
+      title: 'routes.serverError',
     },
   },
   {
@@ -130,7 +150,7 @@ export const routes: Array<RouteRecordRaw> = [
     props: { type: '404' },
     meta: {
       hidden: true,
-      title: 'routes.notFound.title',
+      title: 'routes.notFound',
     },
   },
 ]

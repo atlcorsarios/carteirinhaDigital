@@ -1,73 +1,36 @@
 {
   "app": {
-    "title": "Avelito",
+    "title": "Corsários",
     "version": "Versão",
     "cardInfoLicence": "Informações da Licença",
     "updateDate": "Atualizado em",
     "software": "Software"
   },
   "routes": {
-    "home": {
-      "title": "Página Inícial"
-    },
-    "about": {
-      "title": "Informações do sistema"
-    },
-    "login": {
-      "title": "Acessar"
-    },
-    "logout": {
-      "title": "Sair"
-    },
-    "forgotPassword": {
-      "title": "Recuperar senha"
-    },
-    "dashboard": {
-      "title": "Painel"
-    },
-    "notifications": {
-      "title": "Notificações"
-    },
+    "home": "Página Inícial",
+    "carteirinha": "Carteirinha",
+    "parceiros": "Parceiros",
+    "plano": "Plano de assinatura",
+    "login": "Acessar",
+    "logout": "Sair",
+    "forgotPassword": "Recuperar senha",
+    "notifications": "Notificações",
     "products": {
       "title": "Produtos",
       "children": {
-        "list": {
-          "title": "Lista de produtos"
-        },
-        "categories": {
-          "title": "Categorias"
-        },
-        "recipes": {
-          "title": "Receitas"
-        },
-        "ingredients": {
-          "title": "Ingredientes"
-        },
-        "stock": {
-          "title": "Estoque"
-        }
+        "list": "Lista de produtos"
       }
     },
     "adm": {
       "title": "Administrador",
       "children": {
-        "users": {
-          "title": "Gestão de usuários"
-        },
-        "settings": {
-          "title": "Configurações"
-        }
+        "users": "Gestão de usuários",
+        "settings": "Configurações"
       }
     },
-    "forbidden": {
-      "title": "Acesso negado"
-    },
-    "serverError": {
-      "title": "Erro no sistema"
-    },
-    "notFound": {
-      "title": "Recurso não encontrado"
-    }
+    "forbidden": "Acesso negado",
+    "serverError": "Erro no sistema",
+    "notFound": "Recurso não encontrado"
   },
   "forms": {
     "formSearch": {

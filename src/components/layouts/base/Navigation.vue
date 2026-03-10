@@ -7,25 +7,6 @@
     class="main-drawer"
   >
     <template v-slot:prepend>
-      <v-toolbar
-        flat
-        dense
-        class="main-drawer__toolbar"
-        image="/ToolbarAvelito.jpg"
-        >
-        <template v-slot:image>
-          <v-img gradient="to top right, rgba(0,0,0,.3), rgba(0,0,0,.1)" />
-        </template>
-
-        <v-btn
-          v-if="!mdAndUp"
-          icon="mdi-menu"
-          @click="drawer = false"
-        />
-      </v-toolbar>
-
-      <v-divider />
-
       <v-list nav>
         <v-list-item
           prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
@@ -96,7 +77,7 @@
       <v-list density="compact" nav>
         <v-list-item
           prepend-icon="mdi-logout"
-          :title="t('routes.logout.title')"
+          :title="t('routes.logout')"
           :to="{ name: 'Login' }"
           exact
           @click="handleLogout"

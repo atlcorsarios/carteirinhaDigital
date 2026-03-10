@@ -1,73 +1,35 @@
 {
   "app": {
-    "title": "Avelito",
+    "title": "Corsários",
     "version": "Version",
     "cardInfoLicence": "License information",
     "updateDate": "Updated on",
     "software": "Software"
   },
   "routes": {
-    "home": {
-      "title": "Home"
-    },
-    "about": {
-      "title": "System information"
-    },
-    "login": {
-      "title": "Login"
-    },
-    "logout": {
-      "title": "Logout"
-    },
-    "forgotPassword": {
-      "title": "Forgot Password"
-    },
-    "dashboard": {
-      "title": "Dashboard"
-    },
-    "notifications": {
-      "title": "Notifications"
-    },
+    "home": "Home",
+    "carteirinha": "Card",
+    "partners": "Partners",
+    "plano": "Subscription plan",
+    "login": "Login",
+    "logout": "Logout",
+    "forgotPassword": "Forgot Password",
+    "notifications": "Notifications",
     "products": {
       "title": "Products",
       "children": {
-        "list": {
-          "title": "Product List"
-        },
-        "categories": {
-          "title": "Categories"
-        },
-        "recipes": {
-          "title": "Recipes"
-        },
-        "ingredients": {
-          "title": "Ingredients"
-        },
-        "stock": {
-          "title": "Stock"
-        }
+        "list": "Product List"
       }
     },
     "adm": {
       "title": "Administrator",
       "children": {
-        "users": {
-          "title": "User Management"
-        },
-        "settings": {
-          "title": "Settings"
-        }
+        "users": "User Management"
       }
     },
-    "forbidden": {
-      "title": "Access denied"
-    },
-    "serverError": {
-      "title": "System error"
-    },
-    "notFound": {
-      "title": "Resource not found"
-    }
+    "forbidden": "Access denied",
+    "serverError": "System error",
+    "notFound": "Resource not found"
   },
   "forms": {
     "formSearch": {

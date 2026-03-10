@@ -29,9 +29,9 @@ const items = computed(() => {
     exact: true
   }));
 
-  if (breadcrumbs.length > 0 && breadcrumbs[0].title !== t('routes.home.title')) {
+  if (breadcrumbs.length > 0 && breadcrumbs[0].title !== t('routes.home')) {
     breadcrumbs.unshift({
-      title: t('routes.home.title'),
+      title: t('routes.home'),
       disabled: false,
       to: { name: 'Home' },
       exact: true
