@@ -4,6 +4,7 @@ import { ClassProducts } from './products/ClassProducts'
 import { ClassUsers } from './ClassUsers'
 import { ClassCategories } from './products/ClassCategories'
 import { ClassRecipes } from './products/ClassRecipes'
+import { ClassStock } from './products/ClassStock'
 
 export class ClassDefinitions {
   static get queryFilterUsers(): TDefinitionsForQueryFilter {
@@ -31,6 +32,13 @@ export class ClassDefinitions {
     return {
       filters: ClassRecipes.filters,
       defaultFilter: ClassRecipes.defaultFilterConfig
+    }
+  }
+
+  static get queryFilterStock(): TDefinitionsForQueryFilter {
+    return {
+      filters: ClassStock.filters,
+      defaultFilter: ClassStock.defaultFilterConfig
     }
   }
 

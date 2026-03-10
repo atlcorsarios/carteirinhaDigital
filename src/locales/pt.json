@@ -4,7 +4,7 @@
     "version": "Versão",
     "cardInfoLicence": "Informações da Licença",
     "updateDate": "Atualizado em",
-    "software": "software"
+    "software": "Software"
   },
   "routes": {
     "home": {
@@ -217,6 +217,11 @@
         "headerTable": "Medida",
         "label": "Unidade de medida"
       },
+      "price": {
+        "headerTable": "Preço",
+        "label": "Preço do ingrediente",
+        "hint": "Convertido para: "
+      },
       "stock": {
         "headerTable": "Em estoque",
         "label": "Quantidade inicial em estoque",
@@ -241,6 +246,47 @@
         "headerTable": "Ingredientes",
         "label": "Ingredientes da receita",
         "hint": "Selecione os ingredientes presentes na receita"
+      }
+    },
+    "formStock": {
+      "idStock": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "category": {
+        "headerTable": "Categoria",
+        "label": "Categoria do item"
+      },
+      "description": {
+        "headerTable": "Descrição",
+        "label": "Descrição do item"
+      },
+      "measurement": {
+        "headerTable": "Medida",
+        "label": "Unidade de medida"
+      },
+      "amount": {
+        "headerTable": "Quantidade",
+        "label": "Quantidade do item"
+      },
+      "item": {
+        "label": "Item para operação",
+        "types": {
+          "ingredient": "Ingrediente",
+          "product": "Produto"
+        }
+      },
+      "operation": {
+        "label": "Operação",
+        "types": {
+          "entry": "ENTRADA",
+          "exit": "SAÍDA"
+        }
+      },
+      "price": {
+        "headerTable": "Custo",
+        "label": "Custo do item",
+        "hint": "Convertido para: "
       }
     },
     "formNotifications": {
@@ -350,6 +396,10 @@
       "formIngredient": {
         "createIngredient": "Criar ingrediente",
         "editingIngredient": "Editar ingrediente"
+      },
+      "formStock": {
+        "addInventory": "Adicionar ao estoque",
+        "updateInventory": "Atualizar estoque"
       }
     },
     "components": {
@@ -359,6 +409,7 @@
       },
       "queryFilter": {
         "title": "Filtrar recursos de:",
+        "addSuccess": "Filtro adicionado!",
         "alertDuplicate": "Esse filtro já foi adicionado!"
       },
       "inputUploadImage": {
@@ -411,6 +462,9 @@
     },
     "searchIngredient": {
       "title": "Ingredientes"
+    },
+    "searchProduct": {
+      "title": "Produtos"
     }
   },
   "filterColumn": {

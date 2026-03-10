@@ -12,9 +12,11 @@
 
       <slot
         name="form"
+        :ref-form="(el: any) => refForm = el"
         :model="classManager.model"
+        :is-valid="isFormValid"
         :update-valid="(val: boolean) => isFormValid = val"
-        :set-ref="setRefForm"
+        :submit-form="handleSubmit"
       />
     </template>
 
@@ -37,7 +39,7 @@
         color="success"
         :disabled="!isFormValid || loading"
         :loading="loading"
-        @click="handleSave"
+        @click="handleSubmit"
       />
     </template>
   </BaseDialog>
@@ -57,6 +59,14 @@ import { useSnackbar } from '@/composables/useSnackbar'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
+const { t } = useI18n()
+const { notify } = useSnackbar()
+
+const isFormValid = ref(false)
+const loading = ref(false)
+const refForm = ref<any>(null)
+
+const emits = defineEmits(['created-fast-item'])
 const props = defineProps<{
   title: string
   icon: string
@@ -69,18 +79,6 @@ const props = defineProps<{
   }
 }>()
 
-const emits = defineEmits(['created-fast-item'])
-const { t } = useI18n()
-const { notify } = useSnackbar()
-
-const isFormValid = ref(false)
-const loading = ref(false)
-const refForm = ref<any>(null)
-
-const setRefForm = (el: any) => {
-  if (el) refForm.value = el
-}
-
 function handleReset() {
   props.classManager.reset()
   if (refForm.value?.reset) {
@@ -89,7 +87,9 @@ function handleReset() {
   isFormValid.value = false
 }
 
-async function handleSave() {
+async function handleSubmit() {
+  if (!isFormValid.value) return
+
   loading.value = true
   try {
     let savedItem = { ...props.classManager.model }
@@ -111,4 +111,5 @@ async function handleSave() {
     loading.value = false
   }
 }
+
 </script>

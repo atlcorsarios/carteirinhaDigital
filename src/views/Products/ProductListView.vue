@@ -1,10 +1,11 @@
 <template>
   <GenericView
+    ref="genericView"
     :headers="ClassProducts.headers"
     :id-field="'idProduct'"
     :title="t('dataTable.products.title')"
     :hasActions="true"
-    :has-more-info="true"
+    :hasMoreDetails="true"
     :text-create="t('messages.forms.formProduct.createProduct')"
     :text-edit="t('messages.forms.formProduct.editingProduct')"
     :icon-create="'mdi-package-variant-closed-plus'"
@@ -15,17 +16,17 @@
     :service-fetch="productsServices.getAllProducts"
     :service-save="productsServices.saveProduct"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <ProductForm
+        :ref="refForm"
         :product="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
 
-    <template #moreInfo="{ item }">
-      <ProductsMoreInfo
-        :product="item"
-      />
+    <template #moreDetails="{ item, close }">
+      <MoreProductDetails :product="item" @close="close" />
     </template>
   </GenericView>
 </template>
@@ -34,7 +35,7 @@
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
 import ProductForm from '@/components/forms/products/ProductForm.vue'
-import ProductsMoreInfo from './ProductsMoreInfo.vue'
+import MoreProductDetails from '@/components/MoreProductDetails.vue'
 
 // Models
 import { type IProduct } from '@/classes/models/ModelIProduct'

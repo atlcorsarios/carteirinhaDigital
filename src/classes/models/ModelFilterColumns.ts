@@ -41,9 +41,6 @@ export const OPERATORS = {
   ],
   boolean: [{ title: 'filterColumn.operators.equals', value: 'equals' }],
   select: [
-    { title: 'filterColumn.operators.startsIn', value: 'startsIn' },
-    { title: 'filterColumn.operators.endsIn', value: 'endsIn' },
-    { title: 'filterColumn.operators.contains', value: 'contains' },
     { title: 'filterColumn.operators.equals', value: 'equals' },
     { title: 'filterColumn.operators.notEquals', value: 'notEquals' },
     { title: 'filterColumn.operators.select', value: 'select' },

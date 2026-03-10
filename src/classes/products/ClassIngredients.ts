@@ -4,6 +4,7 @@ import type { IIngredient } from '../models/ModelIProduct'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { ClassCategories } from './ClassCategories'
 import { BaseClass } from '../subscriptions/BaseClass'
+import { ClassFormatters } from '../ClassFormatters'
 
 export class ClassIngredients extends BaseClass<IIngredient> {
   constructor(data?: Partial<IIngredient>) {
@@ -15,6 +16,7 @@ export class ClassIngredients extends BaseClass<IIngredient> {
       idIngredient: 0,
       description: '',
       measurement: '',
+      price: undefined,
       stock: 0.0,
       category: { ...ClassCategories.defaultCategory(), group: 'INGREDIENTS' }
     }
@@ -45,6 +47,14 @@ export class ClassIngredients extends BaseClass<IIngredient> {
         width: 150,
         maxWidth: 250,
         minWidth: 100,
+      },
+      price: {
+        align: 'end',
+        width: 350,
+        maxWidth: 450,
+        minWidth: 100,
+        chartFormatter: ClassFormatters.formatPriceDynamic,
+        value: (item) => ClassFormatters.formatPriceDynamic(item.price),
       },
       stock: {
         align: 'center',

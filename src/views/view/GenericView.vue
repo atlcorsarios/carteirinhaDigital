@@ -30,19 +30,8 @@
         />
       </template>
 
-      <template v-if="selectedItem && hasMoreInfo" #moreInfo>
-        <v-icon-btn
-          icon="mdi-close"
-          v-tooltip="t('tooltips.forms.close')"
-          variant="text"
-          color="info"
-          @click="clearMoreInfo"
-        />
-
-        <slot
-          name="moreInfo"
-          :item="selectedItem"
-        />
+      <template v-if="selectedItem && hasMoreDetails" #moreDetails>
+        <slot name="moreDetails" :item="selectedItem" :close="hiddenMoreDetails" />
       </template>
     </GridDataChart>
   </v-container>
@@ -69,10 +58,11 @@
     <template v-slot:default>
       <slot
         name="form"
-        :ref-form="refForm"
+        :ref-form="(el: any) => refForm = el"
         :model="classModelManager.model"
         :is-valid="isFormValid"
         :update-valid="(val: boolean) => (isFormValid = val)"
+        :submit-form="handleSubmit"
       />
     </template>
 
@@ -93,7 +83,7 @@
         variant="text"
         color="success"
         :disabled="!isFormValid"
-        @click="submit"
+        @click="handleSubmit"
       />
     </template>
   </BaseDialog>
@@ -125,6 +115,8 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ref, watchEffect, computed } from 'vue'
 
+const selectedItens = defineModel<any[]>('selected-itens', { required: false })
+const emit = defineEmits(['saved', 'error'])
 const props = defineProps<{
   headers: any[]
   idField: string
@@ -143,12 +135,9 @@ const props = defineProps<{
   serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
   serviceSave?: (item: T) => Promise<any>
   hasActions?: boolean
-  hasMoreInfo?: boolean
+  hasMoreDetails?: boolean
   selectItems?: boolean
 }>()
-
-const selectedItens = defineModel<any[]>('selected-itens', { required: false })
-const emit = defineEmits(['saved', 'error'])
 
 const route = useRoute()
 const { notify } = useSnackbar()
@@ -219,6 +208,7 @@ const refForm = ref<any>(null)
 const selectedItem = ref<T | null>(null)
 
 function handleSelection(item: any) {
+  hiddenMoreDetails()
   selectedItem.value = item
 }
 
@@ -246,7 +236,9 @@ function resetForm() {
   }
 }
 
-async function submit() {
+async function handleSubmit() {
+  if (!isFormValid.value) return
+
   try {
     if (props.serviceSave) {
       await props.serviceSave(props.classModelManager.model)
@@ -268,7 +260,8 @@ function getItemIdentifier(item: any) {
   return idKey ? item[idKey] : ''
 }
 
-function clearMoreInfo() {
+function hiddenMoreDetails() {
   selectedItem.value = null
 }
+
 </script>

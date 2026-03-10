@@ -8,12 +8,13 @@
     :service-save="categoriesServices.saveCategory"
     @created-fast-item="(item) => $emit('created-fast-item', item)"
   >
-    <template #form="{ model, updateValid, setRef }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <CategoryForm
-        :ref="setRef"
+        :ref="refForm"
         :category="model"
         @update:category="(val) => Object.assign(model, val)"
         @update:valid="updateValid"
+        @submit="submitForm"
         :create-fast="true"
       />
     </template>
@@ -42,6 +43,7 @@ defineEmits(['created-fast-item'])
 const classCategory = new ClassCategories()
 const categoryManager = {
   model: classCategory.model,
-  reset: () => classCategory.reset()
+  reset: () => classCategory.reset(),
 }
+
 </script>

@@ -8,12 +8,13 @@
     :service-save="recipesServices.saveRecipe"
     @created-fast-item="(item) => $emit('created-fast-item', item)"
   >
-    <template #form="{ model, updateValid, setRef }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <RecipeForm
-        :ref="setRef"
+        :ref="refForm"
         :recipe="model"
         @update:recipe="(val) => Object.assign(model, val)"
         @update:valid="updateValid"
+        @submit="submitForm"
         :create-fast="true"
       />
     </template>
@@ -42,6 +43,7 @@ defineEmits(['created-fast-item'])
 const classRecipe = new ClassRecipes()
 const recipeManager = {
   model: classRecipe.model,
-  reset: () => classRecipe.reset()
+  reset: () => classRecipe.reset(),
 }
+
 </script>

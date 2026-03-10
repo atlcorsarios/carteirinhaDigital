@@ -3,46 +3,54 @@
     <v-progress-circular color="primary" indeterminate />
   </div>
 
-  <LoginForm
-    ref="refFormLogin"
-    v-model:login="classLogin.model"
-    v-model:valid="isFormValid"
-  >
-    <template v-slot:actions>
-      <div class="d-flex flex-row">
-        <v-icon-btn
-          icon="mdi-refresh"
-          v-tooltip="t('tooltips.forms.reset')"
-          variant="text"
-          color="amber"
-          class="ma-3"
-          @click="handleReset"
-        />
+  <div class="d-flex justify-center align-center h-100" style="min-height: 90vh">
+    <v-card class="mx-auto" width="600" elevation="8" rounded="lg">
+      <v-card-title class="d-flex justify-center pt-5 pb-5">
+        {{ t('routes.login.title') }}
+      </v-card-title>
+      <LoginForm
+        ref="refFormLogin"
+        v-model:login="classLogin.model"
+        v-model:valid="isFormValid"
+        @submit="handleSubmit"
+      >
+        <template v-slot:actions>
+          <div class="d-flex flex-row">
+            <v-icon-btn
+              icon="mdi-refresh"
+              v-tooltip="t('tooltips.forms.reset')"
+              variant="text"
+              color="amber"
+              class="ma-3"
+              @click="handleReset"
+            />
 
-        <v-spacer />
+            <v-spacer />
 
-        <v-icon-btn
-          icon="mdi-lock-reset"
-          v-tooltip="t('tooltips.forms.forgotPassword')"
-          variant="text"
-          color="primary"
-          class="ma-3"
-          @click="forgotPassword"
-        />
+            <v-icon-btn
+              icon="mdi-lock-reset"
+              v-tooltip="t('tooltips.forms.forgotPassword')"
+              variant="text"
+              color="primary"
+              class="ma-3"
+              @click="forgotPassword"
+            />
 
-        <v-spacer />
+            <v-spacer />
 
-        <v-icon-btn
-          icon="mdi-login-variant"
-          v-tooltip="t('tooltips.forms.submit')"
-          variant="text"
-          color="success"
-          class="ma-3"
-          @click="onSubmit"
-        />
-      </div>
-    </template>
-  </LoginForm>
+            <v-icon-btn
+              icon="mdi-login-variant"
+              v-tooltip="t('tooltips.forms.submit')"
+              variant="text"
+              color="success"
+              class="ma-3"
+              @click="handleSubmit"
+            />
+          </div>
+        </template>
+      </LoginForm>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -92,7 +100,7 @@ function forgotPassword() {
   router.push({ name: 'ForgotPassword' });
 }
 
-async function onSubmit() {
+async function handleSubmit() {
   classLogin.saveEmailPreference()
   await nextTick();
   await authLogin();

@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="emits('submit')" class="search-form w-100">
+  <v-form ref="formRef" v-model="formIsValid" class="search-form w-100" @submit.prevent="handleSubmit">
     <v-text-field
       ref="inputRef"
       v-model="queryManager.stagingModel.value"
@@ -47,7 +47,7 @@
           v-tooltip="t('tooltips.appBar.search')"
           variant="plain"
           :disabled="!canSubmit"
-          @click="emits('submit')"
+          @click="emit('submit')"
         />
       </template>
     </v-text-field>
@@ -75,7 +75,7 @@
             <QueryFilterForm
               ref="refFormQuery"
               v-model:filter="queryManager.stagingModel"
-              v-model:valid="isFormValid"
+              v-model:valid="formIsValid"
               :filter-manager="queryManager"
             />
           </div>
@@ -132,7 +132,7 @@
         v-tooltip="t('tooltips.forms.reset')"
         variant="text"
         color="amber"
-        @click="emits('reset')"
+        @click="emit('reset')"
       />
 
       <v-spacer />
@@ -142,8 +142,8 @@
         v-tooltip="t('tooltips.forms.add')"
         variant="text"
         color="info"
-        :disabled="!isFormValid"
-        @click="emits('add-filter')"
+        :disabled="!formIsValid"
+        @click="emit('add-filter')"
       />
 
       <v-spacer />
@@ -155,7 +155,7 @@
         variant="text"
         color="success"
         :disabled="!canSubmit"
-        @click="emits('submit')"
+        @click="emit('submit')"
       />
     </template>
   </BaseDialog>
@@ -184,11 +184,12 @@ const queryManager = defineModel<ClassQueryFilter>('manager', { required: true }
 const dialogAttributes = defineModel<any>('dialogAttributes', { required: true })
 const tab = defineModel<string>('tab', { default: 'form' })
 
-const emits = defineEmits(['submit', 'reset', 'add-filter', 'open-filter'])
+const emit = defineEmits(['submit', 'reset', 'add-filter', 'open-filter'])
 
+const formRef = ref<any>(null)
 const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null)
 const inputRef = ref<any>(null)
-const isFormValid = ref(false)
+const formIsValid = ref(false)
 
 const canSubmit = computed(() => {
   const hasText =
@@ -198,7 +199,7 @@ const canSubmit = computed(() => {
 })
 
 function openDialog() {
-  emits('open-filter')
+  emit('open-filter')
 }
 
 function formatTitle(item: IQueryFilter) {
@@ -227,6 +228,13 @@ const dynamicSearchRules = computed(() => {
     },
   ]
 })
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
+  }
+}
 
 defineExpose({
   reset: () => refFormQuery.value?.reset(),

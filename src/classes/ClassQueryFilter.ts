@@ -46,9 +46,15 @@ export class ClassQueryFilter extends BaseClass<IQueryFilter[]> {
 
     if (options?.defaultFilter) {
       this.defaultConfiguration = options.defaultFilter
-    }
-    else if (route.meta?.defaultFilterConfig) {
-      this.defaultConfiguration = route.meta.defaultFilterConfig as Partial<IQueryFilter>
+    } else {
+      watch(() => route.meta?.defaultFilterConfig, (newConfig) => {
+          if (newConfig) {
+            this.defaultConfiguration = newConfig as Partial<IQueryFilter>
+            this.resetStaging()
+          }
+        },
+        { immediate: true }
+      )
     }
 
     watch(() => this.model, (newVal) => {

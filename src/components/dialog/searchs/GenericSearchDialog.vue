@@ -25,6 +25,7 @@
             :id="tableId"
             :has-actions="false"
             :select-items="selectItems"
+            :multiple-select="isMultiple"
             v-model:selected-itens="selectedItens"
             v-model:dataTable="gridConfig.modelTable"
             v-model:pagination="paginationModel"
@@ -87,6 +88,7 @@ const props = defineProps<{
   serviceFetch: any
   dialogSearchModel: ClassBaseDialog
   selectItems?: boolean
+  isMultiple?: boolean
 }>()
 
 const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] })
@@ -138,17 +140,19 @@ const classDialogCreateQuickly = new ClassBaseDialog({ maxWidth: 500 })
 
 function handleSelectItem(item: T) {
   if (props.selectItems) {
-    selectedItens.value.push(item)
+    if (!props.isMultiple) {
+      selectedItens.value = [item]
+    } else {
+      const index = selectedItens.value.indexOf(item)
+      if (index > -1) {
+        selectedItens.value.splice(index, 1)
+      } else {
+        selectedItens.value.push(item)
+      }
+    }
   }
-  const index = selectedItens.value.indexOf(item)
-  if (index > -1) {
-    selectedItens.value.splice(index, 1)
-  } else {
-    selectedItens.value.push(item)
-  }
-
-  emits('select-item', item)
   props.dialogSearchModel.toggleDialog()
+  emits('select-item', item)
 }
 
 function handleCreateQuickly(item: T) {

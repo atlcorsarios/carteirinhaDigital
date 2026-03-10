@@ -8,6 +8,7 @@
     :service-fetch="ingredientsServices.getAllIngredients"
     :dialog-search-model="dialogSearchModel"
     :select-items="true"
+    :is-multiple="isMultiple"
     v-model:selectedItens="selectedItens"
   >
     <template #action-btn="{ openCreate }">
@@ -58,6 +59,10 @@ import { ingredientsServices } from '@/services/resources/products/ingredientsSe
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const props = defineProps<{
+  isMultiple?: boolean
+}>()
 
 const selectedItens = defineModel<IIngredient[]>('selectedItens', { required: true })
 const dialogSearchModel = defineModel<ClassBaseDialog<any>>('dialog-search-ingredient', {

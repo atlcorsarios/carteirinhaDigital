@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="formRef" v-model="formIsValid">
+  <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
     <v-row dense align="center">
       <v-col cols="12" class="mb-3">
         <v-select
@@ -101,6 +101,8 @@
           :rules="[rules.required()]"
           :label="t('filterColumn.operators.select')"
           :items="getOptions(filter.field)"
+          item-title="label"
+          item-value="value"
           density="compact"
           variant="outlined"
           hide-details
@@ -164,6 +166,7 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const filter = defineModel<IQueryFilter>('filter', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
+const emit = defineEmits(['submit']);
 
 const getType = (fieldKey: string): FilterType | undefined => {
   if (!fieldKey) return undefined
@@ -189,6 +192,13 @@ const handleFieldChange = (newField: string | null) => {
       field: newField,
       condition: operators[0].value
     })
+  }
+}
+
+async function handleSubmit() {
+  const { valid } = await formRef.value?.validate()
+  if (valid) {
+    emit('submit');
   }
 }
 

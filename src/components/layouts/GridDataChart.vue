@@ -26,9 +26,9 @@
   <div
     v-show="!!selectedItem"
     class="w-100 mt-5 scroll-offset"
-    ref="refMoreInfo"
+    ref="refMoreDetails"
   >
-    <slot name="moreInfo" />
+    <slot name="moreDetails" />
   </div>
 </template>
 
@@ -47,11 +47,11 @@ const emit = defineEmits<{
 defineSlots<{
   dataTable(props: { toggleChart: () => void }): any;
   dataChart(): any;
-  moreInfo(): any;
+  moreDetails(): any;
 }>();
 
 const refCharts = ref<any>(null);
-const refMoreInfo = ref<any>(null);
+const refMoreDetails = ref<any>(null);
 
 watch(() => props.hiddenChart, (isHidden) => {
   if (!isHidden) {
@@ -64,7 +64,7 @@ watch(() => props.hiddenChart, (isHidden) => {
 watch(() => props.selectedItem, (newItem) => {
   if (newItem) {
     nextTick(() => {
-      scrollIntoView(refMoreInfo.value, 'nearest');
+      scrollIntoView(refMoreDetails.value, 'nearest');
     });
   }
 });

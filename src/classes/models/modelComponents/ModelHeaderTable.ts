@@ -2,7 +2,7 @@ import type { IFilterColumn } from '../ModelFilterColumns'
 
 export interface IHeadersDataTable {
   title: string
-  key: string
+  key?: string
   dataType?: 'text' | 'boolean' | 'currency' | 'date'
   cellClass?: (value: any, item: any) => string
   align?: 'start' | 'end' | 'center'
@@ -19,7 +19,7 @@ export interface IHeadersDataTable {
   value?: (item: any) => any
 }
 
-export type TConfigHeaders = Omit<IHeadersDataTable, 'title' | 'key'>
+export type TConfigHeaders = Omit<IHeadersDataTable, 'title'>
 
 export interface IFieldConfig extends TConfigHeaders {
   hidden?: boolean

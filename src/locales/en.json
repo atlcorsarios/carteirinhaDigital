@@ -11,7 +11,7 @@
       "title": "Home"
     },
     "about": {
-      "title": "System informations"
+      "title": "System information"
     },
     "login": {
       "title": "Login"
@@ -217,6 +217,11 @@
         "headerTable": "Measurement",
         "label": "Unit of measurement"
       },
+      "price": {
+        "headerTable": "Price",
+        "label": "Ingredient price",
+        "hint": "Converted to: "
+      },
       "stock": {
         "headerTable": "In stock",
         "label": "Initial stock quantity",
@@ -241,6 +246,47 @@
         "headerTable": "Ingredients",
         "label": "Recipe Ingredients",
         "hint": "Select the ingredients present in the recipe"
+      }
+    },
+    "formStock": {
+      "idStock": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "category": {
+        "headerTable": "Category",
+        "label": "Item category"
+      },
+      "description": {
+        "headerTable": "Description",
+        "label": "Item description"
+      },
+      "measurement": {
+        "headerTable": "Unit",
+        "label": "Unit of measurement"
+      },
+      "amount": {
+        "headerTable": "Quantity",
+        "label": "Item quantity"
+      },
+      "item": {
+        "label": "Item for operation", 
+        "types": { 
+          "ingredient": "Ingredient", 
+          "product": "Product" 
+        }
+      },
+      "operation": {
+        "label": "Operation",
+        "types": {
+          "entry": "ENTRY",
+          "exit": "EXIT"
+        }
+      },
+      "price": {
+        "headerTable": "Cost",
+        "label": "Cost",
+        "hint": "Converted to: "
       }
     },
     "formNotifications": {
@@ -330,7 +376,7 @@
     },
     "forms": {
       "saveSuccess": "Saved successfully",
-      "saveEror": "Error saving",
+      "saveError": "Error saving",
       "formUsers": {
         "createUser": "Create user",
         "editingUser": "Edit user"
@@ -350,6 +396,10 @@
       "formIngredient": {
         "createIngredient": "Create ingredient",
         "editingIngredient": "Edit ingredient"
+      },
+      "formStock": {
+        "addInventory": "Add to inventory",
+        "updateInventory": "Update inventory"
       }
     },
     "components": {
@@ -359,6 +409,7 @@
       },
       "queryFilter": {
         "title": "Filter resources by:",
+        "addSuccess": "Filter added!",
         "alertDuplicate": "This filter has already been added!"
       },
       "inputUploadImage": {
@@ -411,6 +462,9 @@
     },
     "searchIngredient": {
       "title": "Ingredients"
+    },
+    "searchProduct": {
+      "title": "Products"
     }
   },
   "filterColumn": {

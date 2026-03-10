@@ -14,10 +14,12 @@
     :service-fetch="usersServices.getAllUsers"
     :service-save="usersServices.saveUser"
   >
-    <template #form="{ model, updateValid }">
+    <template #form="{ model, updateValid, refForm, submitForm }">
       <UserForm
+        :ref="refForm"
         :user="model"
         @update:valid="updateValid"
+        @submit="submitForm"
       />
     </template>
   </GenericView>
