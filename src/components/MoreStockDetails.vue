@@ -2,7 +2,7 @@
   <v-card class="h-100 d-flex flex-column">
     <v-card-title class="d-flex sticky-title bg-surface align-center border-b">
       <div class="text-h6 w-100 me-auto">
-        Histórico: {{ stock.description }}
+        {{ stock.description }}
       </div>
       <v-icon-btn
         icon="mdi-close"
@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { IStock } from '@/classes/models/ModelIStock'
+import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const { t } = useI18n()
 

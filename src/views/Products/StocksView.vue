@@ -4,6 +4,7 @@
     :id-field="'idStock'"
     :title="t('dataTable.stock.title')"
     :hasActions="true"
+    :hasMoreDetails="true"
     :text-create="t('messages.forms.formStock.addInventory')"
     :text-edit="t('messages.forms.formStock.updateInventory')"
     :icon-create="'mdi-warehouse'"
@@ -22,6 +23,10 @@
         @submit="submitForm"
       />
     </template>
+
+    <template #moreDetails="{ item, close }">
+      <MoreStockDetails :stock="item" @close="close" />
+    </template>
   </GenericView>
 </template>
 
@@ -29,6 +34,7 @@
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
 import StockControlForm from '@/components/forms/products/StockControlForm.vue'
+import MoreStockDetails from '@/components/MoreStockDetails.vue'
 
 // Models
 import type { IStock, IStockControl } from '@/classes/models/ModelIStock'
@@ -36,7 +42,6 @@ import type { IStock, IStockControl } from '@/classes/models/ModelIStock'
 // Classes
 import { ClassStock } from '@/classes/products/ClassStock'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
-
 
 // Services
 import { stockServices } from '@/services/resources/products/stockService'

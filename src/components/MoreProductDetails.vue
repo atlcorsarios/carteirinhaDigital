@@ -11,7 +11,7 @@
         v-tooltip="t('tooltips.forms.close')"
         variant="text"
         color="info"
-        @click="toggleMoreDetails"
+        @click="$emit('close')"
       />
     </v-card-title>
 
@@ -90,13 +90,7 @@ const props = defineProps<{
   product: IProduct
 }>()
 
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
-
-function toggleMoreDetails() {
-  emit('close')
-}
+defineEmits(['close'])
 
 const imageUrl = computed(() => {
   return props.product.image || undefined;
