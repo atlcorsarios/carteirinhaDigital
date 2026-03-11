@@ -1,8 +1,11 @@
-import type { IHeaderPaginatorModel } from "@/classes/models/ModelHeaderPaginator";
-import type { INotification } from "@/classes/models/ModelNotifications";
+import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginator'
+import type { INotification } from '@/classes/models/resources/ModelNotifications'
 
 export const notificationsServices = {
-  async getAllNotifications(offset: number, limit: number): Promise<IHeaderPaginatorModel<INotification>> {
+  async getAllNotifications(
+    offset: number,
+    limit: number,
+  ): Promise<IHeaderPaginatorModel<INotification>> {
     try {
       const mockData: IHeaderPaginatorModel<INotification> = {
         limit: limit,
@@ -18,7 +21,7 @@ export const notificationsServices = {
             seen: false,
             sender: '',
             recipients: [''],
-            origin: ''
+            origin: '',
           },
           {
             idNotification: 2,
@@ -29,14 +32,14 @@ export const notificationsServices = {
             seen: true,
             sender: 'AVELITO',
             recipients: [''],
-            origin: 'Ecommerce'
+            origin: 'Ecommerce',
           },
-        ]
-      };
+        ],
+      }
 
-      await new Promise(resolve => setTimeout(resolve, 2500));
+      await new Promise((resolve) => setTimeout(resolve, 2500))
 
-      return mockData;
+      return mockData
     } catch (error) {
       throw error
     }

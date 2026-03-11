@@ -38,14 +38,14 @@ import ProductForm from '@/components/forms/products/ProductForm.vue'
 import MoreProductDetails from '@/components/MoreProductDetails.vue'
 
 // Models
-import { type IProduct } from '@/classes/models/ModelIProduct'
+import { type IProduct } from '@/classes/models/resources/ModelIProduct'
 
 // Classes
-import { ClassProducts } from '@/classes/ClassProducts'
+import { ClassProducts } from '@/classes/resources/ClassProducts'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { productsServices } from '@/services/resources/products/productsService'
+import { productsServices } from '@/services/resources/productsService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
@@ -65,5 +65,4 @@ const productModelManager = {
     classProduct.updateModel(item)
   },
 }
-
 </script>

@@ -1,6 +1,6 @@
-import { ClassUsers } from "./ClassUsers";
-import type { IErrorAPI, ITraceError } from "./models/ModelErrorAPI"
-import { BaseClass } from "./subscriptions/BaseClass";
+import { ClassUsers } from './ClassUsers'
+import type { IErrorAPI, ITraceError } from '../models/resources/ModelErrorAPI'
+import { BaseClass } from '../subscriptions/BaseClass'
 
 export class ClassErrorAPI extends BaseClass<IErrorAPI> {
   constructor(data?: Partial<IErrorAPI>) {
@@ -12,7 +12,7 @@ export class ClassErrorAPI extends BaseClass<IErrorAPI> {
       lineNumber: 0,
       fileName: '',
       className: '',
-      methodName: ''
+      methodName: '',
     }
   }
 
@@ -22,8 +22,8 @@ export class ClassErrorAPI extends BaseClass<IErrorAPI> {
       errorDateTime: new Date(),
       errorStatusCode: 0,
       user: ClassUsers.defaultUser(),
-      trace: ClassErrorAPI.defaultErrorTrace()
-    };
+      trace: ClassErrorAPI.defaultErrorTrace(),
+    }
   }
 
   protected getDefault(data: unknown = {}): IErrorAPI {

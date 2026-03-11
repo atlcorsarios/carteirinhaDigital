@@ -1,6 +1,6 @@
 import type { TDefinitionsForQueryFilter } from './models/modelComponents/ModelQueryFilter'
-import { ClassProducts } from './ClassProducts'
-import { ClassUsers } from './ClassUsers'
+import { ClassProducts } from './resources/ClassProducts'
+import { ClassUsers } from './resources/ClassUsers'
 
 export class ClassDefinitions {
   static get queryFilterUsers(): TDefinitionsForQueryFilter {

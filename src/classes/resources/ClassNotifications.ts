@@ -1,5 +1,5 @@
-import type { INotification } from "./models/ModelNotifications";
-import { BaseClass } from "./subscriptions/BaseClass";
+import type { INotification } from '../models/resources/ModelNotifications'
+import { BaseClass } from '../subscriptions/BaseClass'
 
 export class ClassNotifications extends BaseClass<INotification> {
   constructor(data?: Partial<INotification>) {
@@ -15,7 +15,7 @@ export class ClassNotifications extends BaseClass<INotification> {
       sender: '',
       recipients: [],
       seen: false,
-      date: new Date()
+      date: new Date(),
     }
   }
 
@@ -23,5 +23,4 @@ export class ClassNotifications extends BaseClass<INotification> {
     const item = data as Partial<INotification>
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
   }
-
 }

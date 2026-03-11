@@ -1,4 +1,4 @@
-import type { IUser } from './ModelUser'
+import type { IUser } from './resources/ModelUser'
 
 export interface ITraceError {
   lineNumber: number

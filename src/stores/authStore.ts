@@ -2,8 +2,10 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import http from '@/services/axios'
 import { useListCacheStore } from './listCacheStore'
-import { ClassUsers } from '@/classes/ClassUsers'
-import type { IUser } from '@/classes/models/ModelUser'
+import { ClassUsers } from '@/classes/resources/ClassUsers'
+import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IVerifyWithOtp } from '@/classes/models/modelOtp/IVerifyWithOtp'
+import type { IOTPVerifyOptions } from '@/composables/useOTPVerify'
 
 export const useAuthStore = defineStore('auth', () => {
   const classUser = new ClassUsers({
@@ -34,6 +36,10 @@ export const useAuthStore = defineStore('auth', () => {
     listCacheStore.clearAll()
   }
 
+  async function generateOTP(emailSender: string, options: IOTPVerifyOptions = {}) {}
+
+  async function verify(payload: IVerifyWithOtp, options: IOTPVerifyOptions = {}) {}
+
   return {
     user,
     token,
@@ -41,5 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAdmin,
     fetchUser,
     logout,
+    generateOTP,
+    verify
   }
 })

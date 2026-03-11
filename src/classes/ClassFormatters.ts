@@ -1,7 +1,7 @@
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { i18n } from '@/plugins/i18n'
-import { ROLE_TRANSLATIONS, type TRole } from './models/ModelUser'
+import { ROLE_TRANSLATIONS, type TRole } from './models/resources/ModelUser'
 
 export class ClassFormatters {
   static formatBoolean(value: boolean, filterLabelKey?: string): string {
@@ -32,14 +32,14 @@ export class ClassFormatters {
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     }).format(new Date(date))
   }
 
   static formatTime(seconds: number): string {
-    const minutesMath = Math.floor(seconds / 60);
-    const secondsMath = seconds % 60;
-    return `${minutesMath}:${secondsMath.toString().padStart(2, '0')}`;
+    const minutesMath = Math.floor(seconds / 60)
+    const secondsMath = seconds % 60
+    return `${minutesMath}:${secondsMath.toString().padStart(2, '0')}`
   }
 
   static formatAmountIngredient(amount: number, measurement: string): string {
@@ -53,7 +53,7 @@ export class ClassFormatters {
   }
 
   static formatI18n(i18nKey: string = '', attribute?: string): string {
-    return attribute ? i18n.global.t(`${i18nKey}.${attribute}`) : '';
+    return attribute ? i18n.global.t(`${i18nKey}.${attribute}`) : ''
   }
 
   static formatPriceDynamic(valueInBase: number): string {

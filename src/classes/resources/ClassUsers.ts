@@ -1,9 +1,9 @@
-import type { IHeadersDataTable, TEntityConfig } from './models/modelComponents/ModelHeaderTable'
-import type { IFilterColumn } from './models/ModelFilterColumns'
-import type { IUser } from '@/classes/models/ModelUser'
-import type { IQueryFilter } from './models/modelComponents/ModelQueryFilter'
-import { BaseClass } from './subscriptions/BaseClass'
-import { ClassFormatters } from './ClassFormatters'
+import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
+import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
+import { BaseClass } from '../subscriptions/BaseClass'
+import { ClassFormatters } from '../ClassFormatters'
 
 export class ClassUsers extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
@@ -32,18 +32,18 @@ export class ClassUsers extends BaseClass<IUser> {
       idUser: {
         width: 50,
         excludeFromFilter: true,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       username: {
         maxWidth: 250,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       email: {
         maxWidth: 200,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       image: {
-        hidden: true
+        hidden: true,
       },
       role: {
         chartFormatter: ClassFormatters.formatRolesTranslate,
@@ -58,7 +58,7 @@ export class ClassUsers extends BaseClass<IUser> {
       phoneNumber: {
         align: 'end',
         maxWidth: 200,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       receiveNotifications: {
         align: 'center',
@@ -69,7 +69,7 @@ export class ClassUsers extends BaseClass<IUser> {
         cellClass: (value: boolean) => {
           if (value === true) return 'text-success font-weight-bold'
           else return 'text-error font-weight-bold'
-        }
+        },
       },
       active: {
         align: 'center',
@@ -101,7 +101,7 @@ export class ClassUsers extends BaseClass<IUser> {
   static get defaultFilterConfig(): Partial<IQueryFilter> {
     return {
       field: 'username',
-      condition: 'contains'
+      condition: 'contains',
     }
   }
 }

@@ -14,10 +14,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <InputPrice
-          v-model="product.price"
-          :rules="[rules.required()]"
-        />
+        <InputPrice v-model="product.price" :rules="[rules.required()]" />
       </v-col>
 
       <v-col cols="12" md="3" class="d-flex justify-center">
@@ -59,12 +56,12 @@
 <script setup lang="ts">
 // Componentes
 import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
-import InputRecipeWithSearch from '../fixtures/InputRecipeWithSearch.vue'
+import InputRecipeWithSearch from '../fixtures/ExempleInputResourceWithSearch.vue'
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputPrice from '../fixtures/InputPrice.vue'
 
 // Models
-import { type IProduct } from '@/classes/models/ModelIProduct'
+import { type IProduct } from '@/classes/models/resources/ModelIProduct'
 
 // Vue
 import { useRules } from 'vuetify/labs/rules'
@@ -77,12 +74,12 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const product = defineModel<IProduct>('product', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
   if (valid) {
-    emit('submit');
+    emit('submit')
   }
 }
 
@@ -93,5 +90,4 @@ defineExpose({
     return valid
   },
 })
-
 </script>

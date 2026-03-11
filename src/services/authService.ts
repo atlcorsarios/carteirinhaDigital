@@ -1,6 +1,6 @@
 import type { IAlterPassword, IConfirmPassword, ILogin } from '@/classes/models/ModelLogin'
 import http from './axios'
-import type { IUser } from '@/classes/models/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUser'
 import { usersServices } from './resources/usersService'
 
 export const authServices = {
