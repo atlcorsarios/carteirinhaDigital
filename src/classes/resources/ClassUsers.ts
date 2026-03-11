@@ -62,10 +62,10 @@ export class ClassUsers extends BaseClass<IUser> {
       },
       receiveNotifications: {
         align: 'center',
+        width: 50,
+        excludeFromFilter: true,
         chartFormatter: ClassFormatters.formatBoolean,
         value: (user: IUser) => ClassFormatters.formatBoolean(user.receiveNotifications),
-        excludeFromFilter: true,
-        width: 50,
         cellClass: (value: boolean) => {
           if (value === true) return 'text-success font-weight-bold'
           else return 'text-error font-weight-bold'

@@ -17,7 +17,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/carteirinha',
     name: 'Carteirinha',
-    component: () => import('@/views/NotificationsView.vue'),
+    component: () => import('@/views/CarteirinhaView.vue'),
     meta: {
       title: 'routes.carteirinha',
       icon: 'mdi-card-account-details',
