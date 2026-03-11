@@ -3,7 +3,7 @@ import { useSnackbar } from './useSnackbar';
 import { useAuthStore } from '@/stores/authStore';
 import { computed, ref } from 'vue';
 
-interface useOTPVerifyOptions {
+export interface useOTPVerifyOptions {
   navStep?: number;
   onSuccess?: (dados?: any) => void | Promise<void>;
 }
@@ -50,7 +50,7 @@ export function useOTPVerify() {
   const sendCode = async (emailSender: string, options: useOTPVerifyOptions = {}) => {
     loading.value = true;
     try {
-      await authStore.generateOtp(emailSender);
+      await authStore.generateOTP(emailSender);
       if (options.navStep) changeStep(options.navStep);
       if (options.onSuccess) await options.onSuccess();
 

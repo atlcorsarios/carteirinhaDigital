@@ -4,6 +4,8 @@ import http from '@/services/axios'
 import { useListCacheStore } from './listCacheStore'
 import { ClassUsers } from '@/classes/ClassUsers'
 import type { IUser } from '@/classes/models/ModelUser'
+import type { IVerifyWithOtp } from '@/classes/models/modelOtp/IVerifyWithOtp'
+import type { useOTPVerifyOptions } from '@/composables/useOTPVerify'
 
 export const useAuthStore = defineStore('auth', () => {
   const classUser = new ClassUsers({
@@ -34,6 +36,14 @@ export const useAuthStore = defineStore('auth', () => {
     listCacheStore.clearAll()
   }
 
+  async function generateOTP(emailSender: string, options: useOTPVerifyOptions = {}) {
+
+  }
+
+  async function verify(requestVerify: IVerifyWithOtp, options: useOTPVerifyOptions = {}) {
+
+  }
+
   return {
     user,
     token,
@@ -41,5 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
     isAdmin,
     fetchUser,
     logout,
+    generateOTP,
+    verify
   }
 })

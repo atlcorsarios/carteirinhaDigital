@@ -98,9 +98,9 @@ import { computed, onMounted, ref } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { menuItems } = useNavigation()
-const authStore = useAuthStore()
-const router = useRouter()
 const { t } = useI18n()
+const router = useRouter()
+const authStore = useAuthStore()
 const notificationsStore = useNotificationsStore()
 const hasUnreadNotifications = ref(false);
 

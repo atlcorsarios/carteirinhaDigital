@@ -108,14 +108,15 @@ import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { ref, computed, onUnmounted } from 'vue';
+import { useOTPVerify } from '@/composables/useOTPVerify';
 
 const { t } = useI18n();
-const router = useRouter();
 const { notify } = useSnackbar();
+const { loading, step, changeStep, otpCode } = useOTPVerify();
+
+const router = useRouter();
 const rules = useRules();
 
-const step = ref(1);
-const loading = ref(false);
 const formRef = ref<any>(null);
 const forgotForm = ref<{
   email: string

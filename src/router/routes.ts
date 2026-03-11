@@ -105,6 +105,27 @@ export const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+    {
+    path: '/config',
+    name: 'Configurações',
+    component: () => import('@/views/ConfigView.vue'),
+    meta: {
+      title: 'routes.config',
+      icon: 'mdi-cog',
+      hotkey: 'cmd+shift+s',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/notificacoes',
+    name: 'Notificações',
+    component: () => import('@/views/NotificationsView.vue'),
+    meta: {
+      title: 'routes.notificacoes',
+      icon: 'mdi-bell',
+      hotkey: 'cmd+shift+b',
+    },
+  },
   {
     path: '/login',
     name: 'Login',
