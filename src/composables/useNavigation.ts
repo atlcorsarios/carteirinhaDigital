@@ -21,7 +21,7 @@ export function useNavigation() {
     return {
       name: route.name as string | undefined,
       path: route.path,
-      title: route.meta?.title as string | undefined,
+      title: route.meta?.title as string,
       icon: route.meta?.icon as string | undefined,
       hotkey: route.meta?.hotkey as string | undefined,
       hidden: route.meta?.hidden as boolean | undefined,

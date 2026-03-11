@@ -105,7 +105,7 @@ export const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-    {
+  {
     path: '/config',
     name: 'Configurações',
     component: () => import('@/views/ConfigView.vue'),
@@ -136,13 +136,13 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/forgot-password',
-    name: 'ForgotPassword',
-    component: () => import('@/views/ForgotPasswordView.vue'),
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import('@/views/OnboardingView.vue'),
     meta: {
-      title: 'routes.forgotPassword',
       hidden: true,
-    },
+      requiresAuth: true
+    }
   },
   {
     path: '/forbidden',

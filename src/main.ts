@@ -1,5 +1,4 @@
 import './assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
@@ -7,7 +6,6 @@ import router from './router'
 import { i18n } from './plugins/i18n'
 import vuetify from './plugins/vuetify'
 import { createRulesPlugin } from 'vuetify/labs/rules'
-import './services/axios'
 
 const app = createApp(App)
 

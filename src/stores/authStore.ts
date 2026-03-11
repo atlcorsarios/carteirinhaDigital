@@ -1,53 +1,95 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import http from '@/services/axios'
+import { supabase } from '@/services/supabase'
+import type { User, Session } from '@supabase/supabase-js'
 import { useListCacheStore } from './listCacheStore'
-import { ClassUsers } from '@/classes/resources/ClassUsers'
-import type { IUser } from '@/classes/models/resources/ModelUser'
-import type { IVerifyWithOtp } from '@/classes/models/modelOtp/IVerifyWithOtp'
-import type { IOTPVerifyOptions } from '@/composables/useOTPVerify'
+import { useRoute, useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
-  const classUser = new ClassUsers({
-    email: 'avelito@gmail.com',
-    username: 'AVELITO',
-    role: 'ADMIN',
-  })
-  const user = ref<IUser | undefined>(classUser.model)
-  const token = ref(localStorage.getItem('token') || null)
-  const isAuthenticated = true // computed(() => !!token.value);
+  const user = ref<User | null>(null)
+  const session = ref<Session | null>(null)
+  const userProfile = ref<any>(null)
+  const loading = ref(true)
   const listCacheStore = useListCacheStore()
-  const isAdmin = true // computed(() => user.value?.role === 'ADMIN');
+  const router = useRouter()
+  const route = useRoute()
 
-  async function fetchUser() {
-    if (!token.value) return
-    try {
-      const res = await http.get('/api/me')
-      user.value = res.data
-    } catch (error) {
-      logout()
+  const isAuthenticated = computed(() => !!user.value)
+  const isAdmin = computed(() => userProfile.value?.cargo === 'diretoria')
+  const isProfileComplete = computed(() => !!userProfile.value?.documento || !!userProfile.value?.cargo)
+
+  async function fetchUser(userId: string) {
+    if (!userId) return
+    
+    const { data, error } = await supabase
+      .from('usuarios')
+      .select('*')
+      .eq('id', userId)
+      .single()
+
+    if (!error && data) {
+      userProfile.value = data
     }
   }
 
-  function logout() {
-    token.value = null
-    user.value = undefined
-    localStorage.removeItem('token')
-    listCacheStore.clearAll()
+  async function initializeAuth() {
+    const { data } = await supabase.auth.getSession()
+    session.value = data.session
+    user.value = data.session?.user || null
+
+    if (user.value) {
+      await fetchUser(user.value.id)
+    }
+
+    loading.value = false
+
+    supabase.auth.onAuthStateChange(async (_event, currentSession) => {
+      session.value = currentSession
+      user.value = currentSession?.user || null
+      if (user.value) {
+        await fetchUser(user.value.id)
+
+        if (!isProfileComplete.value && router.currentRoute.value.name !== 'Onboarding') {
+          router.push({ name: 'Onboarding' })
+        }
+      } else {
+        userProfile.value = null
+      }
+    })
   }
 
-  async function generateOTP(emailSender: string, options: IOTPVerifyOptions = {}) {}
+  async function loginWithGoogle() {
+    const redirectPath = (route.query.redirect as string) || '/';
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}${redirectPath}`
+      }
+    })
+    if (error) throw error
+  }
 
-  async function verify(payload: IVerifyWithOtp, options: IOTPVerifyOptions = {}) {}
+  async function logout() {
+    const { error } = await supabase.auth.signOut()
+    if (error) throw error
+    user.value = null
+    session.value = null
+    userProfile.value = null
+    listCacheStore.clearAll()
+    router.push({ name: 'Login' })
+  }
 
   return {
     user,
-    token,
+    session,
+    userProfile,
+    loading,
     isAuthenticated,
     isAdmin,
-    fetchUser,
+    isProfileComplete,
+    initializeAuth,
+    loginWithGoogle,
     logout,
-    generateOTP,
-    verify
+    fetchUser
   }
 })

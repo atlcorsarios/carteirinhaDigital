@@ -9,8 +9,8 @@
     <template v-slot:prepend>
       <v-list nav>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-          :title="authStore.user?.username"
+          :prepend-avatar="authStore.user?.user_metadata.avatar_url"
+          :title="authStore.user?.user_metadata.full_name"
           :subtitle="authStore.user?.email"
         />
       </v-list>
@@ -25,8 +25,8 @@
             <v-list-item
               v-bind="props"
               :prepend-icon="item.icon"
-              :title="t(item.title || '')"
-              v-tooltip="t(item.title || '')"
+              :title="extractTitle(item.title)"
+              v-tooltip="extractTitle(item.title)"
             />
           </template>
 
@@ -34,10 +34,10 @@
             v-for="child in item.children"
             :key="child.path"
             :prepend-icon="child.icon"
-            :title="t(child.title || '')"
+            :title="extractTitle(child.title)"
             :to="{ name: child.name }"
             exact
-            v-tooltip="t(child.title || '')"
+            v-tooltip="extractTitle(child.title)"
             class="child-item"
           >
             <template v-slot:append v-if="item.hotkey && mdAndUp">
@@ -55,10 +55,10 @@
         <v-list-item
           v-else
           :prepend-icon="getDynamicIcon(item)"
-          :title="t(item.title || '')"
+          :title="extractTitle(item.title)"
           :to="{ name: item.name }"
           exact
-          v-tooltip="t(item.title || '')"
+          v-tooltip="extractTitle(item.title)"
         >
           <template v-slot:append v-if="item.hotkey && mdAndUp">
             <v-hotkey
@@ -120,6 +120,11 @@ const drawer = computed({
   set: (val) => emits('update:modelValue', val),
 })
 
+function extractTitle(title: string | undefined) {
+  const titlePayload = title || '';
+  return title ? t(titlePayload) : ''
+}
+
 const flattenMenuItems = (items: typeof menuItems.value): any[] => {
   return items.reduce((acc: any[], item) => {
     acc.push(item)
@@ -148,9 +153,8 @@ function getDynamicIcon(item: any): string {
   return item.icon;
 }
 
-function handleLogout() {
-  authStore.logout()
-  router.push({ name: 'Login' })
+async function handleLogout() {
+  await authStore.logout()
 }
 
 </script>

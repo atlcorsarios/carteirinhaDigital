@@ -4,7 +4,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="js">
 import { ref, onMounted } from 'vue'
 
 const deferredPrompt = ref(null)

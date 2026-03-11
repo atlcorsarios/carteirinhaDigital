@@ -27,15 +27,22 @@ import AppBar from './components/layouts/base/AppBar.vue';
 import Navigation from './components/layouts/base/Navigation.vue';
 import Breadcrumbs from './components/layouts/base/Breadcrumbs.vue';
 import BtnFabOtherTemplate from './components/layouts/BtnFabOtherTemplate.vue';
+import { useAuthStore } from '@/stores/authStore';
 import { useQuotationStore } from './stores/quotationStore';
 import { BASE_CURRENCY, getCurrency } from './locales/definitionsLocales';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { computed, watch, ref } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
+const authStore = useAuthStore();
 const quotationStore = useQuotationStore();
 const { t, locale } = useI18n();
 const route = useRoute();
+
+
+onMounted(() => {
+  authStore.initializeAuth()
+})
 
 watch(
   [() => route.meta.title, locale],
