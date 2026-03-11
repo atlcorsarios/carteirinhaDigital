@@ -15,12 +15,7 @@
     :service-save="usersServices.saveUser"
   >
     <template #form="{ model, updateValid, refForm, submitForm }">
-      <UserForm
-        :ref="refForm"
-        :user="model"
-        @update:valid="updateValid"
-        @submit="submitForm"
-      />
+      <UserForm :ref="refForm" :user="model" @update:valid="updateValid" @submit="submitForm" />
     </template>
   </GenericView>
 </template>
@@ -28,13 +23,13 @@
 <script setup lang="ts">
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
-import UserForm from '@/components/forms/UserForm.vue'
+import UserForm from '@/components/forms/resources/UserForm.vue'
 
 // Models
-import type { IUser } from '@/classes/models/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUser'
 
 // Classes
-import { ClassUsers } from '@/classes/ClassUsers'
+import { ClassUsers } from '@/classes/resources/ClassUsers'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services

@@ -1,9 +1,9 @@
 // Models
 import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginator'
-import type { IUser } from '@/classes/models/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUser'
 
 // Services
-import http from '../axios';
+import http from '../axios'
 
 export const usersServices = {
   async getAllUsers(offset: number, limit: number): Promise<IHeaderPaginatorModel<IUser>> {
@@ -46,20 +46,18 @@ export const usersServices = {
             receiveNotifications: false,
             active: false,
           },
-        ]
-      };
+        ],
+      }
 
-      await new Promise(resolve => setTimeout(resolve, 2500));
+      await new Promise((resolve) => setTimeout(resolve, 2500))
 
-      return mockData;
+      return mockData
     } catch (error) {
       throw error
     }
   },
 
-  async saveUser() {
-
-  },
+  async saveUser() {},
 
   async searchUsuarios() {
     try {

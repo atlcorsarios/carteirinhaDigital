@@ -28,7 +28,7 @@
 
     <v-text-field
       v-model="forgotForm.confirmPassword"
-      :rules="[rules.required(), rules.maxLength(20), rules.minLength(6)]"
+      :rules="validationsConfirmPassword"
       :label="t('forgotPassword.stepAlterPassword.labelConfirmPassword')"
       :placeholder="t('forgotPassword.stepAlterPassword.placeholderConfirmPassword')"
       :type="forgotForm.viewConfirmPassword ? 'text' : 'password'"
@@ -48,64 +48,60 @@
       </template>
     </v-text-field>
 
-    <v-btn
-      block
-      color="primary"
-      size="large"
-      type="submit"
-      :loading="loading"
-      class="mt-4"
-    >
+    <v-btn block color="primary" size="large" type="submit" :loading="loading" class="mt-4">
       {{ t('forgotPassword.stepAlterPassword.btnAlterPassword') }}
     </v-btn>
   </v-form>
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables/useSnackbar';
-import { useAuthStore } from '@/stores/authStore';
-import { useRules } from 'vuetify/labs/rules';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useSnackbar } from '@/composables/useSnackbar'
+import { useAuthStore } from '@/stores/authStore'
+import { useRules } from 'vuetify/labs/rules'
+import { customizedRules } from '@/utils/customizedRules'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const { t } = useI18n();
+const { notify } = useSnackbar();
+
 const rules = useRules();
 const router = useRouter();
-const snackbar = useSnackbar();
-const authStore = useAuthStore;
+const route = useRoute();
+const authStore = useAuthStore();
 
-const loading = ref(false);
+const loading = ref(false)
 const props = defineProps<{ otp: string }>()
 const forgotForm = defineModel<{
-  email: string;
-  password: string;
-  confirmPassword: string;
-  viewPassword: boolean;
-  viewConfirmPassword: boolean;
-}>('forgotForm', { required: true });
+  email: string
+  password: string
+  confirmPassword: string
+  viewPassword: boolean
+  viewConfirmPassword: boolean
+}>('forgotForm', { required: true })
+
+const validationsConfirmPassword = [
+  rules.required(),
+  customizedRules.equals(forgotForm.value.password),
+]
 
 async function handleAlterPassword() {
-  if (forgotForm.value.password !== forgotForm.value.confirmPassword) {
-    snackbar.notify('');
-    NotifyService.error('validations.equal');
-    return;
-  }
-
-  loading.value = true;
+  loading.value = true
   try {
-    await authStore.reset({
+    await authStore.verify({
       code: props.otp,
       email: forgotForm.value.email,
       password: forgotForm.value.password,
     });
+    notify('auth.passwordChanged')
 
-    NotifyService.success('auth.passwordChanged');
-    router.push({ name: 'Home' });
+    const redirectPath = (route.query.redirect as string) || '/';
+    router.push(redirectPath);
   } catch (error: any) {
-    NotifyService.error(error);
+    notify(error)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 </script>

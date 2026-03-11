@@ -1,5 +1,5 @@
-import { ClassNotifications } from '@/classes/ClassNotifications'
-import type { INotification } from '@/classes/models/ModelNotifications'
+import { ClassNotifications } from '@/classes/resources/ClassNotifications'
+import type { INotification } from '@/classes/models/resources/ModelNotifications'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useAuthStore } from './authStore'

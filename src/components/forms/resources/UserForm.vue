@@ -51,7 +51,9 @@
         <v-switch
           v-model="user.receiveNotifications"
           :label="t('forms.formUser.receiveNotifications.label')"
-          :indeterminate="user.receiveNotifications === null || user.receiveNotifications === undefined"
+          :indeterminate="
+            user.receiveNotifications === null || user.receiveNotifications === undefined
+          "
           color="success"
           class="m-0 p-0"
         />
@@ -71,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ROLE_TRANSLATIONS, validRoles, type IUser } from '@/classes/models/ModelUser'
+import { ROLE_TRANSLATIONS, validRoles, type IUser } from '@/classes/models/resources/ModelUser'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
@@ -82,19 +84,19 @@ const { t } = useI18n()
 const formRef = ref<any>(null)
 const user = defineModel<IUser>('user', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit'])
 
 const roleOptions = computed(() => {
   return validRoles.map((role) => ({
     title: t(ROLE_TRANSLATIONS[role]),
-    value: role
-  }));
-});
+    value: role,
+  }))
+})
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
   if (valid) {
-    emit('submit');
+    emit('submit')
   }
 }
 
@@ -104,6 +106,5 @@ defineExpose({
     const { valid } = await formRef.value?.validate()
     return valid
   },
-});
-
+})
 </script>

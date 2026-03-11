@@ -36,12 +36,7 @@
         <v-col cols="8">
           <p>{{ formatPrice }}</p>
           <p>{{ categoryProduct }}</p>
-          <v-tabs v-model="tab"
-            color="primary"
-            slider-color="indigo-lighten-4"
-            grow
-            class="mt-5"
-          >
+          <v-tabs v-model="tab" color="primary" slider-color="indigo-lighten-4" grow class="mt-5">
             <v-tab value="ingredients">{{ t('forms.formRecipe.ingredients.headerTable') }}</v-tab>
             <v-tab value="preparation">{{ t('forms.formRecipe.preparation.label') }}</v-tab>
           </v-tabs>
@@ -57,8 +52,14 @@
               <v-sheet class="pa-5">
                 <v-list-item v-for="(ingredient, index) in ingredients" :key="index">
                   <v-list-item-title>{{ ingredient.ingredient.description }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ ingredient.amount }} - {{ ingredient.ingredient.measurement }}</v-list-item-subtitle>
-                  <v-list-item-subtitle>{{ ingredient.ingredient.category.group }} - {{ ingredient.ingredient.category.description }}</v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    >{{ ingredient.amount }} -
+                    {{ ingredient.ingredient.measurement }}</v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle
+                    >{{ ingredient.ingredient.category.group }} -
+                    {{ ingredient.ingredient.category.description }}</v-list-item-subtitle
+                  >
                   <v-divider class="mt-2" :thickness="3" />
                 </v-list-item>
               </v-sheet>
@@ -75,16 +76,16 @@
 
 <script setup lang="ts">
 // Models
-import type { IProduct } from '@/classes/models/ModelIProduct';
+import type { IProduct } from '@/classes/models/resources/ModelIProduct'
 
 // Classes
-import { ClassFormatters } from '@/classes/ClassFormatters';
+import { ClassFormatters } from '@/classes/ClassFormatters'
 
 // Vue
 import { useI18n } from 'vue-i18n'
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 
-const { t } = useI18n();
+const { t } = useI18n()
 
 const props = defineProps<{
   product: IProduct
@@ -93,26 +94,28 @@ const props = defineProps<{
 defineEmits(['close'])
 
 const imageUrl = computed(() => {
-  return props.product.image || undefined;
+  return props.product.image || undefined
 })
 
 const formatPrice = computed(() => {
-  return ClassFormatters.formatPriceDynamic(props.product.price ?? 0);
+  return ClassFormatters.formatPriceDynamic(props.product.price ?? 0)
 })
 
 const categoryProduct = computed(() => {
-  return props.product.category ? `${props.product.category.group} - ${props.product.category.description}` : '';
+  return props.product.category
+    ? `${props.product.category.group} - ${props.product.category.description}`
+    : ''
 })
 
 const ingredients = computed(() => {
-  return props.product.recipe.ingredients || [];
+  return props.product.recipe.ingredients || []
 })
 
 const preparation = computed(() => {
-  return props.product.recipe.preparation || '';
+  return props.product.recipe.preparation || ''
 })
 
-const tab = ref('ingredients');
+const tab = ref('ingredients')
 </script>
 
 <style scoped>

@@ -1,9 +1,9 @@
-import { BaseClass } from "./subscriptions/BaseClass"
-import type { IProduct } from "./models/ModelIProduct"
-import type { IHeadersDataTable, TEntityConfig } from "./models/modelComponents/ModelHeaderTable"
-import { ClassFormatters } from "./ClassFormatters"
-import type { IFilterColumn } from "./models/ModelFilterColumns"
-import type { IQueryFilter } from "./models/modelComponents/ModelQueryFilter"
+import { BaseClass } from '../subscriptions/BaseClass'
+import type { IProduct } from '../models/resources/ModelIProduct'
+import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
+import { ClassFormatters } from '../ClassFormatters'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
+import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 
 export class ClassProducts extends BaseClass<IProduct> {
   constructor(data?: Partial<IProduct>) {
@@ -32,17 +32,17 @@ export class ClassProducts extends BaseClass<IProduct> {
         width: 50,
         maxWidth: 100,
         minWidth: 30,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       description: {
         align: 'center',
         width: 700,
         maxWidth: 850,
         minWidth: 250,
-        excludeFromChart: true
+        excludeFromChart: true,
       },
       image: {
-        hidden: true
+        hidden: true,
       },
       imageFile: {
         hidden: true,
@@ -83,13 +83,13 @@ export class ClassProducts extends BaseClass<IProduct> {
       ClassProducts.fieldConfig,
     )
 
-    return autoFilters;
+    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {
     return {
       field: 'description',
-      condition: 'contains'
+      condition: 'contains',
     }
   }
 }

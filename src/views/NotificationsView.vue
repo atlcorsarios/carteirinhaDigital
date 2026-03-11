@@ -15,10 +15,10 @@
 import GenericView from '@/views/view/GenericView.vue'
 
 // Models
-import type { INotification } from '@/classes/models/ModelNotifications'
+import type { INotification } from '@/classes/models/resources/ModelNotifications'
 
 // Classes
-import { ClassNotifications } from '@/classes/ClassNotifications'
+import { ClassNotifications } from '@/classes/resources/ClassNotifications'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
