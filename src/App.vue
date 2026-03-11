@@ -7,7 +7,7 @@
 
     <v-main class="main-scroll position-relative">
       <div v-if="isLayoutVisible" class="app-watermark">
-        <img src="/Watermark.jpg" />
+        <img src="/Watermark.png" />
       </div>
 
       <Breadcrumbs v-if="isLayoutVisible" />
@@ -33,7 +33,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { computed, watch, ref } from 'vue';
 
-const quotationStore = useQuotationStore()
+const quotationStore = useQuotationStore();
 const { t, locale } = useI18n();
 const route = useRoute();
 
