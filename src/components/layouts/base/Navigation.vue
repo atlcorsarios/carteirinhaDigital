@@ -9,9 +9,10 @@
     <template v-slot:prepend>
       <v-list nav>
         <v-list-item
-          :prepend-avatar="authStore.user?.user_metadata.avatar_url"
-          :title="authStore.user?.user_metadata.full_name"
-          :subtitle="authStore.user?.email"
+          :prepend-avatar="userAvatar"
+          :title="authStore.user?.user_metadata?.full_name"
+          :subtitle="authStore.userProfile?.cargo"
+          @click="router.push({ name: 'Perfil' })"
         />
       </v-list>
     </template>
@@ -119,6 +120,15 @@ const drawer = computed({
   get: () => props.modelValue,
   set: (val) => emits('update:modelValue', val),
 })
+
+const userAvatar = computed(() => {
+  if (authStore.userProfile?.avatar_url) {
+    return authStore.userProfile.avatar_url;
+  }
+
+  const name = authStore.userProfile?.username || authStore.user?.user_metadata?.full_name || 'Usuário';
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=primary&color=fff&rounded=true`;
+});
 
 function extractTitle(title: string | undefined) {
   const titlePayload = title || '';

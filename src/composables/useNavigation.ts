@@ -8,7 +8,7 @@ export function useNavigation() {
   const authStore = useAuthStore()
 
   const canAccess = (route: RouteRecordRaw): boolean => {
-    if (route.meta?.hidden) return false
+    if (route.meta?.hidden || route.meta?.excludeNav) return false
 
     const requiredRoles = route.meta?.authorize as string[] | undefined
     if (!requiredRoles || requiredRoles.length === 0) return true

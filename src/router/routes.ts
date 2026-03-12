@@ -15,6 +15,16 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/perfil',
+    name: 'Perfil',
+    component: () => import('@/views/PerfilView.vue'),
+    meta: {
+      title: 'routes.perfil',
+      excludeNav: true,
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/carteirinha',
     name: 'Carteirinha',
     component: () => import('@/views/CarteirinhaView.vue'),
@@ -73,6 +83,51 @@ export const routes: Array<RouteRecordRaw> = [
           defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
         },
       },
+      {
+        path: 'beneficios',
+        name: 'Beneficios',
+        component: () => import('@/views/products/BeneficiosView.vue'),
+        meta: {
+          title: 'routes.products.children.beneficios',
+          icon: 'mdi-clipboard-text',
+          hotkey: 'cmd+alt+b',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
+      {
+        path: 'promocoes',
+        name: 'Promoções',
+        component: () => import('@/views/products/PromocoesView.vue'),
+        meta: {
+          title: 'routes.products.children.promocoes',
+          icon: 'mdi-sale',
+          hotkey: 'cmd+alt+l',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
+      {
+        path: 'descontos',
+        name: 'Descontos',
+        component: () => import('@/views/products/DescontosView.vue'),
+        meta: {
+          title: 'routes.products.children.descontos',
+          icon: 'mdi-tag-multiple',
+          hotkey: 'cmd+alt+d',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
     ],
   },
   {
@@ -85,7 +140,7 @@ export const routes: Array<RouteRecordRaw> = [
       icon: 'mdi-shield-crown',
       hotkey: 'cmd+shift+a',
       requiresAuth: true,
-      authorize: ['ADMIN'],
+      authorize: ['diretoria'],
     },
     children: [
       {
@@ -97,7 +152,22 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-account-group',
           hotkey: 'cmd+alt+u',
           requiresAuth: true,
-          authorize: ['ADMIN'],
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'planos',
+        name: 'Planos',
+        component: () => import('@/views/admin/PlanosView.vue'),
+        meta: {
+          title: 'routes.adm.children.planos',
+          icon: 'mdi-medal',
+          hotkey: 'cmd+alt+u',
+          requiresAuth: true,
+          authorize: ['diretoria'],
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterUsers.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
@@ -106,9 +176,9 @@ export const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/config',
+    path: '/configuracoes',
     name: 'Configurações',
-    component: () => import('@/views/ConfigView.vue'),
+    component: () => import('@/views/ConfigurationsView.vue'),
     meta: {
       title: 'routes.config',
       icon: 'mdi-cog',
@@ -140,6 +210,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Onboarding',
     component: () => import('@/views/OnboardingView.vue'),
     meta: {
+      title: 'routes.onboarding',
       hidden: true,
       requiresAuth: true
     }

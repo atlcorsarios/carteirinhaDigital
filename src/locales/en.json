@@ -8,6 +8,8 @@
   },
   "routes": {
     "home": "Home",
+    "onboarding": "Complete profile",
+    "perfil": "Profile",
     "carteirinha": "Card",
     "partners": "Partners",
     "plano": "Subscription plan",

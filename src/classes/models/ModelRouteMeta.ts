@@ -8,6 +8,7 @@ export interface IRouteMeta {
   icon?: string
   hotkey?: string
   hidden?: boolean
+  excludeNav?: boolean
   requiresAuth?: boolean
   authorize?: string[]
   children?: IRouteMeta[]

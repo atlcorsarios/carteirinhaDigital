@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUser(userId: string) {
     if (!userId) return
-    
+
     const { data, error } = await supabase
       .from('usuarios')
       .select('*')
@@ -36,6 +36,10 @@ export const useAuthStore = defineStore('auth', () => {
     const { data } = await supabase.auth.getSession()
     session.value = data.session
     user.value = data.session?.user || null
+
+    if (window.location.hash.includes('access_token')) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
 
     if (user.value) {
       await fetchUser(user.value.id)

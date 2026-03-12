@@ -8,6 +8,8 @@
   },
   "routes": {
     "home": "Inicio",
+    "onboarding": "Perfil completo",
+    "perfil": "Perfil",
     "carteirinha": "Tarjeta",
     "socios": "Socios",
     "plano": "Plan de suscripción",
