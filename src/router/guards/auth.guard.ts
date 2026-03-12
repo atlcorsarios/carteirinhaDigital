@@ -15,7 +15,7 @@ export const authGuard = async (
   const isAuthenticated = !!session
 
   if (requiresAuth && !isAuthenticated) {
-    next({ name: 'Login' })
+    next({ name: 'Login', query: { redirect: to.fullPath } })
     return
   }
 
