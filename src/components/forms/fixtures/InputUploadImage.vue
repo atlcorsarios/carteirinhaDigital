@@ -1,242 +1,156 @@
 <template>
-  <div class="input-upload-image position-relative">
-    <div class="d-flex justify-space-between align-center mb-1">
-      <div class="text-caption text-medium-emphasis">{{ label }}</div>
+  <div class="d-flex flex-column align-center justify-center">
+    <div class="avatar-wrapper position-relative" @click="triggerInput">
+      <v-avatar
+        size="120"
+        color="grey-lighten-3"
+        class="elevation-2 cursor-pointer border"
+      >
+        <v-img v-if="displayUrl" :src="displayUrl" cover>
+          <template v-slot:placeholder>
+            <div class="d-flex align-center justify-center fill-height">
+              <v-progress-circular indeterminate color="primary" v-if="isProcessing" />
+              <v-icon v-else icon="mdi-image" size="48" color="grey-darken-1" />
+            </div>
+          </template>
+        </v-img>
+
+        <div v-else class="d-flex align-center justify-center fill-height w-100">
+          <v-progress-circular indeterminate color="primary" v-if="isProcessing" />
+          <v-icon v-else icon="mdi-camera-plus" size="48" color="grey-darken-1" />
+        </div>
+      </v-avatar>
+
       <v-btn
-        v-if="!modelValue && !isCompressing && !disabled"
-        icon="mdi-paperclip"
-        variant="text"
-        density="compact"
+        icon="mdi-camera"
+        size="small"
         color="primary"
-        @click="triggerCamera"
-        v-tooltip="t('tooltips.forms.attach')"
+        elevation="4"
+        class="camera-badge"
+        @click.stop="triggerInput"
+        :disabled="isProcessing || disabled"
+        v-tooltip="t('tooltips.forms.attach') || 'Alterar foto'"
       />
     </div>
 
-    <v-file-upload
-      ref="fileUploadRef"
-      :model-value="rawFiles"
-      :disabled="disabled || isCompressing"
-      :accept="accept"
-      :clearable="!isCompressing"
-      :title="titleText"
-      density="compact"
-      variant="outlined"
-      :height="isCompressing || rawFiles.length ? 'auto' : 60"
-      max-height="80"
-      icon="mdi-upload"
-      class="custom-file-upload"
-      @update:model-value="handleFileSelection"
-    >
-      <template v-slot:item="{ props: itemProps }">
-        <v-file-upload-item v-bind="itemProps" lines="one" nav>
-          <template v-slot:prepend>
-            <v-avatar size="48" rounded class="mr-2 border">
-              <v-img
-                v-if="rawFiles[0]?.type.startsWith('image/')"
-                :src="previewUrl"
-                cover
-                alt="Preview"
-              >
-                <template v-slot:placeholder>
-                  <v-icon icon="mdi-image" />
-                </template>
-              </v-img>
-
-              <v-icon
-                v-else
-                icon="mdi-file-document-outline"
-                color="medium-emphasis"
-              />
-            </v-avatar>
-          </template>
-
-          <template v-slot:title>
-            <div class="text-subtitle-2 text-truncate">
-              {{ fileName }}
-            </div>
-          </template>
-
-          <template v-slot:subtitle>
-            <span class="text-caption">
-              {{ fileSizeFormatted }}
-            </span>
-          </template>
-        </v-file-upload-item>
-      </template>
-    </v-file-upload>
-
-    <v-progress-linear
-      v-if="isCompressing"
-      indeterminate
-      color="primary"
-      height="2"
-      class="position-absolute bottom-0 w-100"
-    />
+    <div v-if="label" class="text-caption mt-2 text-medium-emphasis">
+      {{ isProcessing ? 'Processando e enviando...' : label }}
+    </div>
 
     <input
-      ref="cameraInputRef"
+      ref="fileInputRef"
       type="file"
       :accept="accept"
       capture="environment"
-      style="display: none"
-      @change="handleCameraCapture"
+      class="d-none"
+      @change="handleFileSelection"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import imageCompression from 'browser-image-compression'
+import { supabase } from '@/services/supabase'
+import { useSnackbar } from '@/composables/useSnackbar'
+import { sanitizeName } from '@/utils/sanitizeForBucket'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, watch, onUnmounted, type PropType } from 'vue'
+import { ref, computed } from 'vue'
 
-const { t } = useI18n();
+const { t } = useI18n()
+const { notify } = useSnackbar()
+
+const modelUrl = defineModel<string>('url', { required: false, default: '' });
 
 const props = defineProps({
-  modelValue: {
-    type: Object as PropType<File | File[] | null>,
-    default: null
-  },
-  label: { type: String },
+  label: { type: String, default: 'Foto de Perfil' },
+  bucket: { type: String, required: true },
+  pathPrefix: { type: String, default: 'uploads' },
+  owner: { type: String, required: true },
+  fileName: { type: String, defaul: '' },
   disabled: { type: Boolean, default: false },
-  accept: {
-    type: String,
-    default: 'image/*'
-  },
+  accept: { type: String, default: 'image/*' },
   compressionOptions: {
     type: Object,
     default: () => ({
       maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
+      maxWidthOrHeight: 1080,
       useWebWorker: true,
-      fileType: "image/webp",
+      fileType: 'image/webp',
       initialQuality: 0.8
     })
   }
 })
 
-const emits = defineEmits(['update:modelValue'])
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const isProcessing = ref(false)
+const localPreview = ref('')
 
-const fileUploadRef = ref()
-const cameraInputRef = ref()
-const isCompressing = ref(false)
-const rawFiles = ref<File[]>([])
-const previewUrl = ref('')
+const displayUrl = computed(() => localPreview.value || modelUrl.value)
 
-watch(() => props.modelValue, (newVal) => {
-  if (newVal) {
-    const file = Array.isArray(newVal) ? newVal[0] : newVal
-    if (file) {
-      rawFiles.value = [file]
-      generatePreview(file)
-    } else {
-      clearInternal()
-    }
-  } else {
-    clearInternal()
+function triggerInput() {
+  if (!isProcessing.value && !props.disabled) {
+    fileInputRef.value?.click()
   }
-}, { immediate: true })
-
-const titleText = computed(() => isCompressing.value
-  ? 'messages.components.inputUploadImage.isCompressing'
-  : 'messages.components.inputUploadImage.empty'
-)
-
-const fileName = computed(() => {
-  if (isCompressing.value) return 'messages.components.inputUploadImage.inLoading'
-  const file = Array.isArray(props.modelValue) ? props.modelValue[0] : props.modelValue
-  return file?.name || ''
-})
-
-const fileSizeFormatted = computed(() => {
-  if (isCompressing.value) return 'messages.components.inputUploadImage.inLoading'
-  const file = Array.isArray(props.modelValue) ? props.modelValue[0] : props.modelValue
-  return formatSize(file?.size || 0)
-})
-
-async function handleFileSelection(files: File[] | File) {
-  const file = Array.isArray(files) ? files[0] : files
-  if (!file) {
-    clearFile()
-    return
-  }
-  await processAndEmit(file)
 }
 
-async function handleCameraCapture(event: Event) {
+async function handleFileSelection(event: Event) {
   const target = event.target as HTMLInputElement
-  if (target.files && target.files[0]) {
-    await processAndEmit(target.files[0])
-  }
-  target.value = ''
-}
-
-async function processAndEmit(originalFile: File) {
-  if (!originalFile.type.startsWith('image/')) {
-    generatePreview(originalFile)
-    emits('update:modelValue', originalFile)
-    return
-  }
-
-  isCompressing.value = true
-  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
-  previewUrl.value = ''
+  const file = target.files?.[0]
+  if (!file) return
 
   try {
-    const originalName = originalFile.name.replace(/\.[^/.]+$/, "")
-    const newFileName = `${originalName}.webp`
-    const compressedBlob = await imageCompression(originalFile, props.compressionOptions)
+    isProcessing.value = true
 
-    const compressedFile = new File([compressedBlob], newFileName, {
-      type: "image/webp",
-      lastModified: Date.now()
-    })
+    if (localPreview.value) URL.revokeObjectURL(localPreview.value)
+    localPreview.value = URL.createObjectURL(file)
 
-    generatePreview(compressedFile)
-    emits('update:modelValue', compressedFile)
+    const compressedFile = await imageCompression(file, props.compressionOptions)
+
+    const fileExt = compressedFile.name.split('.').pop()
+    const originalNameWithoutExt = file.name.replace(/\.[^/.]+$/, "")
+    const sanitizedFileName = sanitizeName(originalNameWithoutExt)
+    const fileName = `${props.pathPrefix}/${props.owner}/${sanitizedFileName}.${fileExt}`
+
+    const { error: uploadError } = await supabase.storage
+      .from(props.bucket)
+      .upload(fileName, compressedFile, { upsert: true })
+
+    if (uploadError) {
+      notify(uploadError, "error")
+      throw uploadError
+    }
+
+    const { data } = supabase.storage
+      .from(props.bucket)
+      .getPublicUrl(fileName)
+
+    modelUrl.value = data.publicUrl
 
   } catch (error) {
-    console.error('Erro na compressão ou arquivo não suportado:', error)
-    generatePreview(originalFile)
-    emits('update:modelValue', originalFile)
+    notify(error, 'error')
+    localPreview.value = ''
   } finally {
-    isCompressing.value = false
+    isProcessing.value = false
+    if (target) target.value = ''
   }
 }
-
-function clearFile() {
-  emits('update:modelValue', null)
-}
-
-function clearInternal() {
-  rawFiles.value = []
-  previewUrl.value = ''
-}
-
-function generatePreview(file: File) {
-  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
-  previewUrl.value = URL.createObjectURL(file)
-}
-
-function formatSize(bytes: number) {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-function triggerCamera() {
-  cameraInputRef.value?.click()
-}
-
-onUnmounted(() => {
-  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
-})
 </script>
 
 <style scoped>
-.input-upload-image {
-  position: relative;
+.avatar-wrapper {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.camera-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(10%, 10%);
+  border: 2px solid white !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
