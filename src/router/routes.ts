@@ -41,7 +41,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.parceiros',
       icon: 'mdi-handshake-outline',
-      hotkey: 'cmd+shift+d',
+      hotkey: 'cmd+shift+p',
     },
   },
   {
@@ -62,7 +62,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.products.title',
       icon: 'mdi-package-variant-closed',
-      hotkey: 'cmd+shift+p',
+      hotkey: 'cmd+alt+p',
       requiresAuth: true,
       hasFilters: true,
       filterConfig: ClassDefinitions.queryFilterProducts.filters,
@@ -138,7 +138,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.adm.title',
       icon: 'mdi-shield-crown',
-      hotkey: 'cmd+shift+a',
+      hotkey: 'cmd+alt+u',
       requiresAuth: true,
       authorize: ['diretoria'],
     },
@@ -165,7 +165,37 @@ export const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'routes.adm.children.planos',
           icon: 'mdi-medal',
-          hotkey: 'cmd+alt+u',
+          hotkey: 'cmd+alt+m',
+          requiresAuth: true,
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'assinaturas',
+        name: 'Assinaturas',
+        component: () => import('@/views/admin/AssinaturasManagerView.vue'),
+        meta: {
+          title: 'routes.adm.children.assinaturas',
+          icon: 'mdi-credit-card-outline',
+          hotkey: 'cmd+alt+a',
+          requiresAuth: true,
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'otp',
+        name: 'Gerar OTP',
+        component: () => import('@/views/admin/OTPManagerView.vue'),
+        meta: {
+          title: 'routes.adm.children.otp',
+          icon: 'mdi-shield-key',
+          hotkey: 'cmd+alt+o',
           requiresAuth: true,
           authorize: ['diretoria'],
           hasFilters: true,
