@@ -43,16 +43,6 @@
       </div>
 
       <div key="3">
-        <BtnOpenDialog
-          color="warning"
-          icon="mdi-information"
-          v-tooltip="t('tooltips.appBar.info')"
-          :rotate="true"
-          @click="redirectToInfoSystem"
-        />
-      </div>
-
-      <div key="4">
         <v-icon-btn
           color="success"
           icon="mdi-arrow-left-bottom"

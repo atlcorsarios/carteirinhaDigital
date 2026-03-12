@@ -40,21 +40,6 @@
         />
       </div>
     </template>
-
-    <template v-slot:append>
-      <div v-if="mdAndUp" class="d-flex flex-row align-center">
-        <OptionsAppBar
-          :has-notifications="hasUnreadNotifications"
-          @open-dialog-licence="toggleDialogLicence"
-        />
-      </div>
-      <div v-else>
-        <MobileOptionsAppBar
-          :has-notifications="hasUnreadNotifications"
-          @open-dialog-licence="toggleDialogLicence"
-        />
-      </div>
-    </template>
   </v-app-bar>
 
   <BaseDialog v-model:attributes="classDialogLicence.model">

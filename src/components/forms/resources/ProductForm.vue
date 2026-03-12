@@ -29,18 +29,6 @@
     </v-row>
 
     <v-row dense>
-      <InputCategoryWithSearch
-        v-model:category="product.category"
-        :label="t('forms.formProduct.category.label')"
-        :hint="t('forms.formProduct.category.hint')"
-      />
-
-      <InputRecipeWithSearch
-        v-model:recipe="product.recipe"
-        :label="t('forms.formProduct.recipe.label')"
-        :hint="t('forms.formProduct.recipe.hint')"
-      />
-
       <v-col cols="12" class="d-flex flex-column">
         <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
         <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
@@ -55,8 +43,6 @@
 
 <script setup lang="ts">
 // Componentes
-import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
-import InputRecipeWithSearch from '../fixtures/ExempleInputResourceWithSearch.vue'
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputPrice from '../fixtures/InputPrice.vue'
 
