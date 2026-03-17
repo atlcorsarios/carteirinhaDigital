@@ -7,19 +7,15 @@
       class="mb-5"
     />
 
-    <v-select
-      v-model="formData.cargo"
-      :rules="[rules.required()]"
-      :items="cargosDisponiveis"
-      item-title="label"
-      item-value="value"
-      label="Como você vai usar o sistema?"
-      variant="outlined"
-      density="comfortable"
+    <InputUserRole
+      v-model:user-role="formData.cargo"
+      :label="'Como você vai usar o sistema?'"
+      :density="'comfortable'"
+      :variant="'outlined'"
     />
 
     <v-mask-input
-      v-if="formData.cargo === 'diretoria'"
+      v-if="formData.cargo === 'diretoria' || formData.cargo === 'associado'"
       v-model="formData.codigo_otp"
       :rules="ruleOTPCargo"
       :mask="'######'"
@@ -61,8 +57,10 @@
 
 <script setup lang="ts">
 import InputUploadImage from '@/components/forms/fixtures/InputUploadImage.vue'
+import type { IOnboardingData } from '@/classes/models/ModelOnboardingData';
 import { useRules } from 'vuetify/labs/rules'
 import { ref, computed } from 'vue'
+import InputUserRole from '../fixtures/InputUserRole.vue';
 
 const props = defineProps<{
   loading: boolean
@@ -77,7 +75,7 @@ const rules = useRules()
 const formRef = ref()
 const isValid = ref(false)
 
-const formData = ref({
+const formData = ref<IOnboardingData>({
   avatar_url: '',
   cargo: 'aluno',
   codigo_otp: '',

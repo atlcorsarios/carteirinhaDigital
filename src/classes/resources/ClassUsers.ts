@@ -12,14 +12,14 @@ export class ClassUsers extends BaseClass<IUser> {
 
   static defaultUser(): IUser {
     return {
-      idUser: 0,
-      username: '',
+      id: 0,
       email: '@gmail.com',
-      image: '',
-      role: 'USER',
-      phoneNumber: '',
-      receiveNotifications: false,
-      active: true,
+      username: '',
+      avatar_url: '',
+      celular_contato: '',
+      documento: '',
+      cargo: 'aluno',
+      usuario_ativo: true,
     }
   }
 
@@ -29,52 +29,60 @@ export class ClassUsers extends BaseClass<IUser> {
 
   static get fieldConfig(): TEntityConfig<IUser> {
     return {
-      idUser: {
+      id: {
+        minWidth: 50,
         width: 50,
+        maxWidth: 100,
         excludeFromFilter: true,
-        excludeFromChart: true,
-      },
-      username: {
-        maxWidth: 250,
         excludeFromChart: true,
       },
       email: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 300,
+        excludeFromChart: true,
+      },
+      username: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 250,
+        excludeFromChart: true,
+      },
+      avatar_url: {
+        hidden: true,
+      },
+      celular_contato: {
+        align: 'end',
+        minWidth: 100,
+        width: 100,
         maxWidth: 200,
         excludeFromChart: true,
       },
-      image: {
-        hidden: true,
+      documento: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 300,
+        excludeFromChart: true,
       },
-      role: {
+      cargo: {
         chartFormatter: ClassFormatters.formatRolesTranslate,
-        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.role),
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo),
+        minWidth: 100,
+        width: 100,
         maxWidth: 100,
         filterType: 'select',
         selectOptions: [
-          { title: 'Admin', value: 'ADMIN' },
-          { title: 'User', value: 'USER' },
+          { title: 'student', value: 'aluno' },
+          { title: 'teacher', value: 'professor' },
+          { title: 'partner', value: 'parceiro' },
+          { title: 'director', value: 'diretoria' },
+          { title: 'associate', value: 'associado' },
         ],
       },
-      phoneNumber: {
-        align: 'end',
-        maxWidth: 200,
-        excludeFromChart: true,
-      },
-      receiveNotifications: {
-        align: 'center',
-        width: 50,
-        excludeFromFilter: true,
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.receiveNotifications),
-        cellClass: (value: boolean) => {
-          if (value === true) return 'text-success font-weight-bold'
-          else return 'text-error font-weight-bold'
-        },
-      },
-      active: {
+      usuario_ativo: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.active),
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
         width: 50,
       },
     }

@@ -1,7 +1,5 @@
-export interface IOnboardingData {
-  avatar_url: string;
-  cargo: string;
-  codigo_otp?: string;
-  documento: string;
-  celular_contato: string;
+import type { IUser } from "./resources/ModelUser";
+
+export interface IOnboardingData extends Pick<IUser, 'avatar_url' | 'celular_contato' | 'documento' | 'cargo'> {
+  codigo_otp?: string
 }

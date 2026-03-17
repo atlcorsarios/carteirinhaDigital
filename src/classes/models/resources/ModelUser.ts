@@ -1,18 +1,25 @@
-export const validRoles = ['ADMIN', 'USER'] as const
+export const validRoles = ['aluno', 'professor', 'parceiro', 'diretoria', 'associado'] as const
 export type TRole = (typeof validRoles)[number]
 
 export const ROLE_TRANSLATIONS: Record<TRole, string> = {
-  ADMIN: 'forms.formUser.role.types.admin',
-  USER: 'forms.formUser.role.types.user',
+  aluno: 'forms.formUser.cargo.types.student',
+  professor: 'forms.formUser.cargo.types.teacher',
+  parceiro: 'forms.formUser.cargo.types.partner',
+  diretoria: 'forms.formUser.cargo.types.director',
+  associado: 'forms.formUser.cargo.types.associate'
 }
 
 export interface IUser {
-  idUser?: number
-  username: string
+  id?: string | number
   email: string
-  image: string
-  role: TRole
-  phoneNumber?: string
-  receiveNotifications: boolean
-  active: boolean
+  username: string
+  avatar_url: string
+  celular_contato?: string
+  documento: string
+  cargo: TRole
+  usuario_ativo: boolean
+}
+
+export interface IUserResponseSupabase extends IUser {
+  created_at: string
 }
