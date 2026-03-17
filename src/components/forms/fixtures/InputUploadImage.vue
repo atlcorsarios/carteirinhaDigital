@@ -34,7 +34,10 @@
     </div>
 
     <div v-if="label" class="text-caption mt-2 text-medium-emphasis">
-      {{ isProcessing ? 'Processando e enviando...' : label }}
+      <v-progress-circular v-if="isProcessing" color="primary" indeterminate :size="40" />
+      <p v-else>
+        {{ t(label) }}
+      </p>
     </div>
 
     <input
@@ -51,34 +54,39 @@
 <script setup lang="ts">
 import imageCompression from 'browser-image-compression'
 import { supabase } from '@/services/supabase'
-import { useSnackbar } from '@/composables/useSnackbar'
 import { sanitizeName } from '@/utils/sanitizeForBucket'
+import { useSnackbar } from '@/composables/useSnackbar'
+import { useAuthStore } from '@/stores/authStore';
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 
 const { t } = useI18n()
 const { notify } = useSnackbar()
+const authStore = useAuthStore()
 
 const modelUrl = defineModel<string>('url', { required: false, default: '' });
 
-const props = defineProps({
-  label: { type: String, default: 'Foto de Perfil' },
-  bucket: { type: String, required: true },
-  pathPrefix: { type: String, default: 'uploads' },
-  owner: { type: String, required: true },
-  fileName: { type: String, defaul: '' },
-  disabled: { type: Boolean, default: false },
-  accept: { type: String, default: 'image/*' },
-  compressionOptions: {
-    type: Object,
-    default: () => ({
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1080,
-      useWebWorker: true,
-      fileType: 'image/webp',
-      initialQuality: 0.8
-    })
-  }
+const props = withDefaults(defineProps<{
+  label?: string
+  bucket: string
+  pathPrefix?: string
+  fileName?: string
+  disabled?: boolean
+  accept?: string
+  compressionOptions?: Object
+}>(), {
+  label: 'forms.formUser.avatar_url.label',
+  pathPrefix: 'uploads',
+  fileName: '',
+  disabled: false,
+  accept: 'image/*',
+  compressionOptions: () => ({
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1080,
+    useWebWorker: true,
+    fileType: 'image/webp',
+    initialQuality: 0.8
+  })
 })
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -86,6 +94,11 @@ const isProcessing = ref(false)
 const localPreview = ref('')
 
 const displayUrl = computed(() => localPreview.value || modelUrl.value)
+const owner = computed(() => {
+  const idUser = String(authStore.userProfile?.id)
+  if (idUser === undefined || idUser === '') throw new Error('id undefined')
+  return sanitizeName(idUser);
+})
 
 function triggerInput() {
   if (!isProcessing.value && !props.disabled) {
@@ -109,7 +122,7 @@ async function handleFileSelection(event: Event) {
     const fileExt = compressedFile.name.split('.').pop()
     const originalNameWithoutExt = file.name.replace(/\.[^/.]+$/, "")
     const sanitizedFileName = sanitizeName(originalNameWithoutExt)
-    const fileName = `${props.pathPrefix}/${props.owner}/${sanitizedFileName}.${fileExt}`
+    const fileName = `${props.pathPrefix}/${owner.value}/${sanitizedFileName}.${fileExt}`
 
     const { error: uploadError } = await supabase.storage
       .from(props.bucket)

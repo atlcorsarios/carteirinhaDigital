@@ -33,7 +33,7 @@ export const routes: Array<RouteRecordRaw> = [
       icon: 'mdi-card-account-details',
       hotkey: 'cmd+shift+c',
       requiresAuth: true,
-      authorize: ['associado'],
+      authorize: ['associado', 'diretoria'],
     },
   },
   {

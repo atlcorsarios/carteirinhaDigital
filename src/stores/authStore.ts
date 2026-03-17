@@ -1,14 +1,15 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import type { IUserResponseSupabase } from '@/classes/models/resources/ModelUser'
 import { supabase } from '@/services/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 import { useListCacheStore } from './listCacheStore'
 import { useRoute, useRouter } from 'vue-router'
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const session = ref<Session | null>(null)
-  const userProfile = ref<any>(null)
+  const userProfile = ref<IUserResponseSupabase | null>(null)
   const loading = ref(true)
   const listCacheStore = useListCacheStore()
   const router = useRouter()
@@ -76,6 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     const { error } = await supabase.auth.signOut()
     if (error) throw error
+
     user.value = null
     session.value = null
     userProfile.value = null

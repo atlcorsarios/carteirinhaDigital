@@ -3,68 +3,55 @@
     <InputUploadImage
       v-model:url="formData.avatar_url"
       :bucket="'avatars'"
-      :owner="ownerBucket"
       class="mb-5"
     />
 
     <InputUserRole
-      v-model:user-role="formData.cargo"
-      :label="'Como você vai usar o sistema?'"
+      v-model:role="formData.cargo"
+      v-model:otp="formData.codigo_otp"
+      :density="'comfortable'"
+      :variant="'outlined'"
+    />
+
+    <InputUserDocumento
+      v-model:documento="formData.documento"
       :density="'comfortable'"
       :variant="'outlined'"
     />
 
     <v-mask-input
-      v-if="formData.cargo === 'diretoria' || formData.cargo === 'associado'"
-      v-model="formData.codigo_otp"
-      :rules="ruleOTPCargo"
-      :mask="'######'"
-      label="Código de verificação do cargo"
-      variant="outlined"
-      density="comfortable"
-    />
-
-    <v-mask-input
-      v-model="formData.documento"
-      :rules="[rules.required()]"
-      :mask="maskDocumento"
-      label="CPF / CNPJ"
-      variant="outlined"
-      density="comfortable"
-    />
-
-    <v-mask-input
       v-model="formData.celular_contato"
       :rules="[rules.required()]"
-      :mask="maskCelular"
-      label="Celular (WhatsApp)"
-      variant="outlined"
+      :label="t('forms.formUser.celular_contato.label')"
+      mask="(##) #####-####"
       density="comfortable"
+      variant="outlined"
     />
 
-    <v-btn
-      color="primary"
-      size="large"
-      block
+    <v-icon-btn
       type="submit"
+      icon="mdi-content-save-check"
+      variant="flat"
+      color="success"
+      v-tooltip="t('tooltips.forms.submit')"
+      :disabled="loading"
       :loading="loading"
-      class="mt-4"
-    >
-      Finalizar Cadastro
-    </v-btn>
+      class="mt-3"
+    />
   </v-form>
 </template>
 
 <script setup lang="ts">
 import InputUploadImage from '@/components/forms/fixtures/InputUploadImage.vue'
+import InputUserRole from '../fixtures/InputUserRole.vue';
+import InputUserDocumento from '../fixtures/InputUserDocumento.vue';
 import type { IOnboardingData } from '@/classes/models/ModelOnboardingData';
 import { useRules } from 'vuetify/labs/rules'
-import { ref, computed } from 'vue'
-import InputUserRole from '../fixtures/InputUserRole.vue';
+import { useI18n } from 'vue-i18n';
+import { ref } from 'vue'
 
 const props = defineProps<{
   loading: boolean
-  ownerBucket: string
 }>()
 
 const emit = defineEmits<{
@@ -72,6 +59,8 @@ const emit = defineEmits<{
 }>()
 
 const rules = useRules()
+const { t } = useI18n();
+
 const formRef = ref()
 const isValid = ref(false)
 
@@ -83,37 +72,8 @@ const formData = ref<IOnboardingData>({
   celular_contato: '',
 })
 
-const cargosDisponiveis = [
-  { label: 'Sou Aluno', value: 'aluno' },
-  { label: 'Sou Professor', value: 'professor' },
-  { label: 'Sou Diretor', value: 'diretoria' },
-  { label: 'Sou Parceiro', value: 'parceiro' }
-]
-
-const maskCelular = '(##) #####-####'
-const maskDocumento = computed(() => {
-  return getCpfCnpjMask(formData.value.documento)
-})
-
-const ruleOTPCargo = computed(() => {
-  if (formData.value.cargo === 'diretoria') return [rules.required()]
-  return []
-})
-
-function getCpfCnpjMask(value: string) {
-  if (!value) return '###.###.###-##'
-
-  const numbers = value.replace(/\D/g, '')
-  if (numbers.length <= 11) {
-    return '###.###.###-##'
-  }
-
-  return '##.###.###/####-##'
-}
-
 async function handleSubmit(event: any) {
   const { valid } = await event;
   if (valid) emit('submit', { ...formData.value });
 }
-
 </script>

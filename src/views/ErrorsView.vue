@@ -32,7 +32,7 @@
           @click="goBack"
           class="mr-4"
         >
-          Voltar
+          {{ t('tooltips.appBar.back') }}
         </v-btn>
 
         <v-btn
@@ -42,7 +42,7 @@
           prepend-icon="mdi-home"
           @click="goHome"
         >
-          Ir para o Início
+          {{ t('routes.home') }}
         </v-btn>
       </div>
     </v-sheet>
@@ -51,12 +51,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 
 const props = defineProps<{
   type?: '403' | '404' | '500';
 }>();
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 

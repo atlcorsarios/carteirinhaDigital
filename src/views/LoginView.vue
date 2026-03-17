@@ -1,35 +1,29 @@
 <template>
   <div class="d-flex justify-center align-center h-100" style="min-height: 90vh">
-    <v-card class="mx-auto text-center pa-8" width="500" elevation="8" rounded="lg">
+    <v-card class="mx-auto text-center pa-8" width="100%" max-width="500" elevation="8" rounded="lg">
       <v-card-title class="text-h4 font-weight-bold mb-4 text-primary">
-        {{ t('routes.login') || 'Sistema da Atlética' }}
+        {{ t('routes.login') }}
       </v-card-title>
 
       <v-card-text>
         <p class="text-body-1 text-grey-darken-1 mb-8">
-          Faça login com sua conta do Google para acessar a plataforma, sua carteirinha e nossos parceiros.
+          {{ t('forms.formLogin.text') }}
         </p>
 
-        <v-btn
-          color="error"
-          size="x-large"
-          block
-          prepend-icon="mdi-google"
-          :loading="loading"
-          @click="handleGoogleLogin"
-        >
-          Entrar com o Google
-        </v-btn>
+        <BtnLoginWithGoogle
+          :callback="handleGoogleLogin"
+        />
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
+import BtnLoginWithGoogle from '@/components/forms/BtnLoginWithGoogle.vue';
 import { useSnackbar } from '@/composables/useSnackbar'
+import { useAuthStore } from '@/stores/authStore'
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const { notify } = useSnackbar();
 const { t } = useI18n();
