@@ -1,5 +1,4 @@
 import type { OnboardingData } from '@/classes/models/ModelOnboardingData'
-import { useSnackbar } from '@/composables/useSnackbar'
 import { supabase } from '@/services/supabase'
 
 export class OnboardingService {
@@ -29,10 +28,7 @@ export class OnboardingService {
       })
       .eq('id', userId)
 
-    if (error){
-      useSnackbar().notify(error, 'error');
-      throw error
-    }
+    if (error) throw error
 
     return true
   }

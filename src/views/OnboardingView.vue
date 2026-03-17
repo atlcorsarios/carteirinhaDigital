@@ -120,23 +120,23 @@ const cargosDisponiveis = [
   { label: 'Sou Parceiro', value: 'parceiro' }
 ]
 
-async function saveProfile() {
-  await formRef.value?.validate()
-  if (!isValid.value || !authStore.user) return
+async function saveProfile(event: any) {
+  const { valid } = await event;
+  if (!valid || !authStore.user) return;
 
   try {
-    loading.value = true
+    loading.value = true;
     
-    await OnboardingService.finalizarCadastro(authStore.user.id, formData.value)
-    await authStore.fetchUser(authStore.user.id)
+    await OnboardingService.finalizarCadastro(authStore.user.id, formData.value);
+    await authStore.fetchUser(authStore.user.id);
 
-    notify('Perfil atualizado com sucesso!', 'success')
-    router.push({ name: 'Home' })
+    notify('Perfil atualizado com sucesso!', 'success');
+    router.push({ name: 'Home' });
 
   } catch (error) {
-    notify(error, 'error')
+    notify(error, 'error');
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
