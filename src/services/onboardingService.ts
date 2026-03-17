@@ -1,8 +1,8 @@
-import type { OnboardingData } from '@/classes/models/ModelOnboardingData'
+import type { IOnboardingData } from '@/classes/models/ModelOnboardingData'
 import { supabase } from '@/services/supabase'
 
 export class OnboardingService {
-  static async finalizarCadastro(userId: string, data: OnboardingData) {
+  static async finalizarCadastro(userId: string, data: IOnboardingData) {
     if (data.codigo_otp && data.codigo_otp.trim() !== '') {
       const { data: result, error } = await supabase.rpc('resgatar_otp_onboarding', {
         p_user_id: userId,
