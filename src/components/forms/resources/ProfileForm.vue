@@ -32,7 +32,10 @@
       </v-col>
 
       <v-col cols="12">
-        <InputUserRole v-model:role="profile.cargo" />
+        <InputUserRole
+          v-model:role="profile.cargo"
+          v-model:otp="otp"
+        />
       </v-col>
 
       <v-col cols="12" md="6">
@@ -69,13 +72,13 @@
 </template>
 
 <script setup lang="ts">
-import InputUserRole from '../fixtures/InputUserRole.vue'
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
+import InputUserRole from '../fixtures/InputUserRole.vue'
+import InputUserDocumento from '../fixtures/InputUserDocumento.vue'
 import { type IUser } from '@/classes/models/resources/ModelUser'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import InputUserDocumento from '../fixtures/InputUserDocumento.vue'
 
 const rules = useRules()
 const { t } = useI18n()
@@ -86,6 +89,7 @@ const props = defineProps<{
 }>()
 
 const profile = defineModel<IUser>('profile', { required: true })
+const otp = defineModel<string>('otp', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
 const emit = defineEmits(['submit'])
 
