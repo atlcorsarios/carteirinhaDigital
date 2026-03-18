@@ -42,7 +42,7 @@ async function saveProfile(formData: IOnboardingData) {
     await OnboardingService.finalizarCadastro(authStore.user.id, formData);
     await authStore.fetchUser(authStore.user.id);
 
-    notify('Perfil atualizado com sucesso!', 'success');
+    notify('messages.forms.saveSuccess', 'success');
     router.push({ name: 'Home' });
 
   } catch (error) {

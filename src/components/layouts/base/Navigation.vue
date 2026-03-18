@@ -126,7 +126,7 @@ const userAvatar = computed(() => {
     return authStore.userProfile.avatar_url;
   }
 
-  const name = authStore.userProfile?.username || authStore.user?.user_metadata?.full_name || 'Usuário';
+  const name = authStore.userProfile?.username || authStore.user?.user_metadata?.full_name;
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=primary&color=fff&rounded=true`;
 });
 

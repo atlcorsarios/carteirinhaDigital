@@ -37,7 +37,7 @@ async function handleGoogleLogin() {
     await authStore.loginWithGoogle()
   } catch (error: any) {
     console.error(error)
-    notify('Erro ao conectar com o Google. Tente novamente.', 'error')
+    notify(error, 'error')
   } finally {
     loading.value = false
   }

@@ -295,6 +295,7 @@
   "chartPie": {
     "title": "Distribuição por",
     "noData": "Sem dados para exibir",
+    "group": "Agrupar por",
     "chartAggregator": {
       "sum": "Total Acumulado",
       "count": "Total de Registros"
