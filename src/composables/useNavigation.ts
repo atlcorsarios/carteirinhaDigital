@@ -13,7 +13,7 @@ export function useNavigation() {
     const requiredRoles = route.meta?.authorize as string[] | undefined
     if (!requiredRoles || requiredRoles.length === 0) return true
 
-    const userRole = authStore.user?.role
+    const userRole = authStore.userProfile?.cargo
     return userRole ? requiredRoles.includes(userRole) : false
   }
 

@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const session = ref<Session | null>(null)
   const userProfile = ref<IUserResponseSupabase | null>(null)
+  const fetchPromise = ref<Promise<any> | null>(null)
   const loading = ref(true)
   const listCacheStore = useListCacheStore()
   const router = useRouter()
@@ -22,15 +23,32 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchUser(userId: string) {
     if (!userId) return
 
-    const { data, error } = await supabase
-      .from('usuarios')
-      .select('*')
-      .eq('id', userId)
-      .single()
-
-    if (!error && data) {
-      userProfile.value = data
+    if (userProfile.value?.id === userId) {
+      return userProfile.value
     }
+
+    if (fetchPromise.value) {
+      return fetchPromise.value
+    }
+
+    fetchPromise.value = (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('usuarios')
+          .select('*')
+          .eq('id', userId)
+          .single()
+
+        if (!error && data) {
+          userProfile.value = data
+          return data
+        }
+      } finally {
+        fetchPromise.value = null
+      }
+    })()
+
+    return fetchPromise.value
   }
 
   async function initializeAuth() {

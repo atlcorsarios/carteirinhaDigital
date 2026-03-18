@@ -95,7 +95,7 @@ import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useHotkey, useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { menuItems } = useNavigation()
@@ -145,15 +145,17 @@ const flattenMenuItems = (items: typeof menuItems.value): any[] => {
   }, [])
 }
 
-const allItems = flattenMenuItems(menuItems.value)
+watch(menuItems, (novosMenus) => {
+  const allItems = flattenMenuItems(novosMenus)
 
-allItems.forEach((item) => {
-  if (item.hotkey && item.name) {
-    useHotkey(item.hotkey, () => {
-      router.push({ name: item.name })
-    })
-  }
-})
+  allItems.forEach((item) => {
+    if (item.hotkey && item.name) {
+      useHotkey(item.hotkey, () => {
+        router.push({ name: item.name })
+      })
+    }
+  })
+}, { immediate: true })
 
 function getDynamicIcon(item: any): string {
   if (item.name === 'Notifications' && hasUnreadNotifications.value) {
