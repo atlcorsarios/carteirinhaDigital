@@ -71,13 +71,7 @@ export class ClassUsers extends BaseClass<IUser> {
         width: 100,
         maxWidth: 100,
         filterType: 'select',
-        selectOptions: [
-          { title: 'student', value: 'aluno' },
-          { title: 'teacher', value: 'professor' },
-          { title: 'partner', value: 'parceiro' },
-          { title: 'director', value: 'diretoria' },
-          { title: 'associate', value: 'associado' },
-        ],
+        selectOptions: ClassFormatters.formatOptionsRoles()
       },
       usuario_ativo: {
         align: 'center',

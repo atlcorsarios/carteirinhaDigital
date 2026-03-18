@@ -1,7 +1,7 @@
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { i18n } from '@/plugins/i18n'
-import { ROLE_TRANSLATIONS, type TRole } from './models/resources/ModelUser'
+import { ROLE_TRANSLATIONS, validRoles, type TRole } from './models/resources/ModelUser'
 
 export class ClassFormatters {
   static formatBoolean(value: boolean, filterLabelKey?: string): string {
@@ -68,6 +68,13 @@ export class ClassFormatters {
       style: 'currency',
       currency: targetCurrency,
     }).format(convertedValue)
+  }
+
+  static formatOptionsRoles(): { title: string, value: TRole }[] {
+    return validRoles.map((role) => ({
+      title: i18n.global.t(ROLE_TRANSLATIONS[role]),
+      value: role,
+    }))
   }
 
   static prepareForSave<T extends Record<string, any>>(item: T, keys: keyof T | (keyof T)[]): T {
