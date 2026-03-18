@@ -215,6 +215,7 @@
     "until": "Hasta",
     "welcome": "Bienvenido(a)",
     "installApp": "Instalar App",
+    "copy": "Copiado al portapapeles",
     "errors": {
       "reqGenerics": "¡Ocurrió un error en la solicitud!",
       "accessDenied": "No tienes permiso para acceder a esta página",
@@ -366,6 +367,18 @@
       "resendInfo": "¡Código reenviado!",
       "alterSuccess": "¡Contraseña cambiada con éxito!",
       "alterError": "Error al cambiar la contraseña."
+    }
+  },
+  "cardPass": {
+    "title": "Tarjeta de socio",
+    "status": {
+      "inactive": "Inactiva"
+    },
+    "fields": {
+      "name": "NOMBRE COMPLETO",
+      "role": "CARGO",
+      "valid": "VENCIMENTO",
+      "reg": "REGISTRO"
     }
   }
 }

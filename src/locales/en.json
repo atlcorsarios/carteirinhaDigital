@@ -215,6 +215,7 @@
     "until": "Until",
     "welcome": "Welcome",
     "installApp": "Install App",
+    "copy": "Copied to clipboard",
     "errors": {
       "reqGenerics": "An error occurred with the request!",
       "accessDenied": "You do not have permission to access this page",
@@ -366,6 +367,18 @@
       "resendInfo": "Code resent!",
       "alterSuccess": "Password changed successfully!",
       "alterError": "Error changing password."
+    }
+  },
+  "cardPass": {
+    "title": "Membership card",
+    "status": {
+      "inactive": "Inactive"
+    },
+    "fields": {
+      "name": "FULL NAME",
+      "role": "POSITION",
+      "valid": "VALIDITY",
+      "reg": "REGISTRATION"
     }
   }
 }

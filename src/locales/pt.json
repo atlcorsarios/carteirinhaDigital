@@ -215,6 +215,7 @@
     "until": "Até",
     "welcome": "Bem-vindo(a)",
     "installApp": "Instalar App",
+    "copy": "Copiado para a area de transferência",
     "errors": {
       "reqGenerics": "Ocorreu um erro na requisição!",
       "accessDenied": "Você não tem permissão para acessar esta página",
@@ -366,6 +367,18 @@
       "resendInfo": "Código reenviado!",
       "alterSuccess": "Senha alterada com sucesso!",
       "alterError": "Erro ao alterar senha."
+    }
+  },
+  "cardPass": {
+    "title": "Carteira de membro",
+    "status": {
+      "inactive": "Inativo"
+    },
+    "fields": {
+      "name": "NOME COMPLETO",
+      "role": "CARGO",
+      "valid": "VALIDADE",
+      "reg": "REGISTRO"
     }
   }
 }
