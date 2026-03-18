@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import OnboardingForm from '@/components/forms/resources/OnboardingForm.vue'
 import type { IOnboardingData } from '@/classes/models/ModelOnboardingData'
-import { OnboardingService } from '@/services/onboardingService'
+import { OnboardingService } from '@/services/security/onboardingService'
 import { useSnackbar } from '@/composables/useSnackbar'
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'

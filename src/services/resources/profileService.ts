@@ -1,5 +1,6 @@
 import type { IUser } from '@/classes/models/resources/ModelUser'
 import { supabase } from '@/services/supabase'
+import { OtpService } from '../security/otpService'
 
 export class profileServices {
   static async salvarDadosUsuario(userId: string | number, data: IUser & { codigo_otp?: string }) {
@@ -7,17 +8,10 @@ export class profileServices {
     const otp = payload.codigo_otp
 
     delete payload.codigo_otp
+    delete payload.cargo
 
     if (otp && otp.trim() !== '') {
-      const { error: rpcError } = await supabase.rpc('validar_codigo_otp', {
-        p_user_id: userId,
-        p_codigo: otp.toUpperCase(),
-        p_novo_cargo: payload.cargo
-      })
-
-      if (rpcError) {
-        throw new Error(rpcError.message)
-      }
+      await OtpService.consumirOTP(userId, otp)
     }
 
     const { error } = await supabase
