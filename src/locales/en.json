@@ -2,29 +2,34 @@
   "app": {
     "title": "Corsários",
     "version": "Version",
-    "cardInfoLicence": "License information",
+    "cardInfoLicence": "License Information",
     "updateDate": "Updated on",
     "software": "Software"
   },
   "routes": {
-    "home": "Home",
-    "carteirinha": "Card",
-    "partners": "Partners",
-    "plano": "Subscription plan",
+    "home": "Home Page",
+    "onboarding": "Complete registration",
+    "perfil": "Profile",
+    "carteirinha": "ID Card",
+    "parceiros": "Partners",
+    "plano": "Subscription Plan",
+    "config": "Settings",
+    "notificacoes": "Notifications",
     "login": "Login",
     "logout": "Logout",
-    "forgotPassword": "Forgot Password",
+    "forgotPassword": "Recover password",
     "notifications": "Notifications",
     "products": {
       "title": "Products",
       "children": {
-        "list": "Product List"
+        "list": "Product list"
       }
     },
     "adm": {
       "title": "Administrator",
       "children": {
-        "users": "User Management"
+        "users": "User management",
+        "settings": "Settings"
       }
     },
     "forbidden": "Access denied",
@@ -32,9 +37,21 @@
     "notFound": "Resource not found"
   },
   "forms": {
+    "formLogin": {
+      "text": "Log in with your Google account to access the platform, your ID card, and our partners.",
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Password"
+      }
+    },
+    "formOnboarding": {
+      "text": "We need a few more details to finish your registration and set up your environment."
+    },
     "formSearch": {
       "validation": {
-        "required": "There must be a value or filters applied to perform the query!"
+        "required": "There must be a value or filters applied to perform the search"
       },
       "field": {
         "label": "Field"
@@ -47,39 +64,49 @@
       }
     },
     "formUser": {
-      "idUser": {
+      "id": {
         "headerTable": "Id",
         "label": "Id"
-      },
-      "username": {
-        "headerTable": "Name",
-        "label": "Username",
-        "hint": "Enter your name"
       },
       "email": {
         "headerTable": "Email",
         "label": "Email",
         "hint": "Enter your email"
       },
-      "role": {
+      "username": {
+        "headerTable": "Name",
+        "label": "Username",
+        "hint": "Enter your name"
+      },
+      "avatar_url": {
+        "headerTable": "Avatar",
+        "label": "Profile picture"
+      },
+      "celular_contato": {
+        "headerTable": "Mobile",
+        "label": "Mobile number (WhatsApp)"
+      },
+      "documento": {
+        "headerTable": "Document",
+        "label": "CPF / CNPJ"
+      },
+      "cargo": {
         "headerTable": "Role",
         "label": "Role",
         "types": {
-          "admin": "Administrator",
-          "user": "Regular user"
+          "student": "Student",
+          "teacher": "Teacher",
+          "partner": "Partner",
+          "director": "Director",
+          "associate": "Associate"
         }
       },
-      "phoneNumber": {
-        "headerTable": "Telephone",
-        "label": "Phone number"
-      },
-      "receiveNotifications": {
-        "headerTable": "Notify",
-        "label": "Receives notifications?"
-      },
-      "active": {
+      "usuario_ativo": {
         "headerTable": "Active",
         "label": "Active user?"
+      },
+      "codigo": {
+        "label": "Verification code for new role"
       }
     },
     "formProduct": {
@@ -93,7 +120,7 @@
       },
       "image": {
         "headerTable": "Cover",
-        "label": "Product image"
+        "label": "Product photo"
       },
       "price": {
         "headerTable": "Price",
@@ -115,144 +142,8 @@
         "hint": "Click the icon on the left to view"
       }
     },
-    "formCategory": {
-      "idCategory": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Description",
-        "label": "Category description"
-      },
-      "group": {
-        "headerTable": "Group",
-        "label": "Category group",
-        "types": {
-          "products": "Products",
-          "recipes": "Recipes",
-          "ingredients": "Ingredients"
-        }
-      },
-      "active": {
-        "headerTable": "Active",
-        "label": "Active category?"
-      }
-    },
-    "formRecipe": {
-      "idRecipe": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Description",
-        "label": "Recipe description"
-      }, 
-      "preparation": { 
-        "headerTable": "Preparation", 
-        "label": "Preparation method" 
-      },
-      "ingredients": {
-        "headerTable": "Ingredients",
-        "label": "Recipe ingredients",
-        "hint": "Consult and select the ingredients"
-      },
-      "category": {
-        "headerTable": "Category",
-        "label": "Recipe category",
-        "hint": "Click the icon on the left to view"
-      },
-      "active": {
-        "headerTable": "Active",
-        "label": "Active recipe?"
-      }
-    },
-    "formIngredient": {
-      "idIngredient": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Description",
-        "label": "Ingredient description"
-      },
-      "measurement": {
-        "headerTable": "Measurement",
-        "label": "Unit of measurement"
-      },
-      "price": {
-        "headerTable": "Price",
-        "label": "Ingredient price",
-        "hint": "Converted to: "
-      },
-      "stock": {
-        "headerTable": "In stock",
-        "label": "Initial stock quantity",
-        "hint": "Initial quantity can start at zero, then enter into stock"
-      },
-      "category": {
-        "headerTable": "Category",
-        "label": "Ingredient category",
-        "hint": "Click the icon on the left to view"
-      }
-    },
-    "formIngredientsInRecipe": {
-      "idRecipe": {
-        "headerTable": "Id Recipe",
-        "label": "Id Recipe"
-      },
-      "amount": {
-        "headerTable": "Quantity",
-        "label": "Quantity of ingredient"
-      },
-      "ingredients": {
-        "headerTable": "Ingredients",
-        "label": "Recipe Ingredients",
-        "hint": "Select the ingredients present in the recipe"
-      }
-    },
-    "formStock": {
-      "idStock": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "category": {
-        "headerTable": "Category",
-        "label": "Item category"
-      },
-      "description": {
-        "headerTable": "Description",
-        "label": "Item description"
-      },
-      "measurement": {
-        "headerTable": "Unit",
-        "label": "Unit of measurement"
-      },
-      "amount": {
-        "headerTable": "Quantity",
-        "label": "Item quantity"
-      },
-      "item": {
-        "label": "Item for operation", 
-        "types": { 
-          "ingredient": "Ingredient", 
-          "product": "Product" 
-        }
-      },
-      "operation": {
-        "label": "Operation",
-        "types": {
-          "entry": "ENTRY",
-          "exit": "EXIT"
-        }
-      },
-      "price": {
-        "headerTable": "Cost",
-        "label": "Cost",
-        "hint": "Converted to: "
-      }
-    },
     "formNotifications": {
-      "seen" : {
+      "seen": {
         "headerTable": "Viewed",
         "label": "Notification viewed"
       },
@@ -275,14 +166,6 @@
       "origin": {
         "headerTable": "Origin",
         "label": "Notification origin"
-      }      
-    },
-    "formLogin": {
-      "email": {
-        "label": "Email"
-      },
-      "password": {
-        "label": "Password"
       }
     }
   },
@@ -296,19 +179,20 @@
       "language": "Language",
       "theme": "Change theme",
       "info": "System information",
-      "back": "To go back"
+      "back": "Go back"
     },
     "forms": {
       "close": "Close",
       "save": "Save",
-      "add": "To add",
+      "add": "Add",
       "reset": "Clear",
       "create": "New record",
       "edit": "Edit",
       "delete": "Delete",
       "submit": "Confirm",
       "forgotPassword": "I forgot my password",
-      "attach": "attach"
+      "attach": "Attach",
+      "withGoogle": "Continue with Google"
     },
     "components": {
       "dataTable": {
@@ -330,11 +214,12 @@
     "from": "From",
     "until": "Until",
     "welcome": "Welcome",
+    "installApp": "Install App",
     "errors": {
-      "reqGenerics": "An error occurred in the request!",
-      "accessDenied": "You do not have permission to access this page.",
-      "requiredAuth": "You need to be authenticated to access it. Log in!",
-      "searchQuote": "Error retrieving quote for: "
+      "reqGenerics": "An error occurred with the request!",
+      "accessDenied": "You do not have permission to access this page",
+      "requiredAuth": "You need to be authenticated to access. Please log in!",
+      "searchQuote": "Error fetching quote for: "
     },
     "forms": {
       "saveSuccess": "Saved successfully",
@@ -348,12 +233,12 @@
         "editingProduct": "Edit product"
       },
       "formCategory": {
-        "createCategory": "Create Category",
-        "editingCategory": "Edit Category"
+        "createCategory": "Create category",
+        "editingCategory": "Edit category"
       },
       "formRecipe": {
-        "createRecipe": "Create Recipe",
-        "editingRecipe": "Edit Recipe"
+        "createRecipe": "Create recipe",
+        "editingRecipe": "Edit recipe"
       },
       "formIngredient": {
         "createIngredient": "Create ingredient",
@@ -370,7 +255,7 @@
         "dataNotFound": "No data found"
       },
       "queryFilter": {
-        "title": "Filter resources by:",
+        "title": "Filter resources from:",
         "addSuccess": "Filter added!",
         "alertDuplicate": "This filter has already been added!"
       },
@@ -383,25 +268,25 @@
   },
   "dataTable": {
     "users": {
-      "title": "List of users"
+      "title": "User list"
     },
     "products": {
-      "title": "List of products"
+      "title": "Product list"
     },
     "categories": {
-      "title": "List of categories"
+      "title": "Category list"
     },
     "recipes": {
-      "title": "List of recipes"
+      "title": "Recipe list"
     },
     "ingredients": {
-      "title": "List of ingredients"
+      "title": "Ingredient list"
     },
     "stock": {
-      "title": "Stock of products"
+      "title": "Product stock"
     },
     "notifications": {
-      "title": "List of notifications"
+      "title": "Notification list"
     },
     "headersDefault": {
       "actions": "Actions"
@@ -410,8 +295,9 @@
   "chartPie": {
     "title": "Distribution by",
     "noData": "No data to display",
+    "group": "Group by",
     "chartAggregator": {
-      "sum": "Total Cumulative",
+      "sum": "Accumulated Total",
       "count": "Total Records"
     }
   },
@@ -441,10 +327,10 @@
       "lessEqual": "Less than or equal to",
       "lessThan": "Less than",
       "between": "Between",
-      "select": "Select",
+      "select": "Selection",
       "except": "Except"
     },
-    "none": "No filter applied"
+    "none": "No filters applied"
   },
   "forgotPassword": {
     "title": "Account Recovery",
@@ -458,7 +344,7 @@
     },
     "stepVerify": {
       "instruction": "We sent a 6-digit code to:",
-      "expiresIn": "Code expires in:",
+      "expiresIn": "The code expires in:",
       "expired": "The code has expired.",
       "btnResend": "Resend Code",
       "btnVerify": "Verify",
@@ -467,9 +353,9 @@
     "stepAlterPassword": {
       "instruction": "Please enter your new password below.",
       "labelNewPassword": "New Password",
-      "placeholderNewPassword": "Enter the new password",
+      "placeholderNewPassword": "Enter new password",
       "labelConfirmPassword": "Confirm Password",
-      "placeholderConfirmPassword": "Confirm the new password",
+      "placeholderConfirmPassword": "Confirm new password",
       "btnAlterPassword": "Change Password"
     },
     "feedback": {

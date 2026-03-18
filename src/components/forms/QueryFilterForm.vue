@@ -101,7 +101,7 @@
           :rules="[rules.required()]"
           :label="t('filterColumn.operators.select')"
           :items="getOptions(filter.field)"
-          item-title="label"
+          item-title="title"
           item-value="value"
           density="compact"
           variant="outlined"

@@ -8,9 +8,13 @@
   },
   "routes": {
     "home": "Página Inícial",
+    "onboarding": "Completar cadastro",
+    "perfil": "Perfil",
     "carteirinha": "Carteirinha",
     "parceiros": "Parceiros",
     "plano": "Plano de assinatura",
+    "config": "Configurações",
+    "notificacoes": "Notificações",
     "login": "Acessar",
     "logout": "Sair",
     "forgotPassword": "Recuperar senha",
@@ -33,6 +37,18 @@
     "notFound": "Recurso não encontrado"
   },
   "forms": {
+    "formLogin": {
+      "text": "Faça login com sua conta do Google para acessar a plataforma, sua carteirinha e nossos parceiros.",
+      "email": {
+        "label": "Email"
+      },
+      "password": {
+        "label": "Senha"
+      }
+    },
+    "formOnboarding": {
+      "text": "Precisamos de mais alguns dados para finalizar o seu cadastro e preparar o seu ambiente."
+    },
     "formSearch": {
       "validation": {
         "required": "Devem existir um valor ou filtros aplicados para realizar a consulta"
@@ -48,39 +64,49 @@
       }
     },
     "formUser": {
-      "idUser": {
+      "id": {
         "headerTable": "Id",
         "label": "Id"
-      },
-      "username": {
-        "headerTable": "Nome",
-        "label": "Nome de usuário",
-        "hint": "Preencha com o seu nome"
       },
       "email": {
         "headerTable": "Email",
         "label": "Email",
         "hint": "Preencha com o seu email"
       },
-      "role": {
-        "headerTable": "Permissão",
-        "label": "Permissão",
+      "username": {
+        "headerTable": "Nome",
+        "label": "Nome de usuário",
+        "hint": "Preencha com o seu nome"
+      },
+      "avatar_url": {
+        "headerTable": "Avatar",
+        "label": "Foto do perfil"
+      },
+      "celular_contato": {
+        "headerTable": "Celular",
+        "label": "Número de celular (WhatsApp)"
+      },
+      "documento": {
+        "headerTable": "Documento",
+        "label": "CPF / CNPJ"
+      },
+      "cargo": {
+        "headerTable": "Cargo",
+        "label": "Cargo",
         "types": {
-          "admin": "Administrador",
-          "user": "Usuário comum"
+          "student": "Aluno(a)",
+          "teacher": "Professor(a)",
+          "partner": "Parceiro(a)",
+          "director": "Diretor(a)",
+          "associate": "Associado(a)"
         }
       },
-      "phoneNumber": {
-        "headerTable": "Telefone",
-        "label": "Número de telefone"
-      },
-      "receiveNotifications": {
-        "headerTable": "Notificar",
-        "label": "Recebe notificações?"
-      },
-      "active": {
+      "usuario_ativo": {
         "headerTable": "Ativo",
         "label": "Usuário ativo?"
+      },
+      "codigo": {
+        "label": "Código de verificação do novo cargo"
       }
     },
     "formProduct": {
@@ -116,142 +142,6 @@
         "hint": "Clique no ícone a esquerda para consultar"
       }
     },
-    "formCategory": {
-      "idCategory": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Descrição",
-        "label": "Descrição da categoria"
-      },
-      "group": {
-        "headerTable": "Grupo",
-        "label": "Grupo da categoria",
-        "types": {
-          "products": "Produtos",
-          "recipes": "Receitas",
-          "ingredients": "Ingredientes"
-        }
-      },
-      "active": {
-        "headerTable": "Ativo",
-        "label": "Categoria ativa?"
-      }
-    },
-    "formRecipe": {
-      "idRecipe": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Descrição",
-        "label": "Descrição da receita"
-      },
-      "preparation": {
-        "headerTable": "Preparo",
-        "label": "Modo de preparo"
-      },
-      "ingredients": {
-        "headerTable": "Ingredientes",
-        "label": "Ingredientes da receita",
-        "hint": "Consulte e selecione os ingredientes"
-      },
-      "category": {
-        "headerTable": "Categoria",
-        "label": "Categoria da receita",
-        "hint": "Clique no ícone a esquerda para consultar"
-      },
-      "active": {
-        "headerTable": "Ativo",
-        "label": "Receita ativa?"
-      }
-    },
-    "formIngredient": {
-      "idIngredient": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "description": {
-        "headerTable": "Descrição",
-        "label": "Descrição do ingrediente"
-      },
-      "measurement": {
-        "headerTable": "Medida",
-        "label": "Unidade de medida"
-      },
-      "price": {
-        "headerTable": "Preço",
-        "label": "Preço do ingrediente",
-        "hint": "Convertido para: "
-      },
-      "stock": {
-        "headerTable": "Em estoque",
-        "label": "Quantidade inicial em estoque",
-        "hint": "Quantidade inicial pode começar com zero, depois dê entrada no estoque"
-      },
-      "category": {
-        "headerTable": "Categoria",
-        "label": "Categoria do ingrediente",
-        "hint": "Clique no ícone a esquerda para consultar"
-      }
-    },
-    "formIngredientsInRecipe": {
-      "idRecipe": {
-        "headerTable": "Id Receita",
-        "label": "Id Receita"
-      },
-      "amount": {
-        "headerTable": "Quantidade",
-        "label": "Quantidade do ingrediente"
-      },
-      "ingredients": {
-        "headerTable": "Ingredientes",
-        "label": "Ingredientes da receita",
-        "hint": "Selecione os ingredientes presentes na receita"
-      }
-    },
-    "formStock": {
-      "idStock": {
-        "headerTable": "Id",
-        "label": "Id"
-      },
-      "category": {
-        "headerTable": "Categoria",
-        "label": "Categoria do item"
-      },
-      "description": {
-        "headerTable": "Descrição",
-        "label": "Descrição do item"
-      },
-      "measurement": {
-        "headerTable": "Medida",
-        "label": "Unidade de medida"
-      },
-      "amount": {
-        "headerTable": "Quantidade",
-        "label": "Quantidade do item"
-      },
-      "item": {
-        "label": "Item para operação",
-        "types": {
-          "ingredient": "Ingrediente",
-          "product": "Produto"
-        }
-      },
-      "operation": {
-        "label": "Operação",
-        "types": {
-          "entry": "ENTRADA",
-          "exit": "SAÍDA"
-        }
-      },
-      "price": {
-        "headerTable": "Custo",
-        "label": "Custo do item",
-        "hint": "Convertido para: "
-      }
-    },
     "formNotifications": {
       "seen" : {
         "headerTable": "Visualizado",
@@ -277,14 +167,6 @@
         "headerTable": "Origem",
         "label": "Origem da notificação"
       }
-    },
-    "formLogin": {
-      "email": {
-        "label": "Email"
-      },
-      "password": {
-        "label": "Senha"
-      }
     }
   },
   "tooltips": {
@@ -309,7 +191,8 @@
       "delete": "Excluir",
       "submit": "Confirmar",
       "forgotPassword": "Esqueci minha senha",
-      "attach": "Anexar"
+      "attach": "Anexar",
+      "withGoogle": "Continue com o Google"
     },
     "components": {
       "dataTable": {
@@ -331,6 +214,7 @@
     "from": "De",
     "until": "Até",
     "welcome": "Bem-vindo(a)",
+    "installApp": "Instalar App",
     "errors": {
       "reqGenerics": "Ocorreu um erro na requisição!",
       "accessDenied": "Você não tem permissão para acessar esta página",
@@ -411,6 +295,7 @@
   "chartPie": {
     "title": "Distribuição por",
     "noData": "Sem dados para exibir",
+    "group": "Agrupar por",
     "chartAggregator": {
       "sum": "Total Acumulado",
       "count": "Total de Registros"

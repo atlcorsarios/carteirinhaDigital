@@ -34,7 +34,7 @@
 <script setup lang="ts">
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
-import ProductForm from '@/components/forms/products/ProductForm.vue'
+import ProductForm from '@/components/forms/resources/ProductForm.vue'
 import MoreProductDetails from '@/components/MoreProductDetails.vue'
 
 // Models

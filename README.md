@@ -55,8 +55,8 @@ O **compose** deste projeto descrito no [backend](https://gitlab.com/controle.sa
 #### Crie na raiz do projeo, um arquivo .env:
 
 ```dotenv
-VITE_API_URL="endereço da API"
-VITE_DOMAIN_EMAIL="@GMAIL.COM"
+VITE_SUPABASE_URL="endereço da API"
+VITE_SUPABASE_ANON_KEY="chave da API"
 ```
 
 #### Depois basta rodar os comandos no prompt:

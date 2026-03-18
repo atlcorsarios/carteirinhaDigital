@@ -1,3 +1,7 @@
+import { ClassFormatters } from '../ClassFormatters'
+import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
+import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
+import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { INotification } from '../models/resources/ModelNotifications'
 import { BaseClass } from '../subscriptions/BaseClass'
 
@@ -22,5 +26,86 @@ export class ClassNotifications extends BaseClass<INotification> {
   protected getDefault(data: unknown = {}): INotification {
     const item = data as Partial<INotification>
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
+  }
+  static get fieldConfig(): TEntityConfig<INotification> {
+    return {
+      idNotification: {
+        width: 50,
+        excludeFromFilter: true,
+        excludeFromChart: true,
+      },
+      title: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      },
+      description: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      },
+      message: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      },
+      sender: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      },
+      recipients: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      },
+      seen: {
+        align: 'center',
+        width: 50,
+        excludeFromFilter: true,
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (notification: INotification) => ClassFormatters.formatBoolean(notification.seen),
+        cellClass: (value: boolean) => {
+          if (value === true) return 'text-success font-weight-bold'
+          else return 'text-error font-weight-bold'
+        },
+      },
+      date: {
+        width: 200,
+        maxWidth: 300,
+        minWidth: 100,
+        excludeFromChart: true
+      }
+    }
+  }
+
+  static get headers(): IHeadersDataTable[] {
+    const defaultModel = new ClassNotifications().getDefault()
+    return BaseClass.generateHeadersFromModel(
+      defaultModel,
+      'forms.formNotification',
+      ClassNotifications.fieldConfig,
+    )
+  }
+
+  static get filters(): IFilterColumn[] {
+    const defaultModel = new ClassNotifications().getDefault()
+    return BaseClass.generateFiltersFromModel(
+      defaultModel,
+      'forms.formNotification',
+      ClassNotifications.fieldConfig,
+    )
+  }
+
+  static get defaultFilterConfig(): Partial<IQueryFilter> {
+    return {
+      field: 'title',
+      condition: 'contains',
+    }
   }
 }

@@ -11,11 +11,17 @@
     :icon-save="'mdi-account-check'"
     :dialog-model-manager="dialogUser"
     :class-model-manager="userModelManager"
-    :service-fetch="usersServices.getAllUsers"
-    :service-save="usersServices.saveUser"
+    :service-fetch="profileServices.getAllUsers"
+    :service-save="profileServices.saveUser"
   >
     <template #form="{ model, updateValid, refForm, submitForm }">
-      <UserForm :ref="refForm" :user="model" @update:valid="updateValid" @submit="submitForm" />
+      <ProfileForm
+        :ref="refForm"
+        v-model:profile="model"
+        :loading="loading"
+        @update:valid="updateValid"
+        @submit="submitForm" 
+      />
     </template>
   </GenericView>
 </template>
@@ -23,7 +29,7 @@
 <script setup lang="ts">
 // Componentes
 import GenericView from '@/views/view/GenericView.vue'
-import UserForm from '@/components/forms/resources/UserForm.vue'
+import ProfileForm from '@/components/forms/resources/ProfileForm.vue'
 
 // Models
 import type { IUser } from '@/classes/models/resources/ModelUser'
@@ -33,12 +39,14 @@ import { ClassUsers } from '@/classes/resources/ClassUsers'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { usersServices } from '@/services/resources/usersService'
+import { profileServices } from '@/services/resources/profileService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const { t } = useI18n()
+const loading = ref(false)
 
 const classUser = new ClassUsers()
 const dialogUser = new ClassBaseDialog<IUser>({

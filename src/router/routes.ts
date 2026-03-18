@@ -15,13 +15,25 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/perfil',
+    name: 'Perfil',
+    component: () => import('@/views/PerfilView.vue'),
+    meta: {
+      title: 'routes.perfil',
+      excludeNav: true,
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/carteirinha',
     name: 'Carteirinha',
-    component: () => import('@/views/NotificationsView.vue'),
+    component: () => import('@/views/CarteirinhaView.vue'),
     meta: {
       title: 'routes.carteirinha',
       icon: 'mdi-card-account-details',
       hotkey: 'cmd+shift+c',
+      requiresAuth: true,
+      authorize: ['associado', 'diretoria'],
     },
   },
   {
@@ -31,7 +43,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.parceiros',
       icon: 'mdi-handshake-outline',
-      hotkey: 'cmd+shift+d',
+      hotkey: 'cmd+shift+p',
     },
   },
   {
@@ -52,7 +64,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.products.title',
       icon: 'mdi-package-variant-closed',
-      hotkey: 'cmd+shift+p',
+      hotkey: 'cmd+alt+p',
       requiresAuth: true,
       hasFilters: true,
       filterConfig: ClassDefinitions.queryFilterProducts.filters,
@@ -73,6 +85,51 @@ export const routes: Array<RouteRecordRaw> = [
           defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
         },
       },
+      {
+        path: 'beneficios',
+        name: 'Beneficios',
+        component: () => import('@/views/products/BeneficiosView.vue'),
+        meta: {
+          title: 'routes.products.children.beneficios',
+          icon: 'mdi-clipboard-text',
+          hotkey: 'cmd+alt+b',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
+      {
+        path: 'promocoes',
+        name: 'Promoções',
+        component: () => import('@/views/products/PromocoesView.vue'),
+        meta: {
+          title: 'routes.products.children.promocoes',
+          icon: 'mdi-sale',
+          hotkey: 'cmd+alt+l',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
+      {
+        path: 'descontos',
+        name: 'Descontos',
+        component: () => import('@/views/products/DescontosView.vue'),
+        meta: {
+          title: 'routes.products.children.descontos',
+          icon: 'mdi-tag-multiple',
+          hotkey: 'cmd+alt+d',
+          requiresAuth: true,
+          authorize: ['diretoria', 'parceiro'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
     ],
   },
   {
@@ -83,9 +140,9 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'routes.adm.title',
       icon: 'mdi-shield-crown',
-      hotkey: 'cmd+shift+a',
+      hotkey: 'cmd+alt+u',
       requiresAuth: true,
-      authorize: ['ADMIN'],
+      authorize: ['diretoria'],
     },
     children: [
       {
@@ -97,13 +154,79 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-account-group',
           hotkey: 'cmd+alt+u',
           requiresAuth: true,
-          authorize: ['ADMIN'],
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'planos',
+        name: 'Planos',
+        component: () => import('@/views/admin/PlanosView.vue'),
+        meta: {
+          title: 'routes.adm.children.planos',
+          icon: 'mdi-medal',
+          hotkey: 'cmd+alt+m',
+          requiresAuth: true,
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'assinaturas',
+        name: 'Assinaturas',
+        component: () => import('@/views/admin/AssinaturasManagerView.vue'),
+        meta: {
+          title: 'routes.adm.children.assinaturas',
+          icon: 'mdi-credit-card-outline',
+          hotkey: 'cmd+alt+a',
+          requiresAuth: true,
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterUsers.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+        },
+      },
+      {
+        path: 'otp',
+        name: 'Gerar OTP',
+        component: () => import('@/views/admin/OTPManagerView.vue'),
+        meta: {
+          title: 'routes.adm.children.otp',
+          icon: 'mdi-shield-key',
+          hotkey: 'cmd+alt+o',
+          requiresAuth: true,
+          authorize: ['diretoria'],
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterUsers.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
         },
       },
     ],
+  },
+  {
+    path: '/configuracoes',
+    name: 'Configurações',
+    component: () => import('@/views/ConfigurationsView.vue'),
+    meta: {
+      title: 'routes.config',
+      icon: 'mdi-cog',
+      hotkey: 'cmd+shift+s',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/notificacoes',
+    name: 'Notificações',
+    component: () => import('@/views/NotificationsView.vue'),
+    meta: {
+      title: 'routes.notificacoes',
+      icon: 'mdi-bell',
+      hotkey: 'cmd+shift+b',
+    },
   },
   {
     path: '/login',
@@ -115,13 +238,14 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/forgot-password',
-    name: 'ForgotPassword',
-    component: () => import('@/views/ForgotPasswordView.vue'),
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import('@/views/OnboardingView.vue'),
     meta: {
-      title: 'routes.forgotPassword',
+      title: 'routes.onboarding',
       hidden: true,
-    },
+      requiresAuth: true
+    }
   },
   {
     path: '/forbidden',

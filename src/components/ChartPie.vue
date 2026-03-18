@@ -16,7 +16,7 @@
               item-title="title"
               item-value="value"
               density="compact"
-              label="Agrupar por"
+              :label="t('chartPie.group')"
               variant="solo-filled"
               flat
               hide-details

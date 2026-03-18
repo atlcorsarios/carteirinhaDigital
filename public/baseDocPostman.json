@@ -1,0 +1,145 @@
+{
+	"info": {
+		"name": "Atlética API - Completa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Vitrine (Rotas Públicas)",
+			"item": [
+				{
+					"name": "Listar Produtos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{anon_key}}" }
+						],
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/produtos?select=*,parceiros(nome_fantasia)",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "produtos"],
+							"query": [{ "key": "select", "value": "*,parceiros(nome_fantasia)" }]
+						}
+					}
+				},
+				{
+					"name": "Listar Assinaturas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{anon_key}}" }
+						],
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/assinaturas?select=*",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "assinaturas"],
+							"query": [{ "key": "select", "value": "*" }]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Área do Associado (Requer Token JWT)",
+			"item": [
+				{
+					"name": "Meu Perfil",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/usuarios?select=*,enderecos(*),associados(*)",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "usuarios"],
+							"query": [{ "key": "select", "value": "*,enderecos(*),associados(*)" }]
+						}
+					}
+				},
+				{
+					"name": "Atualizar Celular e Documento",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Prefer", "value": "return=representation" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"celular_contato\": \"32999999999\",\n  \"documento\": \"12345678909\"\n}"
+						},
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/usuarios?id=eq.SEU_UUID_AQUI",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "usuarios"],
+							"query": [{ "key": "id", "value": "eq.SEU_UUID_AQUI" }]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Administração (Diretoria & Parceiros)",
+			"item": [
+				{
+					"name": "Criar Produto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Prefer", "value": "return=representation" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Camiseta Oficial\",\n  \"descricao_produto\": \"100% Algodão\",\n  \"valor_produto\": 55.00,\n  \"estoque\": 50\n}"
+						},
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/produtos",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "produtos"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Webhooks (Sistemas Externos)",
+			"item": [
+				{
+					"name": "Receber Pagamento (InfinitePay)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "apikey", "value": "{{anon_key}}" },
+							{ "key": "Authorization", "value": "Bearer {{anon_key}}" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_secreto\": \"{{webhook_secret}}\",\n  \"id_usuario\": \"COLE_O_UUID_DE_UM_USUARIO_AQUI\",\n  \"nsu_transacao\": \"NSU123456\",\n  \"nsu_pedido\": \"PEDIDO789\",\n  \"valor\": 120.00,\n  \"status_transacao\": \"approved\",\n  \"url_comprovante\": \"https://infinitepay.io/recibo/123\"\n}"
+						},
+						"url": {
+							"raw": "{{supabase_url}}/rest/v1/rpc/webhook_infinitepay",
+							"host": ["{{supabase_url}}"],
+							"path": ["rest", "v1", "rpc", "webhook_infinitepay"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{ "key": "supabase_url", "value": "https://crdswbjqwjjvfyusegma.supabase.co" },
+		{ "key": "anon_key", "value": "sb_publishable_HRweBoGjMy32n-dCVi8tbw__hxW5BXV" },
+		{ "key": "access_token", "value": "" },
+		{ "key": "webhook_secret", "value": "" }
+	]
+}

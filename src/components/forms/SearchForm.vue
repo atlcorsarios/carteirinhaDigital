@@ -22,7 +22,7 @@
             variant="plain"
             v-tooltip="t('tooltips.appBar.filter')"
             :rotate="false"
-            @click="openDialog"
+            @click="emit('open-filter')"
           />
           <v-divider
             vertical
@@ -53,125 +53,26 @@
     </v-text-field>
   </v-form>
 
-  <BaseDialog v-model:attributes="dialogAttributes">
-    <template v-slot:title>
-      <div :class="[mdAndDown ? 'd-flex flex-column' : '']">
-        <span class="text-h6 me-2">{{ t('messages.components.queryFilter.title') }}</span>
-        <span class="text-truncate mr-6 text-subtitle-1 font-weight-bold">
-          {{titleDialogFilter}}
-        </span>
-      </div>
-    </template>
-
-    <template v-slot:default>
-      <v-tabs color="primary" v-model="tab">
-        <v-tab value="form">{{ t('tabs.dialogQueryFilter.form') }}</v-tab>
-        <v-tab value="list">{{ t('tabs.dialogQueryFilter.list') }}</v-tab>
-      </v-tabs>
-
-      <v-tabs-window v-model="tab">
-        <v-tabs-window-item value="form">
-          <div class="mt-3">
-            <QueryFilterForm
-              ref="refFormQuery"
-              v-model:filter="queryManager.stagingModel"
-              v-model:valid="formIsValid"
-              :filter-manager="queryManager"
-            />
-          </div>
-        </v-tabs-window-item>
-
-        <v-tabs-window-item value="list">
-          <v-list
-            v-if="queryManager.model.length > 0"
-            rounded
-            lines="two"
-            density="compact"
-            variant="elevated"
-            class="bg-transparent"
-            style="max-height: 300px; overflow-y: auto;"
-          >
-            <v-list-item
-              v-for="(item, index) in queryManager.model"
-              :key="`${item.field}-${index}`"
-              :title="formatTitle(item)"
-              :subtitle="formatSubtitle(item)"
-              class="mb-2"
-            >
-              <template #prepend>
-                <v-avatar
-                  color="primary"
-                  variant="tonal"
-                  size="small"
-                >
-                  {{ index + 1 }}
-                </v-avatar>
-              </template>
-              <template #append>
-                <v-btn
-                  icon="mdi-delete"
-                  color="error"
-                  variant="text"
-                  size="small"
-                  @click="queryManager.removeFilter(index)"
-                />
-              </template>
-            </v-list-item>
-          </v-list>
-
-          <div v-else class="text-center text-medium-emphasis mt-10">
-            <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
-          <div>{{ t('filterColumn.none') }}</div> </div>
-        </v-tabs-window-item>
-      </v-tabs-window>
-    </template>
-
-    <template v-slot:actions>
-      <v-icon-btn
-        icon="mdi-refresh"
-        v-tooltip="t('tooltips.forms.reset')"
-        variant="text"
-        color="amber"
-        @click="emit('reset')"
-      />
-
-      <v-spacer />
-
-      <v-icon-btn
-        icon="mdi-filter-plus"
-        v-tooltip="t('tooltips.forms.add')"
-        variant="text"
-        color="info"
-        :disabled="!formIsValid"
-        @click="emit('add-filter')"
-      />
-
-      <v-spacer />
-
-      <v-icon-btn
-        v-if="tab === 'list'"
-        icon="mdi-magnify"
-        v-tooltip="t('tooltips.appBar.search')"
-        variant="text"
-        color="success"
-        :disabled="!canSubmit"
-        @click="emit('submit')"
-      />
-    </template>
-  </BaseDialog>
+  <DialogQueryFilters
+    ref="refFormQuery"
+    v-model:attributes="dialogAttributes"
+    v-model:manager="queryManager"
+    v-model:tab="tab"
+    :title-dialog-filter="titleDialogFilter"
+    :can-submit="canSubmit"
+    @submit="handleSubmit"
+    @add-filter="emit('add-filter')"
+    @reset="emit('reset')"
+  />
 </template>
 
 <script setup lang="ts">
-import BaseDialog from '../dialog/BaseDialog.vue'
 import BtnOpenDialog from '../dialog/BtnOpenDialog.vue'
-import QueryFilterForm from './QueryFilterForm.vue'
-import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
+import DialogQueryFilters from './DialogQueryFilters.vue'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
-import { useDisplay } from 'vuetify'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
-const { mdAndDown } = useDisplay()
 const { t } = useI18n()
 
 const props = defineProps<{
@@ -187,37 +88,17 @@ const tab = defineModel<string>('tab', { default: 'form' })
 const emit = defineEmits(['submit', 'reset', 'add-filter', 'open-filter'])
 
 const formRef = ref<any>(null)
-const refFormQuery = ref<InstanceType<typeof QueryFilterForm> | null>(null)
+const refFormQuery = ref<InstanceType<typeof DialogQueryFilters> | null>(null)
 const inputRef = ref<any>(null)
 const formIsValid = ref(false)
 
 const canSubmit = computed(() => {
-  const hasText =
-    queryManager.value.stagingModel.value && queryManager.value.stagingModel.value.trim() !== ''
+  const staginModel = queryManager.value.stagingModel.value;
+  const hasText = staginModel && staginModel.trim() !== ''
   const hasList = queryManager.value.model.length > 0
+
   return hasText || hasList
 })
-
-function openDialog() {
-  emit('open-filter')
-}
-
-function formatTitle(item: IQueryFilter) {
-  const col = queryManager.value.getColumnType(item.field)
-  const label = col ? t(col.label) : item.field
-
-  let conditionLabel = ''
-  if (item.condition) {
-    conditionLabel = t(`filterColumn.operators.${item.condition}`)
-  }
-
-  return `${label} (${conditionLabel})`
-}
-
-function formatSubtitle(item: IQueryFilter) {
-  if (item.condition === 'between') return `${item.startDate} - ${item.endDate}`
-  return item.value
-}
 
 const dynamicSearchRules = computed(() => {
   return [
@@ -246,4 +127,5 @@ defineExpose({
 .rounded-search :deep(.v-field) {
   overflow: hidden;
 }
+
 </style>

@@ -10,21 +10,21 @@ export const rbacGuard = async (
   const authStore = useAuthStore()
   const { notify } = useSnackbar()
 
-  if (authStore.token && !authStore.user) {
-    await authStore.fetchUser()
-  }
-
   const authorizedRoles = to.meta.authorize as string[] | undefined
 
   if (!authorizedRoles || authorizedRoles.length === 0) {
     return next()
   }
 
-  if (!authStore.user) {
+  if (!authStore.userProfile && authStore.user?.id) {
+    await authStore.fetchUser(authStore.user.id)
+  }
+
+  if (!authStore.userProfile) {
     return next({ name: 'Login', query: { redirect: to.fullPath } })
   }
 
-  const userRole = authStore.user.role
+  const userRole = authStore.userProfile.cargo
 
   if (authorizedRoles.includes(userRole)) {
     next()

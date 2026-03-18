@@ -9,9 +9,10 @@
     <template v-slot:prepend>
       <v-list nav>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-          :title="authStore.user?.username"
-          :subtitle="authStore.user?.email"
+          :prepend-avatar="userAvatar"
+          :title="authStore.user?.user_metadata?.full_name"
+          :subtitle="authStore.userProfile?.cargo"
+          @click="router.push({ name: 'Perfil' })"
         />
       </v-list>
     </template>
@@ -25,8 +26,8 @@
             <v-list-item
               v-bind="props"
               :prepend-icon="item.icon"
-              :title="t(item.title || '')"
-              v-tooltip="t(item.title || '')"
+              :title="extractTitle(item.title)"
+              v-tooltip="extractTitle(item.title)"
             />
           </template>
 
@@ -34,10 +35,10 @@
             v-for="child in item.children"
             :key="child.path"
             :prepend-icon="child.icon"
-            :title="t(child.title || '')"
+            :title="extractTitle(child.title)"
             :to="{ name: child.name }"
             exact
-            v-tooltip="t(child.title || '')"
+            v-tooltip="extractTitle(child.title)"
             class="child-item"
           >
             <template v-slot:append v-if="item.hotkey && mdAndUp">
@@ -55,10 +56,10 @@
         <v-list-item
           v-else
           :prepend-icon="getDynamicIcon(item)"
-          :title="t(item.title || '')"
+          :title="extractTitle(item.title)"
           :to="{ name: item.name }"
           exact
-          v-tooltip="t(item.title || '')"
+          v-tooltip="extractTitle(item.title)"
         >
           <template v-slot:append v-if="item.hotkey && mdAndUp">
             <v-hotkey
@@ -94,13 +95,13 @@ import { useNotificationsStore } from '@/stores/notificationsStore'
 import { useHotkey, useDisplay } from 'vuetify'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const { mdAndUp } = useDisplay()
 const { menuItems } = useNavigation()
-const authStore = useAuthStore()
-const router = useRouter()
 const { t } = useI18n()
+const router = useRouter()
+const authStore = useAuthStore()
 const notificationsStore = useNotificationsStore()
 const hasUnreadNotifications = ref(false);
 
@@ -120,6 +121,20 @@ const drawer = computed({
   set: (val) => emits('update:modelValue', val),
 })
 
+const userAvatar = computed(() => {
+  if (authStore.userProfile?.avatar_url) {
+    return authStore.userProfile.avatar_url;
+  }
+
+  const name = authStore.userProfile?.username || authStore.user?.user_metadata?.full_name;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=primary&color=fff&rounded=true`;
+});
+
+function extractTitle(title: string | undefined) {
+  const titlePayload = title || '';
+  return title ? t(titlePayload) : ''
+}
+
 const flattenMenuItems = (items: typeof menuItems.value): any[] => {
   return items.reduce((acc: any[], item) => {
     acc.push(item)
@@ -130,15 +145,17 @@ const flattenMenuItems = (items: typeof menuItems.value): any[] => {
   }, [])
 }
 
-const allItems = flattenMenuItems(menuItems.value)
+watch(menuItems, (novosMenus) => {
+  const allItems = flattenMenuItems(novosMenus)
 
-allItems.forEach((item) => {
-  if (item.hotkey && item.name) {
-    useHotkey(item.hotkey, () => {
-      router.push({ name: item.name })
-    })
-  }
-})
+  allItems.forEach((item) => {
+    if (item.hotkey && item.name) {
+      useHotkey(item.hotkey, () => {
+        router.push({ name: item.name })
+      })
+    }
+  })
+}, { immediate: true })
 
 function getDynamicIcon(item: any): string {
   if (item.name === 'Notifications' && hasUnreadNotifications.value) {
@@ -148,9 +165,8 @@ function getDynamicIcon(item: any): string {
   return item.icon;
 }
 
-function handleLogout() {
-  authStore.logout()
-  router.push({ name: 'Login' })
+async function handleLogout() {
+  await authStore.logout()
 }
 
 </script>

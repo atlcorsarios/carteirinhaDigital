@@ -171,10 +171,10 @@ const paginationModel = computed({
 watchEffect(() => {
   gridConfig.modelTable.model.itemsTable = items.value
   gridConfig.modelTable.model.loadingDataTable = loading.value
-  gridConfig.modelTable.model.headersTable = props.headers
+  gridConfig.modelTable.model.headersTable = props.headers || []
   gridConfig.modelTable.model.titleTable = props.title
 
-  gridConfig.modelChart.optionsFilterSelectData = props.headers.map((h) => h.title).slice(0, -1)
+  gridConfig.modelChart.optionsFilterSelectData = props.headers?.map((h) => h.title).slice(0, -1) || []
 })
 
 function toggleChartState() {
@@ -182,7 +182,7 @@ function toggleChartState() {
 }
 
 const headersToGraph = computed(() => {
-  return props.headers
+  return (props.headers || [])
     .filter((h) => !h.excludeFromChart && h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
 })

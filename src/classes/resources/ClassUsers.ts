@@ -12,14 +12,14 @@ export class ClassUsers extends BaseClass<IUser> {
 
   static defaultUser(): IUser {
     return {
-      idUser: 0,
-      username: '',
+      id: 0,
       email: '@gmail.com',
-      image: '',
-      role: 'USER',
-      phoneNumber: '',
-      receiveNotifications: false,
-      active: true,
+      username: '',
+      avatar_url: '',
+      celular_contato: '',
+      documento: '',
+      cargo: 'aluno',
+      usuario_ativo: true,
     }
   }
 
@@ -29,52 +29,54 @@ export class ClassUsers extends BaseClass<IUser> {
 
   static get fieldConfig(): TEntityConfig<IUser> {
     return {
-      idUser: {
+      id: {
+        minWidth: 50,
         width: 50,
+        maxWidth: 100,
         excludeFromFilter: true,
-        excludeFromChart: true,
-      },
-      username: {
-        maxWidth: 250,
         excludeFromChart: true,
       },
       email: {
-        maxWidth: 200,
+        minWidth: 100,
+        width: 100,
+        maxWidth: 300,
         excludeFromChart: true,
       },
-      image: {
+      username: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 250,
+        excludeFromChart: true,
+      },
+      avatar_url: {
         hidden: true,
       },
-      role: {
-        chartFormatter: ClassFormatters.formatRolesTranslate,
-        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.role),
-        maxWidth: 100,
-        filterType: 'select',
-        selectOptions: [
-          { title: 'Admin', value: 'ADMIN' },
-          { title: 'User', value: 'USER' },
-        ],
-      },
-      phoneNumber: {
+      celular_contato: {
         align: 'end',
+        minWidth: 100,
+        width: 100,
         maxWidth: 200,
         excludeFromChart: true,
       },
-      receiveNotifications: {
-        align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.receiveNotifications),
-        excludeFromFilter: true,
-        width: 50,
-        cellClass: (value: boolean) => {
-          if (value === true) return 'text-success font-weight-bold'
-          else return 'text-error font-weight-bold'
-        },
+      documento: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 300,
+        excludeFromChart: true,
       },
-      active: {
+      cargo: {
+        chartFormatter: ClassFormatters.formatRolesTranslate,
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo),
+        minWidth: 100,
+        width: 100,
+        maxWidth: 100,
+        filterType: 'select',
+        selectOptions: ClassFormatters.formatOptionsRoles()
+      },
+      usuario_ativo: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.active),
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
         width: 50,
       },
     }

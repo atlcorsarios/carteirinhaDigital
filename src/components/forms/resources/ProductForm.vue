@@ -14,7 +14,10 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <InputPrice v-model="product.price" :rules="[rules.required()]" />
+        <InputPrice
+          v-model="product.price"
+          :rules="[rules.required()]"
+        />
       </v-col>
 
       <v-col cols="12" md="3" class="d-flex justify-center">
@@ -29,20 +32,14 @@
     </v-row>
 
     <v-row dense>
-      <InputCategoryWithSearch
-        v-model:category="product.category"
-        :label="t('forms.formProduct.category.label')"
-        :hint="t('forms.formProduct.category.hint')"
-      />
-
-      <InputRecipeWithSearch
-        v-model:recipe="product.recipe"
-        :label="t('forms.formProduct.recipe.label')"
-        :hint="t('forms.formProduct.recipe.hint')"
-      />
-
       <v-col cols="12" class="d-flex flex-column">
-        <InputUploadImage v-model="product.imageFile" :label="t('forms.formProduct.image.label')" />
+        <InputUploadImage
+          v-model="product.imageFile"
+          :label="t('forms.formProduct.image.label')"
+          :bucket="'produtos'"
+          :owner="ownerBucket"
+        />
+
         <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
           <v-img :src="product.image" aspect-ratio="16/9" cover class="rounded-lg mt-5" />
           <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
@@ -55,26 +52,37 @@
 
 <script setup lang="ts">
 // Componentes
-import InputCategoryWithSearch from '../fixtures/InputCategoryWithSearch.vue'
-import InputRecipeWithSearch from '../fixtures/ExempleInputResourceWithSearch.vue'
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputPrice from '../fixtures/InputPrice.vue'
 
 // Models
 import { type IProduct } from '@/classes/models/resources/ModelIProduct'
 
+// Utils
+import { sanitizeName } from '@/utils/sanitizeForBucket'
+
+// Stores
+import { useAuthStore } from '@/stores/authStore'
+
 // Vue
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-const rules = useRules()
 const { t } = useI18n()
+const rules = useRules()
+const authStore = useAuthStore()
 
 const formRef = ref<any>(null)
 const product = defineModel<IProduct>('product', { required: true })
 const formIsValid = defineModel<boolean>('valid', { default: false })
 const emit = defineEmits(['submit'])
+
+const ownerBucket = computed(() => {
+  const idUser = authStore.user?.id
+  if (idUser == undefined) throw new Error('id undefined')
+  return sanitizeName(idUser);
+})
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()

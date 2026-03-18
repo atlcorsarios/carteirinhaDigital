@@ -8,12 +8,12 @@ export function useNavigation() {
   const authStore = useAuthStore()
 
   const canAccess = (route: RouteRecordRaw): boolean => {
-    if (route.meta?.hidden) return false
+    if (route.meta?.hidden || route.meta?.excludeNav) return false
 
     const requiredRoles = route.meta?.authorize as string[] | undefined
     if (!requiredRoles || requiredRoles.length === 0) return true
 
-    const userRole = authStore.user?.role
+    const userRole = authStore.userProfile?.cargo
     return userRole ? requiredRoles.includes(userRole) : false
   }
 
@@ -21,7 +21,7 @@ export function useNavigation() {
     return {
       name: route.name as string | undefined,
       path: route.path,
-      title: route.meta?.title as string | undefined,
+      title: route.meta?.title as string,
       icon: route.meta?.icon as string | undefined,
       hotkey: route.meta?.hotkey as string | undefined,
       hidden: route.meta?.hidden as boolean | undefined,

@@ -1,15 +1,11 @@
 #!/bin/sh
 
-# A linha acima é um shebang que faz forçar shell interpretável
-
-echo "Gerando env.js..."
-
 cat <<EOF > /usr/share/nginx/html/env.js
 window.env = {
-  VITE_API_URL: "${VITE_API_URL}",
-  VITE_DOMAIN_EMAIL: "${VITE_DOMAIN_EMAIL}"
+  VITE_SUPABASE_URL: "${VITE_SUPABASE_URL}",
+  VITE_SUPABASE_ANON_KEY: "${VITE_SUPABASE_ANON_KEY}"
 };
 EOF
 
-echo "✅  env.js gerado com sucesso."
+echo "✅ env's injetadas com sucesso!"
 exec "$@"
