@@ -11,8 +11,8 @@
     :icon-save="'mdi-account-check'"
     :dialog-model-manager="dialogUser"
     :class-model-manager="userModelManager"
-    :service-fetch="usersServices.getAllUsers"
-    :service-save="usersServices.saveUser"
+    :service-fetch="profileServices.getAllUsers"
+    :service-save="profileServices.saveUser"
   >
     <template #form="{ model, updateValid, refForm, submitForm }">
       <ProfileForm
@@ -39,7 +39,7 @@ import { ClassUsers } from '@/classes/resources/ClassUsers'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { usersServices } from '@/services/resources/usersService'
+import { profileServices } from '@/services/resources/profileService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
