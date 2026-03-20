@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 // Componentes
-import GenericView from '@/views/view/GenericView.vue'
+import GenericView from '@/components/layouts/generics/GenericView.vue'
 import ProfileForm from '@/components/forms/resources/ProfileForm.vue'
 
 // Models
