@@ -1,6 +1,15 @@
 <template>
-  <div class="d-flex justify-center align-center h-100" style="min-height: 90vh">
-    <v-card class="mx-auto text-center pa-4" width="100%" max-width="500" elevation="8" rounded="lg">
+  <div
+    class="d-flex justify-center align-center h-100"
+    style="min-height: 90vh"
+  >
+    <v-card
+      width="100%"
+      max-width="500"
+      elevation="8"
+      rounded="lg"
+      class="mx-auto text-center pa-4"
+    >
       <v-card-title class="text-h4 text-primary font-weight-bold mb-4">
         {{ t('router.onboarding') }}
       </v-card-title>
@@ -9,7 +18,10 @@
           {{ t('forms.formOnboarding.text') }}
         </p>
 
-        <OnboardingForm :loading="loading" @submit="saveProfile" />
+        <OnboardingForm
+          :loading="loading"
+          @submit="saveProfile"
+        />
       </v-card-text>
     </v-card>
   </div>
@@ -38,7 +50,7 @@ async function saveProfile(formData: IOnboardingData) {
 
   try {
     loading.value = true;
-    
+
     await OnboardingService.finalizarCadastro(authStore.user.id, formData);
     await authStore.fetchUser(authStore.user.id);
 
