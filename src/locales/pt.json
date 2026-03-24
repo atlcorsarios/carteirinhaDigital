@@ -22,14 +22,20 @@
     "products": {
       "title": "Produtos",
       "children": {
-        "list": "Lista de produtos"
+        "list": "Lista de produtos",
+        "beneficios": "Benefícios",
+        "promocoes": "Promoções",
+        "descontos": "Descontos"
       }
     },
     "adm": {
       "title": "Administrador",
       "children": {
         "users": "Gestão de usuários",
-        "settings": "Configurações"
+        "settings": "Configurações",
+        "planos": "Planos",
+        "assinaturas": "Assinaturas",
+        "otp": "Código de verificação"
       }
     },
     "forbidden": "Acesso negado",
@@ -105,8 +111,60 @@
         "headerTable": "Ativo",
         "label": "Usuário ativo?"
       },
+      "created_at": {
+        "headerTable": "Cadastrado em",
+        "label": "Data do cadastro"
+      },
       "codigo": {
         "label": "Código de verificação do novo cargo"
+      }
+    },
+    "formParceiro": {
+      "id_usuario": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "email": {
+        "headerTable": "Email",
+        "label": "Email",
+        "hint": "Preencha com o seu email"
+      },
+      "username": {
+        "headerTable": "Nome",
+        "label": "Nome de usuário",
+        "hint": "Preencha com o seu nome"
+      },
+      "avatar_url": {
+        "headerTable": "Avatar",
+        "label": "Foto do perfil"
+      },
+      "celular_contato": {
+        "headerTable": "Celular",
+        "label": "Número de celular (WhatsApp)"
+      },
+      "documento": {
+        "headerTable": "Documento",
+        "label": "CPF / CNPJ"
+      },
+      "cargo": {
+        "headerTable": "Cargo",
+        "label": "Cargo"
+      },
+      "usuario_ativo": {
+        "headerTable": "Ativo",
+        "label": "Parceiro ativo?"
+      },
+      "created_at": {
+        "headerTable": "Cadastrado em",
+        "label": "Data do cadastro"
+      },
+      "data_renovacao": {
+        "headerTable": "Data renovação",
+        "label": "Data da renovação do contrato"
+      },
+      "nome_fantasia": {
+        "headerTable": "Nome do estabelecimento",
+        "label": "Nome do estabelecimento / Parceiro"
       }
     },
     "formProduct": {

@@ -24,10 +24,13 @@
       <v-list-item
         :prepend-icon="hasNotifications ? 'mdi-bell-badge' : 'mdi-bell'"
         :title="t('tooltips.appBar.notifications')"
-        :to="{ name: 'Notifications' }"
+        :to="{ name: 'Notificações' }"
         link
       >
-        <template v-if="hasNotifications" v-slot:append>
+        <template
+          v-if="hasNotifications"
+          v-slot:append
+        >
           <v-badge
             dot
             inline
