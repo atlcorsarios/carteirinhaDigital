@@ -201,29 +201,37 @@
       }
     },
     "formNotifications": {
-      "seen" : {
-        "headerTable": "Visualizado",
-        "label": "Notificação visualizada"
-      },
       "idNotification": {
         "headerTable": "Id",
         "label": "Id"
-      },
+      },      
       "title": {
         "headerTable": "Título",
         "label": "Título da notificação"
       },
-      "date": {
-        "headerTable": "Data",
-        "label": "Data da notificação"
+      "description": {
+        "headerTable": "Descrição",
+        "label": "Descrição"
+      },
+      "message": {
+        "headerTable": "Mensagem",
+        "label": "Mensagem"
       },
       "sender": {
         "headerTable": "Remetente",
         "label": "Remetente"
       },
-      "origin": {
-        "headerTable": "Origem",
-        "label": "Origem da notificação"
+      "recipients": {
+        "headerTable": "Remetentes",
+        "label": "Remetentes"
+      },
+      "seen" : {
+        "headerTable": "Visualizado",
+        "label": "Notificação visualizada"
+      },
+      "date": {
+        "headerTable": "Data",
+        "label": "Data da notificação"
       }
     }
   },
