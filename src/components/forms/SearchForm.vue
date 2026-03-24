@@ -70,10 +70,15 @@
 import BtnOpenDialog from '../dialog/BtnOpenDialog.vue'
 import DialogQueryFilters from './DialogQueryFilters.vue'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
+import { useQueryFilterStore } from '@/stores/queryFilterStore'
 import { useI18n } from 'vue-i18n'
-import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { computed, ref, watch } from 'vue'
+import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 
-const { t } = useI18n()
+const { t } = useI18n();
+const route = useRoute();
+const filterStore = useQueryFilterStore();
 
 const props = defineProps<{
   loading: boolean
@@ -110,12 +115,20 @@ const dynamicSearchRules = computed(() => {
   ]
 })
 
+const onApplyFilters = (payload: IQueryFilter[]) => {
+  filterStore.setFilters(payload)
+}
+
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
   if (valid) {
     emit('submit');
   }
 }
+
+watch(() => route.path, () => {
+  filterStore.clearFilters()
+})
 
 defineExpose({
   reset: () => refFormQuery.value?.reset(),

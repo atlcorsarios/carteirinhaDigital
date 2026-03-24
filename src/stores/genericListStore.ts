@@ -28,5 +28,13 @@ export const useGenericListStore = defineStore('genericList', () => {
     hasMore.value = true
   }
 
-  return { context, items, lastCursor, hasMore, initContext, addItems, resetCurrentContext }
+  return {
+    context,
+    items,
+    lastCursor,
+    hasMore,
+    initContext,
+    addItems,
+    resetCurrentContext
+  }
 })

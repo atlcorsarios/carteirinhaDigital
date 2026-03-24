@@ -65,9 +65,17 @@
             </v-list-item>
           </v-list>
 
-          <div v-else class="text-center text-medium-emphasis mt-10">
-            <v-icon size="40" icon="mdi-filter-off-outline" class="mb-2"/>
-          <div>{{ t('filterColumn.none') }}</div> </div>
+          <div
+            v-else
+            class="text-center text-medium-emphasis mt-10"
+          >
+            <v-icon
+              icon="mdi-filter-off-outline"
+              size="40"
+              class="mb-2"
+            />
+            <div>{{ t('filterColumn.none') }}</div>
+          </div>
         </v-tabs-window-item>
       </v-tabs-window>
     </template>
@@ -115,7 +123,7 @@ import type { IModelBaseDialog } from '@/classes/models/modelComponents/ModelBas
 import type { ClassQueryFilter } from '@/classes/ClassQueryFilter';
 import { useDisplay } from 'vuetify';
 import { useI18n } from 'vue-i18n';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 const { mdAndDown } = useDisplay()
 const { t } = useI18n()

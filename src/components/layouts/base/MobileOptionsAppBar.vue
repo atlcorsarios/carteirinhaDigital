@@ -2,22 +2,37 @@
   <v-menu
     v-model="open"
     location="bottom end"
-    :close-on-content-click="false"
     transition="scale-transition"
+    :close-on-content-click="false"
   >
     <template v-slot:activator="{ props }">
-      <v-btn icon="mdi-dots-vertical" variant="text" v-bind="props" color="high-emphasis" />
+      <v-btn
+        icon="mdi-dots-vertical"
+        variant="text"
+        v-bind="props"
+        color="high-emphasis"
+      />
     </template>
 
-    <v-list density="comfortable" min-width="200" elevation="10" rounded="lg" nav>
+    <v-list
+      nav
+      density="comfortable"
+      min-width="200"
+      elevation="10"
+      rounded="lg"
+    >
       <v-list-item
         :prepend-icon="hasNotifications ? 'mdi-bell-badge' : 'mdi-bell'"
         :title="t('tooltips.appBar.notifications')"
         :to="{ name: 'Notifications' }"
         link
       >
-        <template v-slot:append v-if="hasNotifications">
-          <v-badge color="warning" dot inline />
+        <template v-if="hasNotifications" v-slot:append>
+          <v-badge
+            dot
+            inline
+            color="warning"
+          />
         </template>
       </v-list-item>
 
@@ -75,7 +90,11 @@
           density="compact"
         >
           <template v-slot:append v-if="locale === item.value">
-            <v-icon icon="mdi-check" color="primary" size="small" />
+            <v-icon
+              icon="mdi-check"
+              color="primary"
+              size="small"
+            />
           </template>
         </v-list-item>
       </v-list-group>
@@ -85,24 +104,28 @@
 
 <script setup lang="ts">
 import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
-import { availableLocales } from '@/locales/definitionsLocales' //
-import { StorageUtils } from '@/utils/StorageUtils' //
-import { useThemeSwitch } from '@/composables/useThemeSwitch' //
+import { availableLocales } from '@/locales/definitionsLocales'
+import { StorageUtils } from '@/utils/StorageUtils'
+import { useThemeSwitch } from '@/composables/useThemeSwitch'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
-
-const open = ref(false)
-const props = defineProps<{
-  hasNotifications: boolean
-}>()
-const emits = defineEmits(['open-dialog-licence'])
 
 const { theme, toggleTheme } = useThemeSwitch()
 const isDark = computed(() => theme.global.current.value.dark)
 const { t, locale } = useI18n()
 
+const open = ref(false)
+const props = withDefaults(defineProps<{
+  hasNotifications?: boolean
+}>(), {
+  hasNotifications: false
+});
+
+const emits = defineEmits(['open-dialog-licence']);
+
 function changeLocale(lang: string) {
   locale.value = lang
   StorageUtils.set('user_locale', lang, 'local')
 }
+
 </script>

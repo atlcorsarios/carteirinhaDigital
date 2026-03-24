@@ -1,120 +1,60 @@
 // Models
-import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginator'
 import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IFilterColumn } from '@/classes/models/ModelFilterColumns'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+import { applySupabaseFilters } from '@/utils/supabaseFilterUtils'
+import { supabase } from '../supabase'
 
-// Services
-import http from '../axios'
-
-export const usersServices = {
-  async getAllUsers(offset: number, limit: number): Promise<IHeaderPaginatorModel<IUser>> {
+export class UsersService {
+  static async paginationsUsers(payload: TPayloadRequestPagination, columnsConfig: IFilterColumn[]): Promise<IUser[]> {
     try {
-      // const { data } = await http.get('/usuarios/consulta', { params: { offset, limit } })
-      // return data
+      let query = supabase
+        .from('usuarios')
+        .select('*, enderecos (cep, rua, bairro, cidade, estado, numero, complemento)')
 
-      const mockData: IHeaderPaginatorModel<IUser> = {
-        limit: limit,
-        offset: offset,
-        total: 100,
-        items: [
-          {
-            idUser: 1,
-            username: 'AVELITO',
-            email: 'avelito@gmail.com',
-            image: 'https://randomuser.me/api/portraits/men/84.jpg',
-            role: 'ADMIN',
-            phoneNumber: '(32) 99999-9999',
-            receiveNotifications: true,
-            active: true,
-          },
-          {
-            idUser: 2,
-            username: 'DUDA',
-            email: 'duda@gmail.com',
-            image: 'https://randomuser.me/api/portraits/men/85.jpg',
-            role: 'USER',
-            phoneNumber: '(32) 98888-8888',
-            receiveNotifications: false,
-            active: true,
-          },
-          {
-            idUser: 3,
-            username: 'MOISES',
-            email: 'moises@gmail.com',
-            image: 'https://randomuser.me/api/portraits/men/86.jpg',
-            role: 'USER',
-            phoneNumber: '(32) 97777-7777',
-            receiveNotifications: false,
-            active: false,
-          },
-        ],
-      }
+      query = applySupabaseFilters(query, payload.filters, columnsConfig);
 
-      await new Promise((resolve) => setTimeout(resolve, 2500))
+      if (payload.cursor) query = query.gt('id', payload.cursor)
+      if (payload.limit) query = query.limit(payload.limit)
+      query = query.order('id', { ascending: true })
 
-      return mockData
+      const { data, error } = await query
+
+      if (error) throw error
+
+      return data.map((user: any) => ({
+        ...user,
+        enderecoFormatado: user.enderecos?.[0]
+          ? `${user.enderecos[0].logradouro}, ${user.enderecos[0].numero} - ${user.enderecos[0].cidade}/${user.enderecos[0].estado}`
+          : 'Endereço não cadastrado'
+      })) as IUser[]
+
     } catch (error) {
+      console.error('Erro na paginação do Supabase:', error)
       throw error
     }
-  },
+  }
 
-  async saveUser() {},
+  static async getUserById(idUsuario: string): Promise<IUser> {
+    const { data, error } = await supabase.from('usuarios').select('*').eq('id', idUsuario).single()
+    if (error) throw error
+    return data as IUser
+  }
 
-  async searchUsuarios() {
-    try {
-      const { data } = await http.get('/usuarios/search', {
-        // params: paginador,
-      })
-      return data
-    } catch (error) {
-      throw error
-    }
-  },
+  static async createUser(newUser: Partial<IUser>): Promise<IUser> {
+    const { data, error } = await supabase.from('usuarios').insert(newUser).select().single()
+    if (error) throw error
+    return data as IUser
+  }
 
-  async getUserById(idUsuario?: number): Promise<IUser> {
-    if (idUsuario) {
-    }
-    try {
-      const { data } = await http.get(`/usuarios/${idUsuario}`)
-      return data.usuario
-    } catch (error) {
-      throw error
-    }
-  },
+  static async updateUser(idUsuario: string, user: Partial<IUser>): Promise<IUser> {
+    const { data, error } = await supabase.from('usuarios').update(user).eq('id', idUsuario).select().single()
+    if (error) throw error
+    return data as IUser
+  }
 
-  async createUser(newUser: IUser): Promise<IUser> {
-    try {
-      const { data } = await http.post('/usuarios', newUser)
-      return data
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async solicitarAcesso(newUser: Partial<IUser>): Promise<IUser> {
-    try {
-      const { data } = await http.post('/usuarios/registrar', newUser)
-      return data
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async updateUser(user: IUser): Promise<IUser> {
-    await this.getUserById(user.idUser!)
-    try {
-      const { data } = await http.put(`/usuarios/${user.idUser}`, user)
-      return data
-    } catch (error) {
-      throw error
-    }
-  },
-
-  async deleteUser(id: number): Promise<void> {
-    await this.getUserById(id)
-    try {
-      await http.delete(`/usuarios/${id}`)
-    } catch (error) {
-      throw error
-    }
-  },
+  static async deleteUser(idUsuario: string): Promise<void> {
+    const { error } = await supabase.from('usuarios').delete().eq('id', idUsuario)
+    if (error) throw error
+  }
 }
