@@ -2,60 +2,36 @@
   <BaseDialog v-model:attributes="dialogSearchModel.model">
     <template v-slot:title>
       <div class="w-100">
-        <SearchForm
-          ref="refSearchForm"
-          v-model:manager="classFormQuery"
-          v-model:dialogAttributes="classDialogQueryFilter.model"
-          v-model:tab="activeTab"
-          :loading="loadingSearchForm"
-          :has-filters="true"
-          :title-dialog-filter="title"
-          @submit="handleSearch"
-          @reset="handleReset"
-          @add-filter="handleAddFilter"
-          @open-filter="handleOpenFilter"
-        />
+        <SearchForm ref="refSearchForm" v-model:manager="classFormQuery"
+          v-model:dialogAttributes="classDialogQueryFilter.model" v-model:tab="activeTab" :loading="loadingSearchForm"
+          :has-filters="true" :title-dialog-filter="title" @submit="handleSearch" @reset="handleReset"
+          @add-filter="handleAddFilter" @open-filter="handleOpenFilter" />
       </div>
     </template>
 
     <template v-slot:default>
       <GridDataChart :hidden-chart="true">
         <template #dataTable>
-          <DataTable
-            :id="tableId"
-            :has-actions="false"
-            :select-items="selectItems"
-            :multiple-select="isMultiple"
-            v-model:selected-itens="selectedItens"
-            v-model:dataTable="gridConfig.modelTable"
-            v-model:pagination="paginationModel"
-            @selected-item="handleSelectItem"
-            @load-more="loadMore"
-          />
+          <DataTable :id="tableId" :has-actions="false" :select-items="selectItems" :multiple-select="isMultiple"
+            v-model:selected-itens="selectedItens" v-model:dataTable="gridConfig.modelTable"
+            v-model:pagination="paginationModel" @selected-item="handleSelectItem" @load-more="loadMore" />
         </template>
       </GridDataChart>
     </template>
 
     <template v-slot:actions>
-      <slot
-        name="action-btn"
-        :open-create="() => classDialogCreateQuickly.toggleDialog()"
-      />
+      <slot name="action-btn" :open-create="() => classDialogCreateQuickly.toggleDialog()" />
     </template>
   </BaseDialog>
 
-  <slot
-    name="create-quickly"
-    :dialog-model="classDialogCreateQuickly"
-    :on-created="handleCreateQuickly"
-  />
+  <slot name="create-quickly" :dialog-model="classDialogCreateQuickly" :on-created="handleCreateQuickly" />
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
 // Componentes
 import BaseDialog from '../BaseDialog.vue'
 import SearchForm from '@/components/forms/SearchForm.vue'
-import GridDataChart from '@/components/layouts/GridDataChart.vue'
+import GridDataChart from '@/components/layouts/dataChart/GridDataChart.vue'
 import DataTable from '@/components/DataTable.vue'
 
 // Models

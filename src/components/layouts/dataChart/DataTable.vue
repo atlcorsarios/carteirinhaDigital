@@ -176,7 +176,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
-import BtnOpenDialog from './dialog/BtnOpenDialog.vue'
+import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
 import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
 import { StorageUtils } from '@/utils/StorageUtils'

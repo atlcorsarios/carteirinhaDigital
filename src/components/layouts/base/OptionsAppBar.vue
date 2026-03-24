@@ -75,9 +75,12 @@ function changeLocale(lang: string) {
   StorageUtils.set('user_locale', lang, 'local')
 }
 
-const props = defineProps<{
-  hasNotifications: boolean
-}>()
+const props = withDefaults(defineProps<{
+  hasNotifications?: boolean
+}>(), {
+  hasNotifications: false
+});
+
 const emits = defineEmits(['open-dialog-licence'])
 
 function toggleDialogLicence() {

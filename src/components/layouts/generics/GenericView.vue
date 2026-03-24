@@ -91,9 +91,9 @@
 
 <script setup lang="ts" generic="T extends Record<string, any>">
 // Componentes
-import GridDataChart from '@/components/layouts/GridDataChart.vue'
-import DataTable from '@/components/DataTable.vue'
-import ChartPie from '@/components/ChartPie.vue'
+import GridDataChart from '@/components/layouts/dataChart/GridDataChart.vue'
+import DataTable from '@/components/layouts/dataChart/DataTable.vue'
+import ChartPie from '@/components/layouts/dataChart/ChartPie.vue'
 import BaseDialog from '@/components/dialog/BaseDialog.vue'
 
 // Models
