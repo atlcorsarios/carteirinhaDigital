@@ -1,86 +1,92 @@
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IUser } from '@/classes/models/resources/ModelUser'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
+import type { TParceiro } from '../models/resources/ModelUser'
 
-export class ClassUsers extends BaseClass<IUser> {
-  constructor(data?: Partial<IUser>) {
+export class ClassParceiros extends BaseClass<TParceiro> {
+  constructor(data?: Partial<TParceiro>) {
     super(data)
   }
 
-  static defaultUser(): IUser {
+  static defaultParceiro(): TParceiro {
     return {
-      id: 0,
-      email: '@gmail.com',
+      id_usuario: 0,
+      email: '',
       username: '',
       avatar_url: '',
       celular_contato: '',
       documento: '',
-      cargo: 'aluno',
+      cargo: 'parceiro',
       usuario_ativo: true,
-      created_at: ''
+      created_at: '',
+      data_renovacao: '',
+      nome_fantasia: ''
     }
   }
 
-  protected getDefault(data: Partial<IUser> = {}): IUser {
-    return this.createWithDefaults(data, ClassUsers.defaultUser())
+  protected getDefault(data: Partial<TParceiro> = {}): TParceiro {
+    return this.createWithDefaults(data, ClassParceiros.defaultParceiro())
   }
 
-  static get fieldConfig(): TEntityConfig<IUser> {
+  static get fieldConfig(): TEntityConfig<TParceiro> {
     return {
-      id: {
+      id_usuario: {
         minWidth: 50,
         width: 50,
         maxWidth: 100,
         excludeFromFilter: true,
-        excludeFromChart: true,
+        excludeFromChart: true
       },
       email: {
         minWidth: 100,
         width: 100,
         maxWidth: 300,
-        excludeFromChart: true,
+        excludeFromChart: true
       },
       username: {
         minWidth: 100,
         width: 100,
         maxWidth: 250,
-        excludeFromChart: true,
+        excludeFromChart: true
       },
       avatar_url: {
-        hidden: true,
+        hidden: true
       },
       celular_contato: {
         align: 'end',
         minWidth: 100,
         width: 100,
         maxWidth: 200,
-        excludeFromChart: true,
+        excludeFromChart: true
       },
       documento: {
         minWidth: 100,
         width: 100,
         maxWidth: 300,
-        excludeFromChart: true,
+        excludeFromChart: true
       },
       cargo: {
-        chartFormatter: ClassFormatters.formatRolesTranslate,
-        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo),
-        minWidth: 100,
-        width: 100,
-        maxWidth: 100,
-        filterType: 'select',
-        selectOptions: ClassFormatters.formatOptionsRoles()
+        hidden: true,
+        excludeFromFilter: true
       },
       usuario_ativo: {
         align: 'center',
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
+        value: (parceiro: TParceiro) => ClassFormatters.formatBoolean(parceiro.usuario_ativo),
         width: 50,
       },
       created_at: {
+        minWidth: 100,
+        width: 100,
+        maxWidth: 300,
+        excludeFromChart: true
+      },
+      data_renovacao: {
+        hidden: true
+      },
+      nome_fantasia: {
         minWidth: 100,
         width: 100,
         maxWidth: 300,
@@ -90,26 +96,26 @@ export class ClassUsers extends BaseClass<IUser> {
   }
 
   static get headers(): IHeadersDataTable[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassParceiros().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
-      'forms.formUser',
-      ClassUsers.fieldConfig,
+      'forms.formParceiro',
+      ClassParceiros.fieldConfig,
     )
   }
 
   static get filters(): IFilterColumn[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassParceiros().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
-      'forms.formUser',
-      ClassUsers.fieldConfig,
+      'forms.formParceiro',
+      ClassParceiros.fieldConfig,
     )
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {
     return {
-      field: 'username',
+      field: 'nome_fantasia',
       condition: 'contains',
     }
   }

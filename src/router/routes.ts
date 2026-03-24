@@ -1,5 +1,4 @@
 import HomeView from '@/views/HomeView.vue'
-import ErrorsView from '@/views/ErrorsView.vue'
 import { ClassDefinitions } from '@/classes/ClassDefinitions'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -33,7 +32,10 @@ export const routes: Array<RouteRecordRaw> = [
       icon: 'mdi-card-account-details',
       hotkey: 'cmd+shift+c',
       requiresAuth: true,
-      authorize: ['associado', 'diretoria'],
+      authorize: [
+        'associado',
+        'diretoria'
+      ],
     },
   },
   {
@@ -44,6 +46,9 @@ export const routes: Array<RouteRecordRaw> = [
       title: 'routes.parceiros',
       icon: 'mdi-handshake-outline',
       hotkey: 'cmd+shift+p',
+      hasFilters: true,
+      filterConfig: ClassDefinitions.queryFilterParceiros.filters,
+      defaultFilterConfig: ClassDefinitions.queryFilterParceiros.defaultFilter,
     },
   },
   {
@@ -94,7 +99,10 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-clipboard-text',
           hotkey: 'cmd+alt+b',
           requiresAuth: true,
-          authorize: ['diretoria', 'parceiro'],
+          authorize: [
+            'diretoria',
+            'parceiro'
+          ],
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterProducts.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
@@ -109,7 +117,10 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-sale',
           hotkey: 'cmd+alt+l',
           requiresAuth: true,
-          authorize: ['diretoria', 'parceiro'],
+          authorize: [
+            'diretoria',
+            'parceiro'
+          ],
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterProducts.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
@@ -124,7 +135,10 @@ export const routes: Array<RouteRecordRaw> = [
           icon: 'mdi-tag-multiple',
           hotkey: 'cmd+alt+d',
           requiresAuth: true,
-          authorize: ['diretoria', 'parceiro'],
+          authorize: [
+            'diretoria',
+            'parceiro'
+          ],
           hasFilters: true,
           filterConfig: ClassDefinitions.queryFilterProducts.filters,
           defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
@@ -218,16 +232,16 @@ export const routes: Array<RouteRecordRaw> = [
       requiresAuth: true,
     },
   },
-  {
-    path: '/notificacoes',
-    name: 'Notificações',
-    component: () => import('@/views/NotificationsView.vue'),
-    meta: {
-      title: 'routes.notificacoes',
-      icon: 'mdi-bell',
-      hotkey: 'cmd+shift+b',
-    },
-  },
+  // {
+  //   path: '/notificacoes',
+  //   name: 'Notificações',
+  //   component: () => import('@/views/NotificationsView.vue'),
+  //   meta: {
+  //     title: 'routes.notificacoes',
+  //     icon: 'mdi-bell',
+  //     hotkey: 'cmd+shift+b',
+  //   },
+  // },
   {
     path: '/login',
     name: 'Login',
@@ -250,7 +264,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/forbidden',
     name: 'Forbidden',
-    component: ErrorsView,
+    component: () => import('@/views/ErrorsView.vue'),
     props: { type: '403' },
     meta: {
       hidden: true,
@@ -260,7 +274,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/server-error',
     name: 'ServerError',
-    component: ErrorsView,
+    component: () => import('@/views/ErrorsView.vue'),
     props: { type: '500' },
     meta: {
       hidden: true,
@@ -270,7 +284,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: ErrorsView,
+    component: () => import('@/views/ErrorsView.vue'),
     props: { type: '404' },
     meta: {
       hidden: true,

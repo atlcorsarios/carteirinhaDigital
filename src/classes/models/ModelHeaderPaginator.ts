@@ -1,3 +1,5 @@
+import type { IQueryFilter } from "./modelComponents/ModelQueryFilter"
+
 export interface IHeaderPaginatorModel<T> {
   limit: number
   offset: number
@@ -10,4 +12,10 @@ export type TPagination = {
   offset: number,
   total: number,
   isFinished: boolean
+}
+
+export type TPayloadRequestPagination = {
+  limit: number
+  cursor: string | null
+  filters: IQueryFilter[]
 }

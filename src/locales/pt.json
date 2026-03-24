@@ -264,6 +264,10 @@
         "empty": "Arraste ou clique para selecionar",
         "inLoading": "Processando...",
         "isCompressing": "Otimizando imagem..."
+      },
+      "infiniteList": {
+        "limit": "Itens por vez",
+        "order": "Ordenação"
       }
     }
   },

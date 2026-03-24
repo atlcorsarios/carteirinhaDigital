@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 // Componentes
-import GenericView from '@/views/view/GenericView.vue'
+import GenericView from '@/components/layouts/generics/GenericView.vue'
 import ProductForm from '@/components/forms/resources/ProductForm.vue'
 import MoreProductDetails from '@/components/MoreProductDetails.vue'
 
