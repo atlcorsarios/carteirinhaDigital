@@ -232,16 +232,17 @@ export const routes: Array<RouteRecordRaw> = [
       requiresAuth: true,
     },
   },
-  // {
-  //   path: '/notificacoes',
-  //   name: 'Notificações',
-  //   component: () => import('@/views/NotificationsView.vue'),
-  //   meta: {
-  //     title: 'routes.notificacoes',
-  //     icon: 'mdi-bell',
-  //     hotkey: 'cmd+shift+b',
-  //   },
-  // },
+  {
+    path: '/notificacoes',
+    name: 'Notificações',
+    component: () => import('@/views/NotificationsView.vue'),
+    meta: {
+      title: 'routes.notificacoes',
+      excludeNav: true
+      // icon: 'mdi-bell',
+      // hotkey: 'cmd+shift+b',
+    },
+  },
   {
     path: '/login',
     name: 'Login',

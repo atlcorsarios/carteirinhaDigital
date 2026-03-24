@@ -1,5 +1,10 @@
 <template>
-  <v-badge v-if="hasNotifications" location="top right" color="warning" dot>
+  <v-badge
+    v-if="hasNotifications"
+    dot
+    location="top right"
+    color="warning"
+  >
     <v-icon
       icon="mdi-bell"
       v-tooltip="t('tooltips.appBar.notifications')"
@@ -16,7 +21,12 @@
     @click="redirectNotifications"
   />
 
-  <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="2" />
+  <v-divider
+    vertical
+    :thickness="2"
+    class="mx-2 my-auto"
+    style="height: 24px"
+  />
 
   <BtnOpenDialog
     icon="mdi-license"
@@ -25,11 +35,20 @@
     @click="toggleDialogLicence"
   />
 
-  <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="2" />
+  <v-divider
+    vertical
+    :thickness="2"
+    class="mx-2 my-auto"
+    style="height: 24px"
+  />
 
   <v-menu>
     <template v-slot:activator="{ props }">
-      <v-icon-btn icon="mdi-translate" v-bind="props" v-tooltip="t('tooltips.appBar.language')" />
+      <v-icon-btn
+        icon="mdi-translate"
+        v-bind="props"
+        v-tooltip="t('tooltips.appBar.language')"
+      />
     </template>
     <v-list>
       <v-list-item
@@ -45,7 +64,12 @@
     </v-list>
   </v-menu>
 
-  <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="2" />
+  <v-divider
+    vertical
+    :thickness="2"
+    class="mx-2 my-auto"
+    style="height: 24px"
+  />
 
   <BtnOpenDialog
     :color="isDark ? 'yellow-lighten-3' : 'primary'"
@@ -60,9 +84,9 @@
 <script lang="ts" setup>
 import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import { availableLocales } from '@/locales/definitionsLocales'
+import router from '@/router'
 import { StorageUtils } from '@/utils/StorageUtils'
 import { useThemeSwitch } from '@/composables/useThemeSwitch'
-import router from '@/router'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 
@@ -88,6 +112,6 @@ function toggleDialogLicence() {
 }
 
 function redirectNotifications() {
-  return router.push({ name: 'Notifications' })
+  return router.push({ name: 'Notificações' })
 }
 </script>
