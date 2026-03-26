@@ -27,7 +27,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     const item = data as Partial<INotification>
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
   }
-  
+
   static get fieldConfig(): TEntityConfig<INotification> {
     return {
       idNotification: {

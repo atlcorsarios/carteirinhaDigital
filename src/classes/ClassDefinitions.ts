@@ -1,7 +1,7 @@
 import type { TDefinitionsForQueryFilter } from './models/modelComponents/ModelQueryFilter'
 import { ClassUsers } from './resources/ClassUsers'
 import { ClassParceiros } from './resources/ClassParceiros'
-import { ClassProducts } from './resources/ClassProducts'
+import { ClassProdutos } from './resources/ClassProdutos'
 
 export class ClassDefinitions {
   static get queryFilterUsers(): TDefinitionsForQueryFilter {
@@ -20,8 +20,8 @@ export class ClassDefinitions {
 
   static get queryFilterProducts(): TDefinitionsForQueryFilter {
     return {
-      filters: ClassProducts.filters,
-      defaultFilter: ClassProducts.defaultFilterConfig,
+      filters: ClassProdutos.filters,
+      defaultFilter: ClassProdutos.defaultFilterConfig,
     }
   }
 }

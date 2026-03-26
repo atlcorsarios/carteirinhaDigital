@@ -18,7 +18,6 @@ export interface IPropsDataTable<T> {
   headersTable: IHeadersDataTable[]
   itemsTable: Array<T>
   loadingDataTable?: boolean
-  
 }
 
 export interface IModelValueDataChart {
