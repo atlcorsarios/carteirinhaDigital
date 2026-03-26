@@ -13,13 +13,21 @@
             />
           </template>
 
-          <v-card min-width="250" max-height="400" class="overflow-y-auto">
+          <v-card
+            min-width="250"
+            max-height="400"
+            class="overflow-y-auto"
+          >
             <v-list
               density="compact"
               select-strategy="classic"
               v-model:selected="selectedHeadersKeys"
             >
-              <v-list-item v-for="header in allHeaders" :key="header.key" :value="header.key">
+              <v-list-item
+                v-for="header in allHeaders"
+                :key="header.key"
+                :value="header.key"
+              >
                 <template v-slot:prepend="{ isActive }">
                   <v-list-item-action>
                     <v-checkbox-btn
@@ -38,7 +46,12 @@
           </v-card>
         </v-menu>
 
-        <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
+        <v-divider
+          :thickness="3"
+          vertical
+          class="mx-2 my-auto"
+          style="height: 24px"
+        />
 
         <div class="text-h6 font-weight-bold text-high-emphasis text-truncate">
           {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
@@ -55,7 +68,12 @@
               @click="newRegistration"
             />
 
-            <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
+            <v-divider
+              :thickness="3"
+              vertical
+              class="mx-2 my-auto"
+              style="height: 24px"
+            />
 
             <BtnOpenDialog
               icon="mdi-chart-donut-variant"
@@ -78,10 +96,10 @@
         :show-select="selectItems"
         :id="id"
         :headers="headers"
-        :items="dataTable.model.itemsTable"
+        :items="items"
         :height="dataTable.model.heightTable || 'auto'"
         :max-height="dataTable.model.maxHeightTable || 500"
-        :loading="dataTable.model.loadingDataTable"
+        :loading="loading"
         :mobile-breakpoint="0"
         :row-props="rowProps"
         fixed-header
@@ -143,31 +161,15 @@
 
         <template v-slot:no-data>
           <div
-            v-if="!dataTable.model.loadingDataTable"
+            v-if="!loading"
             class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis"
           >
-            <v-icon icon="mdi-database-off" size="48" class="mb-2" />
+            <v-icon
+              icon="mdi-database-off"
+              size="48"
+              class="mb-2"
+            />
             <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
-          </div>
-        </template>
-
-        <template v-slot:bottom>
-          <v-divider v-intersect="onIntersect" />
-          <div class="d-flex align-center justify-space-between pa-2 text-caption">
-            <div class="d-flex align-center" style="width: 150px">
-              <v-select
-                v-model="pagination.limit"
-                @update:model-value="updateLimit"
-                :items="[10, 20, 50, 100]"
-                variant="outlined"
-                density="compact"
-                hide-details
-                class="text-caption"
-              />
-            </div>
-            <div class="text-no-wrap ml-4">
-              {{ dataTable.model.itemsTable.length }} / {{ pagination.total }}
-            </div>
           </div>
         </template>
       </v-data-table-virtual>
@@ -178,41 +180,43 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
 import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
-import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
-import { StorageUtils } from '@/utils/StorageUtils'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, watchEffect, watch } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
     id?: string
+    headers: any[]
+    items: T[]
+    loading?: boolean
+    title?: string
     hasActions?: boolean
     selectItems?: boolean
     multipleSelect?: boolean
   }>(),
   {
     id: 'id',
+    loading: false,
+    title: '',
     hasActions: true,
     selectItems: false,
     multipleSelect: true,
   },
-)
+);
 
-const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true })
-const pagination = defineModel<TPagination>('pagination', { required: true })
-const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] })
+const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true });
+const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] });
 
 const emits = defineEmits<{
   (e: 'selected-item', item: T): void
   (e: 'toggle-chart'): void
   (e: 'manage-record', payload: { editingMode: boolean; item?: T }): void
-  (e: 'load-more'): void
-}>()
+}>();
 
 const allHeaders = computed(() => {
-  const headersAuto = dataTable.value.model.headersTable.map((header) => ({
+  const headersAuto = props.headers.map((header) => ({
     ...header,
     title: header.title,
     align: header.align || 'start',
@@ -220,37 +224,21 @@ const allHeaders = computed(() => {
     sortable: header.sortable ?? true,
   }))
 
-  const headers = headersAuto.filter((header) => {
-    if (!props.hasActions) {
-      return header.key != 'actions'
-    } else {
-      return header
-    }
+  return headersAuto.filter((header) => {
+    if (!props.hasActions) return header.key != 'actions'
+    return true
   })
+});
 
-  return headers
-})
-
-const selectedHeadersKeys = ref<string[]>([])
-
-watchEffect(() => {
-  if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
-    selectedHeadersKeys.value = allHeaders.value
-      .map((h) => h.key)
-      .filter((key): key is string => key !== undefined)
-  }
-})
+const selectedHeadersKeys = ref<string[]>([]);
 
 const headers = computed(() => {
-  return allHeaders.value.filter((h) => {
-    if (!h.key) return false
-    return selectedHeadersKeys.value.includes(h.key)
-  })
-})
+  return allHeaders.value.filter((h) => h.key && selectedHeadersKeys.value.includes(h.key))
+});
 
 const headersForSlots = computed(() => {
   return headers.value.filter((h) => h.key !== 'actions')
-})
+});
 
 function toggleHeader(key?: string) {
   if (!key) return
@@ -305,27 +293,13 @@ function editRegistration(item: T) {
   emits('manage-record', { editingMode: true, item: item })
 }
 
-function onIntersect(isIntersecting: boolean) {
-  if (isIntersecting && !pagination.value.isFinished) {
-    emits('load-more')
+watchEffect(() => {
+  if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
+    selectedHeadersKeys.value = allHeaders.value
+      .map((h) => h.key)
+      .filter((key): key is string => key !== undefined)
   }
-}
-
-function updateLimit(newLimit: number) {
-  pagination.value = {
-    ...pagination.value,
-    limit: newLimit,
-  }
-}
-
-watch(
-  () => pagination.value.limit,
-  (newLimit) => {
-    if (newLimit) {
-      StorageUtils.set('limit_preference', pagination.value.limit, 'local')
-    }
-  },
-)
+});
 </script>
 
 <style scoped>

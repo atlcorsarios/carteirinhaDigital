@@ -1,39 +1,54 @@
 <template>
   <v-container fluid class="fill-height">
-    <GridDataChart
-      :hidden-chart="gridConfig.modelTable.model.hiddenChart"
-      :selected-item="selectedItem"
-      @toggle-chart="toggleChartState"
+    <GenericInfiniteList
+      ref="infiniteListRef"
+      :cursor-key="idField"
+      :context-id="String(route.name)"
+      :showEmpty="false"
+      :fetch-data="adapterFetch"
     >
-      <template #dataTable>
-        <DataTable
-          :id="tableId"
-          :selectItems="selectItems"
-          :hasActions="hasActions"
-          v-model:selected-itens="selectedItens"
-          v-model:dataTable="gridConfig.modelTable"
-          v-model:pagination="paginationModel"
-          @selected-item="handleSelection"
+      <template v-slot="{ items, loading }">
+        <GridDataChart
+          :hidden-chart="gridConfig.modelTable.model.hiddenChart"
+          :selected-item="selectedItem"
           @toggle-chart="toggleChartState"
-          @manage-record="handleManageRecord"
-          @load-more="loadMore"
-        />
-      </template>
+        >
+          <template v-if="!loading" #dataTable>
+            <DataTable
+              :id="String(route.name)"
+              :selectItems="selectItems"
+              :hasActions="hasActions"
+              :headers="headers"
+              :items="items"
+              :loading="loading"
+              v-model:selected-itens="selectedItens"
+              v-model:dataTable="gridConfig.modelTable"
+              @selected-item="handleSelection"
+              @toggle-chart="toggleChartState"
+              @manage-record="handleManageRecord"
+            />
+          </template>
 
-      <template #dataChart>
-        <ChartPie
-          v-model:selectedFilter="selectedChartFilter"
-          :key="String(gridConfig.modelTable.model.hiddenChart)"
-          :chart-data="chartDataComputed"
-          :filter-options="headersToGraph"
-          :active-config="activeHeaderConfig"
-        />
-      </template>
+          <template #dataChart>
+            <ChartPie
+              v-model:selectedFilter="selectedChartFilter"
+              :key="String(gridConfig.modelTable.model.hiddenChart)"
+              :chart-data="getChartData(items)"
+              :filter-options="headersToGraph"
+              :active-config="activeHeaderConfig"
+            />
+          </template>
 
-      <template v-if="selectedItem && hasMoreDetails" #moreDetails>
-        <slot name="moreDetails" :item="selectedItem" :close="hiddenMoreDetails" />
+          <template v-if="selectedItem && hasMoreDetails" #moreDetails>
+            <slot
+              name="moreDetails"
+              :item="selectedItem"
+              :close="hiddenMoreDetails"
+            />
+          </template>
+        </GridDataChart>
       </template>
-    </GridDataChart>
+    </GenericInfiniteList>
   </v-container>
 
   <BaseDialog v-model:attributes="dialogModelManager.model">
@@ -91,21 +106,20 @@
 
 <script setup lang="ts" generic="T extends Record<string, any>">
 // Componentes
+import GenericInfiniteList from './GenericInfiniteList.vue'
 import GridDataChart from '@/components/layouts/dataChart/GridDataChart.vue'
 import DataTable from '@/components/layouts/dataChart/DataTable.vue'
 import ChartPie from '@/components/layouts/dataChart/ChartPie.vue'
 import BaseDialog from '@/components/dialog/BaseDialog.vue'
 
-// Models
-import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
-import type { IHeaderPaginatorModel } from '@/classes/models/ModelHeaderPaginator'
-
 // Classes
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
+// Stores
+import { useGenericListStore } from '@/stores/genericListStore'
+
 // Composables
-import { useInfiniteList } from '@/composables/useInfiniteList'
 import { useChartHelpers } from '@/composables/useChartHelpers'
 import { useStringColor } from '@/composables/useStringColor'
 import { useSnackbar } from '@/composables/useSnackbar'
@@ -113,10 +127,17 @@ import { useSnackbar } from '@/composables/useSnackbar'
 // Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { ref, watchEffect, computed } from 'vue'
+import { ref, computed } from 'vue'
 
-const selectedItens = defineModel<any[]>('selected-itens', { required: false })
-const emit = defineEmits(['saved', 'error'])
+const { notify } = useSnackbar();
+const { t } = useI18n();
+const { stringToColor } = useStringColor();
+
+const route = useRoute();
+const listStore = useGenericListStore();
+
+const selectedItens = defineModel<any[]>('selected-itens', { required: false });
+const emit = defineEmits(['saved', 'error']);
 const props = defineProps<{
   headers: any[]
   idField: string
@@ -132,50 +153,22 @@ const props = defineProps<{
     reset: () => void
     updateModel: (item: T) => void
   }
-  serviceFetch: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>
+  serviceFetch: (limit: number, cursor: any) => Promise<any[]>
   serviceSave?: (item: T) => Promise<any>
   hasActions?: boolean
   hasMoreDetails?: boolean
   selectItems?: boolean
-}>()
+}>();
 
-const route = useRoute()
-const { notify } = useSnackbar()
-const { t } = useI18n()
-const { stringToColor } = useStringColor()
+const adapterFetch = async (limit: number, cursor: any) => {
+  return await props.serviceFetch(limit, cursor)
+}
 
 const gridManager = new ClassGridDataChart<T>({
   modelTable: { model: { titleTable: props.title } },
-})
+});
 
 const gridConfig = gridManager.model
-
-const { limit, offset, total, items, isFinished, loading, tableId, loadMore } = useInfiniteList<T>(
-  route.fullPath,
-  props.serviceFetch,
-)
-
-const paginationModel = computed({
-  get: () =>
-    ({
-      limit: limit.value,
-      offset: offset.value,
-      total: total.value,
-      isFinished: isFinished.value,
-    }) as TPagination,
-  set: (val: TPagination) => {
-    limit.value = val.limit
-  },
-})
-
-watchEffect(() => {
-  gridConfig.modelTable.model.itemsTable = items.value
-  gridConfig.modelTable.model.loadingDataTable = loading.value
-  gridConfig.modelTable.model.headersTable = props.headers || []
-  gridConfig.modelTable.model.titleTable = props.title
-
-  gridConfig.modelChart.optionsFilterSelectData = props.headers?.map((h) => h.title).slice(0, -1) || []
-})
 
 function toggleChartState() {
   gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
@@ -185,27 +178,24 @@ const headersToGraph = computed(() => {
   return (props.headers || [])
     .filter((h) => !h.excludeFromChart && h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
-})
+});
 
-const selectedChartFilter = ref(headersToGraph.value[0]?.value)
-const activeHeaderConfig = computed(() =>
-  props.headers.find((h) => h.key === selectedChartFilter.value),
-)
+const selectedChartFilter = ref(headersToGraph.value[0]?.value);
+const activeHeaderConfig = computed(() => props.headers.find((h) => h.key === selectedChartFilter.value));
 
-const chartDataComputed = computed(() => {
-  const items = gridConfig.modelTable.model.itemsTable
+const getChartData = (currentItems: any[]) => {
   return useChartHelpers(
-    items,
+    currentItems,
     selectedChartFilter.value,
     activeHeaderConfig.value?.chartAggregator || 'count',
     stringToColor,
     activeHeaderConfig.value?.chartFormatter,
   )
-})
+}
 
-const isFormValid = ref(false)
-const refForm = ref<any>(null)
-const selectedItem = ref<T | null>(null)
+const isFormValid = ref(false);
+const refForm = ref<any>(null);
+const selectedItem = ref<T | null>(null);
 
 function handleSelection(item: any) {
   hiddenMoreDetails()
@@ -240,12 +230,29 @@ async function handleSubmit() {
   if (!isFormValid.value) return
 
   try {
+    let itemSalvo = props.classModelManager.model
+
     if (props.serviceSave) {
-      await props.serviceSave(props.classModelManager.model)
+      const response = await props.serviceSave(props.classModelManager.model)
+      if (response) itemSalvo = response
     }
-    notify('messages.forms.saveSuccess', 'success')
-    emit('saved', props.classModelManager.model)
-    props.dialogModelManager.toggleDialog()
+
+    notify('messages.forms.saveSuccess', 'success');
+    emit('saved', itemSalvo);
+    props.dialogModelManager.toggleDialog();
+
+    if (props.dialogModelManager.model.formEditingMode) {
+      const index = listStore.items.findIndex((item) =>
+        item[props.idField] === itemSalvo[props.idField]
+      )
+
+      if (index !== -1) {
+        listStore.items[index] = { ...listStore.items[index], ...itemSalvo }
+      }
+    } else {
+      listStore.items.push(itemSalvo);
+    }
+
   } catch (error) {
     notify('messages.forms.saveError', 'error')
     emit('error', error)
@@ -255,6 +262,7 @@ async function handleSubmit() {
 function getItemIdentifier(item: any) {
   if (!item) return ''
   if (props.idField && item[props.idField]) return item[props.idField]
+
   const keys = Object.keys(item)
   const idKey = keys.find((k) => k.startsWith('id'))
   return idKey ? item[idKey] : ''

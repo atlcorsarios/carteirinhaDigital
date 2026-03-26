@@ -23,6 +23,7 @@
       "title": "Produtos",
       "children": {
         "list": "Lista de produtos",
+        "register": "Cadastro",
         "beneficios": "Benefícios",
         "promocoes": "Promoções",
         "descontos": "Descontos"
@@ -342,6 +343,7 @@
         "isCompressing": "Otimizando imagem..."
       },
       "infiniteList": {
+        "totais": "Todos os itens foram carregados",
         "limit": "Itens por vez",
         "order": "Ordenação"
       }

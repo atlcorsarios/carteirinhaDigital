@@ -1,11 +1,11 @@
-import { ClassProducts } from '@/classes/resources/ClassProducts'
-import type { IProduct } from '@/classes/models/resources/ModelIProduct'
+import { ClassProdutos } from '@/classes/resources/ClassProdutos'
+import type { IProdutos } from '@/classes/models/resources/ModelIProdutos'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { applySupabaseFilters } from '@/utils/supabaseFilterUtils'
 import { supabase } from '../supabase'
 
 export class ProductsService {
-  static async paginationsProducts(payload: TPayloadRequestPagination): Promise<IProduct[]> {
+  static async paginationsProducts(payload: TPayloadRequestPagination): Promise<IProdutos[]> {
     try {
       let query = supabase
         .from('vw_produtos_vitrine')
@@ -23,7 +23,7 @@ export class ProductsService {
           )
         `)
 
-      query = applySupabaseFilters(query, payload.filters, ClassProducts.filters)
+      query = applySupabaseFilters(query, payload.filters, ClassProdutos.filters)
 
       if (payload.cursor) {
         query = query.gt('id', payload.cursor)
@@ -36,7 +36,7 @@ export class ProductsService {
       const { data, error } = await query
 
       if (error) throw error
-      return data as IProduct[];
+      return data as IProdutos[];
 
     } catch (error) {
       console.error('Erro na paginação de produtos:', error);
@@ -44,5 +44,5 @@ export class ProductsService {
     }
   }
 
-  static async createProduct() {}
+  static async saveProduct() { }
 }
