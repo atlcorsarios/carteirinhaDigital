@@ -27,6 +27,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     const item = data as Partial<INotification>
     return this.createWithDefaults(item, ClassNotifications.defaultNotification())
   }
+  
   static get fieldConfig(): TEntityConfig<INotification> {
     return {
       idNotification: {
@@ -76,10 +77,13 @@ export class ClassNotifications extends BaseClass<INotification> {
         },
       },
       date: {
+        align: 'end',
         width: 200,
         maxWidth: 300,
         minWidth: 100,
-        excludeFromChart: true
+        excludeFromChart: true,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (notification: INotification) => ClassFormatters.formatDate(notification.date)
       }
     }
   }
@@ -88,7 +92,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     const defaultModel = new ClassNotifications().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
-      'forms.formNotification',
+      'forms.formNotifications',
       ClassNotifications.fieldConfig,
     )
   }
@@ -97,7 +101,7 @@ export class ClassNotifications extends BaseClass<INotification> {
     const defaultModel = new ClassNotifications().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
-      'forms.formNotification',
+      'forms.formNotifications',
       ClassNotifications.fieldConfig,
     )
   }

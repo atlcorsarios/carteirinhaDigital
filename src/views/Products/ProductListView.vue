@@ -1,68 +1,45 @@
 <template>
-  <GenericView
-    ref="genericView"
-    :headers="ClassProducts.headers"
-    :id-field="'idProduct'"
-    :title="t('dataTable.products.title')"
-    :hasActions="true"
-    :hasMoreDetails="true"
-    :text-create="t('messages.forms.formProduct.createProduct')"
-    :text-edit="t('messages.forms.formProduct.editingProduct')"
-    :icon-create="'mdi-package-variant-closed-plus'"
-    :icon-edit="'mdi-pencil-outline'"
-    :icon-save="'mdi-package-variant-closed-check'"
-    :dialog-model-manager="dialogProduct"
-    :class-model-manager="productModelManager"
-    :service-fetch="productsServices.getAllProducts"
-    :service-save="productsServices.saveProduct"
-  >
-    <template #form="{ model, updateValid, refForm, submitForm }">
-      <ProductForm
-        :ref="refForm"
-        :product="model"
-        @update:valid="updateValid"
-        @submit="submitForm"
-      />
-    </template>
-
-    <template #moreDetails="{ item, close }">
-      <MoreProductDetails :product="item" @close="close" />
-    </template>
-  </GenericView>
+  <v-container>
+    <GenericInfiniteList
+      ref="listaGenericaRef"
+      cursor-key="id"
+      context-id="produtos-vitrine"
+      :fetch-data="buscarProdutosPaginado"
+    >
+      <template v-slot="{ items }">
+        <CardProduto :produtos="items" />
+      </template>
+    </GenericInfiniteList>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-// Componentes
-import GenericView from '@/components/layouts/generics/GenericView.vue'
-import ProductForm from '@/components/forms/resources/ProductForm.vue'
-import MoreProductDetails from '@/components/MoreProductDetails.vue'
+import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteList.vue'
+import CardProduto from '@/components/cards/CardProduto.vue'
+import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+import { ProductsService } from '@/services/resources/productsService'
+import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
-// Models
-import { type IProduct } from '@/classes/models/resources/ModelIProduct'
+const queryFilterStore = useQueryFilterStore();
 
-// Classes
-import { ClassProducts } from '@/classes/resources/ClassProducts'
-import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) => {
+  const filtroEstaticoDaTela: IQueryFilter = {
+    field: 'ativo',
+    condition: 'equals',
+    value: 'true'
+  }
 
-// Services
-import { productsServices } from '@/services/resources/productsService'
+  const payload: TPayloadRequestPagination = {
+    limit,
+    cursor: lastCursor,
+    filters: [
+      ...queryFilterStore.activeFilters,
+      filtroEstaticoDaTela
+    ]
+  }
 
-// Vue
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
-
-const classProduct = new ClassProducts()
-const dialogProduct = new ClassBaseDialog<IProduct>({
-  persistent: true,
-  maxWidth: 800,
-})
-
-const productModelManager = {
-  model: classProduct.model,
-  reset: () => classProduct.reset(),
-  updateModel: (item: any) => {
-    classProduct.updateModel(item)
-  },
+  return await ProductsService.paginationsProducts(payload);
 }
+
 </script>

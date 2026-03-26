@@ -165,65 +165,83 @@
       "nome_fantasia": {
         "headerTable": "Nome do estabelecimento",
         "label": "Nome do estabelecimento / Parceiro"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Parceiro ativo"
       }
     },
     "formProduct": {
-      "idProduct": {
+      "id": {
         "headerTable": "Id",
         "label": "Id"
       },
-      "description": {
-        "headerTable": "Descrição",
-        "label": "Descrição do produto"
+      "id_parceiro": {
+        "headerTable": "Parceiro vinculado",
+        "label": "Id do parceiro vinculado"
       },
-      "image": {
+      "nome": {
+        "headerTable": "Nome do produto",
+        "label": "Nome do produto"
+      },
+      "descricao_produto": {
         "headerTable": "Capa",
         "label": "Foto do produto"
       },
-      "price": {
-        "headerTable": "Preço",
-        "label": "Preço de venda",
+      "especificacoes_produto": {
+        "headerTable": "Especificações do produto",
+        "label": "Especificações do produto"        
+      },
+      "valor_produto": {
+        "headerTable": "Preço do produto",
+        "label": "Preço",
         "hint": "Convertido para: "
       },
-      "active": {
-        "headerTable": "Ativo",
+      "avatar_url_produto": {
+        "headerTable": "Foto de capa",
+        "label": "Foto de capa do produto"
+      },
+      "estoque": {
+        "headerTable": "Quantidade em estoque",
+        "label": "Em estoque"
+      },
+      "ativo": {
+        "headerTable": "Produto ativo",
         "label": "Produto ativo?"
-      },
-      "category": {
-        "headerTable": "Categoria",
-        "label": "Categoria do produto",
-        "hint": "Clique no ícone a esquerda para consultar"
-      },
-      "recipe": {
-        "headerTable": "Receita",
-        "label": "Receita do produto",
-        "hint": "Clique no ícone a esquerda para consultar"
       }
     },
     "formNotifications": {
-      "seen" : {
-        "headerTable": "Visualizado",
-        "label": "Notificação visualizada"
-      },
       "idNotification": {
         "headerTable": "Id",
         "label": "Id"
-      },
+      },      
       "title": {
         "headerTable": "Título",
         "label": "Título da notificação"
       },
-      "date": {
-        "headerTable": "Data",
-        "label": "Data da notificação"
+      "description": {
+        "headerTable": "Descrição",
+        "label": "Descrição"
+      },
+      "message": {
+        "headerTable": "Mensagem",
+        "label": "Mensagem"
       },
       "sender": {
         "headerTable": "Remetente",
         "label": "Remetente"
       },
-      "origin": {
-        "headerTable": "Origem",
-        "label": "Origem da notificação"
+      "recipients": {
+        "headerTable": "Remetentes",
+        "label": "Remetentes"
+      },
+      "seen" : {
+        "headerTable": "Visualizado",
+        "label": "Notificação visualizada"
+      },
+      "date": {
+        "headerTable": "Data",
+        "label": "Data da notificação"
       }
     }
   },

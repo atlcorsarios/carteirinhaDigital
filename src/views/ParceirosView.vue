@@ -21,16 +21,8 @@ import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPagi
 import { ClassUsers } from '@/classes/resources/ClassUsers'
 import { UsersService } from '@/services/resources/usersService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
-import { ref, watch } from 'vue'
 
 const queryFilterStore = useQueryFilterStore();
-const listaGenericaRef = ref();
-
-watch(() => queryFilterStore.searchTrigger, () => {
-  if (listaGenericaRef.value) {
-    listaGenericaRef.value.resetAndLoad()
-  }
-});
 
 const buscarParceirosPaginado = async (limit: number, lastCursor: string | null) => {
   const filtroEstaticoDaTela: IQueryFilter = {
