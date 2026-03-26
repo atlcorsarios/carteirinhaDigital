@@ -10,7 +10,7 @@ export const ROLE_TRANSLATIONS: Record<TRole, string> = {
 }
 
 export interface IUser {
-  id?: string | number
+  id?: string
   email: string
   username: string
   avatar_url: string
@@ -25,4 +25,5 @@ export type TParceiro = Omit<IUser, 'id'> & {
   id_usuario: string | number
   data_renovacao: Date | string
   nome_fantasia: string
+  ativo: boolean
 }

@@ -22,7 +22,8 @@ export class ClassParceiros extends BaseClass<TParceiro> {
       usuario_ativo: true,
       created_at: '',
       data_renovacao: '',
-      nome_fantasia: ''
+      nome_fantasia: '',
+      ativo: true
     }
   }
 
@@ -91,6 +92,14 @@ export class ClassParceiros extends BaseClass<TParceiro> {
         width: 100,
         maxWidth: 300,
         excludeFromChart: true,
+      },
+      ativo: {
+        align: 'center',
+        width: 350,
+        maxWidth: 350,
+        minWidth: 50,
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (parceiro: TParceiro) => ClassFormatters.formatBoolean(parceiro.ativo),
       }
     }
   }

@@ -12,12 +12,16 @@ export class ClassProducts extends BaseClass<IProduct> {
 
   static defaultProduct(): IProduct {
     return {
-      idProduct: 0,
-      description: '',
-      image: '',
-      imageFile: null,
-      price: undefined,
-      active: true,
+      id: '',
+      id_parceiro: '',
+      nome: '',
+      descricao_produto: '',
+      especificacoes_produto: '',
+      valor_produto: 0.0,
+      avatar_url_produto: '',
+      estoque: 0.0,
+      ativo: true,
+      parceiros: null
     }
   }
 
@@ -28,41 +32,69 @@ export class ClassProducts extends BaseClass<IProduct> {
 
   static get fieldConfig(): TEntityConfig<IProduct> {
     return {
-      idProduct: {
+      id: {
         width: 50,
         maxWidth: 100,
         minWidth: 30,
+        excludeFromFilter: true,
         excludeFromChart: true,
       },
-      description: {
+      id_parceiro: {
+        width: 50,
+        maxWidth: 100,
+        minWidth: 30,
+        excludeFromFilter: true,
+        excludeFromChart: true,
+      },
+      nome: {
         align: 'center',
         width: 700,
         maxWidth: 850,
         minWidth: 250,
         excludeFromChart: true,
       },
-      image: {
-        hidden: true,
+      descricao_produto: {
+        align: 'center',
+        width: 700,
+        maxWidth: 850,
+        minWidth: 250,
+        excludeFromChart: true,
       },
-      imageFile: {
-        hidden: true,
+      especificacoes_produto: {
+        align: 'center',
+        width: 700,
+        maxWidth: 850,
+        minWidth: 250,
+        excludeFromChart: true,
       },
-      price: {
+      valor_produto: {
         align: 'end',
         width: 350,
         maxWidth: 450,
         minWidth: 100,
         chartFormatter: ClassFormatters.formatPriceDynamic,
-        value: (item) => ClassFormatters.formatPriceDynamic(item.price),
+        value: (produto: IProduct) => ClassFormatters.formatPriceDynamic(produto.valor_produto),
       },
-      active: {
+      avatar_url_produto: {
+        hidden: true
+      },
+      estoque: {
         align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (item) => ClassFormatters.formatBoolean(item.active),
+        width: 350,
+        maxWidth: 450,
+        minWidth: 100,
+      },
+      ativo: {
+        align: 'center',
         width: 350,
         maxWidth: 350,
         minWidth: 50,
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (produto: IProduct) => ClassFormatters.formatBoolean(produto.ativo),
       },
+      parceiros: {
+        hidden: true
+      }
     }
   }
 

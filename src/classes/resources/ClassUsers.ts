@@ -12,7 +12,7 @@ export class ClassUsers extends BaseClass<IUser> {
 
   static defaultUser(): IUser {
     return {
-      id: 0,
+      id: '',
       email: '@gmail.com',
       username: '',
       avatar_url: '',
