@@ -142,6 +142,7 @@ const props = defineProps<{
   headers: any[]
   idField: string
   title: string
+  contextId: string
   textCreate?: string
   textEdit?: string
   iconCreate?: string
@@ -170,15 +171,15 @@ const gridManager = new ClassGridDataChart<T>({
 
 const gridConfig = gridManager.model
 
-function toggleChartState() {
-  gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
-}
-
 const headersToGraph = computed(() => {
   return (props.headers || [])
     .filter((h) => !h.excludeFromChart && h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
 });
+
+const isFormValid = ref(false);
+const refForm = ref<any>(null);
+const selectedItem = ref<T | null>(null);
 
 const selectedChartFilter = ref(headersToGraph.value[0]?.value);
 const activeHeaderConfig = computed(() => props.headers.find((h) => h.key === selectedChartFilter.value));
@@ -193,9 +194,9 @@ const getChartData = (currentItems: any[]) => {
   )
 }
 
-const isFormValid = ref(false);
-const refForm = ref<any>(null);
-const selectedItem = ref<T | null>(null);
+function toggleChartState() {
+  gridConfig.modelTable.model.hiddenChart = !gridConfig.modelTable.model.hiddenChart
+}
 
 function handleSelection(item: any) {
   hiddenMoreDetails()
@@ -241,16 +242,17 @@ async function handleSubmit() {
     emit('saved', itemSalvo);
     props.dialogModelManager.toggleDialog();
 
+    const currentItems = listStore.getItems(props.contextId);
     if (props.dialogModelManager.model.formEditingMode) {
-      const index = listStore.items.findIndex((item) =>
+      const index = currentItems.findIndex((item) =>
         item[props.idField] === itemSalvo[props.idField]
       )
 
       if (index !== -1) {
-        listStore.items[index] = { ...listStore.items[index], ...itemSalvo }
+        currentItems[index] = { ...currentItems[index], ...itemSalvo }
       }
     } else {
-      listStore.items.push(itemSalvo);
+      currentItems.unshift(itemSalvo);
     }
 
   } catch (error) {

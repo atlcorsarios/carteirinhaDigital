@@ -10,5 +10,5 @@ export interface IProdutos {
   avatar_url_produto: string
   estoque: number
   ativo: boolean,
-  parceiros: TParceiro | null
+  parceiro: TParceiro | null
 }

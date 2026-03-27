@@ -20,13 +20,24 @@
       </template>
 
       <template v-if="loading" #append-inner>
-        <v-progress-circular color="primary" indeterminate />
+        <v-progress-circular
+          color="primary"
+          indeterminate
+        />
       </template>
     </v-number-input>
   </v-col>
 
-  <v-col cols="12" md="6">
-    <v-text-field :model-value="resource.description" disabled density="compact" variant="outlined" />
+  <v-col
+    cols="12"
+    md="6"
+  >
+    <v-text-field
+      :model-value="resource.description"
+      disabled
+      density="compact"
+      variant="outlined"
+    />
   </v-col>
 
   <DialogSearch
@@ -76,9 +87,9 @@ function clearResource() {
 }
 
 watch(() => resource.value.id, (newId) => {
-    if (!newId) {
-      clearResource()
-    }
-  },
-)
+  if (!newId) {
+    clearResource()
+  }
+});
+
 </script> -->

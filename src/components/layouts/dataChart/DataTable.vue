@@ -2,49 +2,11 @@
   <v-card flat border rounded="lg">
     <v-card-title>
       <div class="d-flex align-center">
-        <v-menu :close-on-content-click="false">
-          <template v-slot:activator="{ props }">
-            <v-icon-btn
-              v-bind="props"
-              icon="mdi-table-cog"
-              v-tooltip="t('tooltips.components.dataTable.columnsDataTable')"
-              variant="text"
-              color="primary"
-            />
-          </template>
-
-          <v-card
-            min-width="250"
-            max-height="400"
-            class="overflow-y-auto"
-          >
-            <v-list
-              density="compact"
-              select-strategy="classic"
-              v-model:selected="selectedHeadersKeys"
-            >
-              <v-list-item
-                v-for="header in allHeaders"
-                :key="header.key"
-                :value="header.key"
-              >
-                <template v-slot:prepend="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn
-                      :model-value="isActive"
-                      density="compact"
-                      hide-details
-                      @click.stop="toggleHeader(header.key)"
-                    />
-                  </v-list-item-action>
-                </template>
-                <v-list-item-title class="text-caption">
-                  {{ header.title }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
+        <MenuSelectColumns
+          v-model:selected-header-keys="selectedHeadersKeys"
+          :all-headers="allHeaders"
+          :toggle-header="toggleHeader"
+        />
 
         <v-divider
           :thickness="3"
@@ -159,7 +121,10 @@
           <v-skeleton-loader type="table-row@5" />
         </template>
 
-        <template v-slot:no-data>
+        <template
+          v-if="showEmpty"
+          v-slot:no-data
+        >
           <div
             v-if="!loading"
             class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis"
@@ -182,6 +147,7 @@ import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, watchEffect } from 'vue'
+import MenuSelectColumns from './MenuSelectColumns.vue';
 
 const { t } = useI18n();
 
@@ -195,6 +161,7 @@ const props = withDefaults(
     hasActions?: boolean
     selectItems?: boolean
     multipleSelect?: boolean
+    showEmpty?: boolean
   }>(),
   {
     id: 'id',
@@ -203,6 +170,7 @@ const props = withDefaults(
     hasActions: true,
     selectItems: false,
     multipleSelect: true,
+    showEmpty: true
   },
 );
 

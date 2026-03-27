@@ -12,19 +12,19 @@
         variant="outlined"
         density="compact"
         hide-details
-        class="limit-select"
+        style="max-width: 130px;"
         @update:modelValue="resetAndLoad"
       />
     </div>
 
     <v-infinite-scroll
-      :items="store.items"
+      :items="items"
       :onLoad="loadMore"
       :empty-text="emptyText"
       class="w-100 overflow-hidden"
     >
       <slot
-        :items="store.items"
+        :items="items"
         :loading="loading"
       ></slot>
 
@@ -38,9 +38,15 @@
         </div>
       </template>
 
-      <template v-if="showEmpty" v-slot:empty>
+      <template
+        v-if="showEmpty"
+        v-slot:empty
+      >
         <div class="w-100 text-center text-caption text-grey pa-4">
-          <div v-if="store.items.length === 0" class="d-flex flex-column align-center">
+          <div
+            v-if="items.length === 0"
+            class="d-flex flex-column align-center"
+          >
             <v-icon
               icon="mdi-database-off"
               size="48"
@@ -63,7 +69,7 @@
 import { useQueryFilterStore } from '@/stores/queryFilterStore';
 import { useGenericListStore } from '@/stores/genericListStore'
 import { useI18n } from 'vue-i18n';
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 
 const { t } = useI18n();
 const queryFilterStore = useQueryFilterStore();
@@ -78,44 +84,50 @@ interface Props {
   cursorKey?: string
   showEmpty?: boolean
   emptyText?: string
+  listenGlobalFilters?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   limitOptions: () => [5, 10, 25, 50, 100],
   cursorKey: 'id',
   showEmpty: true,
-  emptyText: ''
+  emptyText: '',
+  listenGlobalFilters: true
 });
+
+const items = computed(() => store.getItems(props.contextId));
+const hasMore = computed(() => store.getHasMore(props.contextId));
+const lastCursor = computed(() => store.getLastCursor(props.contextId));
 
 const currentLimit = ref(props.limitOptions[0]);
 
 const resetAndLoad = async () => {
-  store.resetCurrentContext()
+  store.resetContext(props.contextId)
 }
 
 const loadMore = async ({ done }: any) => {
-  if (!store.hasMore) {
+  if (!hasMore.value) {
     done('empty')
     return
-  } else {
-    loading.value = true
   }
 
+  loading.value = true
+
   try {
-    const newItems = await props.fetchData(currentLimit.value, store.lastCursor)
+    const newItems = await props.fetchData(currentLimit.value, lastCursor.value)
 
     if (newItems.length > 0) {
       const nextCursor = newItems[newItems.length - 1][props.cursorKey]
-      const hasNext = newItems.length >= currentLimit.value
+      const nextHasMore = newItems.length >= currentLimit.value
 
-      store.addItems(newItems, nextCursor, hasNext)
-      done(hasNext ? 'ok' : 'empty')
+      store.addItems(props.contextId, newItems, nextCursor, nextHasMore)
+      done(nextHasMore ? 'ok' : 'empty')
     } else {
-      store.hasMore = false
+      store.resetContext(props.contextId)
+      store.addItems(props.contextId, [], null, false)
       done('empty')
     }
   } catch (error) {
-    console.error('Erro na paginação:', error)
     done('error')
   } finally {
     loading.value = false
@@ -123,15 +135,17 @@ const loadMore = async ({ done }: any) => {
 }
 
 onMounted(() => {
-  store.initContext(props.contextId)
+  store.initContext(props.contextId);
 });
 
 watch(() => queryFilterStore.searchTrigger, () => {
-  resetAndLoad()
+  if (props.listenGlobalFilters) {
+    resetAndLoad()
+  }
+});
+
+defineExpose({
+  resetAndLoad
 });
 
 </script>
-
-<style scoped>
-.limit-select { max-width: 130px; }
-</style>

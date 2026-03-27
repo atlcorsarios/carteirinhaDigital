@@ -1,7 +1,6 @@
 import type { IUser } from '@/classes/models/resources/ModelUser'
 import { supabase } from '@/services/supabase'
 import type { User, Session } from '@supabase/supabase-js'
-import { useListCacheStore } from './listCacheStore'
 import { useRoute, useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -12,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userProfile = ref<IUser | null>(null)
   const fetchPromise = ref<Promise<any> | null>(null)
   const loading = ref(true)
-  const listCacheStore = useListCacheStore()
+
   const router = useRouter()
   const route = useRoute()
 
@@ -99,7 +98,6 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     session.value = null
     userProfile.value = null
-    listCacheStore.clearAll()
     router.push({ name: 'Login' })
   }
 

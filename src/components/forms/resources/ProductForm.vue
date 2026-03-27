@@ -1,52 +1,123 @@
 <template>
   <v-form ref="formRef" v-model="formIsValid" @submit.prevent="handleSubmit">
-    <v-row dense align="center">
-      <v-col cols="12" md="5">
-        <v-text-field
-          v-model="product.description"
-          :rules="[rules.required(), rules.maxLength(100)]"
-          :label="t('forms.formProduct.description.label')"
-          counter
+    <v-text-field
+      v-model="produto.id"
+      disabled
+      class="d-none"
+    />
+
+    <v-row dense>
+      <v-col
+        cols="4"
+        class="d-flex flex-column pe-5"
+      >
+        <InputUploadImage
+          v-model="produto.avatar_url_produto"
+          :label="'forms.formProduct.avatar_url_produto.label'"
+          :size="100"
+          :bucket="'produtos'"
+          :owner="ownerBucket"
+        />
+      </v-col>
+
+      <v-col
+        cols="8"
+        class="d-flex flex-column"
+      >
+        <v-row
+          dense
+          align="center"
+        >
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              v-model="produto.nome"
+              :rules="[rules.required(), rules.maxLength(100)]"
+              :label="t('forms.formProduct.nome.label')"
+              density="compact"
+              variant="outlined"
+              counter
+              clearable
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <InputPrice
+              v-model="produto.valor_produto"
+              :rules="[rules.required()]"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            class="d-flex justify-center"
+          >
+            <v-switch
+              v-model="produto.ativo"
+              :label="t('forms.formProduct.ativo.label')"
+              :indeterminate="produto.ativo === null || produto.ativo === undefined"
+              color="success"
+              class="m-0 p-0"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <v-row
+      dense
+      align="center"
+    >
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-textarea
+          v-model="produto.descricao_produto"
+          :rules="[rules.required(), rules.minLength(100)]"
+          :label="t('forms.formProduct.descricao_produto.label')"
           density="compact"
           variant="outlined"
+          counter
           clearable
         />
       </v-col>
 
-      <v-col cols="12" md="4">
-        <InputPrice
-          v-model="product.price"
-          :rules="[rules.required()]"
-        />
-      </v-col>
-
-      <v-col cols="12" md="3" class="d-flex justify-center">
-        <v-switch
-          v-model="product.active"
-          :label="t('forms.formProduct.active.label')"
-          :indeterminate="product.active === null || product.active === undefined"
-          color="success"
-          class="m-0 p-0"
+      <v-col
+        cols="12"
+        md="6"
+      >
+        <v-textarea
+          v-model="produto.especificacoes_produto"
+          :rules="[rules.required(), rules.minLength(100)]"
+          :label="t('forms.formProduct.especificacoes_produto.label')"
+          density="compact"
+          variant="outlined"
+          counter
+          clearable
         />
       </v-col>
     </v-row>
 
-    <v-row dense>
-      <v-col cols="12" class="d-flex flex-column">
-        <InputUploadImage
-          v-model="product.imageFile"
-          :label="t('forms.formProduct.image.label')"
-          :bucket="'produtos'"
-          :owner="ownerBucket"
-        />
-
-        <div v-if="product.image && !product.imageFile" class="mb-4 text-center">
-          <v-img :src="product.image" aspect-ratio="16/9" cover class="rounded-lg mt-5" />
-          <div class="text-caption">{{ t('forms.formProduct.image.label') }}</div>
-        </div>
+    <v-row
+      v-if="!dataIfIsParceiro"
+      dense
+      align="center"
+    >
+      <v-col cols="12">
+        <InputParceiro v-model:parceiro="produto.parceiro" />
       </v-col>
     </v-row>
-    <button type="submit" class="d-none"></button>
+
+    <button
+      type="submit"
+      class="d-none"
+    />
   </v-form>
 </template>
 
@@ -54,9 +125,10 @@
 // Componentes
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputPrice from '../fixtures/InputPrice.vue'
+import InputParceiro from '../fixtures/InputParceiro.vue'
 
 // Models
-import { type IProduct } from '@/classes/models/resources/ModelIProduct'
+import { type IProdutos } from '@/classes/models/resources/ModelIProdutos'
 
 // Utils
 import { sanitizeName } from '@/utils/sanitizeForBucket'
@@ -69,20 +141,26 @@ import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
-const { t } = useI18n()
-const rules = useRules()
-const authStore = useAuthStore()
+const { t } = useI18n();
+const rules = useRules();
+const authStore = useAuthStore();
 
-const formRef = ref<any>(null)
-const product = defineModel<IProduct>('product', { required: true })
-const formIsValid = defineModel<boolean>('valid', { default: false })
-const emit = defineEmits(['submit'])
+const formRef = ref<any>(null);
+const produto = defineModel<IProdutos>('produto', { required: true });
+const formIsValid = defineModel<boolean>('valid', { default: false });
+const emit = defineEmits(['submit']);
 
 const ownerBucket = computed(() => {
   const idUser = authStore.user?.id
   if (idUser == undefined) throw new Error('id undefined')
   return sanitizeName(idUser);
-})
+});
+
+const dataIfIsParceiro = computed(() => {
+  const user = authStore.userProfile;
+  const isParceiro = user?.cargo === 'parceiro'
+  return isParceiro ? user : null
+});
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
@@ -97,5 +175,5 @@ defineExpose({
     const { valid } = await formRef.value?.validate()
     return valid
   },
-})
+});
 </script>

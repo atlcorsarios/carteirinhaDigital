@@ -1,5 +1,3 @@
-import type { IHeadersDataTable } from './ModelHeaderTable'
-
 export type ValueDataChart = {
   id: number
   title: string
@@ -15,9 +13,6 @@ export interface IPropsDataTable<T> {
   maxHeightTable?: string | number
   bgColorTable?: string
   densityTable?: 'comfortable' | 'compact' | 'default'
-  headersTable: IHeadersDataTable[]
-  itemsTable: Array<T>
-  loadingDataTable?: boolean
 }
 
 export interface IModelValueDataChart {

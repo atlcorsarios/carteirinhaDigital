@@ -2,15 +2,14 @@
   <v-card>
     <v-card-title class="d-flex sticky-title bg-surface">
       <div class="text-h6 w-100 me-auto">
-        {{ product.idProduct }} -
-        {{ product.description }}
+        {{ produto.id }} - {{ produto.nome }}
       </div>
 
       <v-icon-btn
         icon="mdi-close"
-        v-tooltip="t('tooltips.forms.close')"
         variant="text"
         color="info"
+        v-tooltip="t('tooltips.forms.close')"
         @click="$emit('close')"
       />
     </v-card-title>
@@ -19,15 +18,15 @@
       <v-row dense>
         <v-col cols="4" class="text-start">
           <v-badge
-            location="top right"
             dot
             floating
-            :color="product.active ? 'success' : 'grey-darken-1'"
+            location="top right"
+            :color="produto.ativo ? 'success' : 'grey-darken-1'"
             v-tooltip="t('forms.formProduct.active.label')"
           />
           <v-img
             :src="imageUrl"
-            :alt="product.description"
+            :alt="produto.nome"
             rounded="lg"
             width="350"
             max-height="350"
@@ -35,37 +34,39 @@
         </v-col>
         <v-col cols="8">
           <p>{{ formatPrice }}</p>
-          <p>{{ categoryProduct }}</p>
-          <v-tabs v-model="tab" color="primary" slider-color="indigo-lighten-4" grow class="mt-5">
-            <v-tab value="ingredients">{{ t('forms.formRecipe.ingredients.headerTable') }}</v-tab>
-            <v-tab value="preparation">{{ t('forms.formRecipe.preparation.label') }}</v-tab>
+          <v-tabs
+            v-model="tab"
+            grow
+            color="primary"
+            slider-color="indigo-lighten-4"
+            class="mt-5"
+          >
+            <v-tab value="especificacoes">{{ t('forms.formProduct.especificacoes_produto.label') }}</v-tab>
+            <v-tab value="parceiro">{{ t('forms.formProduct.parceiro.label') }}</v-tab>
           </v-tabs>
         </v-col>
       </v-row>
       <v-row dense>
         <v-col cols="12">
-          <div class="text-h6 w-100 mt-5">{{ product.recipe.description }}</div>
-          <v-divider />
-
           <v-tabs-window v-model="tab">
-            <v-tabs-window-item value="ingredients">
-              <v-sheet class="pa-5">
-                <v-list-item v-for="(ingredient, index) in ingredients" :key="index">
-                  <v-list-item-title>{{ ingredient.ingredient.description }}</v-list-item-title>
-                  <v-list-item-subtitle
-                    >{{ ingredient.amount }} -
-                    {{ ingredient.ingredient.measurement }}</v-list-item-subtitle
-                  >
-                  <v-list-item-subtitle
-                    >{{ ingredient.ingredient.category.group }} -
-                    {{ ingredient.ingredient.category.description }}</v-list-item-subtitle
-                  >
-                  <v-divider class="mt-2" :thickness="3" />
-                </v-list-item>
+            <v-tabs-window-item value="especificacoes">
+              <v-sheet class="pa-5 texto-preparo text-body-1">
+                {{ produto.especificacoes_produto }}
               </v-sheet>
             </v-tabs-window-item>
-            <v-tabs-window-item value="preparation">
-              <v-sheet class="pa-5 texto-preparo text-body-1">{{ preparation }}</v-sheet>
+
+            <v-tabs-window-item value="parceiro">
+              <v-sheet class="text-h6 w-100 mt-5 pa-5">
+                {{ produto.parceiro }}
+                <!-- <v-list-item v-for="(ingredient, index) in ingredients" :key="index">
+                  <v-list-item-title>{{ ingredient.ingredient.description }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ ingredient.amount }} -
+                    {{ ingredient.ingredient.measurement }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ ingredient.ingredient.category.group }} -
+                    {{ ingredient.ingredient.category.description }}</v-list-item-subtitle>
+                  <v-divider class="mt-2" :thickness="3" />
+                </v-list-item> -->
+              </v-sheet>
             </v-tabs-window-item>
           </v-tabs-window>
         </v-col>
@@ -76,7 +77,7 @@
 
 <script setup lang="ts">
 // Models
-import type { IProduct } from '@/classes/models/resources/ModelIProduct'
+import type { IProdutos } from '@/classes/models/resources/ModelIProdutos'
 
 // Classes
 import { ClassFormatters } from '@/classes/ClassFormatters'
@@ -85,37 +86,23 @@ import { ClassFormatters } from '@/classes/ClassFormatters'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 
-const { t } = useI18n()
+const { t } = useI18n();
 
+const tab = ref('ingredients');
+
+defineEmits(['close']);
 const props = defineProps<{
-  product: IProduct
-}>()
-
-defineEmits(['close'])
+  produto: IProdutos
+}>();
 
 const imageUrl = computed(() => {
-  return props.product.image || undefined
-})
+  return props.produto.avatar_url_produto || undefined
+});
 
 const formatPrice = computed(() => {
-  return ClassFormatters.formatPriceDynamic(props.product.price ?? 0)
-})
+  return ClassFormatters.formatPriceDynamic(props.produto.valor_produto ?? 0)
+});
 
-const categoryProduct = computed(() => {
-  return props.product.category
-    ? `${props.product.category.group} - ${props.product.category.description}`
-    : ''
-})
-
-const ingredients = computed(() => {
-  return props.product.recipe.ingredients || []
-})
-
-const preparation = computed(() => {
-  return props.product.recipe.preparation || ''
-})
-
-const tab = ref('ingredients')
 </script>
 
 <style scoped>

@@ -21,7 +21,7 @@ export class ClassProdutos extends BaseClass<IProdutos> {
       avatar_url_produto: '',
       estoque: 0.0,
       ativo: true,
-      parceiros: null
+      parceiro: null
     }
   }
 
@@ -67,6 +67,8 @@ export class ClassProdutos extends BaseClass<IProdutos> {
         width: 350,
         maxWidth: 450,
         minWidth: 100,
+        excludeFromChart: true,
+        excludeFromFilter: true
       },
       ativo: {
         align: 'center',
@@ -76,7 +78,7 @@ export class ClassProdutos extends BaseClass<IProdutos> {
         chartFormatter: ClassFormatters.formatBoolean,
         value: (produto: IProdutos) => ClassFormatters.formatBoolean(produto.ativo),
       },
-      parceiros: {
+      parceiro: {
         hidden: true
       }
     }

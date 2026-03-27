@@ -1,17 +1,36 @@
 <template>
-  <GenericView ref="genericView" :headers="ClassProdutos.headers" :id-field="'idProduct'"
-    :title="t('dataTable.products.title')" :hasActions="true" :hasMoreDetails="true"
+  <GenericView
+    ref="genericView"
+    :headers="ClassProdutos.headers"
+    :id-field="'idProduct'"
+    :title="t('dataTable.products.title')"
+    :context-id="'produtos-cadastro'"
+    :hasActions="true"
+    :hasMoreDetails="true"
     :text-create="t('messages.forms.formProduct.createProduct')"
-    :text-edit="t('messages.forms.formProduct.editingProduct')" :icon-create="'mdi-package-variant-closed-plus'"
-    :icon-edit="'mdi-pencil-outline'" :icon-save="'mdi-package-variant-closed-check'"
-    :dialog-model-manager="dialogProduct" :class-model-manager="productModelManager"
-    :service-fetch="buscarProdutosPaginado" :service-save="ProductsService.saveProduct">
+    :text-edit="t('messages.forms.formProduct.editingProduct')"
+    :icon-create="'mdi-package-variant-closed-plus'"
+    :icon-edit="'mdi-pencil-outline'"
+    :icon-save="'mdi-package-variant-closed-check'"
+    :dialog-model-manager="dialogProduct"
+    :class-model-manager="productModelManager"
+    :service-fetch="buscarProdutosPaginado"
+    :service-save="ProductsService.saveProduct"
+  >
     <template #form="{ model, updateValid, refForm, submitForm }">
-      <ProductForm :ref="refForm" :product="model" @update:valid="updateValid" @submit="submitForm" />
+      <ProductForm
+        :ref="refForm"
+        :produto="model"
+        @update:valid="updateValid"
+        @submit="submitForm"
+      />
     </template>
 
     <template #moreDetails="{ item, close }">
-      <MoreProductDetails :product="item" @close="close" />
+      <MoreProductDetails
+        :produto="item"
+        @close="close"
+      />
     </template>
   </GenericView>
 </template>
@@ -61,9 +80,9 @@ const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) 
     value: ''
   };
 
-  if (isParceiro && idParceiro) {
+  if (isParceiro || idParceiro) {
     filtroEstaticoDaTela = {
-      field: 'idParceiro',
+      field: 'id_parceiro',
       condition: 'equals',
       value: String(idParceiro)
     }
@@ -88,4 +107,5 @@ const productModelManager = {
     classProduct.updateModel(item)
   },
 }
+
 </script>

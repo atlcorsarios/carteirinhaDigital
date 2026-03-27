@@ -182,33 +182,36 @@
         "label": "Id do parceiro vinculado"
       },
       "nome": {
-        "headerTable": "Nome do produto",
+        "headerTable": "Nome",
         "label": "Nome do produto"
       },
       "descricao_produto": {
-        "headerTable": "Capa",
-        "label": "Foto do produto"
+        "headerTable": "Descrição",
+        "label": "Descrição sobre o produto"
       },
       "especificacoes_produto": {
-        "headerTable": "Especificações do produto",
+        "headerTable": "Especificações",
         "label": "Especificações do produto"        
       },
       "valor_produto": {
-        "headerTable": "Preço do produto",
+        "headerTable": "Preço",
         "label": "Preço",
         "hint": "Convertido para: "
       },
       "avatar_url_produto": {
-        "headerTable": "Foto de capa",
+        "headerTable": "Capa",
         "label": "Foto de capa do produto"
       },
       "estoque": {
-        "headerTable": "Quantidade em estoque",
-        "label": "Em estoque"
+        "headerTable": "Em estoque",
+        "label": "Quantidade em estoque"
       },
       "ativo": {
-        "headerTable": "Produto ativo",
+        "headerTable": "Ativo",
         "label": "Produto ativo?"
+      },
+      "parceiro": {
+        "label": "Parceiro vinculado"
       }
     },
     "formNotifications": {
@@ -385,18 +388,8 @@
     }
   },
   "dialogSearch": {
-    "searchCategory": {
-      "title": "Categorias"
-    },
-    "searchRecipe": {
-      "title": "Receitas"
-    },
-    "searchIngredient": {
-      "title": "Ingredientes"
-    },
-    "searchProduct": {
-      "title": "Produtos"
-    }
+    "searchParceiro": "Parceiros",
+    "searchProduct": "Produtos"
   },
   "filterColumn": {
     "operators": {
