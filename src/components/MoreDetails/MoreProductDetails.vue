@@ -42,6 +42,15 @@
           <p>ID: {{ produto.id }}</p>
           <p>{{ produto.descricao_produto }}</p>
           <p>{{ formatPrice }}</p>
+
+          <p>
+            {{ t('forms.formProduct.ativo.label') }}
+
+            <v-chip :color="produto.ativo ? 'success' : 'error'">
+              {{ ClassFormatters.formatBoolean(produto.ativo || false) }}
+            </v-chip>
+          </p>
+
           <v-tabs
             v-model="tab"
             grow
@@ -49,8 +58,24 @@
             slider-color="indigo-lighten-4"
             class="mt-5"
           >
-            <v-tab value="especificacoes">{{ t('forms.formProduct.especificacoes_produto.label') }}</v-tab>
-            <v-tab value="parceiro">{{ t('forms.formProduct.parceiro.label') }}</v-tab>
+            <v-tab
+              v-if="produto.especificacoes_produto"
+              value="especificacoes"
+            >
+              {{ t('forms.formProduct.especificacoes_produto.label') }}
+            </v-tab>
+            <v-tab
+              v-if="produto.parceiro"
+              value="parceiro"
+            >
+              {{ t('forms.formProduct.parceiro.label') }}
+            </v-tab>
+            <v-tab
+              v-if="produto.promocao && produto.promocao.length > 0"
+              value="promocao"
+            >
+              {{ t('forms.formProduct.promocao.label') }}
+            </v-tab>
           </v-tabs>
         </v-col>
       </v-row>
@@ -66,14 +91,14 @@
             <v-tabs-window-item value="parceiro">
               <v-sheet class="text-h6 w-100 mt-5 pa-5">
                 {{ produto.parceiro }}
-                <!-- <v-list-item v-for="(ingredient, index) in ingredients" :key="index">
-                  <v-list-item-title>{{ ingredient.ingredient.description }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ ingredient.amount }} -
-                    {{ ingredient.ingredient.measurement }}</v-list-item-subtitle>
-                  <v-list-item-subtitle>{{ ingredient.ingredient.category.group }} -
-                    {{ ingredient.ingredient.category.description }}</v-list-item-subtitle>
-                  <v-divider class="mt-2" :thickness="3" />
-                </v-list-item> -->
+              </v-sheet>
+            </v-tabs-window-item>
+
+            <v-tabs-window-item value="promocao">
+              <v-sheet class="text-h6 w-100 mt-5 pa-5">
+                <v-chip v-for="(promoItem, index) in produto.promocao" :key="index">
+                  {{ promoItem.promocoes.descricao_promocao }}
+                </v-chip>
               </v-sheet>
             </v-tabs-window-item>
           </v-tabs-window>
@@ -85,7 +110,7 @@
 
 <script setup lang="ts">
 // Models
-import type { IProdutos } from '@/classes/models/resources/ModelIProdutos'
+import type { IProdutos, IProdutosDetalhados } from '@/classes/models/resources/ModelIProdutos'
 
 // Classes
 import { ClassFormatters } from '@/classes/ClassFormatters'
@@ -100,7 +125,7 @@ const tab = ref('ingredients');
 
 defineEmits(['close']);
 const props = defineProps<{
-  produto: IProdutos
+  produto: Partial<IProdutosDetalhados>
 }>();
 
 const imageUrl = computed(() => {

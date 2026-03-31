@@ -212,6 +212,9 @@
       },
       "parceiro": {
         "label": "Parceiro vinculado"
+      },
+      "promocao": {
+        "label": "Promoção ativa"
       }
     },
     "formNotifications": {

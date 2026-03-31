@@ -1,3 +1,4 @@
+import type { IPromocaoProdutoPivot } from "./ModelIPromocoes"
 import type { TParceiro } from "./ModelUser"
 
 export interface IProdutos {
@@ -9,6 +10,10 @@ export interface IProdutos {
   valor_produto: number
   avatar_url_produto: string
   estoque: number
-  ativo: boolean,
-  parceiro: TParceiro | null
+  ativo: boolean
+}
+
+export interface IProdutosDetalhados extends IProdutos {
+  parceiro?: TParceiro
+  promocao?: IPromocaoProdutoPivot[]
 }

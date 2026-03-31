@@ -131,7 +131,7 @@ import InputPrice from '../fixtures/InputPrice.vue'
 import InputParceiro from '../fixtures/InputParceiro.vue'
 
 // Models
-import { type IProdutos } from '@/classes/models/resources/ModelIProdutos'
+import { type IProdutosDetalhados } from '@/classes/models/resources/ModelIProdutos'
 
 // Utils
 import { sanitizeName } from '@/utils/sanitizeForBucket'
@@ -149,7 +149,7 @@ const rules = useRules();
 const authStore = useAuthStore();
 
 const formRef = ref<any>(null);
-const produto = defineModel<IProdutos>('produto', { required: true });
+const produto = defineModel<Partial<IProdutosDetalhados>>('produto', { required: true });
 const formIsValid = defineModel<boolean>('valid', { default: false });
 const emit = defineEmits(['submit']);
 

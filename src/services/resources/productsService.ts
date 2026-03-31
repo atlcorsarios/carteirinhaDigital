@@ -1,16 +1,40 @@
 import { ClassProdutos } from '@/classes/resources/ClassProdutos'
-import type { IProdutos } from '@/classes/models/resources/ModelIProdutos'
+import type { IProdutos, IProdutosDetalhados } from '@/classes/models/resources/ModelIProdutos'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+import { QUERY_SELECT_PRODUTOS_FULL_JOIN } from './queries/queriesProdutos'
 import { applySupabaseFilters } from '@/utils/supabaseFilterUtils'
 import { supabase } from '../supabase'
-import { QUERY_SELECT_PRODUTOS_FULL_JOIN } from './queries/queriesProdutos'
 
 export class ProductsService {
-  static async paginationsProducts(payload: TPayloadRequestPagination, fromTable: string = 'vw_produtos_vitrine'): Promise<IProdutos[]> {
+  static async fetchProduct(idProduto: string, fromTable: string = 'vw_produtos_vitrine', withDetails: boolean = true): Promise<IProdutosDetalhados> {
     try {
+      if (!idProduto) throw new Error('IdProduto undefined');
+
+      const selectString = withDetails ? QUERY_SELECT_PRODUTOS_FULL_JOIN : '*';
+
+      let query = supabase
+      .from(fromTable)
+      .select(selectString as any)
+      .eq('id', idProduto)
+      .single()
+
+      const { data, error } = await query
+
+      if (error) throw error
+      return (data as unknown) as IProdutosDetalhados;
+
+    } catch (error) {
+      console.error('Erro na consulta de produto:', error);
+      throw error
+    }
+  }
+
+  static async paginationsProducts(payload: TPayloadRequestPagination, fromTable: string = 'vw_produtos_vitrine', withDetails: boolean = true): Promise<IProdutosDetalhados[]> {
+    try {
+      const selectString = withDetails ? QUERY_SELECT_PRODUTOS_FULL_JOIN : '*';
       let query = supabase
         .from(fromTable)
-        .select(QUERY_SELECT_PRODUTOS_FULL_JOIN)
+        .select(selectString as any)
 
       query = applySupabaseFilters(query, payload.filters, ClassProdutos.filters)
 
@@ -25,7 +49,7 @@ export class ProductsService {
       const { data, error } = await query
 
       if (error) throw error
-      return data as IProdutos[];
+      return (data as unknown) as IProdutosDetalhados[];
 
     } catch (error) {
       console.error('Erro na paginação de produtos:', error);
@@ -39,7 +63,7 @@ export class ProductsService {
       const dbPayload: Record<string, any> = {}
 
       for (const [key, value] of Object.entries(rawPayload)) {
-        if (key === 'parceiro' || key === 'parceiros') continue;
+        if (key === 'parceiro' || key === 'parceiros' || key === 'promocao' || key === 'promocoes' || key === 'promocao_produtos') continue;
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) continue;
 
         dbPayload[key] = value === '' ? null : value
