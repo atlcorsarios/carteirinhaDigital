@@ -23,6 +23,7 @@
       "title": "Produtos",
       "children": {
         "list": "Lista de produtos",
+        "register": "Cadastro",
         "beneficios": "Benefícios",
         "promocoes": "Promoções",
         "descontos": "Descontos"
@@ -181,33 +182,36 @@
         "label": "Id do parceiro vinculado"
       },
       "nome": {
-        "headerTable": "Nome do produto",
+        "headerTable": "Nome",
         "label": "Nome do produto"
       },
       "descricao_produto": {
-        "headerTable": "Capa",
-        "label": "Foto do produto"
+        "headerTable": "Descrição",
+        "label": "Descrição sobre o produto"
       },
       "especificacoes_produto": {
-        "headerTable": "Especificações do produto",
+        "headerTable": "Especificações",
         "label": "Especificações do produto"        
       },
       "valor_produto": {
-        "headerTable": "Preço do produto",
+        "headerTable": "Preço",
         "label": "Preço",
         "hint": "Convertido para: "
       },
       "avatar_url_produto": {
-        "headerTable": "Foto de capa",
+        "headerTable": "Capa",
         "label": "Foto de capa do produto"
       },
       "estoque": {
-        "headerTable": "Quantidade em estoque",
-        "label": "Em estoque"
+        "headerTable": "Em estoque",
+        "label": "Quantidade em estoque"
       },
       "ativo": {
-        "headerTable": "Produto ativo",
+        "headerTable": "Ativo",
         "label": "Produto ativo?"
+      },
+      "parceiro": {
+        "label": "Parceiro vinculado"
       }
     },
     "formNotifications": {
@@ -266,6 +270,7 @@
       "edit": "Editar",
       "delete": "Excluir",
       "submit": "Confirmar",
+      "cancel": "Cancelar",
       "forgotPassword": "Esqueci minha senha",
       "attach": "Anexar",
       "withGoogle": "Continue com o Google"
@@ -300,6 +305,8 @@
     },
     "forms": {
       "saveSuccess": "Salvo com sucesso",
+      "deleteSuccess": "Registro excluído com sucesso!",
+      "inactiveSuccess": "Registro inativado com sucesso!",
       "saveError": "Erro ao salvar",
       "formUsers": {
         "createUser": "Criar usuário",
@@ -326,6 +333,16 @@
         "updateInventory": "Atualizar estoque"
       }
     },
+    "dialogs": {
+      "confirmInactive": {
+        "title": "Atenção! Inativando registro",
+        "message": "Tem certeza que deseja inativar este registro?"
+      },
+      "confirmDelete": {
+        "title": "Atenção! excluindo registro",
+        "message": "Tem certeza que deseja excluir este registro?"
+      }
+    },
     "components": {
       "dataTable": {
         "titleDefault": "Resultados",
@@ -342,33 +359,16 @@
         "isCompressing": "Otimizando imagem..."
       },
       "infiniteList": {
+        "totais": "Todos os itens foram carregados",
         "limit": "Itens por vez",
         "order": "Ordenação"
       }
     }
   },
   "dataTable": {
-    "users": {
-      "title": "Lista de usuários"
-    },
-    "products": {
-      "title": "Lista de produtos"
-    },
-    "categories": {
-      "title": "Lista de categorias"
-    },
-    "recipes": {
-      "title": "Lista de receitas"
-    },
-    "ingredients": {
-      "title": "Lista de ingredientes"
-    },
-    "stock": {
-      "title": "Estoque dos produtos"
-    },
-    "notifications": {
-      "title": "Lista de notificações"
-    },
+    "users": "Lista de usuários",
+    "products": "Lista de produtos",
+    "notifications": "Lista de notificações",
     "headersDefault": {
       "actions": "Ações"
     }
@@ -383,18 +383,8 @@
     }
   },
   "dialogSearch": {
-    "searchCategory": {
-      "title": "Categorias"
-    },
-    "searchRecipe": {
-      "title": "Receitas"
-    },
-    "searchIngredient": {
-      "title": "Ingredientes"
-    },
-    "searchProduct": {
-      "title": "Produtos"
-    }
+    "searchParceiro": "Parceiros",
+    "searchProduct": "Produtos"
   },
   "filterColumn": {
     "operators": {

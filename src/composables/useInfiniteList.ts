@@ -6,7 +6,7 @@ import { ref, onMounted, nextTick, watch } from 'vue'
 
 export function useInfiniteList<T>(
   key: string,
-  fetchData: (offset: number, limit: number) => Promise<IHeaderPaginatorModel<T>>,
+  fetchData: (limit: number, lastCursor: string | null) => Promise<IHeaderPaginatorModel<T>>,
   defaultLimit = 20
 ) {
   const store = useListCacheStore()
@@ -14,7 +14,7 @@ export function useInfiniteList<T>(
   const userPrefLimit = StorageUtils.get<number>('limit_preference', defaultLimit, 'local');
 
   const items = ref<T[]>([]) as any
-  const offset = ref(0)
+  const lastCursor = ref('')
   const limit = ref(userPrefLimit)
   const total = ref(0)
 
@@ -28,7 +28,7 @@ export function useInfiniteList<T>(
 
     loading.value = true
     try {
-      const response = await fetchData(offset.value, limit.value)
+      const response = await fetchData(limit.value, lastCursor.value)
       const newItems = response.items
 
       if (response.total !== undefined) {
@@ -40,7 +40,7 @@ export function useInfiniteList<T>(
       }
 
       items.value.push(...newItems)
-      offset.value += defaultLimit
+      lastCursor.value += defaultLimit
     } finally {
       loading.value = false
     }
@@ -50,7 +50,7 @@ export function useInfiniteList<T>(
     const cached = store.getSnapshot(key)
     if (cached) {
       items.value = cached.items
-      offset.value = cached.nextOffset
+      lastCursor.value = cached.nextOffset
       isFinished.value = cached.isFinished
 
       await nextTick()
@@ -65,7 +65,7 @@ export function useInfiniteList<T>(
 
   const resetAndReload = async () => {
     items.value = []
-    offset.value = 0
+    lastCursor.value = ''
     isFinished.value = false
     total.value = 0
     store.clearSnapshot(key)
@@ -80,7 +80,7 @@ export function useInfiniteList<T>(
     const wrapper = document.querySelector(`#${tableId} .v-table__wrapper`)
     store.saveSnapshot(key, {
       items: items.value,
-      nextOffset: offset.value,
+      nextOffset: lastCursor.value,
       isFinished: isFinished.value,
       scrollPosition: wrapper ? wrapper.scrollTop : 0,
     })
@@ -90,7 +90,7 @@ export function useInfiniteList<T>(
 
   return {
     limit,
-    offset,
+    lastCursor,
     total,
     items,
     isFinished,

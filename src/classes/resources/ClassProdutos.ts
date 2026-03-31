@@ -1,16 +1,16 @@
 import { BaseClass } from '../subscriptions/BaseClass'
-import type { IProduct } from '../models/resources/ModelIProduct'
+import type { IProdutos } from '../models/resources/ModelIProdutos'
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import { ClassFormatters } from '../ClassFormatters'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 
-export class ClassProducts extends BaseClass<IProduct> {
-  constructor(data?: Partial<IProduct>) {
+export class ClassProdutos extends BaseClass<IProdutos> {
+  constructor(data?: Partial<IProdutos>) {
     super(data)
   }
 
-  static defaultProduct(): IProduct {
+  static defaultProduct(): IProdutos {
     return {
       id: '',
       id_parceiro: '',
@@ -21,30 +21,22 @@ export class ClassProducts extends BaseClass<IProduct> {
       avatar_url_produto: '',
       estoque: 0.0,
       ativo: true,
-      parceiros: null
+      parceiro: null
     }
   }
 
-  protected getDefault(data: unknown = {}): IProduct {
-    const item = data as Partial<IProduct>
-    return this.createWithDefaults(item, ClassProducts.defaultProduct())
+  protected getDefault(data: unknown = {}): IProdutos {
+    const item = data as Partial<IProdutos>
+    return this.createWithDefaults(item, ClassProdutos.defaultProduct())
   }
 
-  static get fieldConfig(): TEntityConfig<IProduct> {
+  static get fieldConfig(): TEntityConfig<IProdutos> {
     return {
       id: {
-        width: 50,
-        maxWidth: 100,
-        minWidth: 30,
-        excludeFromFilter: true,
-        excludeFromChart: true,
+        hidden: true
       },
       id_parceiro: {
-        width: 50,
-        maxWidth: 100,
-        minWidth: 30,
-        excludeFromFilter: true,
-        excludeFromChart: true,
+        hidden: true
       },
       nome: {
         align: 'center',
@@ -54,18 +46,10 @@ export class ClassProducts extends BaseClass<IProduct> {
         excludeFromChart: true,
       },
       descricao_produto: {
-        align: 'center',
-        width: 700,
-        maxWidth: 850,
-        minWidth: 250,
-        excludeFromChart: true,
+        hidden: true
       },
       especificacoes_produto: {
-        align: 'center',
-        width: 700,
-        maxWidth: 850,
-        minWidth: 250,
-        excludeFromChart: true,
+        hidden: true
       },
       valor_produto: {
         align: 'end',
@@ -73,7 +57,7 @@ export class ClassProducts extends BaseClass<IProduct> {
         maxWidth: 450,
         minWidth: 100,
         chartFormatter: ClassFormatters.formatPriceDynamic,
-        value: (produto: IProduct) => ClassFormatters.formatPriceDynamic(produto.valor_produto),
+        value: (produto: IProdutos) => ClassFormatters.formatPriceDynamic(produto.valor_produto),
       },
       avatar_url_produto: {
         hidden: true
@@ -82,7 +66,9 @@ export class ClassProducts extends BaseClass<IProduct> {
         align: 'center',
         width: 350,
         maxWidth: 450,
-        minWidth: 100,
+        minWidth: 130,
+        excludeFromChart: true,
+        excludeFromFilter: true
       },
       ativo: {
         align: 'center',
@@ -90,29 +76,29 @@ export class ClassProducts extends BaseClass<IProduct> {
         maxWidth: 350,
         minWidth: 50,
         chartFormatter: ClassFormatters.formatBoolean,
-        value: (produto: IProduct) => ClassFormatters.formatBoolean(produto.ativo),
+        value: (produto: IProdutos) => ClassFormatters.formatBoolean(produto.ativo),
       },
-      parceiros: {
+      parceiro: {
         hidden: true
       }
     }
   }
 
   static get headers(): IHeadersDataTable[] {
-    const defaultModel = new ClassProducts().getDefault()
+    const defaultModel = new ClassProdutos().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
       'forms.formProduct',
-      ClassProducts.fieldConfig,
+      ClassProdutos.fieldConfig,
     )
   }
 
   static get filters(): IFilterColumn[] {
-    const defaultModel = new ClassProducts().getDefault()
+    const defaultModel = new ClassProdutos().getDefault()
     const autoFilters = BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formProduct',
-      ClassProducts.fieldConfig,
+      ClassProdutos.fieldConfig,
     )
 
     return autoFilters

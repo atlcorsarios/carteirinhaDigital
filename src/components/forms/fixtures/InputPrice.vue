@@ -6,51 +6,50 @@
     :options="currencyOptions"
     :hint="convertedHint"
     :placeholder="currencyPlaceholder"
+    type="number"
+    min="0"
     density="compact"
     variant="outlined"
     clearable
-    type="number"
+    @keydown="blockNegative"
   >
     <template #prepend-inner>
       <span class="text-caption font-weight-bold text-medium-emphasis mr-1 mt-1">
         {{ coinCode }}
       </span>
-      <v-divider vertical class="mx-2 my-1" />
+      <v-divider
+        vertical
+        class="mx-2 my-1"
+      />
     </template>
   </v-mask-input>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import type { IPropsCustomInputs } from '@/classes/models/modelComponents/ModelCustomInputs';
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { useQuotationStore } from '@/stores/quotationStore'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
-const model = defineModel<number | null | undefined>({ required: true })
-
-interface Props {
-  label?: string
-  hint?: string
-  rules?: any[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  label: 'forms.formProduct.price.label',
-  hint: 'forms.formProduct.price.hint',
+const model = defineModel<number | null | undefined>({ required: true });
+const props = withDefaults(defineProps<IPropsCustomInputs>(), {
+  label: 'forms.formProduct.valor_produto.label',
+  hint: 'forms.formProduct.valor_produto.hint',
   rules: () => []
-})
+});
 
-const { t, locale } = useI18n()
-const quotationStore = useQuotationStore()
+const { t, locale } = useI18n();
+const quotationStore = useQuotationStore();
 
-const coinCode = computed(() => getCurrency(locale.value))
+const coinCode = computed(() => getCurrency(locale.value));
 
 const currencyPlaceholder = computed(() => {
   return new Intl.NumberFormat(locale.value, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(0)
-})
+});
 
 const currencyOptions = computed(() => {
   const parts = new Intl.NumberFormat(locale.value).formatToParts(1000.1)
@@ -60,7 +59,7 @@ const currencyOptions = computed(() => {
     prefix: '',
     precision: 2,
   }
-})
+});
 
 const convertedHint = computed(() => {
   const value = model.value
@@ -81,5 +80,12 @@ const convertedHint = computed(() => {
   }).format(convertedValue)
 
   return `${t(props.hint)} ${formatted} ${BASE_CURRENCY}`
-})
+});
+
+const blockNegative = (e: any) => {
+  if (e.key === '-') {
+    e.preventDefault()
+  }
+}
+
 </script>

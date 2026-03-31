@@ -62,10 +62,10 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/products',
-    name: 'Products',
-    component: () => import('@/views/products/ProductsView.vue'),
-    redirect: { name: 'ProductsList' },
+    path: '/produtos',
+    name: 'Produtos',
+    component: () => import('@/views/produtos/ProdutosView.vue'),
+    redirect: { name: 'ListaProdutos' },
     meta: {
       title: 'routes.products.title',
       icon: 'mdi-package-variant-closed',
@@ -77,9 +77,9 @@ export const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: 'list',
-        name: 'ProductsList',
-        component: () => import('@/views/products/ProductListView.vue'),
+        path: 'lista',
+        name: 'ListaProdutos',
+        component: () => import('@/views/produtos/ProdutosListaView.vue'),
         meta: {
           title: 'routes.products.children.list',
           icon: 'mdi-format-list-bulleted',
@@ -91,9 +91,23 @@ export const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: 'cadastro',
+        name: 'CadastroProdutos',
+        component: () => import('@/views/produtos/ProdutosCadastroView.vue'),
+        meta: {
+          title: 'routes.products.children.register',
+          icon: 'mdi-package',
+          hotkey: 'cmd+alt+c',
+          requiresAuth: true,
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterProducts.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+        },
+      },
+      {
         path: 'beneficios',
         name: 'Beneficios',
-        component: () => import('@/views/products/BeneficiosView.vue'),
+        component: () => import('@/views/produtos/BeneficiosView.vue'),
         meta: {
           title: 'routes.products.children.beneficios',
           icon: 'mdi-clipboard-text',
@@ -111,7 +125,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'promocoes',
         name: 'Promoções',
-        component: () => import('@/views/products/PromocoesView.vue'),
+        component: () => import('@/views/produtos/PromocoesView.vue'),
         meta: {
           title: 'routes.products.children.promocoes',
           icon: 'mdi-sale',
@@ -129,7 +143,7 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: 'descontos',
         name: 'Descontos',
-        component: () => import('@/views/products/DescontosView.vue'),
+        component: () => import('@/views/produtos/DescontosView.vue'),
         meta: {
           title: 'routes.products.children.descontos',
           icon: 'mdi-tag-multiple',

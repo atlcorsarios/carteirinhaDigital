@@ -3,11 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from '@/classes/models/resources/ModelIProduct';
-
+import type { IProdutos } from '@/classes/models/resources/ModelIProdutos';
 
 defineProps<{
-  produtos: IProduct[]
-}>()
+  produtos: IProdutos[]
+}>();
 
 </script>

@@ -1,71 +1,15 @@
 <template>
   <v-card flat border rounded="lg">
     <v-card-title>
-      <div class="d-flex align-center">
-        <v-menu :close-on-content-click="false">
-          <template v-slot:activator="{ props }">
-            <v-icon-btn
-              v-bind="props"
-              icon="mdi-table-cog"
-              v-tooltip="t('tooltips.components.dataTable.columnsDataTable')"
-              variant="text"
-              color="primary"
-            />
-          </template>
-
-          <v-card min-width="250" max-height="400" class="overflow-y-auto">
-            <v-list
-              density="compact"
-              select-strategy="classic"
-              v-model:selected="selectedHeadersKeys"
-            >
-              <v-list-item v-for="header in allHeaders" :key="header.key" :value="header.key">
-                <template v-slot:prepend="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn
-                      :model-value="isActive"
-                      density="compact"
-                      hide-details
-                      @click.stop="toggleHeader(header.key)"
-                    />
-                  </v-list-item-action>
-                </template>
-                <v-list-item-title class="text-caption">
-                  {{ header.title }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-
-        <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
-
-        <div class="text-h6 font-weight-bold text-high-emphasis text-truncate">
-          {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
-        </div>
-
-        <slot name="actions">
-          <v-spacer />
-
-          <template v-if="hasActions">
-            <BtnOpenDialog
-              icon="mdi-plus-circle"
-              v-tooltip="t('tooltips.forms.create')"
-              :rotate="true"
-              @click="newRegistration"
-            />
-
-            <v-divider vertical class="mx-2 my-auto" style="height: 24px" :thickness="3" />
-
-            <BtnOpenDialog
-              icon="mdi-chart-donut-variant"
-              v-tooltip="t('tooltips.components.dataTable.graph')"
-              :rotate="true"
-              @click="toggleChart"
-            />
-          </template>
-        </slot>
-      </div>
+      <HeaderDataTable
+        v-model:selected-header-keys="selectedHeadersKeys"
+        :all-headers="allHeaders"
+        :title="title != null ? title : undefined"
+        :has-actions="hasActions"
+        :toggle-chart="toggleChart"
+        :toggle-header="toggleHeader"
+        :new-registration="newRegistration"
+      />
     </v-card-title>
 
     <v-divider :thickness="3" />
@@ -78,10 +22,10 @@
         :show-select="selectItems"
         :id="id"
         :headers="headers"
-        :items="dataTable.model.itemsTable"
+        :items="items"
         :height="dataTable.model.heightTable || 'auto'"
         :max-height="dataTable.model.maxHeightTable || 500"
-        :loading="dataTable.model.loadingDataTable"
+        :loading="loading"
         :mobile-breakpoint="0"
         :row-props="rowProps"
         fixed-header
@@ -133,6 +77,7 @@
               v-tooltip="t('tooltips.forms.delete')"
               variant="plain"
               color="error"
+              @click="emits('delete-item', item)"
             />
           </div>
         </template>
@@ -141,33 +86,20 @@
           <v-skeleton-loader type="table-row@5" />
         </template>
 
-        <template v-slot:no-data>
+        <template
+          v-if="showEmpty"
+          v-slot:no-data
+        >
           <div
-            v-if="!dataTable.model.loadingDataTable"
+            v-if="!loading"
             class="d-flex flex-column align-center justify-center py-10 text-medium-emphasis"
           >
-            <v-icon icon="mdi-database-off" size="48" class="mb-2" />
+            <v-icon
+              icon="mdi-database-off"
+              size="48"
+              class="mb-2"
+            />
             <div class="text-body-1">{{ t('messages.components.dataTable.dataNotFound') }}</div>
-          </div>
-        </template>
-
-        <template v-slot:bottom>
-          <v-divider v-intersect="onIntersect" />
-          <div class="d-flex align-center justify-space-between pa-2 text-caption">
-            <div class="d-flex align-center" style="width: 150px">
-              <v-select
-                v-model="pagination.limit"
-                @update:model-value="updateLimit"
-                :items="[10, 20, 50, 100]"
-                variant="outlined"
-                density="compact"
-                hide-details
-                class="text-caption"
-              />
-            </div>
-            <div class="text-no-wrap ml-4">
-              {{ dataTable.model.itemsTable.length }} / {{ pagination.total }}
-            </div>
           </div>
         </template>
       </v-data-table-virtual>
@@ -176,43 +108,48 @@
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
-import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
-import type { TPagination } from '@/classes/models/ModelHeaderPaginator'
-import { StorageUtils } from '@/utils/StorageUtils'
 import { useI18n } from 'vue-i18n'
-import { ref, computed, watchEffect, watch } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
+import HeaderDataTable from './HeaderDataTable.vue';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
     id?: string
+    headers: any[]
+    items: T[]
+    loading?: boolean
+    title?: string | null
     hasActions?: boolean
     selectItems?: boolean
     multipleSelect?: boolean
+    showEmpty?: boolean
   }>(),
   {
     id: 'id',
+    loading: false,
+    title: null,
     hasActions: true,
     selectItems: false,
     multipleSelect: true,
+    showEmpty: true
   },
-)
+);
 
-const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true })
-const pagination = defineModel<TPagination>('pagination', { required: true })
-const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] })
+const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true });
+const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] });
 
 const emits = defineEmits<{
   (e: 'selected-item', item: T): void
   (e: 'toggle-chart'): void
   (e: 'manage-record', payload: { editingMode: boolean; item?: T }): void
-  (e: 'load-more'): void
-}>()
+  (e: 'delete-item', item: T): void
+}>();
 
 const allHeaders = computed(() => {
-  const headersAuto = dataTable.value.model.headersTable.map((header) => ({
+  const headersAuto = props.headers.map((header) => ({
     ...header,
     title: header.title,
     align: header.align || 'start',
@@ -220,37 +157,21 @@ const allHeaders = computed(() => {
     sortable: header.sortable ?? true,
   }))
 
-  const headers = headersAuto.filter((header) => {
-    if (!props.hasActions) {
-      return header.key != 'actions'
-    } else {
-      return header
-    }
+  return headersAuto.filter((header) => {
+    if (!props.hasActions) return header.key != 'actions'
+    return true
   })
+});
 
-  return headers
-})
-
-const selectedHeadersKeys = ref<string[]>([])
-
-watchEffect(() => {
-  if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
-    selectedHeadersKeys.value = allHeaders.value
-      .map((h) => h.key)
-      .filter((key): key is string => key !== undefined)
-  }
-})
+const selectedHeadersKeys = ref<string[]>([]);
 
 const headers = computed(() => {
-  return allHeaders.value.filter((h) => {
-    if (!h.key) return false
-    return selectedHeadersKeys.value.includes(h.key)
-  })
-})
+  return allHeaders.value.filter((h) => h.key && selectedHeadersKeys.value.includes(h.key))
+});
 
 const headersForSlots = computed(() => {
   return headers.value.filter((h) => h.key !== 'actions')
-})
+});
 
 function toggleHeader(key?: string) {
   if (!key) return
@@ -274,9 +195,9 @@ const clickOnTheLine = (_event: Event, { item }: T) => {
   emits('selected-item', item)
 }
 
-const rowProps = (data: { item: T }) => {
-  const item = data.item
-  const isInactive = 'active' in item && item.active === false
+const rowProps = (data: any) => {
+  const item = data.item?.raw || data.item
+  const isInactive = item.ativo === false || item.ativo === 'false'
   const isViewed = 'seen' in item && item.seen === true
 
   return {
@@ -305,60 +226,14 @@ function editRegistration(item: T) {
   emits('manage-record', { editingMode: true, item: item })
 }
 
-function onIntersect(isIntersecting: boolean) {
-  if (isIntersecting && !pagination.value.isFinished) {
-    emits('load-more')
+watchEffect(() => {
+  if (allHeaders.value.length > 0 && selectedHeadersKeys.value.length === 0) {
+    selectedHeadersKeys.value = allHeaders.value
+      .map((h) => h.key)
+      .filter((key): key is string => key !== undefined)
   }
-}
+});
 
-function updateLimit(newLimit: number) {
-  pagination.value = {
-    ...pagination.value,
-    limit: newLimit,
-  }
-}
-
-watch(
-  () => pagination.value.limit,
-  (newLimit) => {
-    if (newLimit) {
-      StorageUtils.set('limit_preference', pagination.value.limit, 'local')
-    }
-  },
-)
 </script>
 
-<style scoped>
-:deep(.v-field__input) {
-  font-size: 0.875rem;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  min-height: 32px;
-}
-
-:deep(.row-inactive) {
-  opacity: 0.3;
-  background-color: rgb(var(--v-theme-surface-variant), 0.1);
-  transition: opacity 0.2s;
-}
-
-:deep(.row-inactive:hover) {
-  opacity: 0.85;
-}
-
-:deep(.row-viewed) {
-  opacity: 0.4;
-  transition: all 0.3s ease;
-  background-color: transparent;
-  border: 1px solid rgb(var(--v-theme-success), 0.4);
-  border-radius: 12px;
-  outline: 1px solid rgb(var(--v-theme-success), 0.4);
-  outline-offset: -1px;
-  border-collapse: separate;
-}
-
-:deep(.row-viewed:hover) {
-  opacity: 1;
-  outline-color: rgba(76, 175, 80, 0.9);
-}
-</style>
+<style src="@/assets/components/dataTable.scss" lang="scss" scoped></style>

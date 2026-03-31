@@ -2,39 +2,73 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useGenericListStore = defineStore('genericList', () => {
-  const context = ref<string | null>(null)
-  const items = ref<any[]>([])
-  const lastCursor = ref<any>(null)
-  const hasMore = ref(true)
+  const contexts = ref<Record<string, {
+    items: any[]
+    lastCursor: any
+    hasMore: boolean
+  }>>({});
 
-  function initContext(newContext: string) {
-    if (context.value !== newContext) {
-      context.value = newContext
-      items.value = []
-      lastCursor.value = null
-      hasMore.value = true
+  const currentContextId = ref<string>('');
+
+  function initContext(contextId: string) {
+    currentContextId.value = contextId
+    if (!contexts.value[contextId]) {
+      contexts.value[contextId] = {
+        items: [],
+        lastCursor: null,
+        hasMore: true
+      }
     }
   }
 
-  function addItems(newItems: any[], cursor: any, more: boolean) {
-    items.value.push(...newItems)
-    lastCursor.value = cursor
-    hasMore.value = more
+  const getItems = (id: string) => contexts.value[id]?.items || []
+  const getLastCursor = (id: string) => contexts.value[id]?.lastCursor || null
+  const getHasMore = (id: string) => contexts.value[id]?.hasMore ?? true
+
+  function addItems(contextId: string, newItems: any[], cursor: any, more: boolean) {
+    if (contexts.value[contextId]) {
+      contexts.value[contextId].items.push(...newItems)
+      contexts.value[contextId].lastCursor = cursor
+      contexts.value[contextId].hasMore = more
+    }
   }
 
-  function resetCurrentContext() {
-    items.value = []
-    lastCursor.value = null
-    hasMore.value = true
+  function resetContext(contextId: string) {
+    if (contexts.value[contextId]) {
+      contexts.value[contextId].items = []
+      contexts.value[contextId].lastCursor = null
+      contexts.value[contextId].hasMore = true
+    }
+  }
+
+  function prependItem(contextId: string, newItem: any) {
+    if (contexts.value[contextId]) {
+      contexts.value[contextId].items = [newItem, ...contexts.value[contextId].items]
+    }
+  }
+
+  function updateItem(contextId: string, idField: string, idValue: any, newValues: Record<string, any>) {
+    if (contexts.value[contextId]) {
+      const currentArray = contexts.value[contextId].items
+      const index = currentArray.findIndex(item => item[idField] === idValue)
+
+      if (index !== -1) {
+        const novosItens = [...currentArray]
+        novosItens[index] = { ...novosItens[index], ...newValues }
+        contexts.value[contextId].items = novosItens
+      }
+    }
   }
 
   return {
-    context,
-    items,
-    lastCursor,
-    hasMore,
+    contexts,
     initContext,
+    getItems,
+    getLastCursor,
+    getHasMore,
     addItems,
-    resetCurrentContext
+    resetContext,
+    prependItem,
+    updateItem
   }
-})
+});

@@ -1,0 +1,32 @@
+:deep(.v-field__input) {
+  font-size: 0.875rem;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: 32px;
+}
+
+:deep(.row-inactive) {
+  opacity: 0.3;
+  background-color: rgb(var(--v-theme-surface-variant), 0.1);
+  transition: opacity 0.2s;
+}
+
+:deep(.row-inactive:hover) {
+  opacity: 0.85;
+}
+
+:deep(.row-viewed) {
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border: 1px solid rgb(var(--v-theme-success), 0.4);
+  border-radius: 12px;
+  outline: 1px solid rgb(var(--v-theme-success), 0.4);
+  outline-offset: -1px;
+  border-collapse: separate;
+}
+
+:deep(.row-viewed:hover) {
+  opacity: 1;
+  outline-color: rgba(76, 175, 80, 0.9);
+}

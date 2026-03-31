@@ -1,23 +1,51 @@
 <template>
   <div class="d-flex flex-column align-center justify-center">
-    <div class="avatar-wrapper position-relative" @click="triggerInput">
+    <div
+      class="avatar-wrapper position-relative"
+      @click="triggerInput"
+    >
       <v-avatar
-        size="120"
+        :size="size"
         color="grey-lighten-3"
         class="elevation-2 cursor-pointer border"
       >
-        <v-img v-if="displayUrl" :src="displayUrl" cover>
+        <v-img
+          v-if="displayUrl"
+          cover
+          :src="displayUrl"
+        >
           <template v-slot:placeholder>
             <div class="d-flex align-center justify-center fill-height">
-              <v-progress-circular indeterminate color="primary" v-if="isProcessing" />
-              <v-icon v-else icon="mdi-image" size="48" color="grey-darken-1" />
+              <v-progress-circular
+                v-if="isProcessing"
+                indeterminate
+                color="primary"
+              />
+              <v-icon
+                v-else
+                icon="mdi-image"
+                size="48"
+                color="grey-darken-1"
+              />
             </div>
           </template>
         </v-img>
 
-        <div v-else class="d-flex align-center justify-center fill-height w-100">
-          <v-progress-circular indeterminate color="primary" v-if="isProcessing" />
-          <v-icon v-else icon="mdi-camera-plus" size="48" color="grey-darken-1" />
+        <div
+          v-else
+          class="d-flex align-center justify-center fill-height w-100"
+        >
+          <v-progress-circular
+            v-if="isProcessing"
+            indeterminate
+            color="primary"
+          />
+          <v-icon
+            v-else
+            icon="mdi-camera-plus"
+            size="48"
+            color="grey-darken-1"
+          />
         </div>
       </v-avatar>
 
@@ -33,8 +61,16 @@
       />
     </div>
 
-    <div v-if="label" class="text-caption mt-2 text-medium-emphasis">
-      <v-progress-circular v-if="isProcessing" color="primary" indeterminate :size="40" />
+    <div
+      v-if="label"
+      class="text-caption mt-2 text-medium-emphasis"
+    >
+      <v-progress-circular
+        v-if="isProcessing"
+        color="primary"
+        indeterminate
+        :size="40"
+      />
       <p v-else>
         {{ t(label) }}
       </p>
@@ -42,8 +78,8 @@
 
     <input
       ref="fileInputRef"
-      type="file"
       :accept="accept"
+      type="file"
       capture="environment"
       class="d-none"
       @change="handleFileSelection"
@@ -60,14 +96,15 @@ import { useAuthStore } from '@/stores/authStore';
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 
-const { t } = useI18n()
-const { notify } = useSnackbar()
-const authStore = useAuthStore()
+const { t } = useI18n();
+const { notify } = useSnackbar();
+const authStore = useAuthStore();
 
 const modelUrl = defineModel<string>('url', { required: false, default: '' });
 
 const props = withDefaults(defineProps<{
   label?: string
+  size?: number
   bucket: string
   pathPrefix?: string
   fileName?: string
@@ -76,6 +113,7 @@ const props = withDefaults(defineProps<{
   compressionOptions?: Object
 }>(), {
   label: 'forms.formUser.avatar_url.label',
+  size: 120,
   pathPrefix: 'uploads',
   fileName: '',
   disabled: false,
@@ -87,18 +125,18 @@ const props = withDefaults(defineProps<{
     fileType: 'image/webp',
     initialQuality: 0.8
   })
-})
+});
 
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const isProcessing = ref(false)
-const localPreview = ref('')
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const isProcessing = ref(false);
+const localPreview = ref('');
 
-const displayUrl = computed(() => localPreview.value || modelUrl.value)
+const displayUrl = computed(() => localPreview.value || modelUrl.value);
 const owner = computed(() => {
   const idUser = String(authStore.userProfile?.id)
   if (idUser === undefined || idUser === '') throw new Error('id undefined')
   return sanitizeName(idUser);
-})
+});
 
 function triggerInput() {
   if (!isProcessing.value && !props.disabled) {

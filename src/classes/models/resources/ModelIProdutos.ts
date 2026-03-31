@@ -1,6 +1,6 @@
 import type { TParceiro } from "./ModelUser"
 
-export interface IProduct {
+export interface IProdutos {
   id?: string
   id_parceiro: string
   nome: string
@@ -10,5 +10,5 @@ export interface IProduct {
   avatar_url_produto: string
   estoque: number
   ativo: boolean,
-  parceiros: TParceiro | null
+  parceiro: TParceiro | null
 }
