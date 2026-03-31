@@ -1,3 +1,4 @@
+import { ClassPlanos } from '@/classes/resources/ClassPlanos';
 import type { IPlanosDetalhados } from '@/classes/models/resources/ModelIPlanos';
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator';
 import { QUERY_SELECT_PLANOS_FULL_JOIN } from './queries/queriesPlanos';
