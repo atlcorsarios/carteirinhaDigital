@@ -2,9 +2,10 @@
   <GenericView
     ref="genericView"
     :headers="ClassProdutos.headers"
-    :id-field="'idProduct'"
-    :title="t('dataTable.products.title')"
-    :context-id="'produtos-cadastro'"
+    :id-field="'id'"
+    :showIdInTextEdit="false"
+    :title="'dataTable.products'"
+    :context-id="String(route.name)"
     :hasActions="true"
     :hasMoreDetails="true"
     :text-create="t('messages.forms.formProduct.createProduct')"
@@ -16,6 +17,7 @@
     :class-model-manager="productModelManager"
     :service-fetch="buscarProdutosPaginado"
     :service-save="ProductsService.saveProduct"
+    :service-delete="ProductsService.inactivateProduct"
   >
     <template #form="{ model, updateValid, refForm, submitForm }">
       <ProductForm
@@ -39,7 +41,7 @@
 // Componentes
 import GenericView from '@/components/layouts/generics/GenericView.vue'
 import ProductForm from '@/components/forms/resources/ProductForm.vue'
-import MoreProductDetails from '@/components/MoreProductDetails.vue'
+import MoreProductDetails from '@/components/MoreDetails/MoreProductDetails.vue'
 
 // Models
 import { type IProdutos } from '@/classes/models/resources/ModelIProdutos'
@@ -58,9 +60,11 @@ import { useQueryFilterStore } from '@/stores/queryFilterStore'
 import { useAuthStore } from '@/stores/authStore'
 
 // Vue
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
+const route = useRoute();
 const queryFilterStore = useQueryFilterStore();
 const authStore = useAuthStore();
 
@@ -80,7 +84,7 @@ const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) 
     value: ''
   };
 
-  if (isParceiro || idParceiro) {
+  if (isParceiro && idParceiro) {
     filtroEstaticoDaTela = {
       field: 'id_parceiro',
       condition: 'equals',
@@ -97,7 +101,7 @@ const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) 
     ]
   }
 
-  return await ProductsService.paginationsProducts(payload);
+  return await ProductsService.paginationsProducts(payload, 'produtos');
 }
 
 const productModelManager = {

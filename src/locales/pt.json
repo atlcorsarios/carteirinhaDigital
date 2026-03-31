@@ -270,6 +270,7 @@
       "edit": "Editar",
       "delete": "Excluir",
       "submit": "Confirmar",
+      "cancel": "Cancelar",
       "forgotPassword": "Esqueci minha senha",
       "attach": "Anexar",
       "withGoogle": "Continue com o Google"
@@ -304,6 +305,8 @@
     },
     "forms": {
       "saveSuccess": "Salvo com sucesso",
+      "deleteSuccess": "Registro excluído com sucesso!",
+      "inactiveSuccess": "Registro inativado com sucesso!",
       "saveError": "Erro ao salvar",
       "formUsers": {
         "createUser": "Criar usuário",
@@ -330,6 +333,16 @@
         "updateInventory": "Atualizar estoque"
       }
     },
+    "dialogs": {
+      "confirmInactive": {
+        "title": "Atenção! Inativando registro",
+        "message": "Tem certeza que deseja inativar este registro?"
+      },
+      "confirmDelete": {
+        "title": "Atenção! excluindo registro",
+        "message": "Tem certeza que deseja excluir este registro?"
+      }
+    },
     "components": {
       "dataTable": {
         "titleDefault": "Resultados",
@@ -353,27 +366,9 @@
     }
   },
   "dataTable": {
-    "users": {
-      "title": "Lista de usuários"
-    },
-    "products": {
-      "title": "Lista de produtos"
-    },
-    "categories": {
-      "title": "Lista de categorias"
-    },
-    "recipes": {
-      "title": "Lista de receitas"
-    },
-    "ingredients": {
-      "title": "Lista de ingredientes"
-    },
-    "stock": {
-      "title": "Estoque dos produtos"
-    },
-    "notifications": {
-      "title": "Lista de notificações"
-    },
+    "users": "Lista de usuários",
+    "products": "Lista de produtos",
+    "notifications": "Lista de notificações",
     "headersDefault": {
       "actions": "Ações"
     }

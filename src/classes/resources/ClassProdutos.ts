@@ -66,7 +66,7 @@ export class ClassProdutos extends BaseClass<IProdutos> {
         align: 'center',
         width: 350,
         maxWidth: 450,
-        minWidth: 100,
+        minWidth: 130,
         excludeFromChart: true,
         excludeFromFilter: true
       },

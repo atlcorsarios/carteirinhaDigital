@@ -41,6 +41,25 @@ export const useGenericListStore = defineStore('genericList', () => {
     }
   }
 
+  function prependItem(contextId: string, newItem: any) {
+    if (contexts.value[contextId]) {
+      contexts.value[contextId].items = [newItem, ...contexts.value[contextId].items]
+    }
+  }
+
+  function updateItem(contextId: string, idField: string, idValue: any, newValues: Record<string, any>) {
+    if (contexts.value[contextId]) {
+      const currentArray = contexts.value[contextId].items
+      const index = currentArray.findIndex(item => item[idField] === idValue)
+
+      if (index !== -1) {
+        const novosItens = [...currentArray]
+        novosItens[index] = { ...novosItens[index], ...newValues }
+        contexts.value[contextId].items = novosItens
+      }
+    }
+  }
+
   return {
     contexts,
     initContext,
@@ -48,6 +67,8 @@ export const useGenericListStore = defineStore('genericList', () => {
     getLastCursor,
     getHasMore,
     addItems,
-    resetContext
+    resetContext,
+    prependItem,
+    updateItem
   }
 });

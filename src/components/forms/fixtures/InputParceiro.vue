@@ -5,8 +5,9 @@
     :label="t(label)"
     :density="density"
     :variant="variant"
-    counter
+    readonly
     clearable
+    @click:clear="clearResource"
   >
     <template #prepend-inner>
       <v-icon-btn
@@ -40,6 +41,7 @@ const dialogSearchParceiro = new ClassBaseDialog({
 });
 
 const parceiro = defineModel<TParceiro | null>('parceiro');
+const idParceiro = defineModel<string | null>('idParceiro');
 withDefaults(defineProps<IPropsCustomInputs>(), {
   label: 'forms.formProduct.parceiro.label',
   density: 'compact',
@@ -54,12 +56,14 @@ function handleSearchParceiro() {
 
 function onParceiroSelected(selectedItem: TParceiro) {
   parceiro.value = selectedItem
+  idParceiro.value = String(selectedItem.id_usuario);
 }
 
 function clearResource() {
   parceiro.value = {
     ...ClassParceiros.defaultParceiro(),
   }
+  idParceiro.value = null;
 }
 
 watch(() => parceiro.value?.id_usuario, (newId) => {

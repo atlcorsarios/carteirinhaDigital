@@ -1,51 +1,15 @@
 <template>
   <v-card flat border rounded="lg">
     <v-card-title>
-      <div class="d-flex align-center">
-        <MenuSelectColumns
-          v-model:selected-header-keys="selectedHeadersKeys"
-          :all-headers="allHeaders"
-          :toggle-header="toggleHeader"
-        />
-
-        <v-divider
-          :thickness="3"
-          vertical
-          class="mx-2 my-auto"
-          style="height: 24px"
-        />
-
-        <div class="text-h6 font-weight-bold text-high-emphasis text-truncate">
-          {{ dataTable.model.titleTable || t('messages.components.dataTable.titleDefault') }}
-        </div>
-
-        <slot name="actions">
-          <v-spacer />
-
-          <template v-if="hasActions">
-            <BtnOpenDialog
-              icon="mdi-plus-circle"
-              v-tooltip="t('tooltips.forms.create')"
-              :rotate="true"
-              @click="newRegistration"
-            />
-
-            <v-divider
-              :thickness="3"
-              vertical
-              class="mx-2 my-auto"
-              style="height: 24px"
-            />
-
-            <BtnOpenDialog
-              icon="mdi-chart-donut-variant"
-              v-tooltip="t('tooltips.components.dataTable.graph')"
-              :rotate="true"
-              @click="toggleChart"
-            />
-          </template>
-        </slot>
-      </div>
+      <HeaderDataTable
+        v-model:selected-header-keys="selectedHeadersKeys"
+        :all-headers="allHeaders"
+        :title="title != null ? title : undefined"
+        :has-actions="hasActions"
+        :toggle-chart="toggleChart"
+        :toggle-header="toggleHeader"
+        :new-registration="newRegistration"
+      />
     </v-card-title>
 
     <v-divider :thickness="3" />
@@ -113,6 +77,7 @@
               v-tooltip="t('tooltips.forms.delete')"
               variant="plain"
               color="error"
+              @click="emits('delete-item', item)"
             />
           </div>
         </template>
@@ -143,11 +108,10 @@
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
-import BtnOpenDialog from '@/components/dialog/BtnOpenDialog.vue'
 import type { IModelValueDataTable } from '@/classes/models/modelComponents/ModelGridDataChart'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, watchEffect } from 'vue'
-import MenuSelectColumns from './MenuSelectColumns.vue';
+import HeaderDataTable from './HeaderDataTable.vue';
 
 const { t } = useI18n();
 
@@ -157,7 +121,7 @@ const props = withDefaults(
     headers: any[]
     items: T[]
     loading?: boolean
-    title?: string
+    title?: string | null
     hasActions?: boolean
     selectItems?: boolean
     multipleSelect?: boolean
@@ -166,7 +130,7 @@ const props = withDefaults(
   {
     id: 'id',
     loading: false,
-    title: '',
+    title: null,
     hasActions: true,
     selectItems: false,
     multipleSelect: true,
@@ -181,6 +145,7 @@ const emits = defineEmits<{
   (e: 'selected-item', item: T): void
   (e: 'toggle-chart'): void
   (e: 'manage-record', payload: { editingMode: boolean; item?: T }): void
+  (e: 'delete-item', item: T): void
 }>();
 
 const allHeaders = computed(() => {
@@ -230,9 +195,9 @@ const clickOnTheLine = (_event: Event, { item }: T) => {
   emits('selected-item', item)
 }
 
-const rowProps = (data: { item: T }) => {
-  const item = data.item
-  const isInactive = 'active' in item && item.active === false
+const rowProps = (data: any) => {
+  const item = data.item?.raw || data.item
+  const isInactive = item.ativo === false || item.ativo === 'false'
   const isViewed = 'seen' in item && item.seen === true
 
   return {
@@ -268,39 +233,7 @@ watchEffect(() => {
       .filter((key): key is string => key !== undefined)
   }
 });
+
 </script>
 
-<style scoped>
-:deep(.v-field__input) {
-  font-size: 0.875rem;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  min-height: 32px;
-}
-
-:deep(.row-inactive) {
-  opacity: 0.3;
-  background-color: rgb(var(--v-theme-surface-variant), 0.1);
-  transition: opacity 0.2s;
-}
-
-:deep(.row-inactive:hover) {
-  opacity: 0.85;
-}
-
-:deep(.row-viewed) {
-  opacity: 0.4;
-  transition: all 0.3s ease;
-  background-color: transparent;
-  border: 1px solid rgb(var(--v-theme-success), 0.4);
-  border-radius: 12px;
-  outline: 1px solid rgb(var(--v-theme-success), 0.4);
-  outline-offset: -1px;
-  border-collapse: separate;
-}
-
-:deep(.row-viewed:hover) {
-  opacity: 1;
-  outline-color: rgba(76, 175, 80, 0.9);
-}
-</style>
+<style src="@/assets/components/dataTable.scss" lang="scss" scoped></style>

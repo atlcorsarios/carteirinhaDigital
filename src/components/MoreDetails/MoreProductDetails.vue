@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title class="d-flex sticky-title bg-surface">
       <div class="text-h6 w-100 me-auto">
-        {{ produto.id }} - {{ produto.nome }}
+        {{ produto.nome }}
       </div>
 
       <v-icon-btn
@@ -16,23 +16,31 @@
 
     <v-card-text>
       <v-row dense>
-        <v-col cols="4" class="text-start">
+        <v-col
+          cols="4"
+          class="text-start"
+        >
           <v-badge
             dot
             floating
             location="top right"
             :color="produto.ativo ? 'success' : 'grey-darken-1'"
-            v-tooltip="t('forms.formProduct.active.label')"
+            v-tooltip="t('forms.formProduct.ativo.label')"
           />
           <v-img
-            :src="imageUrl"
+            :src="imageUrl || 'https://placehold.co/300x200/cccccc/666666?text=Sem+imagem'"
             :alt="produto.nome"
             rounded="lg"
-            width="350"
-            max-height="350"
+            width="300"
+            max-height="200"
           />
         </v-col>
-        <v-col cols="8">
+        <v-col
+          cols="8"
+          class="mt-5"
+        >
+          <p>ID: {{ produto.id }}</p>
+          <p>{{ produto.descricao_produto }}</p>
           <p>{{ formatPrice }}</p>
           <v-tabs
             v-model="tab"

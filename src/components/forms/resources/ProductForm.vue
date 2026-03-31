@@ -79,7 +79,7 @@
       >
         <v-textarea
           v-model="produto.descricao_produto"
-          :rules="[rules.required(), rules.minLength(100)]"
+          :rules="[rules.required(), rules.minLength(30)]"
           :label="t('forms.formProduct.descricao_produto.label')"
           density="compact"
           variant="outlined"
@@ -94,7 +94,7 @@
       >
         <v-textarea
           v-model="produto.especificacoes_produto"
-          :rules="[rules.required(), rules.minLength(100)]"
+          :rules="[rules.required(), rules.minLength(50)]"
           :label="t('forms.formProduct.especificacoes_produto.label')"
           density="compact"
           variant="outlined"
@@ -105,12 +105,15 @@
     </v-row>
 
     <v-row
-      v-if="!dataIfIsParceiro"
+      v-if="!isParceiro"
       dense
       align="center"
     >
       <v-col cols="12">
-        <InputParceiro v-model:parceiro="produto.parceiro" />
+        <InputParceiro
+          v-model:parceiro="produto.parceiro"
+          v-model:idParceiro="produto.id_parceiro"
+        />
       </v-col>
     </v-row>
 
@@ -156,15 +159,14 @@ const ownerBucket = computed(() => {
   return sanitizeName(idUser);
 });
 
-const dataIfIsParceiro = computed(() => {
-  const user = authStore.userProfile;
-  const isParceiro = user?.cargo === 'parceiro'
-  return isParceiro ? user : null
-});
+const isParceiro = computed(() => authStore.userProfile?.cargo === 'parceiro');
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
   if (valid) {
+    if (isParceiro.value) {
+      produto.value.id_parceiro = String(authStore.userProfile?.id);
+    }
     emit('submit')
   }
 }

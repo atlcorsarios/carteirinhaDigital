@@ -3,7 +3,7 @@
     <GenericInfiniteList
       ref="infiniteListRef"
       :cursor-key="idField"
-      :context-id="String(route.name)"
+      :context-id="contextId"
       :showEmpty="false"
       :fetch-data="adapterFetch"
     >
@@ -15,17 +15,19 @@
         >
           <template v-if="!loading" #dataTable>
             <DataTable
-              :id="String(route.name)"
+              :id="contextId"
               :selectItems="selectItems"
               :hasActions="hasActions"
               :headers="headers"
               :items="items"
               :loading="loading"
+              :title="title"
               v-model:selected-itens="selectedItens"
               v-model:dataTable="gridConfig.modelTable"
               @selected-item="handleSelection"
               @toggle-chart="toggleChartState"
               @manage-record="handleManageRecord"
+              @delete-item="handleDeleteRequest"
             />
           </template>
 
@@ -51,57 +53,37 @@
     </GenericInfiniteList>
   </v-container>
 
-  <BaseDialog v-model:attributes="dialogModelManager.model">
-    <template v-slot:title>
-      <v-icon
-        :icon="
-          dialogModelManager.model.formEditingMode
-            ? (iconEdit ?? 'mdi-pencil')
-            : (iconCreate ?? 'mdi-plus')
-        "
-        size="small"
-        class="mr-2"
-      />
-      {{
-        dialogModelManager.model.formEditingMode
-          ? (textEdit || t('tooltips.forms.edit')) +
-            ` ${getItemIdentifier(dialogModelManager.model.itemEdition)}`
-          : textCreate || t('tooltips.forms.create')
-      }}
-    </template>
-
-    <template v-slot:default>
+  <DialogFormGenericView
+    v-model:dialog-form="dialogModelManager.model"
+    :id-field="idField"
+    :title="title"
+    :context-id="contextId"
+    :text-create="textCreate"
+    :text-edit="textEdit"
+    :show-id-in-text-edit="showIdInTextEdit"
+    :icon-create="iconCreate"
+    :icon-edit="iconEdit"
+    :icon-save="iconSave"
+    :class-model-manager="classModelManager"
+    :service-save="serviceSave"
+    @saved="(item) => emit('saved', item)"
+    @error="(err) => emit('error', err)"
+  >
+    <template #form="slotProps">
       <slot
         name="form"
-        :ref-form="(el: any) => refForm = el"
-        :model="classModelManager.model"
-        :is-valid="isFormValid"
-        :update-valid="(val: boolean) => (isFormValid = val)"
-        :submit-form="handleSubmit"
+        v-bind="slotProps"
       />
     </template>
+  </DialogFormGenericView>
 
-    <template v-slot:actions>
-      <v-icon-btn
-        icon="mdi-refresh"
-        v-tooltip="t('tooltips.forms.reset')"
-        variant="text"
-        color="amber"
-        @click="resetForm"
-      />
-
-      <v-spacer />
-
-      <v-icon-btn
-        :icon="iconSave ?? 'mdi-check'"
-        v-tooltip="t('tooltips.forms.save')"
-        variant="text"
-        color="success"
-        :disabled="!isFormValid"
-        @click="handleSubmit"
-      />
-    </template>
-  </BaseDialog>
+  <DialogConfirmDelete
+    ref="confirmDeleteRef"
+    :id-field="idField"
+    :context-id="contextId"
+    :service-delete="serviceDelete"
+    @deleted="(item) => emit('deleted', item)"
+  />
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, any>">
@@ -110,34 +92,28 @@ import GenericInfiniteList from './GenericInfiniteList.vue'
 import GridDataChart from '@/components/layouts/dataChart/GridDataChart.vue'
 import DataTable from '@/components/layouts/dataChart/DataTable.vue'
 import ChartPie from '@/components/layouts/dataChart/ChartPie.vue'
-import BaseDialog from '@/components/dialog/BaseDialog.vue'
+import DialogFormGenericView from './DialogFormGenericView.vue'
+import DialogConfirmDelete from './DialogConfirmDelete.vue'
 
 // Classes
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
-// Stores
-import { useGenericListStore } from '@/stores/genericListStore'
-
 // Composables
 import { useChartHelpers } from '@/composables/useChartHelpers'
 import { useStringColor } from '@/composables/useStringColor'
-import { useSnackbar } from '@/composables/useSnackbar'
 
 // Vue
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 import { ref, computed } from 'vue'
 
-const { notify } = useSnackbar();
-const { t } = useI18n();
+interface IConfirmDeleteExpose {
+  openDialog: (item: T) => void
+}
+
 const { stringToColor } = useStringColor();
 
-const route = useRoute();
-const listStore = useGenericListStore();
-
 const selectedItens = defineModel<any[]>('selected-itens', { required: false });
-const emit = defineEmits(['saved', 'error']);
+const emit = defineEmits(['saved', 'error', 'deleted']);
 const props = defineProps<{
   headers: any[]
   idField: string
@@ -145,6 +121,7 @@ const props = defineProps<{
   contextId: string
   textCreate?: string
   textEdit?: string
+  showIdInTextEdit?: boolean
   iconCreate?: string
   iconEdit?: string
   iconSave?: string
@@ -156,6 +133,7 @@ const props = defineProps<{
   }
   serviceFetch: (limit: number, cursor: any) => Promise<any[]>
   serviceSave?: (item: T) => Promise<any>
+  serviceDelete?: (id: any) => Promise<void>
   hasActions?: boolean
   hasMoreDetails?: boolean
   selectItems?: boolean
@@ -169,17 +147,16 @@ const gridManager = new ClassGridDataChart<T>({
   modelTable: { model: { titleTable: props.title } },
 });
 
+const confirmDeleteRef = ref<IConfirmDeleteExpose | null>(null);
+
 const gridConfig = gridManager.model
+const selectedItem = ref<T | null>(null);
 
 const headersToGraph = computed(() => {
   return (props.headers || [])
     .filter((h) => !h.excludeFromChart && h.key !== 'actions')
     .map((h) => ({ title: h.title, value: h.key }))
 });
-
-const isFormValid = ref(false);
-const refForm = ref<any>(null);
-const selectedItem = ref<T | null>(null);
 
 const selectedChartFilter = ref(headersToGraph.value[0]?.value);
 const activeHeaderConfig = computed(() => props.headers.find((h) => h.key === selectedChartFilter.value));
@@ -204,8 +181,6 @@ function handleSelection(item: any) {
 }
 
 function handleManageRecord(payload: { editingMode: boolean; item?: T }) {
-  isFormValid.value = false
-
   if (payload.editingMode && payload.item) {
     props.classModelManager.updateModel(payload.item)
     props.dialogModelManager.openEditingMode(payload.item)
@@ -213,61 +188,12 @@ function handleManageRecord(payload: { editingMode: boolean; item?: T }) {
     props.classModelManager.reset()
     props.dialogModelManager.openNew()
   }
-
-  if (refForm.value?.reset) refForm.value.reset()
 }
 
-function resetForm() {
-  if (refForm.value?.reset) refForm.value.reset()
-  if (props.dialogModelManager.model.formEditingMode) {
-    const itemEditing = props.dialogModelManager.model.itemEdition
-    props.classModelManager.updateModel(itemEditing)
-  } else {
-    props.classModelManager.reset()
+function handleDeleteRequest(item: T) {
+  if (confirmDeleteRef.value) {
+    confirmDeleteRef.value.openDialog(item)
   }
-}
-
-async function handleSubmit() {
-  if (!isFormValid.value) return
-
-  try {
-    let itemSalvo = props.classModelManager.model
-
-    if (props.serviceSave) {
-      const response = await props.serviceSave(props.classModelManager.model)
-      if (response) itemSalvo = response
-    }
-
-    notify('messages.forms.saveSuccess', 'success');
-    emit('saved', itemSalvo);
-    props.dialogModelManager.toggleDialog();
-
-    const currentItems = listStore.getItems(props.contextId);
-    if (props.dialogModelManager.model.formEditingMode) {
-      const index = currentItems.findIndex((item) =>
-        item[props.idField] === itemSalvo[props.idField]
-      )
-
-      if (index !== -1) {
-        currentItems[index] = { ...currentItems[index], ...itemSalvo }
-      }
-    } else {
-      currentItems.unshift(itemSalvo);
-    }
-
-  } catch (error) {
-    notify('messages.forms.saveError', 'error')
-    emit('error', error)
-  }
-}
-
-function getItemIdentifier(item: any) {
-  if (!item) return ''
-  if (props.idField && item[props.idField]) return item[props.idField]
-
-  const keys = Object.keys(item)
-  const idKey = keys.find((k) => k.startsWith('id'))
-  return idKey ? item[idKey] : ''
 }
 
 function hiddenMoreDetails() {
