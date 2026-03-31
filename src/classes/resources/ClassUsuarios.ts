@@ -5,7 +5,7 @@ import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
 
-export class ClassUsers extends BaseClass<IUser> {
+export class ClassUsuarios extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
     super(data)
   }
@@ -25,7 +25,7 @@ export class ClassUsers extends BaseClass<IUser> {
   }
 
   protected getDefault(data: Partial<IUser> = {}): IUser {
-    return this.createWithDefaults(data, ClassUsers.defaultUser())
+    return this.createWithDefaults(data, ClassUsuarios.defaultUser())
   }
 
   static get fieldConfig(): TEntityConfig<IUser> {
@@ -90,20 +90,20 @@ export class ClassUsers extends BaseClass<IUser> {
   }
 
   static get headers(): IHeadersDataTable[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassUsuarios().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
       'forms.formUser',
-      ClassUsers.fieldConfig,
+      ClassUsuarios.fieldConfig,
     )
   }
 
   static get filters(): IFilterColumn[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassUsuarios().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formUser',
-      ClassUsers.fieldConfig,
+      ClassUsuarios.fieldConfig,
     )
   }
 

@@ -1,13 +1,13 @@
 import type { TDefinitionsForQueryFilter } from './models/modelComponents/ModelQueryFilter'
-import { ClassUsers } from './resources/ClassUsers'
+import { ClassUsuarios } from './resources/ClassUsuarios'
 import { ClassParceiros } from './resources/ClassParceiros'
 import { ClassProdutos } from './resources/ClassProdutos'
 
 export class ClassDefinitions {
   static get queryFilterUsers(): TDefinitionsForQueryFilter {
     return {
-      filters: ClassUsers.filters,
-      defaultFilter: ClassUsers.defaultFilterConfig,
+      filters: ClassUsuarios.filters,
+      defaultFilter: ClassUsuarios.defaultFilterConfig,
     }
   }
 

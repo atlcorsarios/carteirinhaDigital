@@ -1,6 +1,6 @@
 <template>
   <GenericView
-    :headers="ClassUsers.headers"
+    :headers="ClassUsuarios.headers"
     :id-field="'idUser'"
     :title="t('dataTable.users.title')"
     :hasActions="true"
@@ -20,7 +20,7 @@
         v-model:profile="model"
         :loading="loading"
         @update:valid="updateValid"
-        @submit="submitForm" 
+        @submit="submitForm"
       />
     </template>
   </GenericView>
@@ -32,14 +32,14 @@ import GenericView from '@/components/layouts/generics/GenericView.vue'
 import ProfileForm from '@/components/forms/resources/ProfileForm.vue'
 
 // Models
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 
 // Classes
-import { ClassUsers } from '@/classes/resources/ClassUsers'
+import { ClassUsuarios } from '@/classes/resources/ClassUsuarios'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { profileServices } from '@/services/resources/profileService'
+import { profileServices } from '@/services/resources/perfilService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
@@ -48,7 +48,7 @@ import { ref } from 'vue'
 const { t } = useI18n()
 const loading = ref(false)
 
-const classUser = new ClassUsers()
+const classUser = new ClassUsuarios()
 const dialogUser = new ClassBaseDialog<IUser>({
   persistent: true,
   maxWidth: 800,
@@ -61,4 +61,5 @@ const userModelManager = {
     classUser.updateModel(item)
   },
 }
+
 </script>

@@ -18,7 +18,7 @@ import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteLi
 import CardParceiro from '@/components/cards/CardParceiro.vue'
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
-import { ClassUsers } from '@/classes/resources/ClassUsers'
+import { ClassUsuarios } from '@/classes/resources/ClassUsuarios'
 import { UsersService } from '@/services/resources/usuariosService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
@@ -40,6 +40,6 @@ const buscarParceirosPaginado = async (limit: number, lastCursor: string | null)
     ]
   }
 
-  return await UsersService.paginationsUsers(payload, ClassUsers.filters);
+  return await UsersService.paginationsUsers(payload, ClassUsuarios.filters);
 }
 </script>

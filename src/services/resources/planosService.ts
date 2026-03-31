@@ -1,4 +1,8 @@
-
+import type { IPlanosDetalhados } from '@/classes/models/resources/ModelIPlanos';
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator';
+import { QUERY_SELECT_PLANOS_FULL_JOIN } from './queries/queriesPlanos';
+import { applySupabaseFilters } from '@/utils/supabaseFilterUtils';
+import { supabase } from '@/services/supabase'
 
 export class PlanosService {
   static async fetchPlano(idPlano: string, fromTable: string = 'planos', withDetails: boolean = true): Promise<IPlanosDetalhados> {
