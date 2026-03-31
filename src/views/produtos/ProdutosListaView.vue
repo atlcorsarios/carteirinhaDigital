@@ -19,7 +19,7 @@
 import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteList.vue'
 import CardProduto from '@/components/cards/CardProduto.vue'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
-import { ProductsService } from '@/services/resources/productsService'
+import { ProductsService } from '@/services/resources/produtosService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();

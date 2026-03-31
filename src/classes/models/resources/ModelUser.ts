@@ -18,7 +18,7 @@ export interface IUser {
   documento: string
   cargo: TRole
   usuario_ativo: boolean
-  created_at: Date | string
+  created_at?: Date | string
 }
 
 export type TParceiro = Omit<IUser, 'id'> & {

@@ -34,7 +34,7 @@ import { ClassParceiros } from '@/classes/resources/ClassParceiros'
 import type { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { UsersService } from '@/services/resources/usersService'
+import { UsersService } from '@/services/resources/usuariosService'
 
 // Vue
 import { useI18n } from 'vue-i18n'

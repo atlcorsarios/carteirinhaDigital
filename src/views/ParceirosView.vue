@@ -19,7 +19,7 @@ import CardParceiro from '@/components/cards/CardParceiro.vue'
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassUsers } from '@/classes/resources/ClassUsers'
-import { UsersService } from '@/services/resources/usersService'
+import { UsersService } from '@/services/resources/usuariosService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();

@@ -53,7 +53,7 @@ import { ClassProdutos } from '@/classes/resources/ClassProdutos'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { ProductsService } from '@/services/resources/productsService'
+import { ProductsService } from '@/services/resources/produtosService'
 
 // Store
 import { useQueryFilterStore } from '@/stores/queryFilterStore'

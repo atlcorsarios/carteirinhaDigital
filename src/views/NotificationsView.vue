@@ -16,7 +16,7 @@ import { ClassNotifications } from '@/classes/resources/ClassNotifications'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { notificationsServices } from '@/services/resources/notificationsService'
+import { notificationsServices } from '@/services/resources/notificacoesService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
