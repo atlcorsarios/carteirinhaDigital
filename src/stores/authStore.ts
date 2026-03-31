@@ -1,4 +1,4 @@
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 import { supabase } from '@/services/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 import { useRoute, useRouter } from 'vue-router'

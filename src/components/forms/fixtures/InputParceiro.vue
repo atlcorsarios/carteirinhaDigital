@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import DialogSearchParceiro from '@/components/dialog/searchs/DialogSearchParceiro.vue';
 import type { IPropsCustomInputs } from '@/classes/models/modelComponents/ModelCustomInputs';
-import type { TParceiro } from '@/classes/models/resources/ModelUser';
+import type { TParceiro } from '@/classes/models/resources/ModelUsuarios';
 import { ClassParceiros } from '@/classes/resources/ClassParceiros';
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
 import { useI18n } from 'vue-i18n';

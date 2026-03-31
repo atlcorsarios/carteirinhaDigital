@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import type { IPropsCustomInputs } from '@/classes/models/modelComponents/ModelCustomInputs';
-import { ROLE_TRANSLATIONS, validRoles, type TRole } from '@/classes/models/resources/ModelUser';
+import { ROLE_TRANSLATIONS, validRoles, type TRole } from '@/classes/models/resources/ModelUsuarios';
 import { useRules } from 'vuetify/labs/rules';
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';

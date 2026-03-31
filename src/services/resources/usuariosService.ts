@@ -1,5 +1,5 @@
 // Models
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 import type { IFilterColumn } from '@/classes/models/ModelFilterColumns'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { applySupabaseFilters } from '@/utils/supabaseFilterUtils'

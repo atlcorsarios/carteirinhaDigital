@@ -3,7 +3,7 @@ import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
-import type { TParceiro } from '../models/resources/ModelUser'
+import type { TParceiro } from '../models/resources/ModelUsuarios'
 
 export class ClassParceiros extends BaseClass<TParceiro> {
   constructor(data?: Partial<TParceiro>) {

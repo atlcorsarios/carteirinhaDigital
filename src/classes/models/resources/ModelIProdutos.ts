@@ -1,5 +1,5 @@
 import type { IPromocaoProdutoPivot } from "./ModelIPromocoes"
-import type { TParceiro } from "./ModelUser"
+import type { TParceiro } from "./ModelUsuarios"
 
 export interface IProdutos {
   id?: string

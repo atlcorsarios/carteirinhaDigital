@@ -1,6 +1,6 @@
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'

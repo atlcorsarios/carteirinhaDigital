@@ -27,7 +27,7 @@ import GenericSearchDialog from './GenericSearchDialog.vue'
 import BtnOpenDialog from '../BtnOpenDialog.vue'
 
 // Models
-import { type TParceiro } from '@/classes/models/resources/ModelUser'
+import { type TParceiro } from '@/classes/models/resources/ModelUsuarios'
 
 // Classes
 import { ClassParceiros } from '@/classes/resources/ClassParceiros'

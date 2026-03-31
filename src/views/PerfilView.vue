@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import ProfileForm from '@/components/forms/resources/ProfileForm.vue';
-import type { IUser } from '@/classes/models/resources/ModelUser';
+import type { IUser } from '@/classes/models/resources/ModelUsuarios';
 import { profileServices } from '@/services/resources/perfilService';
 import { useAuthStore } from '@/stores/authStore';
 import { useSnackbar } from '@/composables/useSnackbar';

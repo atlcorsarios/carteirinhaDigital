@@ -75,7 +75,7 @@
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputUserRole from '../fixtures/InputUserRole.vue'
 import InputUserDocumento from '../fixtures/InputUserDocumento.vue'
-import { type IUser } from '@/classes/models/resources/ModelUser'
+import { type IUser } from '@/classes/models/resources/ModelUsuarios'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
