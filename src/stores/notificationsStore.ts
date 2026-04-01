@@ -1,4 +1,4 @@
-import { ClassNotifications } from '@/classes/resources/ClassNotifications'
+import { ClassNotifications } from '@/classes/resources/ClassNotificacoes'
 import type { INotification } from '@/classes/models/resources/ModelNotifications'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -48,7 +48,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
 
   async function notificationsToUser(): Promise<INotification[]> {
     if (!authStore.user) {
-      await authStore.fetchUser()
+      await authStore.fetchUser('1')
     }
 
     const userEmail = authStore.user?.email

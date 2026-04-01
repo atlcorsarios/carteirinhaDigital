@@ -185,7 +185,8 @@ function toggleHeader(key?: string) {
 }
 
 const clickOnTheLine = (_event: Event, { item }: T) => {
-  const id = item.id || item
+  const rawItem = item?.raw || item;
+  const id = rawItem.id || rawItem;
   const index = selectedItens.value.indexOf(id)
   if (index > -1) {
     selectedItens.value.splice(index, 1)

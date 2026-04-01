@@ -19,10 +19,10 @@
     :service-save="ProductsService.saveProduct"
     :service-delete="ProductsService.inactivateProduct"
   >
-    <template #form="{ model, updateValid, refForm, submitForm }">
+    <template #form="{ updateValid, refForm, submitForm }">
       <ProductForm
         :ref="refForm"
-        :produto="model"
+        v-model:produto="productModelManager.model"
         @update:valid="updateValid"
         @submit="submitForm"
       />

@@ -105,10 +105,10 @@ const authStore = useAuthStore()
 const notificationsStore = useNotificationsStore()
 const hasUnreadNotifications = ref(false);
 
-onMounted(async () => {
-  notificationsStore.fetchNotifications();
-  hasUnreadNotifications.value = await notificationsStore.hasUnread();
-});
+// onMounted(async () => {
+//   notificationsStore.fetchNotifications();
+//   hasUnreadNotifications.value = await notificationsStore.hasUnread();
+// });
 
 const props = defineProps<{
   modelValue: boolean | null

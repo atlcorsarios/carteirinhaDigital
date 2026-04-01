@@ -1,7 +1,8 @@
 <template>
   <GenericView
     :headers="ClassUsuarios.headers"
-    :id-field="'idUser'"
+    id-field="id"
+    :context-id="String(route.name)"
     :title="t('dataTable.users.title')"
     :hasActions="true"
     :text-create="t('messages.forms.formUsers.createUser')"
@@ -11,13 +12,15 @@
     :icon-save="'mdi-account-check'"
     :dialog-model-manager="dialogUser"
     :class-model-manager="userModelManager"
-    :service-fetch="profileServices.getAllUsers"
-    :service-save="profileServices.saveUser"
+    :service-fetch="(limit, cursor) => UsersService.paginationsUsers({ limit, cursor, filters: [] }, ClassUsuarios.filters)"
+    :service-save="UsersService.saveUser"
+    :service-delete="UsersService.inactivateUser"
   >
-    <template #form="{ model, updateValid, refForm, submitForm }">
+    <template #form="{ updateValid, refForm, submitForm }">
       <ProfileForm
         :ref="refForm"
-        v-model:profile="model"
+        v-model:profile="userModelManager.model"
+        v-model:otp="dummyOtp"
         :loading="loading"
         @update:valid="updateValid"
         @submit="submitForm"
@@ -39,14 +42,18 @@ import { ClassUsuarios } from '@/classes/resources/ClassUsuarios'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { profileServices } from '@/services/resources/perfilService'
+import { UsersService } from '@/services/resources/usuariosService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const { t } = useI18n()
+const { t } = useI18n();
+const route = useRoute();
+
 const loading = ref(false)
+const dummyOtp = ref('')
 
 const classUser = new ClassUsuarios()
 const dialogUser = new ClassBaseDialog<IUser>({
@@ -57,9 +64,8 @@ const dialogUser = new ClassBaseDialog<IUser>({
 const userModelManager = {
   model: classUser.model,
   reset: () => classUser.reset(),
-  updateModel: (item: any) => {
+  updateModel: (item: IUser) => {
     classUser.updateModel(item)
   },
 }
-
 </script>

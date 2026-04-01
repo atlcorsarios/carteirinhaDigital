@@ -126,10 +126,10 @@ useHotkey('ctrl+k', () => {
 
 const emits = defineEmits(['toggle-drawer']);
 
-onMounted(async () => {
-  notificationsStore.fetchNotifications()
-  hasUnreadNotifications.value = await notificationsStore.hasUnread()
-});
+// onMounted(async () => {
+//   notificationsStore.fetchNotifications()
+//   hasUnreadNotifications.value = await notificationsStore.hasUnread()
+// });
 
 function toggleDialogLicence() {
   classDialogLicence.toggleDialog()

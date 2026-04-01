@@ -34,8 +34,7 @@ export class ClassUsuarios extends BaseClass<IUser> {
         minWidth: 50,
         width: 50,
         maxWidth: 100,
-        excludeFromFilter: true,
-        excludeFromChart: true,
+        hidden: true
       },
       email: {
         minWidth: 100,
@@ -81,9 +80,11 @@ export class ClassUsuarios extends BaseClass<IUser> {
         width: 50,
       },
       created_at: {
-        minWidth: 100,
+        minWidth: 150,
         width: 100,
         maxWidth: 300,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (user: IUser) => ClassFormatters.formatDate(user.created_at),
         excludeFromChart: true,
       }
     }
