@@ -19,7 +19,7 @@
 
     <v-chip-group column>
       <v-chip
-        v-for="item in tempArray"
+        v-for="item in beneficios"
         :key="item.id"
         closable
         color="primary"
@@ -36,7 +36,7 @@
     </v-chip-group>
 
     <DialogSearchBeneficios
-      v-model:selected-itens="tempArray"
+      v-model:selected-itens="beneficios"
       v-model:attributes="dialogSearchBeneficios"
     />
   </div>
@@ -52,7 +52,6 @@ import type { IPropsCustomInputs } from '@/classes/models/modelComponents/ModelC
 
 // Vue
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue'
 
 const { t } = useI18n();
 
@@ -63,7 +62,8 @@ const props = withDefaults(defineProps<IPropsCustomInputs>(), {
   variant: 'outlined'
 });
 
-const tempArray = ref<any[]>([]);
+const beneficios = defineModel<any[]>({ default: () => [] });
+
 const dialogSearchBeneficios = new ClassBaseDialog({
   maxWidth: 1200,
 });
@@ -73,7 +73,7 @@ function handleSearchBeneficio() {
 }
 
 function removerBeneficio(idParaRemover: string) {
-  tempArray.value = tempArray.value.filter((b: any) => b.id !== idParaRemover)
+  beneficios.value = beneficios.value.filter((b: any) => b.id !== idParaRemover)
 }
 
 </script>

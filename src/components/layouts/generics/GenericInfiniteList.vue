@@ -115,7 +115,6 @@ const loadMore = async ({ done }: any) => {
 
   try {
     const newItems = await props.fetchData(currentLimit.value, lastCursor.value)
-
     if (newItems.length > 0) {
       const nextCursor = newItems[newItems.length - 1][props.cursorKey]
       const nextHasMore = newItems.length >= currentLimit.value
@@ -145,6 +144,7 @@ watch(() => queryFilterStore.searchTrigger, () => {
 });
 
 defineExpose({
+  loadMore,
   resetAndLoad
 });
 

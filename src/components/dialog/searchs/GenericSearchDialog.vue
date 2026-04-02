@@ -80,15 +80,19 @@ import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 
+// Stores
+import { useGenericListStore } from '@/stores/genericListStore'
+
 // Composables
 import { useSnackbar } from '@/composables/useSnackbar'
 
 // Vue
 import { useI18n } from 'vue-i18n'
-import { ref, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const { t } = useI18n();
 const { notify } = useSnackbar();
+const listStore = useGenericListStore()
 
 const props = defineProps<{
   title: string
@@ -187,8 +191,35 @@ function handleSelectItem(item: T) {
   emits('select-item', item)
 }
 
-function handleCreateQuickly(item: T) {
-  handleSelectItem(item)
+function handleCreateQuickly(newItem: any) {
+  listStore.prependItem(`search-dialog-${props.storageContext}`, newItem)
+
+  if (props.isMultiple) {
+    if (!selectedItens.value) selectedItens.value = []
+    const exists = selectedItens.value.find((i: any) => i.id === newItem.id)
+    if (!exists) selectedItens.value.push(newItem)
+
+  } else {
+    selectedItens.value = [newItem]
+  }
+
+  if (classDialogCreateQuickly) {
+    classDialogCreateQuickly.model.view = false
+  }
 }
+
+watch(() => props.dialogSearchModel.model.view, (isOpen) => {
+  if (isOpen) {
+    const currentItems = listStore.getItems(`search-dialog-${props.storageContext}`)
+
+    if (currentItems.length === 0) {
+      setTimeout(() => {
+        if (infiniteListRef.value && infiniteListRef.value.loadMore) {
+          infiniteListRef.value.loadMore({ done: () => {} })
+        }
+      }, 200)
+    }
+  }
+})
 
 </script>

@@ -11,8 +11,7 @@
     <template #form="slotProps">
       <BeneficioForm
         :ref="slotProps.refForm"
-        :beneficio="slotProps.model"
-        @update:beneficio="(val) => Object.assign(slotProps.model, val)"
+        v-model:beneficio="slotProps.model"
         @update:valid="slotProps.updateValid"
         @submit="slotProps.submitForm"
         :create-fast="true"
@@ -30,10 +29,10 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const dialogModel = defineModel<any>('dialog-create-quickly', { required: true })
-defineEmits(['created-fast-item'])
+const dialogModel = defineModel<any>('dialog-create-quickly', { required: true });
+defineEmits(['created-fast-item']);
 
-const classBeneficios = new ClassBeneficios()
+const classBeneficios = new ClassBeneficios();
 const beneficioManager = {
   model: classBeneficios.model,
   reset: () => classBeneficios.reset(),

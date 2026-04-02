@@ -306,6 +306,11 @@
       "requiredAuth": "Você precisa estar autenticado para acessar. Faça login!",
       "searchQuote": "Erro ao buscar cotação para: "
     },
+    "rules": {
+      "positive": "O valor não pode ser negativo",
+      "min": "O valor mínimo permitido é: {min}",
+      "max": "O valor máximo permitido é: {max}"
+    },
     "forms": {
       "saveSuccess": "Salvo com sucesso",
       "deleteSuccess": "Registro excluído com sucesso!",

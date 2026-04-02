@@ -5,26 +5,29 @@
         <v-text-field
           v-model="beneficio.descricao_beneficio"
           :rules="[rules.required()]"
-          :label="t('forms.formBeneficios.descricao_beneficio.label', 'Descrição do Benefício *')"
+          :label="t('forms.formBeneficios.descricao_beneficio.label')"
+          :hint="t('forms.formBeneficios.descricao_beneficio.hint')"
+          density="compact"
           variant="outlined"
           color="primary"
-          placeholder="Ex: 50% OFF em Cervejas"
         />
       </v-col>
 
       <v-col cols="12" :md="createFast ? 12 : 4">
-        <v-text-field
-          v-model.number="beneficio.desconto_aplicavel"
-          :label="t('forms.formBeneficios.desconto_aplicavel.label', 'Desconto (%) *')"
-          :hint="t('forms.formBeneficios.desconto_aplicavel.hint', 'Desconto em porcentagem (%)')"
-          type="number"
-          variant="outlined"
-          color="primary"
-          suffix="%"
-          :rules="[
-            rules.required(),
-            v => v >= 0 && v <= 100 || 'Deve ser entre 0 e 100'
-          ]"
+        <InputPositiveNumbers
+          v-model:model="descontoAplicavel"
+          :label="'forms.formBeneficios.desconto_aplicavel.label'"
+          :hint="'forms.formBeneficios.desconto_aplicavel.hint'"
+          :prefix="'%'"
+          :color="'primary'"
+        />
+      </v-col>
+
+      <v-col cols="12">
+        <InputParceiro
+          v-model:parceiro="beneficio.parceiro"
+          v-model:parceiro-id="beneficio.id_parceiro"
+          :rules="[rules.required()]"
         />
       </v-col>
 
@@ -43,16 +46,8 @@
         <v-col cols="12" md="6">
           <v-switch
             v-model="beneficio.ativo"
-            :label="t('forms.formBeneficios.ativo.label', beneficio.ativo ? 'Benefício Ativo' : 'Benefício Inativo')"
             color="success"
             inset
-          />
-        </v-col>
-
-        <v-col cols="12">
-          <InputParceiro
-            v-model:parceiro="beneficio.parceiro"
-            v-model:parceiro-id="beneficio.id_parceiro"
           />
         </v-col>
       </template>
@@ -61,14 +56,16 @@
 </template>
 
 <script setup lang="ts">
+import InputPositiveNumbers from '../fixtures/InputPositiveNumbers.vue';
 import InputParceiro from '../fixtures/InputParceiro.vue'
-import type { IBeneficiosDetalhados } from '@/classes/models/resources/ModelIBeneficios'
+import { type IBeneficiosDetalhados } from '@/classes/models/resources/ModelIBeneficios'
 import { useRules } from 'vuetify/labs/rules';
-import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n';
+import { computed, ref, watch } from 'vue'
 
 const beneficio = defineModel<Partial<IBeneficiosDetalhados>>('beneficio', { required: true });
 const isFormValid = defineModel<boolean>('valid', { default: false });
+
 const emit = defineEmits(['submit']);
 const props = defineProps<{
   createFast?: boolean
@@ -78,6 +75,13 @@ const rules = useRules();
 const { t } = useI18n();
 
 const formRef = ref<any>(null);
+
+const descontoAplicavel = computed({
+  get: () => beneficio.value.desconto_aplicavel ?? 0,
+  set: (v: number) => {
+    beneficio.value.desconto_aplicavel = v
+  }
+})
 
 watch(() => props.createFast, (isQuick) => {
   if (isQuick) {

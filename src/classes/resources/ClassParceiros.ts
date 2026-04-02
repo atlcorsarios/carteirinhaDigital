@@ -79,7 +79,7 @@ export class ClassParceiros extends BaseClass<TParceiro> {
         width: 50,
       },
       created_at: {
-        minWidth: 100,
+        minWidth: 150,
         width: 100,
         maxWidth: 300,
         excludeFromChart: true
@@ -88,9 +88,9 @@ export class ClassParceiros extends BaseClass<TParceiro> {
         hidden: true
       },
       nome_fantasia: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 300,
+        minWidth: 300,
+        width: 300,
+        maxWidth: 500,
         excludeFromChart: true,
       },
       ativo: {

@@ -37,7 +37,7 @@ import { watch } from 'vue';
 const { t } = useI18n();
 
 const dialogSearchParceiro = new ClassBaseDialog({
-  maxWidth: 600,
+  maxWidth: 1200,
 });
 
 const parceiro = defineModel<TParceiro | null>('parceiro');
