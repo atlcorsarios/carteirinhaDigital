@@ -83,13 +83,11 @@ export class ClassPlanos extends BaseClass<IPlanos> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassPlanos().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formPlanos',
       ClassPlanos.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

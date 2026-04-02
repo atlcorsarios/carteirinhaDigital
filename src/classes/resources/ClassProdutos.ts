@@ -91,13 +91,11 @@ export class ClassProdutos extends BaseClass<IProdutos> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassProdutos().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formProduct',
       ClassProdutos.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

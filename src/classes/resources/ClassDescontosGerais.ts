@@ -65,13 +65,11 @@ export class ClassDescontosGerais extends BaseClass<IDescontosGerais> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassDescontosGerais().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formDesconto',
       ClassDescontosGerais.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

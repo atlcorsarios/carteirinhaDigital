@@ -47,7 +47,6 @@ export class ClassPromocoes extends BaseClass<IPromocoes> {
         value: (promocao: IPromocoes) => ClassFormatters.formatDate(promocao.data_encerramento),
       },
       desconto_aplicavel: {
-        align: 'center',
         width: 200,
         maxWidth: 250,
         minWidth: 100,
@@ -82,13 +81,11 @@ export class ClassPromocoes extends BaseClass<IPromocoes> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassPromocoes().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formPromocoes',
       ClassPromocoes.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

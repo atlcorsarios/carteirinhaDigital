@@ -71,13 +71,11 @@ export class ClassBeneficios extends BaseClass<IBeneficios> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassBeneficios().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formBeneficio',
       ClassBeneficios.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {
