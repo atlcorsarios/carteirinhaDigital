@@ -1,13 +1,24 @@
 <template>
   <BaseDialog v-model:attributes="dialogModel.model">
     <template v-slot:title>
-      <v-icon :icon="icon" size="small" class="mr-2" />
+      <v-icon
+        :icon="icon"
+        size="small"
+        class="mr-2"
+      />
       {{ title }}
     </template>
 
     <template v-slot:default>
-      <v-overlay :model-value="loading" contained class="align-center justify-center">
-        <v-progress-circular indeterminate color="primary" />
+      <v-overlay
+        :model-value="loading"
+        contained
+        class="align-center justify-center"
+      >
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        />
       </v-overlay>
 
       <slot
@@ -104,6 +115,7 @@ async function handleSubmit() {
 
     props.dialogModel.toggleDialog()
     handleReset()
+
   } catch (error) {
     console.error(error)
     notify(t('messages.forms.saveError'), 'error')
