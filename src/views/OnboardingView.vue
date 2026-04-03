@@ -11,7 +11,7 @@
       class="mx-auto text-center pa-4"
     >
       <v-card-title class="text-h4 text-primary font-weight-bold mb-4">
-        {{ t('router.onboarding') }}
+        {{ t('routes.onboarding') }}
       </v-card-title>
       <v-card-text>
         <p class="mb-6 text-body-1">
@@ -52,7 +52,7 @@ async function saveProfile(formData: IOnboardingData) {
     loading.value = true;
 
     await OnboardingService.finalizarCadastro(authStore.user.id, formData);
-    await authStore.fetchUser(authStore.user.id);
+    await authStore.fetchUser(authStore.user.id, true);
 
     notify('messages.forms.saveSuccess', 'success');
     router.push({ name: 'Home' });

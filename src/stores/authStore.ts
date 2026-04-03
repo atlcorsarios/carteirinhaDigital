@@ -18,10 +18,10 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => userProfile.value?.cargo === 'diretoria')
   const isProfileComplete = computed(() => !!userProfile.value?.documento || !!userProfile.value?.cargo)
 
-  async function fetchUser(userId: string) {
+  async function fetchUser(userId: string, forceRefresh: boolean = false) {
     if (!userId) return
 
-    if (userProfile.value?.id === userId) {
+    if (!forceRefresh && userProfile.value?.id === userId) {
       return userProfile.value
     }
 
