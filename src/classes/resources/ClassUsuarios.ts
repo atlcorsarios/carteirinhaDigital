@@ -73,12 +73,6 @@ export class ClassUsuarios extends BaseClass<IUser> {
         filterType: 'select',
         selectOptions: ClassFormatters.formatOptionsRoles()
       },
-      usuario_ativo: {
-        align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
-        width: 50,
-      },
       created_at: {
         minWidth: 150,
         width: 100,
@@ -86,7 +80,13 @@ export class ClassUsuarios extends BaseClass<IUser> {
         chartFormatter: ClassFormatters.formatDate,
         value: (user: IUser) => ClassFormatters.formatDate(user.created_at),
         excludeFromChart: true,
-      }
+      },
+      usuario_ativo: {
+        align: 'center',
+        chartFormatter: ClassFormatters.formatBoolean,
+        value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
+        width: 50,
+      },
     }
   }
 

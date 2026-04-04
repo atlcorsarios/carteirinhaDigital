@@ -58,6 +58,15 @@ export class ClassPlanos extends BaseClass<IPlanos> {
         maxWidth: 150,
         minWidth: 100,
       },
+      created_at: {
+        align: 'center',
+        width: 100,
+        maxWidth: 150,
+        minWidth: 100,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (plano: IPlanos) => ClassFormatters.formatDate(plano.created_at),
+        excludeFromChart: true,
+      },
       ativo: {
         align: 'center',
         width: 350,
@@ -65,9 +74,6 @@ export class ClassPlanos extends BaseClass<IPlanos> {
         minWidth: 50,
         chartFormatter: ClassFormatters.formatBoolean,
         value: (plano: IPlanos) => ClassFormatters.formatBoolean(plano.ativo),
-      },
-      created_at: {
-        hidden: true
       }
     }
   }

@@ -1,3 +1,5 @@
+import type { IOnboardingData } from "../ModelOnboardingData"
+
 export const validRoles = ['aluno', 'professor', 'parceiro', 'diretoria', 'associado'] as const
 export type TRole = (typeof validRoles)[number]
 

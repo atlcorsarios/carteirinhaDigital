@@ -73,15 +73,15 @@ export class ClassParceiros extends BaseClass<TParceiro> {
         excludeFromFilter: true
       },
       usuario_ativo: {
-        align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (parceiro: TParceiro) => ClassFormatters.formatBoolean(parceiro.usuario_ativo),
-        width: 50,
+        excludeFromHeader: true,
+        excludeFromChart: true
       },
       created_at: {
         minWidth: 150,
         width: 100,
         maxWidth: 300,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (parceiro: TParceiro) => ClassFormatters.formatDate(parceiro.created_at),
         excludeFromChart: true
       },
       data_renovacao: {

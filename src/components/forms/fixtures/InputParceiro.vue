@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    v-model="parceiro"
+    :model-value="parceiro?.nome_fantasia || ''"
     :rules="rules"
     :label="t(label)"
     :density="density"

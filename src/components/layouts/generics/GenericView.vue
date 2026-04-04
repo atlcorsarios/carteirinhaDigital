@@ -16,12 +16,12 @@
           <template v-if="!loading" #dataTable>
             <DataTable
               :id="contextId"
-              :selectItems="selectItems"
-              :hasActions="hasActions"
               :headers="headers"
               :items="items"
               :loading="loading"
               :title="title"
+              :selectItems="selectItems"
+              :hasActions="hasActions"
               v-model:selected-itens="selectedItens"
               v-model:dataTable="gridConfig.modelTable"
               @selected-item="handleSelection"

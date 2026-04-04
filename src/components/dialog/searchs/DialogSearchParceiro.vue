@@ -42,14 +42,24 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const staticFiltersParceiros: IQueryFilter[] = [{
-  field: 'cargo',
-  condition: 'equals',
-  value: 'parceiro',
-  startDate: undefined,
-  endDate: undefined,
-  selectValues: undefined,
-}];
+const staticFiltersParceiros: IQueryFilter[] = [
+  {
+    field: 'cargo',
+    condition: 'equals',
+    value: 'parceiro',
+    startDate: undefined,
+    endDate: undefined,
+    selectValues: undefined
+  },
+  {
+    field: 'ativo',
+    condition: 'equals',
+    value: 'true',
+    startDate: undefined,
+    endDate: undefined,
+    selectValues: undefined,
+  }
+];
 
 const dialogSearchModel = defineModel<ClassBaseDialog>('attributes', { required: true });
 const emit = defineEmits<{

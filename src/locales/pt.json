@@ -303,6 +303,7 @@
     "errors": {
       "reqGenerics": "Ocorreu um erro na requisição!",
       "accessDenied": "Você não tem permissão para acessar esta página",
+      "accessInactive": "Sua conta está inativa, entre em contato com um administrador para recuperar o seu acesso!",
       "requiredAuth": "Você precisa estar autenticado para acessar. Faça login!",
       "searchQuote": "Erro ao buscar cotação para: "
     },

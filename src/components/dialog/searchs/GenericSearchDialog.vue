@@ -31,9 +31,10 @@
             <template #dataTable>
               <DataTable
                 :id="`table-search-${storageContext}`"
+                :headers="headers"
                 :items="items"
                 :loading="loading"
-                :headers="headers"
+                :title="title"
                 :has-actions="false"
                 :select-items="selectItems"
                 :multiple-select="isMultiple"
