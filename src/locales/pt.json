@@ -191,7 +191,7 @@
       },
       "especificacoes_produto": {
         "headerTable": "Especificações",
-        "label": "Especificações do produto"        
+        "label": "Especificações do produto"
       },
       "valor_produto": {
         "headerTable": "Preço",
@@ -221,7 +221,7 @@
       "idNotification": {
         "headerTable": "Id",
         "label": "Id"
-      },      
+      },
       "title": {
         "headerTable": "Título",
         "label": "Título da notificação"
