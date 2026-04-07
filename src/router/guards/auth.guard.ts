@@ -42,10 +42,10 @@ export const authGuard = async (
       return
     }
 
-    // if (isProfileComplete && to.name === 'Onboarding') {
-    //   next({ name: 'Home' })
-    //   return
-    // }
+    if (isProfileComplete && to.name === 'Onboarding') {
+      next({ name: 'Home' })
+      return
+    }
   }
 
   next()
