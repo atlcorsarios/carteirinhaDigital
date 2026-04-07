@@ -6,7 +6,7 @@
     :headers="ClassParceiros.headers"
     :filters="ClassParceiros.filters"
     :default-filter="ClassParceiros.defaultFilterConfig"
-    :service-fetch="UsersService.paginationsUsers"
+    :service-fetch="ParceirosService.paginationsParceiros"
     :static-filters="staticFiltersParceiros"
     :dialog-search-model="dialogSearchModel"
     @select-item="(item) => $emit('select-item', item)"
@@ -35,7 +35,7 @@ import { ClassParceiros } from '@/classes/resources/ClassParceiros'
 import { type ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { UsersService } from '@/services/resources/usuariosService'
+import { ParceirosService } from '@/services/resources/parceirosService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
@@ -52,7 +52,7 @@ const staticFiltersParceiros: IQueryFilter[] = [
     selectValues: undefined
   },
   {
-    field: 'ativo',
+    field: 'parceiros.ativo',
     condition: 'equals',
     value: 'true',
     startDate: undefined,

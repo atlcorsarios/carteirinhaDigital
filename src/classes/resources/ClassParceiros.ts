@@ -34,11 +34,7 @@ export class ClassParceiros extends BaseClass<TParceiro> {
   static get fieldConfig(): TEntityConfig<TParceiro> {
     return {
       id_usuario: {
-        minWidth: 50,
-        width: 50,
-        maxWidth: 100,
-        excludeFromFilter: true,
-        excludeFromChart: true
+        hidden: true
       },
       email: {
         minWidth: 100,
