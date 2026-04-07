@@ -1,5 +1,3 @@
-import type { IOnboardingData } from "../ModelOnboardingData"
-
 export const validRoles = ['aluno', 'professor', 'parceiro', 'diretoria', 'associado'] as const
 export type TRole = (typeof validRoles)[number]
 
@@ -24,7 +22,7 @@ export interface IUser {
 }
 
 export type TParceiro = Omit<IUser, 'id'> & {
-  id_usuario: string | number
+  id_usuario: string
   data_renovacao: Date | string
   nome_fantasia: string
   ativo: boolean

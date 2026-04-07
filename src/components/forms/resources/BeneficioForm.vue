@@ -26,8 +26,7 @@
       <v-col cols="12">
         <InputParceiro
           v-model:parceiro="beneficio.parceiro"
-          v-model:parceiro-id="beneficio.id_parceiro"
-          :rules="[rules.required()]"
+          v-model:idParceiro="beneficio.id_parceiro"
         />
       </v-col>
 

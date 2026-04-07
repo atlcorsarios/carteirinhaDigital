@@ -56,7 +56,7 @@ function handleSearchParceiro() {
 
 function onParceiroSelected(selectedItem: TParceiro) {
   parceiro.value = selectedItem
-  idParceiro.value = String(selectedItem.id_usuario);
+  idParceiro.value = selectedItem.id_usuario || (selectedItem as any).id || null;
 }
 
 function clearResource() {
