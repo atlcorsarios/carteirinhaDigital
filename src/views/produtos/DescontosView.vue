@@ -32,16 +32,17 @@ import GenericView from '@/components/layouts/generics/GenericView.vue'
 import DescontoForm from '@/components/forms/resources/DescontoForm.vue'
 
 import type { IDescontosGerais } from '@/classes/models/resources/ModelIDescontosGerais'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassDescontosGerais } from '@/classes/resources/ClassDescontosGerais'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { DescontosGeraisService } from '@/services/resources/descontosGeraisService'
 
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
-const classRef = new ClassDescontosGerais()
+const { t } = useI18n();
 
-const dialogManager = new ClassBaseDialog<IDescontosGerais>({ persistent: true, maxWidth: 600 })
+const classRef = new ClassDescontosGerais();
+const dialogManager = new ClassBaseDialog<IDescontosGerais>({ persistent: true, maxWidth: 600 });
 
 const modelManager = {
   model: classRef.model,
@@ -49,7 +50,8 @@ const modelManager = {
   updateModel: (item: IDescontosGerais) => classRef.updateModel(item),
 }
 
-const fetchItems = async (limit: number, cursor: any) => {
-  return await DescontosGeraisService.paginationsDescontos({ limit, cursor, filters: [] })
+const fetchItems = async (payload: TPayloadRequestPagination) => {
+  return await DescontosGeraisService.paginationsDescontos(payload);
 }
+
 </script>

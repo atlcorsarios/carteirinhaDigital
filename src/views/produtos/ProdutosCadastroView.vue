@@ -15,7 +15,7 @@
     :icon-save="'mdi-package-variant-closed-check'"
     :dialog-model-manager="dialogProduct"
     :class-model-manager="productModelManager"
-    :service-fetch="buscarProdutosPaginado"
+    :service-fetch="fetchItems"
     :service-save="ProductsService.saveProduct"
     :service-delete="ProductsService.inactivateProduct"
   >
@@ -74,7 +74,7 @@ const dialogProduct = new ClassBaseDialog<IProdutos>({
   maxWidth: 800,
 });
 
-const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) => {
+const fetchItems = async (payload: TPayloadRequestPagination) => {
   const isParceiro = authStore.userProfile?.cargo === 'parceiro';
   const idParceiro = authStore.userProfile?.id;
 
@@ -92,14 +92,10 @@ const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) 
     }
   }
 
-  const payload: TPayloadRequestPagination = {
-    limit,
-    cursor: lastCursor,
-    filters: [
-      ...queryFilterStore.activeFilters,
-      filtroEstaticoDaTela
-    ]
-  }
+  payload.filters = [
+    ...queryFilterStore.activeFilters,
+    filtroEstaticoDaTela
+  ]
 
   return await ProductsService.paginationsProducts(payload, 'produtos');
 }

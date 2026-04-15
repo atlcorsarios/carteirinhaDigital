@@ -95,9 +95,15 @@ import ChartPie from '@/components/layouts/dataChart/ChartPie.vue'
 import DialogFormGenericView from './DialogFormGenericView.vue'
 import DialogConfirmDelete from './DialogConfirmDelete.vue'
 
+// Models
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+
 // Classes
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+
+// Stores
+import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 // Composables
 import { useChartHelpers } from '@/composables/useChartHelpers'
@@ -111,6 +117,7 @@ interface IConfirmDeleteExpose {
 }
 
 const { stringToColor } = useStringColor();
+const queryFilterStore = useQueryFilterStore()
 
 const selectedItens = defineModel<any[]>('selected-itens', { required: false });
 const emit = defineEmits(['saved', 'error', 'deleted']);
@@ -131,16 +138,30 @@ const props = defineProps<{
     reset: () => void
     updateModel: (item: T) => void
   }
-  serviceFetch: (limit: number, cursor: any) => Promise<any[]>
+  serviceFetch: (payload: TPayloadRequestPagination) => Promise<any[]>
   serviceSave?: (item: T) => Promise<any>
   serviceDelete?: (id: any) => Promise<void>
+  staticFilters?: any[]
   hasActions?: boolean
   hasMoreDetails?: boolean
   selectItems?: boolean
 }>();
 
 const adapterFetch = async (limit: number, cursor: any) => {
-  return await props.serviceFetch(limit, cursor)
+  try {
+    const payload: TPayloadRequestPagination = {
+      limit,
+      cursor,
+      filters: [
+        ...(props.staticFilters || []),
+        ...queryFilterStore.activeFilters
+      ]
+    }
+
+    return await props.serviceFetch(payload)
+  } catch (e) {
+    throw e;
+  }
 }
 
 const gridManager = new ClassGridDataChart<T>({

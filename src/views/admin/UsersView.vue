@@ -12,7 +12,7 @@
     :icon-save="'mdi-account-check'"
     :dialog-model-manager="dialogUser"
     :class-model-manager="userModelManager"
-    :service-fetch="(limit, cursor) => UsersService.paginationsUsers({ limit, cursor, filters: [] }, ClassUsuarios.filters)"
+    :service-fetch="(payload) => UsersService.paginationsUsers(payload, ClassUsuarios.filters)"
     :service-save="UsersService.saveUser"
     :service-delete="UsersService.inactivateUser"
   >

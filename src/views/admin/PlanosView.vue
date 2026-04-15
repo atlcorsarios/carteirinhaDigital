@@ -32,6 +32,7 @@ import GenericView from '@/components/layouts/generics/GenericView.vue'
 import PlanoForm from '@/components/forms/resources/PlanoForm.vue'
 
 import type { IPlanos } from '@/classes/models/resources/ModelIPlanos'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassPlanos } from '@/classes/resources/ClassPlanos'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { PlanosService } from '@/services/resources/planosService'
@@ -39,11 +40,11 @@ import { PlanosService } from '@/services/resources/planosService'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
-const { t } = useI18n()
-const route = useRoute()
+const { t } = useI18n();
+const route = useRoute();
 
-const classRef = new ClassPlanos()
-const dialogManager = new ClassBaseDialog<IPlanos>({ persistent: true, maxWidth: 800 })
+const classRef = new ClassPlanos();
+const dialogManager = new ClassBaseDialog<IPlanos>({ persistent: true, maxWidth: 800 });
 
 const modelManager = {
   model: classRef.model,
@@ -51,7 +52,8 @@ const modelManager = {
   updateModel: (item: IPlanos) => classRef.updateModel(item),
 }
 
-const fetchItems = async (limit: number, cursor: any) => {
-  return await PlanosService.paginationsPlanos({ limit, cursor, filters: [] })
+const fetchItems = async (payload: TPayloadRequestPagination) => {
+  return await PlanosService.paginationsPlanos(payload);
 }
+
 </script>

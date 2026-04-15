@@ -103,6 +103,10 @@ const currentLimit = ref(props.limitOptions[0]);
 
 const resetAndLoad = async () => {
   store.resetContext(props.contextId)
+
+  setTimeout(() => {
+    loadMore({ done: () => {} })
+  }, 100)
 }
 
 const loadMore = async ({ done }: any) => {

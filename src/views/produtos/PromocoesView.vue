@@ -32,6 +32,7 @@ import GenericView from '@/components/layouts/generics/GenericView.vue'
 import PromocaoForm from '@/components/forms/resources/PromocaoForm.vue'
 
 import type { IPromocoes } from '@/classes/models/resources/ModelIPromocoes'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassPromocoes } from '@/classes/resources/ClassPromocoes'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { PromocoesService } from '@/services/resources/promocoesService'
@@ -39,11 +40,11 @@ import { PromocoesService } from '@/services/resources/promocoesService'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
-const { t } = useI18n()
-const route = useRoute()
+const { t } = useI18n();
+const route = useRoute();
 
-const classRef = new ClassPromocoes()
-const dialogManager = new ClassBaseDialog<IPromocoes>({ persistent: true, maxWidth: 800 })
+const classRef = new ClassPromocoes();
+const dialogManager = new ClassBaseDialog<IPromocoes>({ persistent: true, maxWidth: 800 });
 
 const modelManager = {
   model: classRef.model,
@@ -51,7 +52,8 @@ const modelManager = {
   updateModel: (item: IPromocoes) => classRef.updateModel(item),
 }
 
-const fetchItems = async (limit: number, cursor: any) => {
-  return await PromocoesService.paginationsPromocoes({ limit, cursor, filters: [] })
+const fetchItems = async (payload: TPayloadRequestPagination) => {
+  return await PromocoesService.paginationsPromocoes(payload)
 }
+
 </script>

@@ -32,6 +32,7 @@ import GenericView from '@/components/layouts/generics/GenericView.vue'
 import BeneficioForm from '@/components/forms/resources/BeneficioForm.vue'
 
 import type { IBeneficios } from '@/classes/models/resources/ModelIBeneficios'
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassBeneficios } from '@/classes/resources/ClassBeneficios'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { BeneficiosService } from '@/services/resources/beneficiosService'
@@ -42,8 +43,8 @@ import { useRoute } from 'vue-router'
 const { t } = useI18n();
 const route = useRoute();
 
-const classRef = new ClassBeneficios()
-const dialogManager = new ClassBaseDialog<IBeneficios>({ persistent: true, maxWidth: 700 })
+const classRef = new ClassBeneficios();
+const dialogManager = new ClassBaseDialog<IBeneficios>({ persistent: true, maxWidth: 700 });
 
 const modelManager = {
   model: classRef.model,
@@ -51,7 +52,8 @@ const modelManager = {
   updateModel: (item: IBeneficios) => classRef.updateModel(item),
 }
 
-const fetchItems = async (limit: number, cursor: any) => {
-  return await BeneficiosService.paginationsBeneficios({ limit, cursor, filters: [] })
+const fetchItems = async (payload: TPayloadRequestPagination) => {
+  return await BeneficiosService.paginationsBeneficios(payload)
 }
+
 </script>

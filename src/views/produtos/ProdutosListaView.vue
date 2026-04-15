@@ -4,7 +4,7 @@
       ref="listaGenericaRef"
       cursor-key="id"
       context-id="produtos-vitrine"
-      :fetch-data="buscarProdutosPaginado"
+      :fetch-data="fetchItems"
     >
       <template v-slot="{ items }">
         <CardProduto
@@ -24,7 +24,7 @@ import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();
 
-const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) => {
+const fetchItems = async (limit: number, lastCursor: string | null) => {
   const payload: TPayloadRequestPagination = {
     limit,
     cursor: lastCursor,
