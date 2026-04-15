@@ -25,21 +25,21 @@ export class BeneficiosService {
   static async paginationsBeneficios(payload: TPayloadRequestPagination, fromTable: string = 'beneficios', withDetails: boolean = true): Promise<IBeneficiosDetalhados[]> {
     try {
       const selectString = withDetails ? QUERY_SELECT_BENEFICIOS_FULL_JOIN : '*';
-      let query = supabase.from(fromTable).select(selectString as any)
+      let query = supabase.from(fromTable).select(selectString as any);
 
-      query = applySupabaseFilters(query, payload.filters, ClassBeneficios.filters)
+      query = applySupabaseFilters(query, payload.filters, ClassBeneficios.filters);
 
-      if (payload.cursor) query = query.gt('id', payload.cursor)
-      if (payload.limit) query = query.limit(payload.limit)
+      if (payload.cursor) query = query.lt('created_at', payload.cursor);
+      if (payload.limit) query = query.limit(payload.limit);
 
-      query = query.order('id', { ascending: true })
-      const { data, error } = await query
+      query = query.order('created_at', { ascending: false });
+      const { data, error } = await query;
 
-      if (error) throw error
+      if (error) throw error;
       return (data as unknown) as IBeneficiosDetalhados[];
     } catch (error) {
       console.error('Erro na paginação de beneficios:', error);
-      throw error
+      throw error;
     }
   }
 
