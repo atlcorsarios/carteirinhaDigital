@@ -66,7 +66,6 @@ const internalModel = computed({
     }
 
     let numeric = String(value).replace(/[^\d]/g, '')
-
     if (numeric === '') {
       model.value = undefined
       return
@@ -77,6 +76,6 @@ const internalModel = computed({
 
     model.value = Math.min(Math.max(Number(numeric), min), max)
   }
-})
+});
 
 </script>
