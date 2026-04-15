@@ -25,6 +25,7 @@
         :showEmpty="false"
         :fetch-data="adapterFetch"
         :listen-global-filters="false"
+        :cursor-key="cursorKey"
       >
         <template v-slot="{ items, loading }">
           <GridDataChart :hidden-chart="true">
@@ -95,9 +96,10 @@ const { t } = useI18n();
 const { notify } = useSnackbar();
 const listStore = useGenericListStore()
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   storageContext: string
+  cursorKey?: string
   filters: any[]
   headers: any[]
   hasCreateQuickly: boolean
@@ -107,7 +109,9 @@ const props = defineProps<{
   dialogSearchModel: ClassBaseDialog
   selectItems?: boolean
   isMultiple?: boolean
-}>();
+}>(), {
+  cursorKey: 'created_at'
+});
 
 const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] });
 const emits = defineEmits(['select-item']);
