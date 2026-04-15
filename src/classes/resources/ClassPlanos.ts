@@ -40,9 +40,11 @@ export class ClassPlanos extends BaseClass<IPlanos> {
         excludeFromChart: true,
       },
       descricao: {
+        align: 'center',
         width: 500,
         maxWidth: 600,
         minWidth: 300,
+        excludeFromChart: true
       },
       preco: {
         align: 'end',
