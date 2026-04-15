@@ -46,20 +46,20 @@ import { UsersService } from '@/services/resources/usuariosService'
 
 // Vue
 import { useI18n } from 'vue-i18n'
-import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 
 const { t } = useI18n();
 const route = useRoute();
 
-const loading = ref(false)
-const dummyOtp = ref('')
+const loading = ref(false);
+const dummyOtp = ref('');
 
-const classUser = new ClassUsuarios()
+const classUser = new ClassUsuarios();
 const dialogUser = new ClassBaseDialog<IUser>({
   persistent: true,
   maxWidth: 800,
-})
+});
 
 const userModelManager = {
   model: classUser.model,

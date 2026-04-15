@@ -37,6 +37,7 @@
         <InputUserRole
           v-model:role="profile.cargo"
           v-model:otp="otp"
+          :user="profile"
         />
       </v-col>
 
@@ -94,19 +95,19 @@ import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const rules = useRules()
-const { t } = useI18n()
-const formRef = ref<any>(null)
+const rules = useRules();
+const { t } = useI18n();
+const formRef = ref<any>(null);
 
 const props = defineProps<{
   loading: boolean
-}>()
+}>();
 
-const profile = defineModel<IUser>('profile', { required: true })
-const otp = defineModel<string>('otp', { required: true })
-const nome_fantasia = defineModel<string>('nome_fantasia')
-const formIsValid = defineModel<boolean>('valid', { default: false })
-const emit = defineEmits(['submit'])
+const profile = defineModel<IUser>('profile', { required: true });
+const otp = defineModel<string>('otp', { required: true });
+const nome_fantasia = defineModel<string>('nome_fantasia');
+const formIsValid = defineModel<boolean>('valid', { default: false });
+const emit = defineEmits(['submit']);
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
@@ -121,6 +122,6 @@ defineExpose({
     const { valid } = await formRef.value?.validate()
     return valid
   },
-})
+});
 
 </script>
