@@ -59,10 +59,13 @@
           >
             <v-switch
               v-model="produto.ativo"
-              :label="t('forms.formProduct.ativo.label')"
+              :label="produto.ativo ? t('forms.campoAtivo.true') : t('forms.campoAtivo.false')"
               :indeterminate="produto.ativo === null || produto.ativo === undefined"
+              inset
+              hide-details
               color="success"
-              class="m-0 p-0"
+              density="compact"
+              class="d-flex justify-center"
             />
           </v-col>
         </v-row>

@@ -34,7 +34,7 @@
         <v-col cols="12" md="6">
           <v-switch
             v-model="plano.ativo"
-            :label="plano.ativo ? 'Plano Ativo' : 'Plano Inativo'"
+            :label="plano.ativo ? t('forms.campoAtivo.true') : t('forms.campoAtivo.false')"
             inset
             hide-details
             color="success"
