@@ -11,6 +11,7 @@
       v-model:otp="formData.codigo_otp"
       :density="'comfortable'"
       :variant="'outlined'"
+      :user="formData"
     />
 
     <v-expand-transition>

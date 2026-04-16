@@ -4,10 +4,12 @@
       ref="listaGenericaRef"
       cursor-key="id"
       context-id="parceiros-vitrine"
-      :fetch-data="buscarParceirosPaginado"
+      :service-fetch="fetchItems"
     >
       <template v-slot="{ items }">
-        <CardParceiro :parceiros="items" />
+        <div v-for="parceiro in items">
+          <CardParceiro :parceiro="parceiro" />
+        </div>
       </template>
     </GenericInfiniteList>
   </v-container>
@@ -24,7 +26,7 @@ import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();
 
-const buscarParceirosPaginado = async (limit: number, lastCursor: string | null) => {
+const fetchItems = async (limit: number, lastCursor: string | null) => {
   const filtroEstaticoDaTela: IQueryFilter = {
     field: 'cargo',
     condition: 'equals',

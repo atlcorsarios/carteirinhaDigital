@@ -9,6 +9,7 @@
     :service-fetch="ParceirosService.paginationsParceiros"
     :static-filters="staticFiltersParceiros"
     :dialog-search-model="dialogSearchModel"
+    :select-items="false"
     @select-item="(item) => $emit('select-item', item)"
   >
     <template #action-btn="{ openCreate }">

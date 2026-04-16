@@ -2,8 +2,9 @@
   <GenericView
     :headers="ClassPromocoes.headers"
     id-field="id"
+    cursor-key="created_at"
     context-id="admin-promocoes"
-    :title="t('dataTable.promocoes.title')"
+    :title="t('dataTable.promocoes')"
     :hasActions="true"
     :text-create="t('messages.forms.formPromocoes.create')"
     :text-edit="t('messages.forms.formPromocoes.edit')"
@@ -38,10 +39,8 @@ import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { PromocoesService } from '@/services/resources/promocoesService'
 
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
 
 const { t } = useI18n();
-const route = useRoute();
 
 const classRef = new ClassPromocoes();
 const dialogManager = new ClassBaseDialog<IPromocoes>({ persistent: true, maxWidth: 800 });

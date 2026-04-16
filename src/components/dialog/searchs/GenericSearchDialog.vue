@@ -23,7 +23,7 @@
         ref="infiniteListRef"
         :context-id="`search-dialog-${storageContext}`"
         :showEmpty="false"
-        :fetch-data="adapterFetch"
+        :service-fetch="adapterFetch"
         :listen-global-filters="false"
         :cursor-key="cursorKey"
       >
@@ -110,7 +110,9 @@ const props = withDefaults(defineProps<{
   selectItems?: boolean
   isMultiple?: boolean
 }>(), {
-  cursorKey: 'created_at'
+  cursorKey: 'created_at',
+  selectItems: true,
+  isMultiple: false
 });
 
 const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] });

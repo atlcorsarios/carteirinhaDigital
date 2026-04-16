@@ -2,17 +2,14 @@
   <GenericView
     :headers="ClassAssinaturas.headers"
     id-field="id"
+    cursor-key="created_at"
     context-id="admin-assinaturas"
-    :title="'Gestão de Assinaturas'"
+    :title="t('dataTable.assinaturas', 'Gestão de Assinaturas')"
     :hasActions="false"
     :hasMoreDetails="true"
-    :text-edit="'Editar Assinatura'"
-    icon-edit="mdi-pencil"
-    icon-save="mdi-check"
     :dialog-model-manager="dialogManager"
     :class-model-manager="modelManager"
     :service-fetch="fetchItems"
-    :service-save="AssinaturasService.saveAssinatura"
   >
     <template #moreDetails="{ item, close }">
       <MoreAssinaturasDetails
@@ -31,6 +28,9 @@ import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPagi
 import { ClassAssinaturas } from '@/classes/resources/ClassAssinaturas'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { AssinaturasService } from '@/services/resources/assinaturasService'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n();
 
 const classRef = new ClassAssinaturas();
 const dialogManager = new ClassBaseDialog<IAssinaturasDetalhadas>({

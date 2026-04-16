@@ -46,7 +46,7 @@
         <v-col cols="12">
           <v-textarea
             v-model="plano.descricao"
-            :label="t('forms.formPlanos.descricao.label', 'Descrição do Plano')"
+            :label="t('forms.formPlanos.descricao.label')"
             variant="outlined"
             color="primary"
             rows="3"
@@ -57,7 +57,7 @@
         <v-col cols="12">
           <v-card variant="tonal" class="pa-4" rounded="lg">
             <div class="text-subtitle-2 font-weight-bold mb-3 text-medium-emphasis">
-              Benefícios Vinculados a este Plano
+              {{ t('forms.formPlano.beneficios.text') }}
             </div>
             <InputBeneficios
               v-model="plano.plano_beneficios"
@@ -71,40 +71,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRules } from 'vuetify/labs/rules'
 import InputBeneficios from '../fixtures/InputBeneficios.vue'
-import type { IPlanosDetalhados } from '@/classes/models/resources/ModelIPlanos'
 import InputPositiveNumbers from '../fixtures/InputPositiveNumbers.vue'
+import type { IPlanosDetalhados } from '@/classes/models/resources/ModelIPlanos'
+import { useRules } from 'vuetify/labs/rules'
+import { useI18n } from 'vue-i18n'
+import { ref, watch } from 'vue'
 
-const { t } = useI18n()
-const rules = useRules()
+const { t } = useI18n();
+const rules = useRules();
 
-const plano = defineModel<Partial<IPlanosDetalhados>>('plano', { required: true })
-const isFormValid = defineModel<boolean>('valid', { default: false })
+const plano = defineModel<Partial<IPlanosDetalhados>>('plano', { required: true });
+const isFormValid = defineModel<boolean>('valid', { default: false });
 
 const props = defineProps<{
   createFast?: boolean
-}>()
+}>();
 
-const emit = defineEmits(['submit'])
-const formRef = ref<any>(null)
+const emit = defineEmits(['submit']);
+const formRef = ref<any>(null);
 
-// Valores Default no Create Fast (OTP)
 watch(() => props.createFast, (isQuick) => {
   if (isQuick) {
-    if (!plano.value.dias_validade) plano.value.dias_validade = 30; // Padrão: 1 mês
+    if (!plano.value.dias_validade) plano.value.dias_validade = 30;
     if (!plano.value.descricao) plano.value.descricao = 'Plano gerado rapidamente.';
     plano.value.ativo = true;
-    plano.value.plano_beneficios = []; // Rápido nasce sem benefícios
+    plano.value.plano_beneficios = [];
   }
-}, { immediate: true })
+}, { immediate: true });
 
 function submitForm() {
   if (isFormValid.value) emit('submit')
   else formRef.value?.validate()
 }
 
-defineExpose({ reset: () => formRef.value?.reset() })
+defineExpose({ reset: () => formRef.value?.reset() });
 </script>

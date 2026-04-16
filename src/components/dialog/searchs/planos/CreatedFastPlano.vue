@@ -1,17 +1,17 @@
 <template>
   <GenericCreateQuickly
-    :title="t('')"
-    :icon="'mdi-star-plus'"
-    :save-icon="'mdi-content-save'"
+    :title="t('messages.forms.formPlanos.create')"
+    icon="mdi-medal"
+    save-icon="mdi-content-save"
     :dialog-model="dialogModel"
-    :service-save="BeneficiosService.saveBeneficio"
-    :class-manager="beneficioManager"
+    :service-save="PlanosService.savePlano"
+    :class-manager="planoManager"
     @created-fast-item="(item) => $emit('created-fast-item', item)"
   >
     <template #form="slotProps">
-      <BeneficioForm
+      <PlanoForm
         :ref="slotProps.refForm"
-        v-model:beneficio="slotProps.model"
+        v-model:plano="slotProps.model"
         @update:valid="slotProps.updateValid"
         @submit="slotProps.submitForm"
         :create-fast="true"
@@ -22,20 +22,20 @@
 
 <script setup lang="ts">
 import GenericCreateQuickly from '../GenericCreateQuickly.vue';
-import BeneficioForm from '@/components/forms/resources/BeneficioForm.vue';
-import { ClassBeneficios } from '@/classes/resources/ClassBeneficios';
-import { BeneficiosService } from '@/services/resources/beneficiosService';
+import PlanoForm from '@/components/forms/resources/PlanoForm.vue';
+import { ClassPlanos } from '@/classes/resources/ClassPlanos';
 import { useI18n } from 'vue-i18n';
+import { PlanosService } from '@/services/resources/planosService';
 
 const { t } = useI18n();
 
 const dialogModel = defineModel<any>('dialog-create-quickly', { required: true });
 defineEmits(['created-fast-item']);
 
-const classBeneficios = new ClassBeneficios();
-const beneficioManager = {
-  model: classBeneficios.model,
-  reset: () => classBeneficios.reset(),
+const classPlanos = new ClassPlanos();
+const planoManager = {
+  model: classPlanos.model,
+  reset: () => classPlanos.reset(),
 }
 
 </script>

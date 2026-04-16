@@ -1,7 +1,8 @@
 <template>
   <GenericView
     :headers="ClassNotifications.headers"
-    :id-field="'idNotification'"
+    id-field="idNotification"
+    cursor-key="created_at"
     :title="t('dataTable.notifications.title')"
     :has-actions="false"
     :dialog-model-manager="dialogNotifications"
@@ -42,4 +43,5 @@ const notificationsModelManager = {
     classNotifications.updateModel(item)
   },
 }
+
 </script>

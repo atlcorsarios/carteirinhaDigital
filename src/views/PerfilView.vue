@@ -21,11 +21,11 @@ import { useSnackbar } from '@/composables/useSnackbar';
 import { ref, onMounted } from 'vue';
 
 const authStore = useAuthStore();
-const { notify } = useSnackbar()
+const { notify } = useSnackbar();
 
 const perfil = ref<IUser | null>(null);
 const loading = ref(false);
-const otp = ref('')
+const otp = ref('');
 
 const loadProfile = () => {
   const user = authStore.userProfile;

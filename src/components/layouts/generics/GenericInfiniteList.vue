@@ -79,7 +79,7 @@ const loading = ref<boolean>(false);
 
 interface Props {
   contextId: string
-  fetchData: (limit: number, cursor: any) => Promise<any[]>
+  serviceFetch: (limit: number, cursor: any) => Promise<any[]>
   limitOptions?: number[]
   cursorKey?: string
   showEmpty?: boolean
@@ -118,7 +118,7 @@ const loadMore = async ({ done }: any) => {
   loading.value = true
 
   try {
-    const newItems = await props.fetchData(currentLimit.value, lastCursor.value)
+    const newItems = await props.serviceFetch(currentLimit.value, lastCursor.value)
     if (newItems.length > 0) {
       const nextCursor = newItems[newItems.length - 1][props.cursorKey]
       const nextHasMore = newItems.length >= currentLimit.value

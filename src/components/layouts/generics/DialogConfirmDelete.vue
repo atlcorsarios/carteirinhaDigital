@@ -23,7 +23,7 @@
         :disabled="loading"
         @click="closeDialog"
       >
-        {{ t('tooltips.forms.cancel', 'Cancelar') }}
+        {{ t('tooltips.forms.cancel') }}
       </v-btn>
       <v-btn
         variant="flat"
@@ -31,7 +31,7 @@
         :loading="loading"
         @click="executeDelete"
       >
-        {{ t('tooltips.forms.submit', 'Confirmar') }}
+        {{ t('tooltips.forms.submit') }}
       </v-btn>
     </template>
 
@@ -46,9 +46,9 @@ import { useSnackbar } from '@/composables/useSnackbar'
 import { useI18n } from 'vue-i18n'
 import { nextTick, ref } from 'vue'
 
-const { t } = useI18n()
-const { notify } = useSnackbar()
-const listStore = useGenericListStore()
+const { t } = useI18n();
+const { notify } = useSnackbar();
+const listStore = useGenericListStore();
 
 const props = withDefaults(defineProps<{
   idField: string
@@ -57,17 +57,21 @@ const props = withDefaults(defineProps<{
   textTitle?: string
   textConfirm?: string
   messageSuccess?: string
+  applyNewValues?: boolean
+  newValuesUpdate?: any[]
 }>(), {
   textTitle: 'messages.dialogs.confirmInactive.title',
   textConfirm: 'messages.dialogs.confirmInactive.message',
-  messageSuccess: 'messages.forms.inactiveSuccess'
-})
+  messageSuccess: 'messages.forms.inactiveSuccess',
+  applyNewValues: true,
+  newValuesUpdate:() => []
+});
 
-const emit = defineEmits(['deleted', 'error'])
+const emit = defineEmits(['deleted', 'error']);
 
-const dialogManager = new ClassBaseDialog({ maxWidth: 450 })
-const itemToDelete = ref<T | null>(null)
-const loading = ref(false)
+const dialogManager = new ClassBaseDialog({ maxWidth: 450 });
+const itemToDelete = ref<T | null>(null);
+const loading = ref(false);
 
 function openDialog(item: T) {
   itemToDelete.value = item
@@ -80,27 +84,29 @@ function closeDialog() {
 }
 
 async function executeDelete() {
-  if (!itemToDelete.value || !props.serviceDelete) return
+  if (!itemToDelete.value || !props.serviceDelete) return;
 
-  loading.value = true
+  loading.value = true;
   try {
-    const idItem = itemToDelete.value[props.idField]
-    await props.serviceDelete(idItem)
+    const idItem = itemToDelete.value[props.idField];
+    await props.serviceDelete(idItem);
 
-    notify(t(props.messageSuccess), 'success')
-    emit('deleted', itemToDelete.value)
+    notify(t(props.messageSuccess), 'success');
+    emit('deleted', itemToDelete.value);
 
-    closeDialog()
+    closeDialog();
 
-    await nextTick()
+    await nextTick();
 
-    listStore.updateItem(props.contextId, props.idField, idItem, { ativo: false });
+    const newValues = ref<any>();
+    props.applyNewValues ? Object.assign(newValues.value, { ativo: false, ...props.newValuesUpdate }) : {}
+    listStore.updateItem(props.contextId, props.idField, idItem, newValues.value);
 
   } catch (error: any) {
-    notify(error, 'error')
-    emit('error', error)
+    notify(error, 'error');
+    emit('error', error);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 

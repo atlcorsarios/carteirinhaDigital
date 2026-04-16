@@ -2,7 +2,8 @@
   <GenericView
     ref="genericView"
     :headers="ClassProdutos.headers"
-    :id-field="'id'"
+    id-field="id"
+    cursor-key="created_at"
     :showIdInTextEdit="false"
     :title="'dataTable.products'"
     :context-id="String(route.name)"
@@ -18,6 +19,7 @@
     :service-fetch="fetchItems"
     :service-save="ProductsService.saveProduct"
     :service-delete="ProductsService.inactivateProduct"
+    :select-items="false"
   >
     <template #form="{ updateValid, refForm, submitForm }">
       <ProductForm

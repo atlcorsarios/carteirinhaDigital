@@ -37,7 +37,7 @@ const { te, t } = useI18n();
 
 const role = defineModel<TRole>('role', { required: true });
 const otp = defineModel<string>('otp');
-const props = withDefaults(defineProps<IPropsCustomInputs & { user: IUser }>(), {
+const props = withDefaults(defineProps<IPropsCustomInputs & { user: Partial<IUser> }>(), {
   label: 'forms.formUser.cargo.label',
   density: 'compact',
   variant: 'outlined',

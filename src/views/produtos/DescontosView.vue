@@ -2,8 +2,9 @@
   <GenericView
     :headers="ClassDescontosGerais.headers"
     id-field="id"
+    cursor-key="created_at"
     context-id="admin-descontos"
-    :title="t('dataTable.descontos.title')"
+    :title="t('dataTable.descontos')"
     :hasActions="true"
     :text-create="t('messages.forms.formDescontos.create')"
     :text-edit="t('messages.forms.formDescontos.edit')"

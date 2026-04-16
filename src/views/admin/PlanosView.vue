@@ -2,8 +2,9 @@
   <GenericView
     :headers="ClassPlanos.headers"
     id-field="id"
+    cursor-key="created_at"
     :context-id="String(route.name)"
-    :title="t('dataTable.planos.title')"
+    :title="t('dataTable.planos')"
     :hasActions="true"
     :text-create="t('messages.forms.formPlanos.create')"
     :text-edit="t('messages.forms.formPlanos.edit')"

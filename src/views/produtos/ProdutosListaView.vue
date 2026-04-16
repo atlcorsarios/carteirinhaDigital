@@ -4,12 +4,12 @@
       ref="listaGenericaRef"
       cursor-key="id"
       context-id="produtos-vitrine"
-      :fetch-data="fetchItems"
+      :service-fetch="fetchItems"
     >
       <template v-slot="{ items }">
-        <CardProduto
-          :produtos="items"
-        />
+        <div v-for="produto in items">
+          <CardProduto :produto="produto" />
+        </div>
       </template>
     </GenericInfiniteList>
   </v-container>

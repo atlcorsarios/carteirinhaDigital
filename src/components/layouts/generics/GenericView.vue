@@ -2,10 +2,10 @@
   <v-container fluid class="fill-height">
     <GenericInfiniteList
       ref="infiniteListRef"
-      :cursor-key="idField"
+      :cursor-key="cursorKey"
       :context-id="contextId"
       :showEmpty="false"
-      :fetch-data="adapterFetch"
+      :service-fetch="adapterFetch"
     >
       <template v-slot="{ items, loading }">
         <GridDataChart
@@ -82,6 +82,8 @@
     :id-field="idField"
     :context-id="contextId"
     :service-delete="serviceDelete"
+    :apply-new-values="applyNewValues"
+    :new-values-update="newValuesUpdate"
     @deleted="(item) => emit('deleted', item)"
   />
 </template>
@@ -124,6 +126,7 @@ const emit = defineEmits(['saved', 'error', 'deleted']);
 const props = defineProps<{
   headers: any[]
   idField: string
+  cursorKey: string
   title: string
   contextId: string
   textCreate?: string
@@ -145,6 +148,8 @@ const props = defineProps<{
   hasActions?: boolean
   hasMoreDetails?: boolean
   selectItems?: boolean
+  applyNewValues?: boolean
+  newValuesUpdate?: any[]
 }>();
 
 const adapterFetch = async (limit: number, cursor: any) => {
