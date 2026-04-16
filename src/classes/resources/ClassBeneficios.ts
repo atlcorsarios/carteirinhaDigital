@@ -35,25 +35,27 @@ export class ClassBeneficios extends BaseClass<IBeneficios> {
         hidden: true
       },
       descricao_beneficio: {
-        align: 'center',
-        width: 700,
-        maxWidth: 850,
-        minWidth: 250,
+        width: 1000,
+        maxWidth: 1150,
+        minWidth: 1000,
         excludeFromChart: true,
       },
       desconto_aplicavel: {
-        width: 700,
-        maxWidth: 850,
-        minWidth: 250,
+        align: 'center',
+        width: 200,
+        maxWidth: 250,
+        minWidth: 150,
+        chartFormatter: ClassFormatters.formatPercent,
+        value: (beneficio: IBeneficios) => ClassFormatters.formatPercent(beneficio.desconto_aplicavel),
       },
       restricao_beneficio: {
         hidden: true
       },
       ativo: {
         align: 'center',
-        width: 350,
+        width: 300,
         maxWidth: 350,
-        minWidth: 50,
+        minWidth: 200,
         chartFormatter: ClassFormatters.formatBoolean,
         value: (beneficio: IBeneficios) => ClassFormatters.formatBoolean(beneficio.ativo),
       }

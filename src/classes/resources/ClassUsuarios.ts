@@ -19,8 +19,8 @@ export class ClassUsuarios extends BaseClass<IUser> {
       celular_contato: '',
       documento: '',
       cargo: 'aluno',
-      usuario_ativo: true,
-      created_at: ''
+      created_at: '',
+      usuario_ativo: true
     }
   }
 
@@ -31,21 +31,18 @@ export class ClassUsuarios extends BaseClass<IUser> {
   static get fieldConfig(): TEntityConfig<IUser> {
     return {
       id: {
-        minWidth: 50,
-        width: 50,
-        maxWidth: 100,
         hidden: true
       },
       email: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 300,
+        width: 350,
+        maxWidth: 450,
+        minWidth: 300,
         excludeFromChart: true,
       },
       username: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 250,
+        width: 250,
+        maxWidth: 300,
+        minWidth: 200,
         excludeFromChart: true,
       },
       avatar_url: {
@@ -53,30 +50,31 @@ export class ClassUsuarios extends BaseClass<IUser> {
       },
       celular_contato: {
         align: 'end',
-        minWidth: 100,
-        width: 100,
+        width: 150,
         maxWidth: 200,
+        minWidth: 100,
         excludeFromChart: true,
       },
       documento: {
-        minWidth: 100,
-        width: 100,
+        width: 150,
         maxWidth: 300,
+        minWidth: 100,
         excludeFromChart: true,
       },
       cargo: {
-        chartFormatter: ClassFormatters.formatRolesTranslate,
-        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo),
-        minWidth: 100,
-        width: 100,
-        maxWidth: 100,
+        align: 'center',
+        width: 350,
+        maxWidth: 400,
+        minWidth: 300,
         filterType: 'select',
-        selectOptions: ClassFormatters.formatOptionsRoles()
+        selectOptions: ClassFormatters.formatOptionsRoles(),
+        chartFormatter: ClassFormatters.formatRolesTranslate,
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo)
       },
       created_at: {
-        minWidth: 150,
-        width: 100,
+        width: 250,
         maxWidth: 300,
+        minWidth: 200,
         chartFormatter: ClassFormatters.formatDate,
         value: (user: IUser) => ClassFormatters.formatDate(user.created_at),
         excludeFromChart: true,

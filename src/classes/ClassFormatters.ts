@@ -42,8 +42,8 @@ export class ClassFormatters {
     return `${minutesMath}:${secondsMath.toString().padStart(2, '0')}`
   }
 
-  static formatAmountIngredient(amount: number, measurement: string): string {
-    return `${amount} ${measurement}`
+  static formatPercent(value: number): string {
+    return `${value} %`
   }
 
   static formatRolesTranslate(role: TRole): string {

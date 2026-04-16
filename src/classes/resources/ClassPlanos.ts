@@ -17,8 +17,8 @@ export class ClassPlanos extends BaseClass<IPlanos> {
       descricao: '',
       preco: 0.0,
       dias_validade: 0.0,
-      ativo: true,
-      created_at: ''
+      created_at: '',
+      ativo: true
     }
   }
 
@@ -34,15 +34,15 @@ export class ClassPlanos extends BaseClass<IPlanos> {
       },
       nome: {
         align: 'center',
-        width: 400,
-        maxWidth: 600,
+        width: 350,
+        maxWidth: 400,
         minWidth: 200,
         excludeFromChart: true,
       },
       descricao: {
         align: 'center',
         width: 500,
-        maxWidth: 600,
+        maxWidth: 550,
         minWidth: 300,
         excludeFromChart: true
       },

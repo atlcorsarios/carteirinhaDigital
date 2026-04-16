@@ -1,9 +1,12 @@
 <template>
-  {{ parceiros }}
+  {{ parceiro }}
 </template>
 
 <script setup lang="ts">
+import type { TParceiro } from '@/classes/models/resources/ModelUsuarios';
+
 defineProps<{
-  parceiros: any[]
+  parceiro: TParceiro
 }>();
+
 </script>

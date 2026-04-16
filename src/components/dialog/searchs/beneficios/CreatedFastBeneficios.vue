@@ -1,8 +1,8 @@
 <template>
   <GenericCreateQuickly
-    :title="t('')"
-    :icon="'mdi-star-plus'"
-    :save-icon="'mdi-content-save'"
+    :title="t('messages.forms.formBeneficios.create')"
+    icon="mdi-star-plus"
+    save-icon="mdi-content-save"
     :dialog-model="dialogModel"
     :service-save="BeneficiosService.saveBeneficio"
     :class-manager="beneficioManager"
