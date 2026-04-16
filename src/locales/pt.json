@@ -44,6 +44,10 @@
     "notFound": "Recurso não encontrado"
   },
   "forms": {
+    "campoAtivo": {
+      "true": "Ativo",
+      "false": "Inativo"
+    },
     "formLogin": {
       "text": "Faça login com sua conta do Google para acessar a plataforma, sua carteirinha e nossos parceiros.",
       "email": {
@@ -276,6 +280,35 @@
         "headerTable": "Ativo",
         "label": "Ativo"
       }
+    },
+    "formBeneficios": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "id_parceiro": {
+        "headerTable": "Parceiro",
+        "label": "Parceiro vinculado"
+      },
+      "descricao_beneficio": {
+        "headerTable": "Descrição",
+        "label": "Descricao do benefício",
+        "hint": "Ex: 10% off nas terças"
+      },
+      "desconto_aplicavel": {
+        "headerTable": "Desconto (%)",
+        "label": "Percentual de desconto",
+        "hint": "Use valores de 0% a 100%"
+      },
+      "restricao_beneficio": {
+        "headerTable": "Restrição",
+        "label": "Restrição do benefício",
+        "hint": "Ex: Válido apenas nas terças-feiras"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
     }
   },
   "tooltips": {
@@ -355,9 +388,9 @@
         "create": "Criar Promoção",
         "edit": "Editar Promoção"
       },
-      "formRecipe": {
-        "createRecipe": "Criar Receita",
-        "editingRecipe": "Editar receita"
+      "formBeneficios": {
+        "create": "Criar benefício",
+        "edit": "Editar benefício"
       },
       "formIngredient": {
         "createIngredient": "Criar ingrediente",
@@ -405,6 +438,7 @@
     "products": "Lista de produtos",
     "notifications": "Lista de notificações",
     "promocoes": "Lista de promoções",
+    "beneficios": "Lista de benefícios",
     "headersDefault": {
       "actions": "Ações"
     }
