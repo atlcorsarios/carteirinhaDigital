@@ -250,6 +250,32 @@
         "headerTable": "Data",
         "label": "Data da notificação"
       }
+    },
+    "formPromocoes": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "descricao_promocao": {
+        "headerTable": "Descrição",
+        "label": "Descrição da promoção"
+      },
+      "data_encerramento": {
+        "headerTable": "Encerramento em",
+        "label": "Data de encerramento"
+      },
+      "desconto_aplicavel": {
+        "headerTable": "Desconto",
+        "label": "Percentual de desconto"
+      },
+      "somente_associados": {
+        "headerTable": "Apenas associados",
+        "label": "Disponibilizar somente para associados"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
     }
   },
   "tooltips": {
@@ -325,9 +351,9 @@
         "createProduct": "Criar produto",
         "editingProduct": "Editar produto"
       },
-      "formCategory": {
-        "createCategory": "Criar Categoria",
-        "editingCategory": "Editar categoria"
+      "formPromocoes": {
+        "create": "Criar Promoção",
+        "edit": "Editar Promoção"
       },
       "formRecipe": {
         "createRecipe": "Criar Receita",
@@ -378,6 +404,7 @@
     "users": "Lista de usuários",
     "products": "Lista de produtos",
     "notifications": "Lista de notificações",
+    "promocoes": "Lista de promoções",
     "headersDefault": {
       "actions": "Ações"
     }

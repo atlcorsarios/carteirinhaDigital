@@ -32,7 +32,6 @@ export class ClassPromocoes extends BaseClass<IPromocoes> {
         hidden: true
       },
       descricao_promocao: {
-        align: 'center',
         width: 700,
         maxWidth: 850,
         minWidth: 250,
@@ -45,6 +44,7 @@ export class ClassPromocoes extends BaseClass<IPromocoes> {
         minWidth: 100,
         chartFormatter: ClassFormatters.formatDate,
         value: (promocao: IPromocoes) => ClassFormatters.formatDate(promocao.data_encerramento),
+        excludeFromChart: true
       },
       desconto_aplicavel: {
         width: 200,
