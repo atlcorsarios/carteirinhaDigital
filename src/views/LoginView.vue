@@ -1,6 +1,15 @@
 <template>
-  <div class="d-flex justify-center align-center h-100" style="min-height: 90vh">
-    <v-card class="mx-auto text-center pa-8" width="100%" max-width="500" elevation="8" rounded="lg">
+  <div
+    class="d-flex justify-center align-center h-100"
+    style="min-height: 90vh"
+  >
+    <v-card
+      class="mx-auto text-center pa-8"
+      width="100%"
+      max-width="500"
+      elevation="8"
+      rounded="lg"
+    >
       <v-card-title class="text-h4 font-weight-bold mb-4 text-primary">
         {{ t('routes.login') }}
       </v-card-title>
@@ -42,4 +51,5 @@ async function handleGoogleLogin() {
     loading.value = false
   }
 }
+
 </script>

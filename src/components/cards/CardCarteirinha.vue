@@ -3,7 +3,7 @@
     class="mx-auto carteirinha-card elevation-10"
     max-width="800"
     width="100%"
-  >  
+  >
     <div class="titulo-absoluto">
       <h5
         class="text-white text-uppercase font-weight-black titulo-carteirinha"
@@ -83,7 +83,7 @@
                   :size="mobile ? 12 : 18"
                   class="mr-1"
                 />
-                
+
                 <v-skeleton-loader
                   v-if="loadingAssinatura"
                   type="text"
@@ -137,7 +137,7 @@
 
 <script setup lang="ts">
 import QrcodeVue from 'qrcode.vue'
-import { AssinaturaService } from '@/services/resources/assinaturasService'
+import { AssinaturasService } from '@/services/resources/assinaturasService'
 import { useAuthStore } from '@/stores/authStore'
 import { useSnackbar } from '@/composables/useSnackbar'
 import { useDisplay } from 'vuetify'
@@ -157,7 +157,7 @@ onMounted(async () => {
   if (userId && userId !== 'undefined') {
     try {
       loadingAssinatura.value = true
-      const assinatura = await AssinaturaService.buscarAssinaturaPorUsuarioId(userId)
+      const assinatura = await AssinaturasService.buscarAssinaturaPorUsuarioId(userId)
       if (assinatura) {
         dataVencimento.value = assinatura.data_vencimento
       }

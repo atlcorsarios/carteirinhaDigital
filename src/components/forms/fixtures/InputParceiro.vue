@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    v-model="parceiro"
+    :model-value="parceiro?.nome_fantasia || ''"
     :rules="rules"
     :label="t(label)"
     :density="density"
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import DialogSearchParceiro from '@/components/dialog/searchs/DialogSearchParceiro.vue';
 import type { IPropsCustomInputs } from '@/classes/models/modelComponents/ModelCustomInputs';
-import type { TParceiro } from '@/classes/models/resources/ModelUser';
+import type { TParceiro } from '@/classes/models/resources/ModelUsuarios';
 import { ClassParceiros } from '@/classes/resources/ClassParceiros';
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog';
 import { useI18n } from 'vue-i18n';
@@ -37,7 +37,7 @@ import { watch } from 'vue';
 const { t } = useI18n();
 
 const dialogSearchParceiro = new ClassBaseDialog({
-  maxWidth: 600,
+  maxWidth: 1200,
 });
 
 const parceiro = defineModel<TParceiro | null>('parceiro');
@@ -56,7 +56,7 @@ function handleSearchParceiro() {
 
 function onParceiroSelected(selectedItem: TParceiro) {
   parceiro.value = selectedItem
-  idParceiro.value = String(selectedItem.id_usuario);
+  idParceiro.value = selectedItem.id_usuario || (selectedItem as any).id || null;
 }
 
 function clearResource() {

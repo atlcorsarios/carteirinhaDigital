@@ -4,12 +4,12 @@
       ref="listaGenericaRef"
       cursor-key="id"
       context-id="produtos-vitrine"
-      :fetch-data="buscarProdutosPaginado"
+      :service-fetch="fetchItems"
     >
       <template v-slot="{ items }">
-        <CardProduto
-          :produtos="items"
-        />
+        <div v-for="produto in items">
+          <CardProduto :produto="produto" />
+        </div>
       </template>
     </GenericInfiniteList>
   </v-container>
@@ -19,12 +19,12 @@
 import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteList.vue'
 import CardProduto from '@/components/cards/CardProduto.vue'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
-import { ProductsService } from '@/services/resources/productsService'
+import { ProductsService } from '@/services/resources/produtosService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();
 
-const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) => {
+const fetchItems = async (limit: number, lastCursor: string | null) => {
   const payload: TPayloadRequestPagination = {
     limit,
     cursor: lastCursor,

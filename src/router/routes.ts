@@ -72,8 +72,8 @@ export const routes: Array<RouteRecordRaw> = [
       hotkey: 'cmd+alt+p',
       requiresAuth: true,
       hasFilters: true,
-      filterConfig: ClassDefinitions.queryFilterProducts.filters,
-      defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+      filterConfig: ClassDefinitions.queryFilterProdutos.filters,
+      defaultFilterConfig: ClassDefinitions.queryFilterProdutos.defaultFilter,
     },
     children: [
       {
@@ -86,8 +86,8 @@ export const routes: Array<RouteRecordRaw> = [
           hotkey: 'cmd+alt+p',
           requiresAuth: true,
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterProducts.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+          filterConfig: ClassDefinitions.queryFilterProdutos.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProdutos.defaultFilter,
         },
       },
       {
@@ -100,8 +100,8 @@ export const routes: Array<RouteRecordRaw> = [
           hotkey: 'cmd+alt+c',
           requiresAuth: true,
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterProducts.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+          filterConfig: ClassDefinitions.queryFilterProdutos.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterProdutos.defaultFilter,
         },
       },
       {
@@ -118,8 +118,8 @@ export const routes: Array<RouteRecordRaw> = [
             'parceiro'
           ],
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterProducts.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+          filterConfig: ClassDefinitions.queryFilterBeneficios.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterBeneficios.defaultFilter,
         },
       },
       {
@@ -136,8 +136,8 @@ export const routes: Array<RouteRecordRaw> = [
             'parceiro'
           ],
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterProducts.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+          filterConfig: ClassDefinitions.queryFilterPromocoes.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterPromocoes.defaultFilter,
         },
       },
       {
@@ -154,8 +154,8 @@ export const routes: Array<RouteRecordRaw> = [
             'parceiro'
           ],
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterProducts.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterProducts.defaultFilter,
+          filterConfig: ClassDefinitions.queryFilterDescontos.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterDescontos.defaultFilter,
         },
       },
     ],
@@ -190,7 +190,7 @@ export const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'planos',
-        name: 'Planos',
+        name: 'AdminPlanos',
         component: () => import('@/views/admin/PlanosView.vue'),
         meta: {
           title: 'routes.adm.children.planos',
@@ -199,8 +199,23 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
           authorize: ['diretoria'],
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterUsers.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+          filterConfig: ClassDefinitions.queryFilterPlanos.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterPlanos.defaultFilter
+        },
+      },
+      {
+        path: 'parceiros',
+        name: 'AdminParceiros',
+        component: () => import('@/views/admin/ParceirosManagerView.vue'),
+        meta: {
+          title: 'routes.parceiros',
+          icon: 'mdi-handshake-outline',
+          hotkey: 'cmd+alt+r',
+          requiresAuth: true,
+          authorize: ['diretoria'],
+          hasFilters: true,
+          filterConfig: ClassDefinitions.queryFilterParceiros.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterParceiros.defaultFilter
         },
       },
       {
@@ -214,8 +229,8 @@ export const routes: Array<RouteRecordRaw> = [
           requiresAuth: true,
           authorize: ['diretoria'],
           hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterUsers.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+          filterConfig: ClassDefinitions.queryFilterAssinaturas.filters,
+          defaultFilterConfig: ClassDefinitions.queryFilterAssinaturas.defaultFilter
         },
       },
       {
@@ -228,9 +243,7 @@ export const routes: Array<RouteRecordRaw> = [
           hotkey: 'cmd+alt+o',
           requiresAuth: true,
           authorize: ['diretoria'],
-          hasFilters: true,
-          filterConfig: ClassDefinitions.queryFilterUsers.filters,
-          defaultFilterConfig: ClassDefinitions.queryFilterUsers.defaultFilter
+          hasFilters: false
         },
       },
     ],
@@ -244,6 +257,7 @@ export const routes: Array<RouteRecordRaw> = [
       icon: 'mdi-cog',
       hotkey: 'cmd+shift+s',
       requiresAuth: true,
+      excludeNav: true
     },
   },
   {

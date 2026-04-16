@@ -2,10 +2,10 @@
   <v-container fluid class="fill-height">
     <GenericInfiniteList
       ref="infiniteListRef"
-      :cursor-key="idField"
+      :cursor-key="cursorKey"
       :context-id="contextId"
       :showEmpty="false"
-      :fetch-data="adapterFetch"
+      :service-fetch="adapterFetch"
     >
       <template v-slot="{ items, loading }">
         <GridDataChart
@@ -16,12 +16,12 @@
           <template v-if="!loading" #dataTable>
             <DataTable
               :id="contextId"
-              :selectItems="selectItems"
-              :hasActions="hasActions"
               :headers="headers"
               :items="items"
               :loading="loading"
               :title="title"
+              :selectItems="selectItems"
+              :hasActions="hasActions"
               v-model:selected-itens="selectedItens"
               v-model:dataTable="gridConfig.modelTable"
               @selected-item="handleSelection"
@@ -82,6 +82,8 @@
     :id-field="idField"
     :context-id="contextId"
     :service-delete="serviceDelete"
+    :apply-new-values="applyNewValues"
+    :new-values-update="newValuesUpdate"
     @deleted="(item) => emit('deleted', item)"
   />
 </template>
@@ -95,9 +97,15 @@ import ChartPie from '@/components/layouts/dataChart/ChartPie.vue'
 import DialogFormGenericView from './DialogFormGenericView.vue'
 import DialogConfirmDelete from './DialogConfirmDelete.vue'
 
+// Models
+import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+
 // Classes
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+
+// Stores
+import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 // Composables
 import { useChartHelpers } from '@/composables/useChartHelpers'
@@ -111,12 +119,14 @@ interface IConfirmDeleteExpose {
 }
 
 const { stringToColor } = useStringColor();
+const queryFilterStore = useQueryFilterStore()
 
 const selectedItens = defineModel<any[]>('selected-itens', { required: false });
 const emit = defineEmits(['saved', 'error', 'deleted']);
 const props = defineProps<{
   headers: any[]
   idField: string
+  cursorKey: string
   title: string
   contextId: string
   textCreate?: string
@@ -131,16 +141,32 @@ const props = defineProps<{
     reset: () => void
     updateModel: (item: T) => void
   }
-  serviceFetch: (limit: number, cursor: any) => Promise<any[]>
+  serviceFetch: (payload: TPayloadRequestPagination) => Promise<any[]>
   serviceSave?: (item: T) => Promise<any>
   serviceDelete?: (id: any) => Promise<void>
+  staticFilters?: any[]
   hasActions?: boolean
   hasMoreDetails?: boolean
   selectItems?: boolean
+  applyNewValues?: boolean
+  newValuesUpdate?: Record<string, any>;
 }>();
 
 const adapterFetch = async (limit: number, cursor: any) => {
-  return await props.serviceFetch(limit, cursor)
+  try {
+    const payload: TPayloadRequestPagination = {
+      limit,
+      cursor,
+      filters: [
+        ...(props.staticFilters || []),
+        ...queryFilterStore.activeFilters
+      ]
+    }
+
+    return await props.serviceFetch(payload)
+  } catch (e) {
+    throw e;
+  }
 }
 
 const gridManager = new ClassGridDataChart<T>({

@@ -3,7 +3,7 @@ import type { IFilterColumn } from '../models/ModelFilterColumns'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
-import type { TParceiro } from '../models/resources/ModelUser'
+import type { TParceiro } from '../models/resources/ModelUsuarios'
 
 export class ClassParceiros extends BaseClass<TParceiro> {
   constructor(data?: Partial<TParceiro>) {
@@ -34,11 +34,7 @@ export class ClassParceiros extends BaseClass<TParceiro> {
   static get fieldConfig(): TEntityConfig<TParceiro> {
     return {
       id_usuario: {
-        minWidth: 50,
-        width: 50,
-        maxWidth: 100,
-        excludeFromFilter: true,
-        excludeFromChart: true
+        hidden: true
       },
       email: {
         minWidth: 100,
@@ -73,24 +69,24 @@ export class ClassParceiros extends BaseClass<TParceiro> {
         excludeFromFilter: true
       },
       usuario_ativo: {
-        align: 'center',
-        chartFormatter: ClassFormatters.formatBoolean,
-        value: (parceiro: TParceiro) => ClassFormatters.formatBoolean(parceiro.usuario_ativo),
-        width: 50,
+        excludeFromHeader: true,
+        excludeFromChart: true
       },
       created_at: {
-        minWidth: 100,
+        minWidth: 150,
         width: 100,
         maxWidth: 300,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (parceiro: TParceiro) => ClassFormatters.formatDate(parceiro.created_at),
         excludeFromChart: true
       },
       data_renovacao: {
         hidden: true
       },
       nome_fantasia: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 300,
+        minWidth: 300,
+        width: 300,
+        maxWidth: 500,
         excludeFromChart: true,
       },
       ativo: {

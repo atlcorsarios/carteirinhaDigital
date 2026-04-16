@@ -11,7 +11,21 @@
       v-model:otp="formData.codigo_otp"
       :density="'comfortable'"
       :variant="'outlined'"
+      :user="formData"
     />
+
+    <v-expand-transition>
+      <div v-if="formData.cargo === 'parceiro' && !hasOtp">
+        <v-text-field
+          v-model="formData.nome_fantasia"
+          :rules="[rules.required()]"
+          :label="t('forms.formUser.nome_fantasia.label', 'Nome Fantasia do Estabelecimento *')"
+          density="comfortable"
+          variant="outlined"
+          class="mb-2"
+        />
+      </div>
+    </v-expand-transition>
 
     <InputUserDocumento
       v-model:documento="formData.documento"
@@ -48,7 +62,7 @@ import InputUserDocumento from '../fixtures/InputUserDocumento.vue';
 import type { IOnboardingData } from '@/classes/models/ModelOnboardingData';
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   loading: boolean
@@ -64,16 +78,29 @@ const { t } = useI18n();
 const formRef = ref()
 const isValid = ref(false)
 
+const now = new Date();
+const data_renovacao_default = new Date(now);
+data_renovacao_default.setFullYear(now.getFullYear() + 2);
+
 const formData = ref<IOnboardingData>({
   avatar_url: '',
   cargo: 'aluno',
   codigo_otp: '',
   documento: '',
   celular_contato: '',
+  nome_fantasia: '',
+  data_renovacao: data_renovacao_default
+});
+
+const hasOtp = computed(() => formData.value.codigo_otp && formData.value.codigo_otp.trim().length > 0)
+
+watch(() => formData.value.cargo, (novoCargo) => {
+  if (novoCargo !== 'parceiro') formData.value.nome_fantasia = '';
 })
 
 async function handleSubmit(event: any) {
   const { valid } = await event;
   if (valid) emit('submit', { ...formData.value });
 }
+
 </script>

@@ -1,7 +1,7 @@
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 import { supabase } from '@/services/supabase'
 import type { User, Session } from '@supabase/supabase-js'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -12,17 +12,16 @@ export const useAuthStore = defineStore('auth', () => {
   const fetchPromise = ref<Promise<any> | null>(null)
   const loading = ref(true)
 
-  const router = useRouter()
   const route = useRoute()
 
   const isAuthenticated = computed(() => !!user.value)
   const isAdmin = computed(() => userProfile.value?.cargo === 'diretoria')
   const isProfileComplete = computed(() => !!userProfile.value?.documento || !!userProfile.value?.cargo)
 
-  async function fetchUser(userId: string) {
+  async function fetchUser(userId: string, forceRefresh: boolean = false) {
     if (!userId) return
 
-    if (userProfile.value?.id === userId) {
+    if (!forceRefresh && userProfile.value?.id === userId) {
       return userProfile.value
     }
 
@@ -71,6 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (user.value) {
         await fetchUser(user.value.id)
 
+        const { default: router } = await import('@/router')
         if (!isProfileComplete.value && router.currentRoute.value.name !== 'Onboarding') {
           router.push({ name: 'Onboarding' })
         }
@@ -98,6 +98,8 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     session.value = null
     userProfile.value = null
+
+    const { default: router } = await import('@/router')
     router.push({ name: 'Login' })
   }
 

@@ -1,7 +1,7 @@
 import { useQuotationStore } from '@/stores/quotationStore'
 import { BASE_CURRENCY, getCurrency } from '@/locales/definitionsLocales'
 import { i18n } from '@/plugins/i18n'
-import { ROLE_TRANSLATIONS, validRoles, type TRole } from './models/resources/ModelUser'
+import { ROLE_TRANSLATIONS, validRoles, type TRole } from './models/resources/ModelUsuarios'
 
 export class ClassFormatters {
   static formatBoolean(value: boolean, filterLabelKey?: string): string {
@@ -42,8 +42,8 @@ export class ClassFormatters {
     return `${minutesMath}:${secondsMath.toString().padStart(2, '0')}`
   }
 
-  static formatAmountIngredient(amount: number, measurement: string): string {
-    return `${amount} ${measurement}`
+  static formatPercent(value: number): string {
+    return `${value} %`
   }
 
   static formatRolesTranslate(role: TRole): string {

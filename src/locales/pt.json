@@ -191,7 +191,7 @@
       },
       "especificacoes_produto": {
         "headerTable": "Especificações",
-        "label": "Especificações do produto"        
+        "label": "Especificações do produto"
       },
       "valor_produto": {
         "headerTable": "Preço",
@@ -221,7 +221,7 @@
       "idNotification": {
         "headerTable": "Id",
         "label": "Id"
-      },      
+      },
       "title": {
         "headerTable": "Título",
         "label": "Título da notificação"
@@ -303,8 +303,14 @@
     "errors": {
       "reqGenerics": "Ocorreu um erro na requisição!",
       "accessDenied": "Você não tem permissão para acessar esta página",
+      "accessInactive": "Sua conta está inativa, entre em contato com um administrador para recuperar o seu acesso!",
       "requiredAuth": "Você precisa estar autenticado para acessar. Faça login!",
       "searchQuote": "Erro ao buscar cotação para: "
+    },
+    "rules": {
+      "positive": "O valor não pode ser negativo",
+      "min": "O valor mínimo permitido é: {min}",
+      "max": "O valor máximo permitido é: {max}"
     },
     "forms": {
       "saveSuccess": "Salvo com sucesso",

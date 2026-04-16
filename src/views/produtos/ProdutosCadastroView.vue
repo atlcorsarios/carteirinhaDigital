@@ -2,7 +2,8 @@
   <GenericView
     ref="genericView"
     :headers="ClassProdutos.headers"
-    :id-field="'id'"
+    id-field="id"
+    cursor-key="created_at"
     :showIdInTextEdit="false"
     :title="'dataTable.products'"
     :context-id="String(route.name)"
@@ -15,14 +16,15 @@
     :icon-save="'mdi-package-variant-closed-check'"
     :dialog-model-manager="dialogProduct"
     :class-model-manager="productModelManager"
-    :service-fetch="buscarProdutosPaginado"
+    :service-fetch="fetchItems"
     :service-save="ProductsService.saveProduct"
     :service-delete="ProductsService.inactivateProduct"
+    :select-items="false"
   >
-    <template #form="{ model, updateValid, refForm, submitForm }">
+    <template #form="{ updateValid, refForm, submitForm }">
       <ProductForm
         :ref="refForm"
-        :produto="model"
+        v-model:produto="productModelManager.model"
         @update:valid="updateValid"
         @submit="submitForm"
       />
@@ -53,7 +55,7 @@ import { ClassProdutos } from '@/classes/resources/ClassProdutos'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { ProductsService } from '@/services/resources/productsService'
+import { ProductsService } from '@/services/resources/produtosService'
 
 // Store
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
@@ -74,7 +76,7 @@ const dialogProduct = new ClassBaseDialog<IProdutos>({
   maxWidth: 800,
 });
 
-const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) => {
+const fetchItems = async (payload: TPayloadRequestPagination) => {
   const isParceiro = authStore.userProfile?.cargo === 'parceiro';
   const idParceiro = authStore.userProfile?.id;
 
@@ -92,14 +94,10 @@ const buscarProdutosPaginado = async (limit: number, lastCursor: string | null) 
     }
   }
 
-  const payload: TPayloadRequestPagination = {
-    limit,
-    cursor: lastCursor,
-    filters: [
-      ...queryFilterStore.activeFilters,
-      filtroEstaticoDaTela
-    ]
-  }
+  payload.filters = [
+    ...queryFilterStore.activeFilters,
+    filtroEstaticoDaTela
+  ]
 
   return await ProductsService.paginationsProducts(payload, 'produtos');
 }

@@ -1,3 +1,5 @@
+import type { IProdutosDetalhados } from "./ModelIProdutos"
+
 export interface IPromocoes {
   id: string
   descricao_promocao: string
@@ -9,4 +11,12 @@ export interface IPromocoes {
 
 export interface IPromocaoProdutoPivot {
   promocoes: IPromocoes
+}
+
+export interface IProdutoPromocaoPivot {
+  produtos: IProdutosDetalhados
+}
+
+export interface IPromocoesDetalhadas extends IPromocoes {
+  promocao_produtos?: IPromocaoProdutoPivot[]
 }

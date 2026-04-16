@@ -38,4 +38,15 @@ export class RenovacoesService {
       throw error
     }
   }
+
+  static async getHistoricoPorUsuario(idUsuario: string): Promise<any[]> {
+    const { data, error } = await supabase
+      .from('renovacoes')
+      .select('*')
+      .eq('id_usuario', idUsuario)
+      .order('data_processamento', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  }
 }

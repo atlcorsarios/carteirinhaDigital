@@ -8,17 +8,19 @@
           class="mb-5"
         />
       </v-col>
+
       <v-col cols="12" md="6">
         <v-text-field
           v-model="profile.username"
-          :counter="30"
           :rules="[rules.required(), rules.maxLength(30)]"
           :label="t('forms.formUser.username.label')"
           :hint="t('forms.formUser.username.hint')"
+          :counter="30"
           density="compact"
           variant="outlined"
         />
       </v-col>
+
       <v-col cols="12" md="6">
         <v-mask-input
           v-model="profile.celular_contato"
@@ -35,6 +37,16 @@
         <InputUserRole
           v-model:role="profile.cargo"
           v-model:otp="otp"
+          :user="profile"
+        />
+      </v-col>
+
+      <v-col v-if="profile.cargo === 'parceiro'" cols="12">
+        <v-text-field
+          v-model="nome_fantasia"
+          :label="t('forms.formParceiro.nome_fantasia.label')"
+          density="compact"
+          variant="outlined"
         />
       </v-col>
 
@@ -48,6 +60,7 @@
           variant="outlined"
         />
       </v-col>
+
       <v-col cols="12" md="6">
         <InputUserDocumento
           v-model:documento="profile.documento"
@@ -55,7 +68,9 @@
         />
       </v-col>
     </v-row>
+
     <v-divider />
+
     <div class="d-flex justify-center mt-3">
       <v-icon-btn
         type="submit"
@@ -75,23 +90,24 @@
 import InputUploadImage from '../fixtures/InputUploadImage.vue'
 import InputUserRole from '../fixtures/InputUserRole.vue'
 import InputUserDocumento from '../fixtures/InputUserDocumento.vue'
-import { type IUser } from '@/classes/models/resources/ModelUser'
+import { type IUser } from '@/classes/models/resources/ModelUsuarios'
 import { useRules } from 'vuetify/labs/rules'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const rules = useRules()
-const { t } = useI18n()
-const formRef = ref<any>(null)
+const rules = useRules();
+const { t } = useI18n();
+const formRef = ref<any>(null);
 
 const props = defineProps<{
   loading: boolean
-}>()
+}>();
 
-const profile = defineModel<IUser>('profile', { required: true })
-const otp = defineModel<string>('otp', { required: true })
-const formIsValid = defineModel<boolean>('valid', { default: false })
-const emit = defineEmits(['submit'])
+const profile = defineModel<IUser>('profile', { required: true });
+const otp = defineModel<string>('otp', { required: true });
+const nome_fantasia = defineModel<string>('nome_fantasia');
+const formIsValid = defineModel<boolean>('valid', { default: false });
+const emit = defineEmits(['submit']);
 
 async function handleSubmit() {
   const { valid } = await formRef.value?.validate()
@@ -106,6 +122,6 @@ defineExpose({
     const { valid } = await formRef.value?.validate()
     return valid
   },
-})
+});
 
 </script>

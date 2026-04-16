@@ -1,11 +1,11 @@
 import type { IHeadersDataTable, TEntityConfig } from '../models/modelComponents/ModelHeaderTable'
 import type { IFilterColumn } from '../models/ModelFilterColumns'
-import type { IUser } from '@/classes/models/resources/ModelUser'
+import type { IUser } from '@/classes/models/resources/ModelUsuarios'
 import type { IQueryFilter } from '../models/modelComponents/ModelQueryFilter'
 import { BaseClass } from '../subscriptions/BaseClass'
 import { ClassFormatters } from '../ClassFormatters'
 
-export class ClassUsers extends BaseClass<IUser> {
+export class ClassUsuarios extends BaseClass<IUser> {
   constructor(data?: Partial<IUser>) {
     super(data)
   }
@@ -19,34 +19,30 @@ export class ClassUsers extends BaseClass<IUser> {
       celular_contato: '',
       documento: '',
       cargo: 'aluno',
-      usuario_ativo: true,
-      created_at: ''
+      created_at: '',
+      usuario_ativo: true
     }
   }
 
   protected getDefault(data: Partial<IUser> = {}): IUser {
-    return this.createWithDefaults(data, ClassUsers.defaultUser())
+    return this.createWithDefaults(data, ClassUsuarios.defaultUser())
   }
 
   static get fieldConfig(): TEntityConfig<IUser> {
     return {
       id: {
-        minWidth: 50,
-        width: 50,
-        maxWidth: 100,
-        excludeFromFilter: true,
-        excludeFromChart: true,
+        hidden: true
       },
       email: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 300,
+        width: 350,
+        maxWidth: 450,
+        minWidth: 300,
         excludeFromChart: true,
       },
       username: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 250,
+        width: 250,
+        maxWidth: 300,
+        minWidth: 200,
         excludeFromChart: true,
       },
       avatar_url: {
@@ -54,25 +50,34 @@ export class ClassUsers extends BaseClass<IUser> {
       },
       celular_contato: {
         align: 'end',
-        minWidth: 100,
-        width: 100,
+        width: 150,
         maxWidth: 200,
+        minWidth: 100,
         excludeFromChart: true,
       },
       documento: {
-        minWidth: 100,
-        width: 100,
+        width: 150,
         maxWidth: 300,
+        minWidth: 100,
         excludeFromChart: true,
       },
       cargo: {
-        chartFormatter: ClassFormatters.formatRolesTranslate,
-        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo),
-        minWidth: 100,
-        width: 100,
-        maxWidth: 100,
+        align: 'center',
+        width: 350,
+        maxWidth: 400,
+        minWidth: 300,
         filterType: 'select',
-        selectOptions: ClassFormatters.formatOptionsRoles()
+        selectOptions: ClassFormatters.formatOptionsRoles(),
+        chartFormatter: ClassFormatters.formatRolesTranslate,
+        value: (user: IUser) => ClassFormatters.formatRolesTranslate(user.cargo)
+      },
+      created_at: {
+        width: 250,
+        maxWidth: 300,
+        minWidth: 200,
+        chartFormatter: ClassFormatters.formatDate,
+        value: (user: IUser) => ClassFormatters.formatDate(user.created_at),
+        excludeFromChart: true,
       },
       usuario_ativo: {
         align: 'center',
@@ -80,30 +85,24 @@ export class ClassUsers extends BaseClass<IUser> {
         value: (user: IUser) => ClassFormatters.formatBoolean(user.usuario_ativo),
         width: 50,
       },
-      created_at: {
-        minWidth: 100,
-        width: 100,
-        maxWidth: 300,
-        excludeFromChart: true,
-      }
     }
   }
 
   static get headers(): IHeadersDataTable[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassUsuarios().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
       'forms.formUser',
-      ClassUsers.fieldConfig,
+      ClassUsuarios.fieldConfig,
     )
   }
 
   static get filters(): IFilterColumn[] {
-    const defaultModel = new ClassUsers().getDefault()
+    const defaultModel = new ClassUsuarios().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formUser',
-      ClassUsers.fieldConfig,
+      ClassUsuarios.fieldConfig,
     )
   }
 

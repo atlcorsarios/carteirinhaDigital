@@ -23,17 +23,19 @@
         ref="infiniteListRef"
         :context-id="`search-dialog-${storageContext}`"
         :showEmpty="false"
-        :fetch-data="adapterFetch"
+        :service-fetch="adapterFetch"
         :listen-global-filters="false"
+        :cursor-key="cursorKey"
       >
         <template v-slot="{ items, loading }">
           <GridDataChart :hidden-chart="true">
             <template #dataTable>
               <DataTable
                 :id="`table-search-${storageContext}`"
+                :headers="headers"
                 :items="items"
                 :loading="loading"
-                :headers="headers"
+                :title="title"
                 :has-actions="false"
                 :select-items="selectItems"
                 :multiple-select="isMultiple"
@@ -80,19 +82,24 @@ import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ClassQueryFilter } from '@/classes/ClassQueryFilter'
 import { ClassGridDataChart } from '@/classes/ClassGridDataChart'
 
+// Stores
+import { useGenericListStore } from '@/stores/genericListStore'
+
 // Composables
 import { useSnackbar } from '@/composables/useSnackbar'
 
 // Vue
 import { useI18n } from 'vue-i18n'
-import { ref, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const { t } = useI18n();
 const { notify } = useSnackbar();
+const listStore = useGenericListStore()
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   title: string
   storageContext: string
+  cursorKey?: string
   filters: any[]
   headers: any[]
   hasCreateQuickly: boolean
@@ -102,7 +109,11 @@ const props = defineProps<{
   dialogSearchModel: ClassBaseDialog
   selectItems?: boolean
   isMultiple?: boolean
-}>();
+}>(), {
+  cursorKey: 'created_at',
+  selectItems: true,
+  isMultiple: false
+});
 
 const selectedItens = defineModel<T[]>('selectedItens', { default: () => [] });
 const emits = defineEmits(['select-item']);
@@ -187,8 +198,35 @@ function handleSelectItem(item: T) {
   emits('select-item', item)
 }
 
-function handleCreateQuickly(item: T) {
-  handleSelectItem(item)
+function handleCreateQuickly(newItem: any) {
+  listStore.prependItem(`search-dialog-${props.storageContext}`, newItem)
+
+  if (props.isMultiple) {
+    if (!selectedItens.value) selectedItens.value = []
+    const exists = selectedItens.value.find((i: any) => i.id === newItem.id)
+    if (!exists) selectedItens.value.push(newItem)
+
+  } else {
+    selectedItens.value = [newItem]
+  }
+
+  if (classDialogCreateQuickly) {
+    classDialogCreateQuickly.model.view = false
+  }
 }
+
+watch(() => props.dialogSearchModel.model.view, (isOpen) => {
+  if (isOpen) {
+    const currentItems = listStore.getItems(`search-dialog-${props.storageContext}`)
+
+    if (currentItems.length === 0) {
+      setTimeout(() => {
+        if (infiniteListRef.value && infiniteListRef.value.loadMore) {
+          infiniteListRef.value.loadMore({ done: () => {} })
+        }
+      }, 200)
+    }
+  }
+})
 
 </script>

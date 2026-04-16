@@ -10,7 +10,7 @@ export class ClassProdutos extends BaseClass<IProdutos> {
     super(data)
   }
 
-  static defaultProduct(): IProdutos {
+  static defaultProduto(): IProdutos {
     return {
       id: '',
       id_parceiro: '',
@@ -20,14 +20,13 @@ export class ClassProdutos extends BaseClass<IProdutos> {
       valor_produto: 0.0,
       avatar_url_produto: '',
       estoque: 0.0,
-      ativo: true,
-      parceiro: null
+      ativo: true
     }
   }
 
   protected getDefault(data: unknown = {}): IProdutos {
     const item = data as Partial<IProdutos>
-    return this.createWithDefaults(item, ClassProdutos.defaultProduct())
+    return this.createWithDefaults(item, ClassProdutos.defaultProduto())
   }
 
   static get fieldConfig(): TEntityConfig<IProdutos> {
@@ -77,9 +76,6 @@ export class ClassProdutos extends BaseClass<IProdutos> {
         minWidth: 50,
         chartFormatter: ClassFormatters.formatBoolean,
         value: (produto: IProdutos) => ClassFormatters.formatBoolean(produto.ativo),
-      },
-      parceiro: {
-        hidden: true
       }
     }
   }
@@ -95,18 +91,16 @@ export class ClassProdutos extends BaseClass<IProdutos> {
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassProdutos().getDefault()
-    const autoFilters = BaseClass.generateFiltersFromModel(
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formProduct',
       ClassProdutos.fieldConfig,
     )
-
-    return autoFilters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {
     return {
-      field: 'description',
+      field: 'descricao_produto',
       condition: 'contains',
     }
   }

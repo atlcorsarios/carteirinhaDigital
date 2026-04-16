@@ -79,7 +79,7 @@ const loading = ref<boolean>(false);
 
 interface Props {
   contextId: string
-  fetchData: (limit: number, cursor: any) => Promise<any[]>
+  serviceFetch: (limit: number, cursor: any) => Promise<any[]>
   limitOptions?: number[]
   cursorKey?: string
   showEmpty?: boolean
@@ -103,6 +103,10 @@ const currentLimit = ref(props.limitOptions[0]);
 
 const resetAndLoad = async () => {
   store.resetContext(props.contextId)
+
+  setTimeout(() => {
+    loadMore({ done: () => {} })
+  }, 100)
 }
 
 const loadMore = async ({ done }: any) => {
@@ -114,8 +118,7 @@ const loadMore = async ({ done }: any) => {
   loading.value = true
 
   try {
-    const newItems = await props.fetchData(currentLimit.value, lastCursor.value)
-
+    const newItems = await props.serviceFetch(currentLimit.value, lastCursor.value)
     if (newItems.length > 0) {
       const nextCursor = newItems[newItems.length - 1][props.cursorKey]
       const nextHasMore = newItems.length >= currentLimit.value
@@ -123,8 +126,7 @@ const loadMore = async ({ done }: any) => {
       store.addItems(props.contextId, newItems, nextCursor, nextHasMore)
       done(nextHasMore ? 'ok' : 'empty')
     } else {
-      store.resetContext(props.contextId)
-      store.addItems(props.contextId, [], null, false)
+      store.addItems(props.contextId, [], lastCursor.value, false)
       done('empty')
     }
   } catch (error) {
@@ -145,6 +147,7 @@ watch(() => queryFilterStore.searchTrigger, () => {
 });
 
 defineExpose({
+  loadMore,
   resetAndLoad
 });
 
