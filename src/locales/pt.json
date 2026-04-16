@@ -309,6 +309,24 @@
         "headerTable": "Ativo",
         "label": "Ativo"
       }
+    },
+    "formDescontos": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "descricao": {
+        "headerTable": "Descrição",
+        "label": "Descrição do desconto"
+      },
+      "cargos_beneficiados": {
+        "headerTable": "Cargos",
+        "label": "Cargos beneficiados"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
     }
   },
   "tooltips": {
@@ -392,9 +410,9 @@
         "create": "Criar benefício",
         "edit": "Editar benefício"
       },
-      "formIngredient": {
-        "createIngredient": "Criar ingrediente",
-        "editingIngredient": "Editar ingrediente"
+      "formDescontos": {
+        "create": "Criar desconto geral",
+        "edit": "Editar desconto geral"
       },
       "formStock": {
         "addInventory": "Adicionar ao estoque",
@@ -439,6 +457,7 @@
     "notifications": "Lista de notificações",
     "promocoes": "Lista de promoções",
     "beneficios": "Lista de benefícios",
+    "descontos": "Lista de descontos na atlética",
     "headersDefault": {
       "actions": "Ações"
     }

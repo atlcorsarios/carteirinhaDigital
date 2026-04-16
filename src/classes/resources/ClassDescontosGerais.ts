@@ -31,10 +31,9 @@ export class ClassDescontosGerais extends BaseClass<IDescontosGerais> {
         hidden: true
       },
       descricao: {
-        align: 'center',
-        width: 700,
-        maxWidth: 850,
-        minWidth: 250,
+        width: 1000,
+        maxWidth: 1100,
+        minWidth: 800,
         excludeFromChart: true,
       },
       cargos_beneficiados: {
@@ -58,7 +57,7 @@ export class ClassDescontosGerais extends BaseClass<IDescontosGerais> {
     const defaultModel = new ClassDescontosGerais().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
-      'forms.formDesconto',
+      'forms.formDescontos',
       ClassDescontosGerais.fieldConfig,
     )
   }
@@ -67,7 +66,7 @@ export class ClassDescontosGerais extends BaseClass<IDescontosGerais> {
     const defaultModel = new ClassDescontosGerais().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
-      'forms.formDesconto',
+      'forms.formDescontos',
       ClassDescontosGerais.fieldConfig,
     )
   }
