@@ -51,11 +51,10 @@ export const useGenericListStore = defineStore('genericList', () => {
     if (contexts.value[contextId]) {
       const currentArray = contexts.value[contextId].items
       const index = currentArray.findIndex(item => item[idField] === idValue)
-
       if (index !== -1) {
-        const novosItens = [...currentArray]
-        novosItens[index] = { ...novosItens[index], ...newValues }
-        contexts.value[contextId].items = novosItens
+        Object.assign(currentArray[index], newValues)
+      } else {
+        console.warn(`[Store] Item não encontrado para update! Contexto: ${contextId} | Busca: ${idField} === ${idValue}`);
       }
     }
   }

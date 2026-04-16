@@ -149,7 +149,7 @@ const props = defineProps<{
   hasMoreDetails?: boolean
   selectItems?: boolean
   applyNewValues?: boolean
-  newValuesUpdate?: any[]
+  newValuesUpdate?: Record<string, any>;
 }>();
 
 const adapterFetch = async (limit: number, cursor: any) => {

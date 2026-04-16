@@ -58,13 +58,13 @@ const props = withDefaults(defineProps<{
   textConfirm?: string
   messageSuccess?: string
   applyNewValues?: boolean
-  newValuesUpdate?: any[]
+  newValuesUpdate?: Record<string, any>;
 }>(), {
   textTitle: 'messages.dialogs.confirmInactive.title',
   textConfirm: 'messages.dialogs.confirmInactive.message',
   messageSuccess: 'messages.forms.inactiveSuccess',
   applyNewValues: true,
-  newValuesUpdate:() => []
+  newValuesUpdate: () => ({ ativo: false })
 });
 
 const emit = defineEmits(['deleted', 'error']);
@@ -98,9 +98,9 @@ async function executeDelete() {
 
     await nextTick();
 
-    const newValues = ref<any>();
-    props.applyNewValues ? Object.assign(newValues.value, { ativo: false, ...props.newValuesUpdate }) : {}
-    listStore.updateItem(props.contextId, props.idField, idItem, newValues.value);
+    if (props.applyNewValues && props.newValuesUpdate) {
+      listStore.updateItem(props.contextId, props.idField, idItem, props.newValuesUpdate);
+    }
 
   } catch (error: any) {
     notify(error, 'error');

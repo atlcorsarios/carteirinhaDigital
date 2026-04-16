@@ -38,13 +38,13 @@ export class OtpResourceService {
       query = applySupabaseFilters(query, payload.filters, ClassOTP.filters);
 
       if (payload.cursor) {
-        query = query.gt('id', payload.cursor);
+        query = query.lt('created_at', payload.cursor);
       }
       if (payload.limit) {
         query = query.limit(payload.limit);
       }
 
-      query = query.order('id', { ascending: true });
+      query = query.order('created_at', { ascending: false });
       const { data, error } = await query;
 
       if (error) throw error
@@ -62,10 +62,23 @@ export class OtpResourceService {
       const dbPayload: Record<string, any> = {}
 
       for (const [key, value] of Object.entries(rawPayload)) {
-        if (key === 'plano' || key === 'usuario_destino' || key === 'usuario_gerador' || key === 'assinatura') continue;
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) continue;
+        if (key === 'plano' || key === 'usuario_destino' || key === 'usuario_gerador') continue;
 
-        dbPayload[key] = value === '' ? null : value
+        if (value === '' || value === null || value === undefined) {
+          dbPayload[key] = null;
+          continue;
+        }
+
+        if (value instanceof Date) {
+          dbPayload[key] = value.toISOString();
+          continue;
+        }
+
+        if (typeof value === 'object' && !Array.isArray(value)) {
+          continue;
+        }
+
+        dbPayload[key] = value;
       }
 
       const isUpdate = id && id.length > 10

@@ -31,13 +31,11 @@
 <script setup lang="ts">
 import GenericView from '@/components/layouts/generics/GenericView.vue'
 import BeneficioForm from '@/components/forms/resources/BeneficioForm.vue'
-
 import type { IBeneficios } from '@/classes/models/resources/ModelIBeneficios'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassBeneficios } from '@/classes/resources/ClassBeneficios'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { BeneficiosService } from '@/services/resources/beneficiosService'
-
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 

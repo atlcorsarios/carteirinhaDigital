@@ -15,7 +15,7 @@ export class ClassOTP extends BaseClass<IOTPCodeDetalhado> {
   static defaultOTP(): IOTPCodeDetalhado {
     const now = new Date();
     const data_expiracao_default = new Date(now);
-    data_expiracao_default.setMinutes(now.getMinutes() + 10);
+    data_expiracao_default.setMinutes(now.getMinutes() + 20);
 
     return {
       id: '',
@@ -70,8 +70,8 @@ export class ClassOTP extends BaseClass<IOTPCodeDetalhado> {
         width: 400,
         maxWidth: 450,
         minWidth: 350,
-        chartFormatter: ClassFormatters.formatDate,
-        value: (otp: IOTPCodeDetalhado) => ClassFormatters.formatDate(otp.data_expiracao),
+        chartFormatter: ClassFormatters.formatDateTime,
+        value: (otp: IOTPCodeDetalhado) => ClassFormatters.formatDateTime(otp.data_expiracao),
         excludeFromChart: true,
       },
       usado: {
@@ -90,8 +90,8 @@ export class ClassOTP extends BaseClass<IOTPCodeDetalhado> {
         width: 400,
         maxWidth: 450,
         minWidth: 350,
-        chartFormatter: ClassFormatters.formatDate,
-        value: (otp: IOTPCodeDetalhado) => ClassFormatters.formatDate(otp.data_expiracao),
+        chartFormatter: ClassFormatters.formatDateTime,
+        value: (otp: IOTPCodeDetalhado) => ClassFormatters.formatDateTime(otp.data_expiracao),
         excludeFromChart: true,
       },
       created_at: {
