@@ -4,7 +4,7 @@
     id-field="id"
     cursor-key="created_at"
     context-id="admin-otp"
-    :title="t('dataTable.otp')"
+    :title="'dataTable.otp'"
     :hasActions="true"
     :hasMoreDetails="true"
     :text-create="t('messages.forms.formOtp.create')"

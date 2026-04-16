@@ -453,6 +453,7 @@
   },
   "dataTable": {
     "users": "Lista de usuários",
+    "assinaturas": "Lista de assinaturas",
     "products": "Lista de produtos",
     "notifications": "Lista de notificações",
     "promocoes": "Lista de promoções",

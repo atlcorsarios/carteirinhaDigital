@@ -4,7 +4,7 @@
     id-field="id"
     cursor-key="created_at"
     :context-id="String(route.name)"
-    :title="t('dataTable.users')"
+    :title="'dataTable.users'"
     :hasActions="true"
     :text-create="t('messages.forms.formUsers.createUser')"
     :text-edit="t('messages.forms.formUsers.editingUser')"
