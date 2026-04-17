@@ -20,6 +20,8 @@
         :strategy="multipleSelect ? 'multiple' : 'single'"
         :return-object="selectItems"
         :show-select="selectItems"
+        :value-comparator="(a, b) => (a?.[props.id] || a) === (b?.[props.id] || b)"
+        :item-value="id"
         :id="id"
         :headers="headers"
         :items="items"
@@ -29,9 +31,9 @@
         :mobile-breakpoint="0"
         :row-props="rowProps"
         fixed-header
+        hover
         density="compact"
         striped="even"
-        hover
         @click:row="clickOnTheLine"
       >
         <template
@@ -139,7 +141,7 @@ const props = withDefaults(
 );
 
 const dataTable = defineModel<IModelValueDataTable<T>>('dataTable', { required: true });
-const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: [{}] });
+const selectedItens = defineModel<T[]>('selectedItens', { required: false, default: () => [] });
 
 const emits = defineEmits<{
   (e: 'selected-item', item: T): void
@@ -185,15 +187,22 @@ function toggleHeader(key?: string) {
 }
 
 const clickOnTheLine = (_event: Event, { item }: T) => {
+  if (!props.selectItems) return;
+
   const rawItem = item?.raw || item;
-  const id = rawItem.id || rawItem;
-  const index = selectedItens.value.indexOf(id)
+  const itemId = rawItem?.[props.id] || rawItem;
+
+  const index = selectedItens.value.findIndex((selected: any) =>
+    (selected?.[props.id] || selected) === itemId
+  );
+
   if (index > -1) {
     selectedItens.value.splice(index, 1)
   } else {
-    selectedItens.value.push(item)
+    selectedItens.value.push(rawItem);
   }
-  emits('selected-item', item)
+
+  emits('selected-item', rawItem);
 }
 
 const rowProps = (data: any) => {

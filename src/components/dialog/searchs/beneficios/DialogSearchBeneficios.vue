@@ -12,6 +12,7 @@
     :is-multiple="true"
     :select-items="true"
     v-model:selectedItens="selectedItens"
+    @select-item="(item) => emits('select-item', item)"
   >
     <template #action-btn="{ openCreate }">
       <v-icon-btn
@@ -44,18 +45,23 @@
 </template>
 
 <script setup lang="ts">
+// Componentes
 import GenericSearchDialog from '../GenericSearchDialog.vue';
 import BtnOpenDialog from '../../BtnOpenDialog.vue';
 import CreatedFastBeneficios from './CreatedFastBeneficios.vue';
 
+// Models
 import { type IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter';
 import { type IBeneficios } from '@/classes/models/resources/ModelIBeneficios';
 
+// Classes
 import { ClassBeneficios } from '@/classes/resources/ClassBeneficios';
 import { type ClassBaseDialog } from '@/classes/ClassBaseDialog';
 
+// Services
 import { BeneficiosService } from '@/services/resources/beneficiosService';
 
+// Vue
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -71,5 +77,7 @@ const staticFiltersBeneficios: IQueryFilter[] = [{
 
 const selectedItens = defineModel<IBeneficios[]>('selectedItens', { required: true })
 const dialogSearchModel = defineModel<ClassBaseDialog<any>>('attributes', { required: true });
+
+const emits = defineEmits(['select-item']);
 
 </script>
