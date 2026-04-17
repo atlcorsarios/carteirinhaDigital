@@ -187,8 +187,6 @@ function toggleHeader(key?: string) {
 }
 
 const clickOnTheLine = (_event: Event, { item }: T) => {
-  if (!props.selectItems) return;
-
   const rawItem = item?.raw || item;
   const itemId = rawItem?.[props.id] || rawItem;
 

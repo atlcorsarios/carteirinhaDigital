@@ -9,6 +9,7 @@ export interface IPropsCustomInputs {
   density?: Density | undefined
   variant?: "outlined" | "filled" | "plain" | "solo" | "solo-filled" | "solo-inverted" | "underlined" | undefined
   disabled?: boolean
+  readonly?: boolean
   size?: number | string
   rules?: any[]
 }
