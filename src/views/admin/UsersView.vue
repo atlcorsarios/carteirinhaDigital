@@ -6,6 +6,7 @@
     :context-id="String(route.name)"
     :title="'dataTable.users'"
     :hasActions="true"
+    :has-more-details="true"
     :text-create="t('messages.forms.formUsers.createUser')"
     :text-edit="t('messages.forms.formUsers.editingUser')"
     :icon-create="'mdi-account-plus'"
@@ -25,6 +26,12 @@
         :loading="loading"
         @update:valid="updateValid"
         @submit="submitForm"
+      />
+    </template>
+    <template #moreDetails="{ item, close }">
+      <MoreUsuariosDetails
+        :usuario="item"
+        @close="close"
       />
     </template>
   </GenericView>
@@ -49,6 +56,7 @@ import { UsersService } from '@/services/resources/usuariosService'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
+import MoreUsuariosDetails from '@/components/MoreDetails/MoreUsuariosDetails.vue'
 
 const { t } = useI18n();
 const route = useRoute();
@@ -69,4 +77,5 @@ const userModelManager = {
     classUser.updateModel(item)
   },
 }
+
 </script>
