@@ -17,8 +17,10 @@ export const QUERY_SELECT_OTP_FULL_JOIN = `
     usuario_ativo
   ),
   plano:planos (
+    id,
     nome,
     descricao,
+    preco,
     dias_validade,
     ativo,
     created_at

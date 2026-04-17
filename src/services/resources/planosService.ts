@@ -4,6 +4,7 @@ import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPagi
 import { QUERY_SELECT_PLANOS_FULL_JOIN } from './queries/queriesPlanos';
 import { applySupabaseFilters } from '@/utils/supabaseFilterUtils';
 import { supabase } from '@/services/supabase'
+import { PlanoBeneficiosService } from './planoBeneficiosService';
 
 export class PlanosService {
   static async fetchPlano(idPlano: string, fromTable: string = 'planos', withDetails: boolean = true): Promise<IPlanosDetalhados> {
@@ -54,21 +55,48 @@ export class PlanosService {
 
       for (const [key, value] of Object.entries(rawPayload)) {
         if (key === 'beneficios' || key === 'plano_beneficios') continue;
+
+        if (value instanceof Date) {
+          dbPayload[key] = value.toISOString();
+          continue;
+        }
+
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) continue;
         dbPayload[key] = value === '' ? null : value
       }
 
-      const isUpdate = id && id.length > 10
+      const isUpdate = id && id.length > 10;
+      let savedPlanoId = id;
 
       if (isUpdate) {
-        const { data, error } = await supabase.from('planos').update(dbPayload).eq('id', id).select(QUERY_SELECT_PLANOS_FULL_JOIN as any).single()
-        if (error) throw error
-        return (data as unknown) as IPlanosDetalhados
+        const { error } = await supabase.from('planos').update(dbPayload).eq('id', id);
+        if (error) throw error;
       } else {
-        const { data, error } = await supabase.from('planos').insert(dbPayload).select(QUERY_SELECT_PLANOS_FULL_JOIN as any).single()
-        if (error) throw error
-        return (data as unknown) as IPlanosDetalhados
+        const { data, error } = await supabase.from('planos').insert(dbPayload).select('id').single();
+        if (error) throw error;
+        savedPlanoId = data.id;
       }
+
+      // ==========================================
+      // CHAMA O SERVICE DE RELACIONAMENTO
+      // ==========================================
+      if (savedPlanoId) {
+        await PlanoBeneficiosService.saveRelationship(savedPlanoId, plano_beneficios);
+      }
+
+      // ==========================================
+      // RETORNA O PLANO COMPLETO ATUALIZADO
+      // ==========================================
+      const { data: planoCompleto, error: fetchErr } = await supabase
+        .from('planos')
+        .select(QUERY_SELECT_PLANOS_FULL_JOIN as any)
+        .eq('id', savedPlanoId)
+        .single();
+
+      if (fetchErr) throw fetchErr;
+
+      return (planoCompleto as unknown) as IPlanosDetalhados;
+
     } catch (error) {
       console.error('Erro ao salvar o plano:', error)
       throw error
