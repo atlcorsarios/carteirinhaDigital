@@ -389,7 +389,8 @@
       },
       "nome": {
         "headerTable": "Título",
-        "label": "Nome do plano (Título)"
+        "label": "Nome do plano",
+        "hint": "Dê um título ao plano"
       },
       "descricao": {
         "headerTable": "Descrição",
@@ -397,11 +398,13 @@
       },
       "preco": {
         "headerTable": "Preço",
-        "label": "Preço do plano"
+        "label": "Preço do plano",
+        "hint": "Preço assinatura:"
       },
       "dias_validade": {
         "headerTable": "Duração",
-        "label": "Duração do plano (validade)"
+        "label": "Duração do plano (validade)",
+        "hint": "Por quantos dias a assinatura é valida"
       },
       "created_at": {
         "headerTable": "Criado em",
@@ -410,6 +413,12 @@
       "ativo": {
         "headerTable": "Ativo",
         "label": "Ativo"
+      },
+      "beneficios": {
+        "headerTable": "Benefícios",
+        "label": "Benefícios vinculados",
+        "hint": "Selecione os benefícios vinculados ao plano",
+        "text": "Benefícios disponibilizados por este plano"
       }
     },
     "formAssinaturas": {
@@ -527,6 +536,10 @@
       "formDescontos": {
         "create": "Criar desconto geral",
         "edit": "Editar desconto geral"
+      },
+      "formPlanos": {
+        "create": "Criar plano",
+        "edit": "Editar plano"
       }
     },
     "dialogs": {
@@ -570,6 +583,8 @@
     "promocoes": "Lista de promoções",
     "beneficios": "Lista de benefícios",
     "descontos": "Lista de descontos na atlética",
+    "parceiros": "Lista de parceiros",
+    "planos": "Lista de planos",
     "headersDefault": {
       "actions": "Ações"
     }
@@ -585,7 +600,10 @@
   },
   "dialogSearch": {
     "searchParceiro": "Parceiros",
-    "searchProduct": "Produtos"
+    "searchProduct": "Produtos",
+    "searchPlano": "Planos",
+    "searchUsuario": "Usuarios",
+    "searchBeneficios": "Benefícios"
   },
   "filterColumn": {
     "operators": {

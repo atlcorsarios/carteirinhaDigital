@@ -6,7 +6,7 @@
           v-model="plano.nome"
           :rules="[rules.required()]"
           :label="t('forms.formPlanos.nome.label')"
-          :hint="t('forms.formPlanos.nome.label')"
+          :hint="t('forms.formPlanos.nome.hint')"
           color="primary"
           variant="outlined"
           density="compact"
@@ -14,10 +14,11 @@
       </v-col>
 
       <v-col cols="12" :md="createFast ? 12 : 4">
-        <InputPositiveNumbers
-          v-model:model="plano.preco"
-          :label="t('forms.formPlanos.preco.label')"
-          :max-value="null"
+        <InputPrice
+          v-model="plano.preco"
+          :label="'forms.formPlanos.preco.label'"
+          :hint="'forms.formPlanos.preco.hint'"
+          :rules="[rules.required()]"
         />
       </v-col>
 
@@ -25,8 +26,8 @@
         <v-col cols="12" md="6">
           <InputPositiveNumbers
             v-model:model="plano.dias_validade"
-            :label="t('forms.formPlanos.dias_validade.label')"
-            :hint="t('forms.formPlanos.dias_validade.hint')"
+            :label="'forms.formPlanos.dias_validade.label'"
+            :hint="'forms.formPlanos.dias_validade.hint'"
             :max-value="730"
           />
         </v-col>
@@ -57,7 +58,7 @@
         <v-col cols="12">
           <v-card variant="tonal" class="pa-4" rounded="lg">
             <div class="text-subtitle-2 font-weight-bold mb-3 text-medium-emphasis">
-              {{ t('forms.formPlano.beneficios.text') }}
+              {{ t('forms.formPlanos.beneficios.text') }}
             </div>
             <InputBeneficios
               v-model="plano.plano_beneficios"
@@ -72,6 +73,7 @@
 
 <script setup lang="ts">
 import InputBeneficios from '../fixtures/InputBeneficios.vue'
+import InputPrice from '../fixtures/InputPrice.vue'
 import InputPositiveNumbers from '../fixtures/InputPositiveNumbers.vue'
 import type { IPlanosDetalhados } from '@/classes/models/resources/ModelIPlanos'
 import { useRules } from 'vuetify/labs/rules'
