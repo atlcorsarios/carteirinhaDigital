@@ -40,11 +40,11 @@ import { useHotkey } from 'vuetify'
 useHotkey('esc', () => {
   if (isDialogVisible.value === true)
     toggleDialog()
-})
+});
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const dialog = defineModel<IModelBaseDialog>('attributes', { required: true })
+const dialog = defineModel<IModelBaseDialog>('attributes', { required: true });
 const isDialogVisible = computed({
   get() {
     return dialog.value?.view ?? false
@@ -54,7 +54,7 @@ const isDialogVisible = computed({
       dialog.value.view = newValue
     }
   },
-})
+});
 
 function toggleDialog() {
   isDialogVisible.value = !isDialogVisible.value
