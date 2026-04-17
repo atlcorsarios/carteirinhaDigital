@@ -70,6 +70,22 @@ export class ClassFormatters {
     }).format(convertedValue)
   }
 
+  static sortNumeric(a: any, b: any): number {
+    const parse = (val: any) => {
+      if (typeof val === 'number') return val;
+      if (!val) return 0;
+
+      const cleanStr = String(val)
+        .replace(/\./g, '')
+        .replace(',', '.')
+        .replace(/[^0-9.-]+/g, '');
+
+      return Number(cleanStr) || 0;
+    };
+
+    return parse(a) - parse(b);
+  }
+
   static formatOptionsRoles(): { title: string, value: TRole }[] {
     return validRoles.map((role) => ({
       title: i18n.global.t(ROLE_TRANSLATIONS[role]),

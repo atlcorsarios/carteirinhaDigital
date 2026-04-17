@@ -47,6 +47,7 @@ export class ClassBeneficios extends BaseClass<IBeneficios> {
         minWidth: 150,
         chartFormatter: ClassFormatters.formatPercent,
         value: (beneficio: IBeneficios) => ClassFormatters.formatPercent(beneficio.desconto_aplicavel),
+        sort: ClassFormatters.sortNumeric
       },
       restricao_beneficio: {
         hidden: true

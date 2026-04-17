@@ -13,6 +13,7 @@ export interface IHeadersDataTable {
   maxWidth?: string | number
   minWidth?: string | number
   sortable?: boolean
+  sort?: (a: any, b: any) => number;
   excludeFromChart?: boolean
   chartAggregator?: 'sum' | 'count'
   chartFormatter?: (value?: any, sufix?: any) => string
