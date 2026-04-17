@@ -5,6 +5,7 @@ export const QUERY_SELECT_PRODUTOS_FULL_JOIN = `
     ativo,
     usuarios (
       username,
+      email,
       avatar_url,
       celular_contato
     )
