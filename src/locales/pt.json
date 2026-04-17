@@ -44,6 +44,10 @@
     "notFound": "Recurso não encontrado"
   },
   "forms": {
+    "campoAtivo": {
+      "true": "Ativo",
+      "false": "Inativo"
+    },
     "formLogin": {
       "text": "Faça login com sua conta do Google para acessar a plataforma, sua carteirinha e nossos parceiros.",
       "email": {
@@ -118,6 +122,60 @@
       },
       "codigo": {
         "label": "Código de verificação do novo cargo"
+      }
+    },
+    "formOTP": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "codigo": {
+        "headerTable": "Código",
+        "label": "Código OTP"
+      },
+      "usuario_destino_id": {
+        "headerTable": "Destinatário",
+        "label": "Usuário destinatário"
+      },
+      "gerado_por": {
+        "headerTable": "Responsável",
+        "label": "Responsável"
+      },
+      "plano_id": {
+        "headerTable": "Plano",
+        "label": "Plano vinculado"
+      },
+      "cargo_destino": {
+        "headerTable": "Cargo",
+        "label": "Novo cargo atribuído"
+      },
+      "data_expiracao": {
+        "headerTable": "Expira em",
+        "label": "Data de expiração do código"
+      },
+      "usado": {
+        "headerTable": "Já utilizado",
+        "label": "Já utilizado"
+      },
+      "data_uso": {
+        "headerTable": "Utilizado em",
+        "label": "Utilizado em"
+      },
+      "created_at": {
+        "headerTable": "Criado em",
+        "label": "Criado em"
+      },
+      "plano": {
+        "headerTable": "Plano",
+        "label": "Plano vinculado"
+      },
+      "usuario_destino": {
+        "headerTable": "Destinatário",
+        "label": "Destinatário"
+      },
+      "usuario_gerador": {
+        "headerTable": "Responsável",
+        "label": "Responsável"
       }
     },
     "formParceiro": {
@@ -250,6 +308,144 @@
         "headerTable": "Data",
         "label": "Data da notificação"
       }
+    },
+    "formPromocoes": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "descricao_promocao": {
+        "headerTable": "Descrição",
+        "label": "Descrição da promoção"
+      },
+      "data_encerramento": {
+        "headerTable": "Encerramento em",
+        "label": "Data de encerramento"
+      },
+      "desconto_aplicavel": {
+        "headerTable": "Desconto",
+        "label": "Percentual de desconto"
+      },
+      "somente_associados": {
+        "headerTable": "Apenas associados",
+        "label": "Disponibilizar somente para associados"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
+    },
+    "formBeneficios": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "id_parceiro": {
+        "headerTable": "Parceiro",
+        "label": "Parceiro vinculado"
+      },
+      "descricao_beneficio": {
+        "headerTable": "Descrição",
+        "label": "Descricao do benefício",
+        "hint": "Ex: 10% off nas terças"
+      },
+      "desconto_aplicavel": {
+        "headerTable": "Desconto (%)",
+        "label": "Percentual de desconto",
+        "hint": "Use valores de 0% a 100%"
+      },
+      "restricao_beneficio": {
+        "headerTable": "Restrição",
+        "label": "Restrição do benefício",
+        "hint": "Ex: Válido apenas nas terças-feiras"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
+    },
+    "formDescontos": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "descricao": {
+        "headerTable": "Descrição",
+        "label": "Descrição do desconto"
+      },
+      "cargos_beneficiados": {
+        "headerTable": "Cargos",
+        "label": "Cargos beneficiados"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
+    },
+    "formPlanos": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "nome": {
+        "headerTable": "Título",
+        "label": "Nome do plano",
+        "hint": "Dê um título ao plano"
+      },
+      "descricao": {
+        "headerTable": "Descrição",
+        "label": "Descrição do plano"
+      },
+      "preco": {
+        "headerTable": "Preço",
+        "label": "Preço do plano",
+        "hint": "Preço assinatura:"
+      },
+      "dias_validade": {
+        "headerTable": "Duração",
+        "label": "Duração do plano (validade)",
+        "hint": "Por quantos dias a assinatura é valida"
+      },
+      "created_at": {
+        "headerTable": "Criado em",
+        "label": "Criado em"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      },
+      "beneficios": {
+        "headerTable": "Benefícios",
+        "label": "Benefícios vinculados",
+        "hint": "Selecione os benefícios vinculados ao plano",
+        "text": "Benefícios disponibilizados por este plano"
+      }
+    },
+    "formAssinaturas": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "usuario_id": {
+        "headerTable": "Usuário",
+        "label": "Usuário"
+      },
+      "plano_id": {
+        "headerTable": "Plano",
+        "label": "Planos vinculado"
+      },
+      "data_inicio": {
+        "headerTable": "Data início",
+        "label": "Data início"
+      },
+      "data_vencimento": {
+        "headerTable": "Data vencimento",
+        "label": "Data vencimento"
+      },
+      "status": {
+        "headerTable": "Status",
+        "label": "Status"
+      }
     }
   },
   "tooltips": {
@@ -321,25 +517,29 @@
         "createUser": "Criar usuário",
         "editingUser": "Editar usuário"
       },
+      "formOTP": {
+        "create": "Criar código OTP",
+        "edit": "Editar código OTP"
+      },
       "formProduct": {
         "createProduct": "Criar produto",
         "editingProduct": "Editar produto"
       },
-      "formCategory": {
-        "createCategory": "Criar Categoria",
-        "editingCategory": "Editar categoria"
+      "formPromocoes": {
+        "create": "Criar Promoção",
+        "edit": "Editar Promoção"
       },
-      "formRecipe": {
-        "createRecipe": "Criar Receita",
-        "editingRecipe": "Editar receita"
+      "formBeneficios": {
+        "create": "Criar benefício",
+        "edit": "Editar benefício"
       },
-      "formIngredient": {
-        "createIngredient": "Criar ingrediente",
-        "editingIngredient": "Editar ingrediente"
+      "formDescontos": {
+        "create": "Criar desconto geral",
+        "edit": "Editar desconto geral"
       },
-      "formStock": {
-        "addInventory": "Adicionar ao estoque",
-        "updateInventory": "Atualizar estoque"
+      "formPlanos": {
+        "create": "Criar plano",
+        "edit": "Editar plano"
       }
     },
     "dialogs": {
@@ -376,8 +576,15 @@
   },
   "dataTable": {
     "users": "Lista de usuários",
+    "assinaturas": "Lista de assinaturas",
+    "otp": "Lista de códigos OTP",
     "products": "Lista de produtos",
     "notifications": "Lista de notificações",
+    "promocoes": "Lista de promoções",
+    "beneficios": "Lista de benefícios",
+    "descontos": "Lista de descontos na atlética",
+    "parceiros": "Lista de parceiros",
+    "planos": "Lista de planos",
     "headersDefault": {
       "actions": "Ações"
     }
@@ -393,7 +600,10 @@
   },
   "dialogSearch": {
     "searchParceiro": "Parceiros",
-    "searchProduct": "Produtos"
+    "searchProduct": "Produtos",
+    "searchPlano": "Planos",
+    "searchUsuario": "Usuarios",
+    "searchBeneficios": "Benefícios"
   },
   "filterColumn": {
     "operators": {

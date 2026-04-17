@@ -66,7 +66,7 @@ export class ClassBeneficios extends BaseClass<IBeneficios> {
     const defaultModel = new ClassBeneficios().getDefault()
     return BaseClass.generateHeadersFromModel(
       defaultModel,
-      'forms.formBeneficio',
+      'forms.formBeneficios',
       ClassBeneficios.fieldConfig,
     )
   }
@@ -75,7 +75,7 @@ export class ClassBeneficios extends BaseClass<IBeneficios> {
     const defaultModel = new ClassBeneficios().getDefault()
     return BaseClass.generateFiltersFromModel(
       defaultModel,
-      'forms.formBeneficio',
+      'forms.formBeneficios',
       ClassBeneficios.fieldConfig,
     )
   }

@@ -43,7 +43,7 @@ const dialogSearchPlano = new ClassBaseDialog({
 const usuario = defineModel<IUser>('usuario', { required: true });
 const idUsuario = defineModel<string | null>('idUsuario');
 withDefaults(defineProps<IPropsCustomInputs>(), {
-  label: 'forms.formOTP.usuarioDestino.label',
+  label: 'forms.formOTP.usuario_destino.label',
   density: 'compact',
   variant: 'outlined',
   disabled: false,

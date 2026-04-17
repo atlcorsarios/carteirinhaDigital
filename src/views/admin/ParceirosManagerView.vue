@@ -4,7 +4,7 @@
     id-field="id"
     cursor-key="created_at"
     context-id="parceiros-vitrine"
-    :title="t('dataTable.parceiros')"
+    :title="'dataTable.parceiros'"
     :hasActions="false"
     :hasMoreDetails="true"
     :dialog-model-manager="dialogManager"

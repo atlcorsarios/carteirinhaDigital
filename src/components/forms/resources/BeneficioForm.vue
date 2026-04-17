@@ -34,19 +34,23 @@
         <v-col cols="12">
           <v-textarea
             v-model="beneficio.restricao_beneficio"
-            :label="t('forms.formBeneficios.restricao_beneficio.label', 'Restrições')"
-            :hint="t('forms.formBeneficios.restricao_beneficio.hint', 'Ex: Válido apenas nas terças-feiras')"
+            :label="t('forms.formBeneficios.restricao_beneficio.label')"
+            :hint="t('forms.formBeneficios.restricao_beneficio.hint')"
             variant="outlined"
             color="primary"
             rows="2"
           />
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12">
           <v-switch
             v-model="beneficio.ativo"
-            color="success"
+            :label="beneficio.ativo ? t('forms.campoAtivo.true') : t('forms.campoAtivo.false')"
             inset
+            hide-details
+            color="success"
+            density="compact"
+            class="d-flex justify-center"
           />
         </v-col>
       </template>

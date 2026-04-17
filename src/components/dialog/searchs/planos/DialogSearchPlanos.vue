@@ -1,6 +1,6 @@
 <template>
   <GenericSearchDialog
-    :title="t('dialogSearch.searchPlano')"
+    :title="'dialogSearch.searchPlano'"
     :storage-context="'planos'"
     :has-create-quickly="true"
     :headers="ClassPlanos.headers"

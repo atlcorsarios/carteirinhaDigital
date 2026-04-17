@@ -56,8 +56,8 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<IPropsCustomInputs>(), {
-  label: 'forms.formPlano.beneficios.label',
-  hint: 'forms.formPlano.beneficios.hint',
+  label: 'forms.formPlanos.beneficios.label',
+  hint: 'forms.formPlanos.beneficios.hint',
   density: 'compact',
   variant: 'outlined'
 });

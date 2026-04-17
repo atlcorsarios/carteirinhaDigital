@@ -3,11 +3,12 @@
     :headers="ClassNotifications.headers"
     id-field="idNotification"
     cursor-key="created_at"
-    :title="t('dataTable.notifications.title')"
+    context-id="notificacoes"
+    :title="'dataTable.notifications'"
     :has-actions="false"
     :dialog-model-manager="dialogNotifications"
     :class-model-manager="notificationsModelManager"
-    :service-fetch="notificationsServices.getAllNotifications"
+    :service-fetch="NotificationsServices.paginationsNotificacoes"
   />
 </template>
 
@@ -23,12 +24,7 @@ import { ClassNotifications } from '@/classes/resources/ClassNotificacoes'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 
 // Services
-import { notificationsServices } from '@/services/resources/notificacoesService'
-
-// Vue
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
+import { NotificationsServices } from '@/services/resources/notificacoesService'
 
 const classNotifications = new ClassNotifications()
 const dialogNotifications = new ClassBaseDialog<INotification>({

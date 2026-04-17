@@ -4,7 +4,7 @@
     id-field="id"
     cursor-key="created_at"
     context-id="admin-assinaturas"
-    :title="t('dataTable.assinaturas', 'Gestão de Assinaturas')"
+    :title="'dataTable.assinaturas'"
     :hasActions="false"
     :hasMoreDetails="true"
     :dialog-model-manager="dialogManager"
@@ -28,9 +28,6 @@ import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPagi
 import { ClassAssinaturas } from '@/classes/resources/ClassAssinaturas'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { AssinaturasService } from '@/services/resources/assinaturasService'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n();
 
 const classRef = new ClassAssinaturas();
 const dialogManager = new ClassBaseDialog<IAssinaturasDetalhadas>({

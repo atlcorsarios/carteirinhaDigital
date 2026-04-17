@@ -4,7 +4,7 @@
     id-field="id"
     cursor-key="created_at"
     context-id="admin-promocoes"
-    :title="t('dataTable.promocoes')"
+    :title="'dataTable.promocoes'"
     :hasActions="true"
     :text-create="t('messages.forms.formPromocoes.create')"
     :text-edit="t('messages.forms.formPromocoes.edit')"
@@ -31,13 +31,11 @@
 <script setup lang="ts">
 import GenericView from '@/components/layouts/generics/GenericView.vue'
 import PromocaoForm from '@/components/forms/resources/PromocaoForm.vue'
-
 import type { IPromocoes } from '@/classes/models/resources/ModelIPromocoes'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassPromocoes } from '@/classes/resources/ClassPromocoes'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { PromocoesService } from '@/services/resources/promocoesService'
-
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
