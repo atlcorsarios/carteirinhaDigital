@@ -1,7 +1,10 @@
 <template>
   <BaseMoreDetails @close="$emit('close')">
     <template #details>
-      <CardPlano :plano="plano" />
+      <CardPlano
+        :plano="plano"
+        showingDetails
+      />
     </template>
   </BaseMoreDetails>
 </template>
@@ -12,4 +15,5 @@ import CardPlano from '../cards/CardPlano.vue';
 import type { IPlanos } from '@/classes/models/resources/ModelIPlanos';
 
 defineProps<{ plano: IPlanos }>();
+defineEmits(['close']);
 </script>

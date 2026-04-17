@@ -6,6 +6,7 @@
     :context-id="String(route.name)"
     :title="'dataTable.planos'"
     :hasActions="true"
+    :has-more-details="true"
     :text-create="t('messages.forms.formPlanos.create')"
     :text-edit="t('messages.forms.formPlanos.edit')"
     icon-create="mdi-card-plus-outline"
