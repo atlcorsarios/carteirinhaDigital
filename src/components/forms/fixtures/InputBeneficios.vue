@@ -31,7 +31,7 @@
           size="small"
           class="mr-1"
         />
-        {{ item.descricao_beneficio }} ({{ item.desconto_aplicavel }}%)
+        {{ item.descricao_beneficio || item.beneficios.descricao_beneficio }} ({{ item.desconto_aplicavel || item.beneficios.desconto_aplicavel }}%)
       </v-chip>
     </v-chip-group>
 
