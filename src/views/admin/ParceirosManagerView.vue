@@ -12,7 +12,7 @@
     :service-fetch="fetchItems"
   >
     <template #moreDetails="{ item, close }">
-      <MoreDetailsUsuarios
+      <MoreUsuariosDetails
         :usuario="item"
         @close="close"
       />
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import GenericView from '@/components/layouts/generics/GenericView.vue'
-import MoreDetailsUsuarios from '@/components/MoreDetails/MoreDetailsUsuarios.vue'
+import MoreUsuariosDetails from '@/components/MoreDetails/MoreUsuariosDetails.vue'
 import type { TParceiro } from '@/classes/models/resources/ModelUsuarios'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassParceiros } from '@/classes/resources/ClassParceiros'
