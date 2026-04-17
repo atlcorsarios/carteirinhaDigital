@@ -6,6 +6,7 @@
     :context-id="String(route.name)"
     :title="'dataTable.planos'"
     :hasActions="true"
+    :has-more-details="true"
     :text-create="t('messages.forms.formPlanos.create')"
     :text-edit="t('messages.forms.formPlanos.edit')"
     icon-create="mdi-card-plus-outline"
@@ -25,19 +26,34 @@
         @submit="submitForm"
       />
     </template>
+
+    <template #moreDetails="{ item, close }">
+      <MorePlanoDetails
+        :plano="item"
+        @close="close"
+      />
+    </template>
   </GenericView>
 </template>
 
 <script setup lang="ts">
+// Componentes
 import GenericView from '@/components/layouts/generics/GenericView.vue'
 import PlanoForm from '@/components/forms/resources/PlanoForm.vue'
+import MorePlanoDetails from '@/components/MoreDetails/MorePlanoDetails.vue'
 
+// Models
 import type { IPlanos } from '@/classes/models/resources/ModelIPlanos'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
+
+// Classes
 import { ClassPlanos } from '@/classes/resources/ClassPlanos'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
+
+// Service
 import { PlanosService } from '@/services/resources/planosService'
 
+// Vue
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 

@@ -18,30 +18,22 @@
 <script setup lang="ts">
 import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteList.vue'
 import CardPlano from '@/components/cards/CardPlano.vue'
-import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
-import { ClassUsuarios } from '@/classes/resources/ClassUsuarios'
-import { UsersService } from '@/services/resources/usuariosService'
+import { PlanosService } from '@/services/resources/planosService'
 import { useQueryFilterStore } from '@/stores/queryFilterStore'
 
 const queryFilterStore = useQueryFilterStore();
 
 const fetchItems = async (limit: number, lastCursor: string | null) => {
-  const filtroEstaticoDaTela: IQueryFilter = {
-    field: 'cargo',
-    condition: 'equals',
-    value: 'parceiro'
-  }
-
   const payload: TPayloadRequestPagination = {
     limit,
     cursor: lastCursor,
     filters: [
-      ...queryFilterStore.activeFilters,
-      filtroEstaticoDaTela
+      ...queryFilterStore.activeFilters
     ]
   }
 
-  return await UsersService.paginationsUsers(payload, ClassUsuarios.filters);
+  return await PlanosService.paginationsPlanos(payload);
 }
+
 </script>

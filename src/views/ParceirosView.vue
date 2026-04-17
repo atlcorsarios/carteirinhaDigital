@@ -8,7 +8,7 @@
     >
       <template v-slot="{ items }">
         <div v-for="parceiro in items">
-          <CardParceiro :parceiro="parceiro" />
+          <CardUsuario :usuario="parceiro" />
         </div>
       </template>
     </GenericInfiniteList>
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import GenericInfiniteList from '@/components/layouts/generics/GenericInfiniteList.vue'
-import CardParceiro from '@/components/cards/CardParceiro.vue'
+import CardUsuario from '@/components/cards/CardUsuario.vue'
 import type { IQueryFilter } from '@/classes/models/modelComponents/ModelQueryFilter'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassUsuarios } from '@/classes/resources/ClassUsuarios'

@@ -576,6 +576,17 @@
         "totais": "Todos os itens foram carregados",
         "limit": "Itens por vez",
         "order": "Ordenação"
+      },
+      "cardAssinaturas": {
+        "fields": {
+          "plan": "Plano atual",
+          "status": "Status",
+          "duaDate": "Data do vencimento",
+          "NSUPed": "NSU do Pedido",
+          "NSUTransaction": "NSU da Transação"
+        },
+        "transactionHistory": "Histórico de Transações",
+        "NoRenewalsRecorded": "Nenhuma renovação ou pagamento processado para este usuário ainda."
       }
     }
   },
