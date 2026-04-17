@@ -112,7 +112,10 @@
               variant="tonal"
               class="pa-4 border-dashed"
             >
-              <CardPlano :plano="otpCodeDetalhado.plano" />
+              <CardPlano
+                :plano="otpCodeDetalhado.plano"
+                showing-details
+              />
             </v-card>
           </v-window-item>
 
@@ -142,6 +145,7 @@ import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 
 const { t } = useI18n();
+
 const tab = ref();
 
 const props = defineProps<{ otpCodeDetalhado: IOTPCodeDetalhado }>();
