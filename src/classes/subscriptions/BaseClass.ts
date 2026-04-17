@@ -62,6 +62,7 @@ export abstract class BaseClass<T extends object> {
     defaultModel: T,
     i18nPrefix: string,
     config: TEntityConfig<T> = {},
+    moreHeaders?: IHeadersDataTable[]
   ): IHeadersDataTable[] {
     //@ts-ignore
     const t = (key: string) => i18n.global.t(key)
@@ -82,6 +83,15 @@ export abstract class BaseClass<T extends object> {
       })
     })
 
+    if (moreHeaders && moreHeaders.length > 0) {
+      moreHeaders.forEach(customHeader => {
+        headers.push({
+          ...customHeader,
+          title: customHeader.title ? t(customHeader.title) : customHeader.title
+        })
+      })
+    }
+
     if (!config['actions']?.hidden) {
       headers.push({
         title: t('dataTable.headersDefault.actions'),
@@ -98,13 +108,13 @@ export abstract class BaseClass<T extends object> {
     defaultModel: T,
     i18nPrefix: string,
     config: TEntityConfig<T> = {},
+    moreFilters?: IFilterColumn[]
   ): IFilterColumn[] {
     const filters: IFilterColumn[] = []
     const keys = Object.keys(defaultModel as object) as (keyof T)[]
 
     keys.forEach((key) => {
       const conf = config[key]
-
       if (conf?.hidden || conf?.excludeFromFilter) return
 
       let type = conf?.filterType
@@ -123,6 +133,10 @@ export abstract class BaseClass<T extends object> {
         options: conf?.selectOptions,
       })
     })
+
+    if (moreFilters && moreFilters.length > 0) {
+      filters.push(...moreFilters)
+    }
 
     return filters
   }
