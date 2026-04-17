@@ -45,7 +45,7 @@
         />
       </v-col>
 
-      <v-col v-if="profile.cargo === 'parceiro'" cols="12">
+      <v-col v-if="profile.cargo === 'parceiro' && !readonly" cols="12">
         <v-text-field
           v-model="nome_fantasia"
           :label="t('forms.formParceiro.nome_fantasia.label')"
