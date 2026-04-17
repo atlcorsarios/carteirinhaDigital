@@ -1,6 +1,6 @@
 <template>
   <GenericSearchDialog
-    :title="t('dialogSearch.searchBenefícios')"
+    :title="'dialogSearch.searchBenefícios'"
     :storage-context="'beneficios'"
     :has-create-quickly="true"
     :headers="ClassBeneficios.headers"

@@ -1,6 +1,6 @@
 <template>
   <GenericSearchDialog
-    :title="t('dialogSearch.searchParceiro')"
+    :title="'dialogSearch.searchParceiro'"
     :storage-context="'parceiros'"
     :has-create-quickly="false"
     :headers="ClassParceiros.headers"
