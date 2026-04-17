@@ -155,7 +155,9 @@
       },
       "usado": {
         "headerTable": "Já utilizado",
-        "label": "Já utilizado"
+        "label": "Já utilizado",
+        "true": "Usado",
+        "false": "Disponível"
       },
       "data_uso": {
         "headerTable": "Utilizado em",
@@ -404,7 +406,8 @@
       "dias_validade": {
         "headerTable": "Duração",
         "label": "Duração do plano (validade)",
-        "hint": "Por quantos dias a assinatura é valida"
+        "hint": "Por quantos dias a assinatura é valida",
+        "text": "Válido por {dias_validade} dias"
       },
       "created_at": {
         "headerTable": "Criado em",
@@ -539,7 +542,9 @@
       },
       "formPlanos": {
         "create": "Criar plano",
-        "edit": "Editar plano"
+        "edit": "Editar plano",
+        "assinar": "Assinar plano por {preco}",
+        "free": "Adquirir Gratuitamente"
       }
     },
     "dialogs": {

@@ -5,6 +5,7 @@
         <InputUploadImage
           v-model:url="profile.avatar_url"
           :bucket="'avatars'"
+          :disabled="readonly"
           class="mb-5"
         />
       </v-col>
@@ -16,8 +17,9 @@
           :label="t('forms.formUser.username.label')"
           :hint="t('forms.formUser.username.hint')"
           :counter="30"
+          :readonly="readonly"
+          :variant="readonly ? 'plain' : 'outlined'"
           density="compact"
-          variant="outlined"
         />
       </v-col>
 
@@ -27,8 +29,9 @@
           mask="(##) #####-####"
           placeholder="(##) #####-####"
           :label="t('forms.formUser.celular_contato.label')"
+          :readonly="readonly"
+          :variant="readonly ? 'plain' : 'outlined'"
           density="compact"
-          variant="outlined"
           clearable
         />
       </v-col>
@@ -38,6 +41,7 @@
           v-model:role="profile.cargo"
           v-model:otp="otp"
           :user="profile"
+          :readonly="readonly"
         />
       </v-col>
 
@@ -45,8 +49,9 @@
         <v-text-field
           v-model="nome_fantasia"
           :label="t('forms.formParceiro.nome_fantasia.label')"
+          :readonly="readonly"
+          :variant="readonly ? 'plain' : 'outlined'"
           density="compact"
-          variant="outlined"
         />
       </v-col>
 
@@ -56,33 +61,35 @@
           :rules="[rules.required(), rules.email(), rules.maxLength(150)]"
           :label="t('forms.formUser.email.label')"
           disabled
+          :variant="readonly ? 'plain' : 'outlined'"
           density="compact"
-          variant="outlined"
         />
       </v-col>
 
       <v-col cols="12" md="6">
-        <InputUserDocumento
+        <InputUserDocumento v-if="!readonly"
           v-model:documento="profile.documento"
           :disabled="true"
         />
       </v-col>
     </v-row>
 
-    <v-divider />
+    <template v-if="!readonly">
+      <v-divider class="mt-4" />
 
-    <div class="d-flex justify-center mt-3">
-      <v-icon-btn
-        type="submit"
-        icon="mdi-content-save-check"
-        variant="flat"
-        color="success"
-        v-tooltip="t('tooltips.forms.submit')"
-        :disabled="loading"
-        :loading="loading"
-        class="mx-auto text-center mt-3"
-      />
-    </div>
+      <div class="d-flex justify-center mt-3">
+        <v-icon-btn
+          type="submit"
+          icon="mdi-content-save-check"
+          variant="flat"
+          color="success"
+          v-tooltip="t('tooltips.forms.submit')"
+          :disabled="loading"
+          :loading="loading"
+          class="mx-auto text-center mt-3"
+        />
+      </div>
+    </template>
   </v-form>
 </template>
 
@@ -97,11 +104,16 @@ import { ref } from 'vue'
 
 const rules = useRules();
 const { t } = useI18n();
+
 const formRef = ref<any>(null);
 
-const props = defineProps<{
-  loading: boolean
-}>();
+const props = withDefaults(defineProps<{
+  loading?: boolean
+  readonly?: boolean
+}>(), {
+  loading: false,
+  readonly: false
+});
 
 const profile = defineModel<IUser>('profile', { required: true });
 const otp = defineModel<string>('otp', { required: true });

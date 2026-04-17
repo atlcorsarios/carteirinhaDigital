@@ -9,10 +9,10 @@
     :filter-keys="['title', 'raw.abbr']"
     item-title="title"
     item-value="value"
-    :disabled="disabled"
+    :disabled="disabled || readonly"
   />
 
-  <v-mask-input v-if="conditionRequiredOTP"
+  <v-mask-input v-if="conditionRequiredOTP && !readonly"
     v-model="otp"
     :rules="ruleOTPCargo"
     :mask="'######'"
