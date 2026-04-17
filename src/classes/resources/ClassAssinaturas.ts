@@ -78,53 +78,52 @@ export class ClassAssinaturas extends BaseClass<IAssinaturasDetalhadas> {
 
   static get headers(): IHeadersDataTable[] {
     const defaultModel = new ClassAssinaturas().getDefault()
-    const headers = [
+    const moreHeaders: IHeadersDataTable[] = [
       {
         key: 'usuarios.username',
-        title: 'forms.formUser.username',
+        title: 'forms.formUser.username.headerTable',
         width: 200,
         maxWidth: 350,
         minWidth: 150,
       },
       {
         key: 'planos.nome',
-        title: 'forms.formPlanos.nome',
+        title: 'forms.formPlanos.nome.headerTable',
         width: 200,
         maxWidth: 350,
         minWidth: 150,
       }
     ];
 
-    const autoHeaders = BaseClass.generateHeadersFromModel(
+    return BaseClass.generateHeadersFromModel(
       defaultModel,
-      'forms.formAssinatura',
-      ClassAssinaturas.fieldConfig
-    )
-
-    return [ ...headers, ...autoHeaders ];
+      'forms.formAssinaturas',
+      ClassAssinaturas.fieldConfig,
+      moreHeaders
+    );
   }
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassAssinaturas().getDefault()
-    const filters = BaseClass.generateFiltersFromModel(
+    const moreFilters: IFilterColumn[] = [
+      {
+        key: 'planos.nome',
+        label: 'forms.formPlanos.nome.label',
+        type: 'text',
+      },
+      {
+        key: 'usuarios.username',
+        label: 'forms.formUser.username.label',
+        type: 'text',
+      }
+    ];
+
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formAssinaturas',
       ClassAssinaturas.fieldConfig,
+      moreFilters
     );
-
-    filters.push({
-      key: 'planos.nome',
-      label: 'forms.formPlanos.nome',
-      type: 'text',
-    });
-
-    filters.push({
-      key: 'usuarios.username',
-      label: 'forms.formUser.username',
-      type: 'text',
-    });
-
-    return filters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

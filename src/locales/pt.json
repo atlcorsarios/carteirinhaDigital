@@ -411,6 +411,32 @@
         "headerTable": "Ativo",
         "label": "Ativo"
       }
+    },
+    "formAssinaturas": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "usuario_id": {
+        "headerTable": "Usuário",
+        "label": "Usuário"
+      },
+      "plano_id": {
+        "headerTable": "Plano",
+        "label": "Planos vinculado"
+      },
+      "data_inicio": {
+        "headerTable": "Data início",
+        "label": "Data início"
+      },
+      "data_vencimento": {
+        "headerTable": "Data vencimento",
+        "label": "Data vencimento"
+      },
+      "status": {
+        "headerTable": "Status",
+        "label": "Status"
+      }
     }
   },
   "tooltips": {
