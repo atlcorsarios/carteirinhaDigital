@@ -21,7 +21,7 @@ const rawData = defineModel<any>('usuario', { required: true });
 const usuario = computed<IUser>({
   get: () => {
     const data = rawData.value;
-    console.log("data", data);
+
     if (!data) return {} as IUser;
 
     if (data.usuarios) {
