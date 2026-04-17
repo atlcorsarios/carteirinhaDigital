@@ -10,19 +10,24 @@
     :dialog-model-manager="dialogManager"
     :class-model-manager="modelManager"
     :service-fetch="fetchItems"
-  />
+  >
+    <template #moreDetails="{ item, close }">
+      <MoreDetailsUsuarios
+        :usuario="item"
+        @close="close"
+      />
+    </template>
+  </GenericView>
 </template>
 
 <script setup lang="ts">
 import GenericView from '@/components/layouts/generics/GenericView.vue'
+import MoreDetailsUsuarios from '@/components/MoreDetails/MoreDetailsUsuarios.vue'
 import type { TParceiro } from '@/classes/models/resources/ModelUsuarios'
 import type { TPayloadRequestPagination } from '@/classes/models/ModelHeaderPaginator'
 import { ClassParceiros } from '@/classes/resources/ClassParceiros'
 import { ClassBaseDialog } from '@/classes/ClassBaseDialog'
 import { ParceirosService } from '@/services/resources/parceirosService'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n();
 
 const classRef = new ClassParceiros();
 const dialogManager = new ClassBaseDialog<TParceiro>({
