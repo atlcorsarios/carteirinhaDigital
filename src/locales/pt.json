@@ -155,7 +155,9 @@
       },
       "usado": {
         "headerTable": "Já utilizado",
-        "label": "Já utilizado"
+        "label": "Já utilizado",
+        "true": "Usado",
+        "false": "Disponível"
       },
       "data_uso": {
         "headerTable": "Utilizado em",

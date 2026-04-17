@@ -24,7 +24,7 @@ export class ClassFormatters {
     }).format(d)
   }
 
-  static formatDateTime(date: Date | string): string {
+  static formatDateTime(date: Date | string | number | undefined | null): string {
     if (!date) return ''
     const locale = i18n.global.locale.value || 'pt'
     return new Intl.DateTimeFormat(locale, {

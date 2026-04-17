@@ -14,22 +14,21 @@
       />
     </v-card-title>
     <v-card-text>
-      {{ otpCodeDetalhado }}
+      <CardOtpDetails
+        :otp-code-detalhado="otpCodeDetalhado"
+      />
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { ClassFormatters } from '@/classes/ClassFormatters';
+import CardOtpDetails from '../cards/CardOtpDetails.vue';
 import type { IOTPCodeDetalhado } from '@/classes/models/resources/ModelIOTP';
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const props = defineProps<{ otpCodeDetalhado: IOTPCodeDetalhado }>();
 defineEmits(['close']);
-
-const loading = ref(true);
 
 </script>
