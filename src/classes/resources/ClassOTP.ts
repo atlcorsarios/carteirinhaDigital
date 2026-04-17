@@ -111,66 +111,64 @@ export class ClassOTP extends BaseClass<IOTPCodeDetalhado> {
 
   static get headers(): IHeadersDataTable[] {
     const defaultModel = new ClassOTP().getDefault()
-    const headers = [
+    const moreHeaders: IHeadersDataTable[] = [
       {
         key: 'plano.nome',
-        title: 'forms.formPlanos.nome',
+        title: 'forms.formPlanos.nome.headerTable',
         width: 200,
         maxWidth: 350,
         minWidth: 150,
       },
       {
         key: 'usuario_destino.email',
-        title: 'forms.formOTP.usuario_destino',
+        title: 'forms.formOTP.usuario_destino.headerTable',
         width: 200,
         maxWidth: 350,
         minWidth: 150,
       },
       {
         key: 'usuario_gerador.email',
-        title: 'forms.formOTP.usuario_gerador',
+        title: 'forms.formOTP.usuario_gerador.headerTable',
         width: 200,
         maxWidth: 350,
         minWidth: 150,
       }
     ];
 
-    const autoHeaders = BaseClass.generateHeadersFromModel(
+    return BaseClass.generateHeadersFromModel(
       defaultModel,
       'forms.formOTP',
-      ClassOTP.fieldConfig
-    )
-
-    return [ ...headers, ...autoHeaders ];
+      ClassOTP.fieldConfig,
+      moreHeaders
+    );
   }
 
   static get filters(): IFilterColumn[] {
     const defaultModel = new ClassOTP().getDefault()
-    const filters = BaseClass.generateFiltersFromModel(
+    const moreFilters: IFilterColumn[] = [
+      {
+        key: 'planos.nome',
+        label: 'forms.formPlanos.nome.label',
+        type: 'text',
+      },
+      {
+        key: 'usuario_destino.email',
+        label: 'forms.formUser.email.label',
+        type: 'text',
+      },
+      {
+        key: 'usuario_gerador.email',
+        label: 'forms.formUser.email.label',
+        type: 'text',
+      }
+    ];
+
+    return BaseClass.generateFiltersFromModel(
       defaultModel,
       'forms.formOTP',
       ClassOTP.fieldConfig,
+      moreFilters
     );
-
-    filters.push({
-      key: 'planos.nome',
-      label: 'forms.formPlanos.nome',
-      type: 'text',
-    });
-
-    filters.push({
-      key: 'usuario_destino.email',
-      label: 'forms.formUser.email',
-      type: 'text',
-    });
-
-    filters.push({
-      key: 'usuario_gerador.email',
-      label: 'forms.formUser.email',
-      type: 'text',
-    });
-
-    return filters
   }
 
   static get defaultFilterConfig(): Partial<IQueryFilter> {

@@ -4,7 +4,7 @@
       v-model="otpCode.codigo"
       :rules="[rules.required()]"
       :mask="'######'"
-      :label="t('forms.formOtp.codigo.label')"
+      :label="t('forms.formOTP.codigo.label')"
       density="compact"
       variant="outlined"
       clearable
@@ -32,7 +32,7 @@
     <v-autocomplete
       :model-value="otpCode.cargo_destino"
       :rules="[rules.required()]"
-      :label="t('forms.formOtp.cargo_destino.label')"
+      :label="t('forms.formOTP.cargo_destino.label')"
       :items="roleOptions"
       :filter-keys="['title', 'raw.abbr']"
       item-title="title"

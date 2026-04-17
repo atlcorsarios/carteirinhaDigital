@@ -124,6 +124,60 @@
         "label": "Código de verificação do novo cargo"
       }
     },
+    "formOTP": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "codigo": {
+        "headerTable": "Código",
+        "label": "Código OTP"
+      },
+      "usuario_destino_id": {
+        "headerTable": "Destinatário",
+        "label": "Usuário destinatário"
+      },
+      "gerado_por": {
+        "headerTable": "Responsável",
+        "label": "Responsável"
+      },
+      "plano_id": {
+        "headerTable": "Plano",
+        "label": "Plano vinculado"
+      },
+      "cargo_destino": {
+        "headerTable": "Cargo",
+        "label": "Novo cargo atribuído"
+      },
+      "data_expiracao": {
+        "headerTable": "Expira em",
+        "label": "Data de expiração do código"
+      },
+      "usado": {
+        "headerTable": "Já utilizado",
+        "label": "Já utilizado"
+      },
+      "data_uso": {
+        "headerTable": "Utilizado em",
+        "label": "Utilizado em"
+      },
+      "created_at": {
+        "headerTable": "Criado em",
+        "label": "Criado em"
+      },
+      "plano": {
+        "headerTable": "Plano",
+        "label": "Plano vinculado"
+      },
+      "usuario_destino": {
+        "headerTable": "Destinatário",
+        "label": "Destinatário"
+      },
+      "usuario_gerador": {
+        "headerTable": "Responsável",
+        "label": "Responsável"
+      }
+    },
     "formParceiro": {
       "id_usuario": {
         "headerTable": "Id",
@@ -327,6 +381,36 @@
         "headerTable": "Ativo",
         "label": "Ativo"
       }
+    },
+    "formPlanos": {
+      "id": {
+        "headerTable": "Id",
+        "label": "Id"
+      },
+      "nome": {
+        "headerTable": "Título",
+        "label": "Nome do plano (Título)"
+      },
+      "descricao": {
+        "headerTable": "Descrição",
+        "label": "Descrição do plano"
+      },
+      "preco": {
+        "headerTable": "Preço",
+        "label": "Preço do plano"
+      },
+      "dias_validade": {
+        "headerTable": "Duração",
+        "label": "Duração do plano (validade)"
+      },
+      "created_at": {
+        "headerTable": "Criado em",
+        "label": "Criado em"
+      },
+      "ativo": {
+        "headerTable": "Ativo",
+        "label": "Ativo"
+      }
     }
   },
   "tooltips": {
@@ -398,6 +482,10 @@
         "createUser": "Criar usuário",
         "editingUser": "Editar usuário"
       },
+      "formOTP": {
+        "create": "Criar código OTP",
+        "edit": "Editar código OTP"
+      },
       "formProduct": {
         "createProduct": "Criar produto",
         "editingProduct": "Editar produto"
@@ -413,10 +501,6 @@
       "formDescontos": {
         "create": "Criar desconto geral",
         "edit": "Editar desconto geral"
-      },
-      "formStock": {
-        "addInventory": "Adicionar ao estoque",
-        "updateInventory": "Atualizar estoque"
       }
     },
     "dialogs": {
@@ -454,6 +538,7 @@
   "dataTable": {
     "users": "Lista de usuários",
     "assinaturas": "Lista de assinaturas",
+    "otp": "Lista de códigos OTP",
     "products": "Lista de produtos",
     "notifications": "Lista de notificações",
     "promocoes": "Lista de promoções",
